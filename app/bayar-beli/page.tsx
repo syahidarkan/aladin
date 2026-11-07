@@ -13,7 +13,8 @@ interface ServiceItem {
   iconBg: string
   borderColor: string
   iconColor: string
-  icon: React.ReactNode
+  imageSrc?: string
+  icon?: React.ReactNode
   isEwallet?: boolean
 }
 
@@ -35,7 +36,7 @@ export default function BayarBeliPage() {
     return 'Telkomsel'
   }
 
-  // 1. ISI ULANG & VOUCHER (Clean 4-column squircles)
+  // 1. ISI ULANG (Authentic APK Icons 1:1 to 07-bayar-dan-beli.png)
   const isiUlangItems: ServiceItem[] = [
     {
       id: 'pulsa',
@@ -44,12 +45,7 @@ export default function BayarBeliPage() {
       iconBg: '#EFF6FF',
       borderColor: '#DBEAFE',
       iconColor: '#2563EB',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="5" y="2" width="14" height="20" rx="2" />
-          <line x1="12" y1="18" x2="12.01" y2="18" />
-        </svg>
-      ),
+      imageSrc: '/assets/icons/bill_pulsa_clean.png',
     },
     {
       id: 'paket-data',
@@ -58,14 +54,7 @@ export default function BayarBeliPage() {
       iconBg: '#F0FDFA',
       borderColor: '#CCFBF1',
       iconColor: '#0D9488',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0D9488" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M5 12.55a11 11 0 0 1 14.08 0" />
-          <path d="M1.42 9a16 16 0 0 1 21.16 0" />
-          <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
-          <line x1="12" y1="20" x2="12.01" y2="20" />
-        </svg>
-      ),
+      imageSrc: '/assets/icons/bill_paket_data_clean.png',
     },
     {
       id: 'token-listrik',
@@ -74,11 +63,7 @@ export default function BayarBeliPage() {
       iconBg: '#FEF3C7',
       borderColor: '#FDE68A',
       iconColor: '#D97706',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D97706" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-        </svg>
-      ),
+      imageSrc: '/assets/icons/bill_token_listrik_clean.png',
     },
     {
       id: 'ewallet',
@@ -87,17 +72,12 @@ export default function BayarBeliPage() {
       iconBg: '#EEF2FF',
       borderColor: '#E0E7FF',
       iconColor: '#4F46E5',
+      imageSrc: '/assets/icons/bill_ewallet_clean.png',
       isEwallet: true,
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
-          <path d="M16 13h4" />
-        </svg>
-      ),
     },
   ]
 
-  // 2. TAGIHAN BULANAN (Clean 4-column squircles)
+  // 2. TAGIHAN (Authentic APK Icons 1:1 to 07-bayar-dan-beli.png)
   const tagihanItems: ServiceItem[] = [
     {
       id: 'tagihan-listrik',
@@ -106,11 +86,7 @@ export default function BayarBeliPage() {
       iconBg: '#FEF3C7',
       borderColor: '#FDE68A',
       iconColor: '#D97706',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D97706" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-        </svg>
-      ),
+      imageSrc: '/assets/icons/bill_tagihan_listrik_clean.png',
     },
     {
       id: 'internet',
@@ -119,12 +95,7 @@ export default function BayarBeliPage() {
       iconBg: '#F0F9FF',
       borderColor: '#E0F2FE',
       iconColor: '#0284C7',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284C7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="7" width="20" height="15" rx="2" />
-          <polyline points="17 2 12 7 7 2" />
-        </svg>
-      ),
+      imageSrc: '/assets/icons/bill_internet_clean.png',
     },
     {
       id: 'pdam',
@@ -133,11 +104,7 @@ export default function BayarBeliPage() {
       iconBg: '#EFF6FF',
       borderColor: '#DBEAFE',
       iconColor: '#2563EB',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
-        </svg>
-      ),
+      imageSrc: '/assets/icons/bill_pdam_clean.png',
     },
     {
       id: 'bpjs',
@@ -146,11 +113,7 @@ export default function BayarBeliPage() {
       iconBg: '#F0FDF4',
       borderColor: '#DCFCE7',
       iconColor: '#16A34A',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16A34A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-        </svg>
-      ),
+      imageSrc: '/assets/icons/bill_bpjs_clean.png',
     },
     {
       id: 'pbb',
@@ -159,12 +122,7 @@ export default function BayarBeliPage() {
       iconBg: '#FAF5FF',
       borderColor: '#F3E8FF',
       iconColor: '#9333EA',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9333EA" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
-        </svg>
-      ),
+      imageSrc: '/assets/icons/bill_pbb_clean.png',
     },
     {
       id: 'pasca-bayar',
@@ -173,42 +131,25 @@ export default function BayarBeliPage() {
       iconBg: '#FFF7ED',
       borderColor: '#FFEDD5',
       iconColor: '#EA580C',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EA580C" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="4" y="2" width="16" height="20" rx="2" />
-          <line x1="8" y1="6" x2="16" y2="6" />
-          <line x1="12" y1="18" x2="12.01" y2="18" />
-        </svg>
-      ),
+      imageSrc: '/assets/icons/bill_pasca_bayar_clean.png',
     },
     {
-      id: 'asuransi',
-      label: 'Asuransi',
+      id: 'voucher-tv',
+      label: 'Voucher TV',
       category: 'tagihan',
-      iconBg: '#ECFDF5',
-      borderColor: '#A7F3D0',
-      iconColor: '#059669',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          <path d="M9 12l2 2 4-4" />
-        </svg>
-      ),
+      iconBg: '#EFF6FF',
+      borderColor: '#DBEAFE',
+      iconColor: '#2563EB',
+      imageSrc: '/assets/icons/bill_voucher_tv_clean.png',
     },
     {
-      id: 'tagihan-lain',
-      label: 'Lainnya',
+      id: 'tagihan-tv',
+      label: 'TV Kabel',
       category: 'tagihan',
-      iconBg: '#F8FAFC',
-      borderColor: '#E2E8F0',
-      iconColor: '#64748B',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748B" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="1" />
-          <circle cx="19" cy="12" r="1" />
-          <circle cx="5" cy="12" r="1" />
-        </svg>
-      ),
+      iconBg: '#FEF2F2',
+      borderColor: '#FEE2E2',
+      iconColor: '#DC2626',
+      imageSrc: '/assets/icons/bill_tagihan_tv_clean.png',
     },
   ]
 
@@ -572,15 +513,21 @@ export default function BayarBeliPage() {
           Bayar &amp; Beli
         </h1>
 
-        <Link
-          href="/beranda"
-          className="w-9 h-9 rounded-full flex items-center justify-center text-[#1C20C4] hover:bg-blue-50 active:scale-95 transition-all"
+        <button
+          type="button"
+          onClick={() => alert('Riwayat transaksi Bayar & Beli')}
+          className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+          aria-label="Riwayat Transaksi"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-            <polyline points="9 22 9 12 15 12 15 22" />
-          </svg>
-        </Link>
+          <Image
+            src="/assets/icons/header_history_clean.png"
+            alt="Riwayat"
+            width={20}
+            height={20}
+            style={{ width: '19px', height: '19px' }}
+            priority
+          />
+        </button>
       </div>
 
       {/* Scrollable Body */}
@@ -662,7 +609,13 @@ export default function BayarBeliPage() {
                         justifyContent: 'center',
                       }}
                     >
-                      {item.icon}
+                      {item.imageSrc ? (
+                        <div className="relative w-7 h-7">
+                          <Image src={item.imageSrc} alt={item.label} fill className="object-contain" priority />
+                        </div>
+                      ) : (
+                        item.icon
+                      )}
                     </div>
                     <div style={{ height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '6px' }}>
                       <span style={{ fontSize: '11px', fontWeight: 700, color: '#1E293B', textAlign: 'center' }}>
@@ -691,7 +644,13 @@ export default function BayarBeliPage() {
                       justifyContent: 'center',
                     }}
                   >
-                    {item.icon}
+                    {item.imageSrc ? (
+                      <div className="relative w-7 h-7">
+                        <Image src={item.imageSrc} alt={item.label} fill className="object-contain" priority />
+                      </div>
+                    ) : (
+                      item.icon
+                    )}
                   </div>
                   <div style={{ height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '6px' }}>
                     <span style={{ fontSize: '11px', fontWeight: 700, color: '#1E293B', textAlign: 'center' }}>
@@ -738,7 +697,13 @@ export default function BayarBeliPage() {
                     justifyContent: 'center',
                   }}
                 >
-                  {item.icon}
+                  {item.imageSrc ? (
+                    <div className="relative w-7 h-7">
+                      <Image src={item.imageSrc} alt={item.label} fill className="object-contain" priority />
+                    </div>
+                  ) : (
+                    item.icon
+                  )}
                 </div>
                 <div style={{ height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '6px' }}>
                   <span style={{ fontSize: '11px', fontWeight: 700, color: '#1E293B', textAlign: 'center' }}>

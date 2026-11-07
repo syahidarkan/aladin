@@ -202,7 +202,7 @@ export default function ProfilPage() {
           </div>
         </div>
 
-        {/* Kuota Gratismu Card (Livin' & Aladin Premium Hybrid) */}
+        {/* Kuota Gratismu Card (Exact 1:1 to 05-profil.png & item_my_profile_header.xml) */}
         <div
           style={{
             backgroundColor: '#FFFFFF',
@@ -212,86 +212,65 @@ export default function ProfilPage() {
             overflow: 'hidden',
           }}
         >
+          {/* Lavender Header Strip */}
           <div
             style={{
-              padding: '14px 20px',
-              borderBottom: '1px solid #F1F5F9',
+              padding: '12px 20px',
+              backgroundColor: '#EBF1FE',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              background: 'linear-gradient(90deg, #F8FAFC 0%, #FFFFFF 100%)',
+              borderBottom: '1px solid #DCE6FD',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div
-                style={{
-                  width: '24px',
-                  height: '24px',
-                  borderRadius: '6px',
-                  backgroundColor: '#EEF2FF',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#1C20C4',
-                }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M20 12V22H4V12" />
-                  <path d="M22 7H2V12H22V7Z" />
-                  <path d="M12 22V7" />
-                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7Z" />
-                  <path d="M12 7H16.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z" />
-                </svg>
-              </div>
-              <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#1A1D26' }}>
-                Kuota Gratismu
-              </span>
-            </div>
+            <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#1A1D26' }}>
+              Kuota gratismu
+            </span>
             <button
               onClick={() => setShowTermsModal(true)}
               style={{
-                fontSize: '11.5px',
-                fontWeight: 700,
+                fontSize: '12px',
+                fontWeight: 800,
                 color: '#1C20C4',
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '2px',
               }}
             >
-              Syarat &amp; Ketentuan
+              Sahabatan ›
             </button>
           </div>
 
-          <div style={{ padding: '16px 20px' }}>
-            <p style={{ fontSize: '11px', color: '#64748B', margin: '0 0 12px 0' }}>
-              Kuota gratis transaksi bulan November 2026:
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
-              <div style={{ backgroundColor: '#F8FAFC', padding: '12px 8px', borderRadius: '16px', border: '1px solid #F1F5F9', textAlign: 'center' }}>
+          {/* 3 Columns: ATM, Alfa Tarik, Alfa Setor */}
+          <div style={{ padding: '16px 14px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+              <div style={{ backgroundColor: '#F8FAFC', padding: '12px 6px', borderRadius: '16px', border: '1px solid #F1F5F9', textAlign: 'center' }}>
                 <span style={{ fontSize: '15px', fontWeight: 900, color: '#1A1D26', display: 'block' }}>
                   5/5
                 </span>
-                <span style={{ fontSize: '10px', color: '#64748B', display: 'block', marginTop: '2px', lineHeight: 1.2 }}>
-                  Tarik ATM Lain
+                <span style={{ fontSize: '9.5px', fontWeight: 600, color: '#64748B', display: 'block', marginTop: '3px', lineHeight: 1.25 }}>
+                  Tarik tunai di ATM
                 </span>
               </div>
 
-              <div style={{ backgroundColor: '#F8FAFC', padding: '12px 8px', borderRadius: '16px', border: '1px solid #F1F5F9', textAlign: 'center' }}>
+              <div style={{ backgroundColor: '#F8FAFC', padding: '12px 6px', borderRadius: '16px', border: '1px solid #F1F5F9', textAlign: 'center' }}>
                 <span style={{ fontSize: '15px', fontWeight: 900, color: '#1A1D26', display: 'block' }}>
                   5/5
                 </span>
-                <span style={{ fontSize: '10px', color: '#64748B', display: 'block', marginTop: '2px', lineHeight: 1.2 }}>
-                  Tarik Alfamart
+                <span style={{ fontSize: '9.5px', fontWeight: 600, color: '#64748B', display: 'block', marginTop: '3px', lineHeight: 1.25 }}>
+                  Tarik Tunai Alfa
                 </span>
               </div>
 
-              <div style={{ backgroundColor: '#F8FAFC', padding: '12px 8px', borderRadius: '16px', border: '1px solid #F1F5F9', textAlign: 'center' }}>
+              <div style={{ backgroundColor: '#F8FAFC', padding: '12px 6px', borderRadius: '16px', border: '1px solid #F1F5F9', textAlign: 'center' }}>
                 <span style={{ fontSize: '15px', fontWeight: 900, color: '#1C20C4', display: 'block' }}>
-                  50/50
+                  5/5
                 </span>
-                <span style={{ fontSize: '10px', color: '#64748B', display: 'block', marginTop: '2px', lineHeight: 1.2 }}>
-                  Transfer BI-FAST
+                <span style={{ fontSize: '9.5px', fontWeight: 600, color: '#64748B', display: 'block', marginTop: '3px', lineHeight: 1.25 }}>
+                  Setor Tunai Alfa
                 </span>
               </div>
             </div>

@@ -4,222 +4,105 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
-import BottomNav from '@/components/BottomNav'
 import FeatureGuideModal from '@/components/FeatureGuideModal'
 import { useBankState } from '@/lib/bankState'
 
 export default function BerandaPage() {
-  const { alaDompet, alaImpianUmroh, alaDeposito, pockets = [] } = useBankState()
+  const { alaDompet, alaImpianUmroh, alaDeposito } = useBankState()
   const [showBalance, setShowBalance] = useState(true)
   const [activeBanner, setActiveBanner] = useState(0)
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveBanner((prev) => (prev + 1) % 6)
-    }, 4500)
+      setActiveBanner((prev) => (prev + 1) % 4)
+    }, 5000)
     return () => clearInterval(timer)
   }, [])
 
-  const totalInPockets = pockets.reduce((acc, p) => acc + (p.balance || 0), 0)
-
   const banners = [
     {
-      id: 'mascot-banner',
-      type: 'card',
-      bg: 'linear-gradient(135deg, #1037A6 0%, #0D3396 60%, #00F0A0 100%)',
-      tag: 'MASKOT RESMI ALADIN',
+      id: 'jumat-berkah',
+      src: '/assets/banners/banner_jumat_berkah_native.png',
+      alt: 'Jumat Berkah - Berbagi',
+      href: '/donasi',
+    },
+    {
+      id: 'alfagift',
+      src: '/assets/banners/banner-alfagift.png',
+      alt: 'Alfagift x Aladin Promo',
+      href: '/rewards/alfa',
+    },
+    {
+      id: 'mascot-3d',
       title: 'Karpet Terbang Aladin',
-      sub: 'Interaktif 3D & Posing Real-Time',
-      desc: 'Kenalan dengan maskot 3D Aladin! Ajak terbang, putar 360°, dan coba berbagai pose interaktif.',
+      sub: 'Maskot 3D Interaktif',
+      desc: 'Coba pose 3D & kenalan langsung dengan pendamping syariah barumu!',
       href: '/mascot',
+      isCustom: true,
+      bg: 'linear-gradient(135deg, #1037A6 0%, #0D3396 60%, #00F0A0 100%)',
     },
     {
-      id: 'transaksi-nabung-banner',
-      type: 'card',
-      bg: 'linear-gradient(135deg, #091E42 0%, #162477 55%, #1C20C4 100%)',
-      tag: '#PAKAIALADIN TRANSAKSI',
-      title: 'Buat Transaksi dan Nabung',
-      sub: '50 Transaksi Gratis Setiap Bulan',
-      desc: 'Bebas transfer BI-FAST, top up e-wallet, dan tarik tunai tanpa biaya admin di ribuan Alfamart.',
-      href: '/rewards/referral',
-    },
-    {
-      id: 'wealth-banner',
-      type: 'card',
-      bg: 'linear-gradient(135deg, #081D48 0%, #1E3A8A 100%)',
-      tag: '#PAKAIALADIN WEALTH',
-      title: 'Grow Your Wealth',
-      sub: 'Bagi Hasil hingga 8,5% p.a.',
-      desc: 'Investasi Reksa Dana & Emas Syariah dengan talangan likuiditas Qardh T+0 instan.',
-      href: '/wealth',
-    },
-    {
-      id: 'haji-banner',
-      type: 'card',
-      bg: 'linear-gradient(135deg, #022C22 0%, #064E3B 55%, #047857 100%)',
-      tag: '#PAKAIALADIN IBADAH',
-      title: 'Buat Berangkat Haji',
-      sub: 'Tabungan Ibadah Terhubung BPKH',
-      desc: 'Kalkulator cerdas porsi haji reguler & estimasi keberangkatan dengan bagi hasil syariah.',
-      href: '/impian/haji/buat',
-    },
-    {
-      id: 'hijrah-banner',
-      type: 'card',
-      bg: 'linear-gradient(135deg, #091E42 0%, #1C20C4 55%, #00B392 100%)',
-      tag: 'LIFESTYLE & EKOSISTEM SYARIAH',
-      title: 'Ala Hijrah Hub',
-      sub: 'Presale Tiket Kajian & Kuliner Halal',
-      desc: 'Dapatkan diskon presale eksklusif hingga 35% khusus nasabah Bank Aladin.',
-      href: '/hijrah',
-    },
-    {
-      id: 'haramain-banner',
-      type: 'card',
-      bg: 'linear-gradient(135deg, #064E3B 0%, #047857 100%)',
-      tag: 'POWERED BY D360 × BPKH',
-      title: 'Ala Haramain Wallet (SAR)',
-      sub: 'Dual Saldo IDR & SAR di Arab Saudi',
-      desc: 'Bayar via Tap NFC di seluruh merchant Makkah & Madinah dengan 0% markup kurs.',
-      href: '/ala-haramain',
-    },
-    {
-      id: 'wrapped-banner',
-      type: 'card',
-      bg: 'linear-gradient(135deg, #831843 0%, #BE185D 55%, #DB2777 100%)',
-      tag: 'KILAS BALIK #PAKAIALADIN 2026',
+      id: 'wrapped',
       title: 'Aladin Wrapped 2026',
-      sub: 'Kilas Balik Transaksi Berkah Setahun',
-      desc: 'Lihat rangkuman transaksi berkah, pos pengeluaran, dan total biaya admin yang kamu hemat.',
+      sub: 'Kilas Balik Transaksi Berkah',
+      desc: 'Lihat penghematan biaya admin & rekor ibadah finansial setahun!',
       href: '/wrapped',
+      isCustom: true,
+      bg: 'linear-gradient(135deg, #831843 0%, #BE185D 55%, #DB2777 100%)',
     },
   ]
 
-  // 8 Core Innovation Shortcuts in 2 Balanced Rows of 4 Columns
   const shortcuts = [
-    // ROW 1
     {
-      label: 'Ala Pocket',
-      href: '/pocket',
-      iconBg: '#FEF3C7',
-      borderColor: '#FDE68A',
-      isNew: true,
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-          <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-          <line x1="12" y1="22.08" x2="12" y2="12" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Ala Impian',
-      href: '/impian',
-      iconBg: '#EEF2FF',
-      borderColor: '#E0E7FF',
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-        </svg>
-      ),
-    },
-    {
+      id: 'deposito',
       label: 'Ala Deposito',
       href: '/simulasi-bagi-hasil',
-      iconBg: '#FEF3C7',
-      borderColor: '#FDE68A',
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-        </svg>
-      ),
+      iconSrc: '/assets/icons/home_menu_deposito.png',
     },
     {
-      label: 'Ala Hijrah',
-      href: '/hijrah',
-      iconBg: '#ECFDF5',
-      borderColor: '#A7F3D0',
-      isNew: true,
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-        </svg>
-      ),
-    },
-
-    // ROW 2
-    {
-      label: 'Wealth Hub',
-      href: '/wealth',
-      iconBg: '#FAF5FF',
-      borderColor: '#F3E8FF',
-      isNew: true,
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9333EA" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="18" y1="20" x2="18" y2="10" />
-          <line x1="12" y1="20" x2="12" y2="4" />
-          <line x1="6" y1="20" x2="6" y2="14" />
-        </svg>
-      ),
+      id: 'impian',
+      label: 'Ala Impian',
+      href: '/impian',
+      iconSrc: '/assets/icons/home_menu_impian.png',
     },
     {
-      label: 'Bayar Saudi',
+      id: 'pocket',
+      label: 'Ala Pocket',
+      href: '/pocket',
+      iconSrc: '/assets/icons/home_menu_pocket.png',
+    },
+    {
+      id: 'haramain',
+      label: 'Ala Haramain',
       href: '/ala-haramain',
-      iconBg: '#ECFDF5',
-      borderColor: '#A7F3D0',
-      isNew: true,
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#047857" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 6v12M8 10h8" />
-        </svg>
-      ),
+      iconSrc: '/assets/icons/haji_circle_icon.png',
+      badge: 'SAR',
     },
     {
-      label: 'Kartu Visa',
-      href: '/kartu',
-      iconBg: '#EFF6FF',
-      borderColor: '#DBEAFE',
-      isNew: true,
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="5" width="20" height="14" rx="2" />
-          <line x1="2" y1="10" x2="22" y2="10" />
-        </svg>
-      ),
-    },
-    {
-      label: 'Pilgrim Bundle',
-      href: '/pilgrim-bundle',
-      iconBg: '#ECFDF5',
-      borderColor: '#A7F3D0',
-      isNew: true,
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4" />
-          <path d="M4 6v12c0 1.1.9 2 2 2h14v-4" />
-          <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z" />
-        </svg>
-      ),
+      id: 'donasi',
+      label: 'Donasi',
+      href: '/donasi',
+      iconSrc: '/assets/icons/home_menu_donasi.png',
     },
   ]
 
   return (
     <div
-      className="flex flex-col h-full bg-[#F4F6F9] select-none text-[#1A1A2E]"
+      className="flex flex-col h-full bg-[#FFFFFF] select-none text-[#1A1D26]"
       style={{
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+        fontFamily: 'var(--font-poppins), var(--font-inter), sans-serif',
       }}
     >
       {/* Scrollable Container wrapping ENTIRE page content */}
       <div className="flex-1 overflow-y-auto no-scrollbar pb-24">
-        {/* Navy to Teal Starry Header Section */}
+        {/* ========================================================================= */}
+        {/* TOP SECTION: STARRY NIGHT HEADER (EXACT 1:1 TO APK fragment_home.xml)     */}
+        {/* ========================================================================= */}
         <div
           className="relative text-white overflow-hidden shrink-0"
           style={{
-            height: '148px',
-            background: 'linear-gradient(180deg, #081D48 0%, #06264D 65%, #024856 100%)',
+            height: '185px',
+            background: 'linear-gradient(180deg, #051937 0%, #08214D 60%, #0A2E5C 100%)',
             paddingLeft: '20px',
             paddingRight: '20px',
           }}
@@ -227,482 +110,411 @@ export default function BerandaPage() {
           {/* iOS Status Bar */}
           <StatusBar dark time="22.25" batteryLevel={33} />
 
-          {/* Top Bar: Brand Logo & Navigation Icons */}
-          <div className="flex items-center justify-between relative z-10" style={{ marginTop: '4px' }}>
-            {/* Authentic White Aladin Logo */}
-            <div className="relative" style={{ width: '80px', height: '24px' }}>
+          {/* Top Bar: Aladin Brand Logo & Notification/Profile Icons */}
+          <div className="flex items-center justify-between mt-1">
+            {/* Authentic Aladin Wordmark Logo with Smile */}
+            <div className="relative w-[88px] h-[32px]">
               <Image
-                src="/assets/icons/aladin-logo-header.png"
-                alt="Aladin"
+                src="/assets/icons/splash_logo.png"
+                alt="Aladin Logo"
                 fill
-                unoptimized
-                className="object-contain object-left"
+                className="object-contain object-left brightness-0 invert"
+                priority
               />
             </div>
 
-            {/* Notification & Profile Icons */}
+            {/* Right Icons: Bell with 9+ badge & Profile */}
             <div className="flex items-center gap-3">
-              <Link href="/notifikasi" className="relative p-1.5 active:opacity-70 transition-opacity" aria-label="Notifikasi">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 8A6 6 0 0 0 6 8C6 15 3 17 3 17H21S18 15 18 8Z" />
-                  <path d="M13.73 21A2 2 0 0 1 10.27 21" />
+              <Link
+                href="/notifikasi"
+                className="relative p-1 text-white hover:opacity-80 active:scale-95 transition-all cursor-pointer"
+                aria-label="Notifikasi"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
                 </svg>
-                <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-[#EF4444] rounded-full border-2 border-[#081D48]" />
+                {/* Authentic Red 9+ Badge */}
+                <span
+                  className="absolute -top-1 -right-1 bg-[#EF4444] text-white text-[9px] font-black rounded-full px-1.5 py-0.2 border border-[#08214D] shadow-xs"
+                  style={{ minWidth: '16px', textAlign: 'center', lineHeight: '14px' }}
+                >
+                  9+
+                </span>
               </Link>
-
-              <Link href="/profil" className="p-1.5 active:opacity-70 transition-opacity" aria-label="Profil">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round">
-                  <circle cx="12" cy="8" r="4" />
-                  <path d="M20 21C20 16.5817 16.4183 13 12 13C7.58172 13 4 16.5817 4 21" />
-                </svg>
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Ala Dompet Primary Balance Card */}
-        <div style={{ marginTop: '-42px', paddingLeft: '20px', paddingRight: '20px', position: 'relative', zIndex: 10 }}>
-          <div
-            style={{
-              backgroundColor: '#FFFFFF',
-              borderRadius: '24px',
-              padding: '18px 16px',
-              boxShadow: '0 8px 24px rgba(10, 37, 64, 0.08)',
-              border: '1px solid #ECEEF2',
-            }}
-          >
-            {/* Balance container */}
-            <div
-              style={{
-                backgroundColor: '#F8FAFC',
-                borderRadius: '16px',
-                padding: '12px 16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div>
-                <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600 }}>Saldo Ala Dompet</span>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginTop: '2px' }}>
-                  <span style={{ fontSize: '22px', fontWeight: 900, color: '#1A1D26', letterSpacing: '-0.5px' }}>
-                    {showBalance ? `Rp${alaDompet.toLocaleString('id-ID')}` : 'Rp••••••••'}
-                  </span>
-                  <button
-                    onClick={() => setShowBalance(!showBalance)}
-                    className="cursor-pointer text-[#64748B] hover:text-[#1C20C4]"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      {showBalance ? (
-                        <>
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                          <circle cx="12" cy="12" r="3" />
-                        </>
-                      ) : (
-                        <>
-                          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-4.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-                          <line x1="1" y1="1" x2="23" y2="23" />
-                        </>
-                      )}
-                    </svg>
-                  </button>
-                </div>
-              </div>
 
               <Link
-                href="/keuangan"
-                style={{
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  color: '#1C20C4',
-                  backgroundColor: '#EEF2FF',
-                  padding: '6px 14px',
-                  borderRadius: '999px',
-                }}
+                href="/profil"
+                className="p-1 text-white hover:opacity-80 active:scale-95 transition-all cursor-pointer"
+                aria-label="Profil Saya"
               >
-                Detail →
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
               </Link>
             </div>
-
-            {/* Quick Action Pills: Transfer, Bayar, Tarik, Setor */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', marginTop: '14px' }}>
-              {[
-                { label: 'Transfer', href: '/transfer', icon: 'M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2Z' },
-                { label: 'Bayar & Beli', href: '/bayar-beli', icon: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z' },
-                { label: 'Tarik Tunai', href: '/rewards/alfa', icon: 'M12 3v12M12 15l-4-4M12 15l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2' },
-                { label: 'Setor Tunai', href: '/rewards/alfa', icon: 'M12 15V3M12 3l-4 4M12 3l4 4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2' },
-              ].map((act) => (
-                <Link
-                  key={act.label}
-                  href={act.href}
-                  className="flex flex-col items-center cursor-pointer active:scale-95 transition-transform"
-                >
-                  <div
-                    style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '14px',
-                      backgroundColor: '#1C20C4',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      boxShadow: '0 2px 6px rgba(28, 32, 196, 0.25)',
-                    }}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d={act.icon} />
-                    </svg>
-                  </div>
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#1A1D26', marginTop: '6px', textAlign: 'center' }}>
-                    {act.label}
-                  </span>
-                </Link>
-              ))}
-            </div>
           </div>
         </div>
 
-        {/* 10 Core Shortcuts Grid - 2 Balanced Rows of 5 Columns (Livin' Beranda Style) */}
-        <div style={{ padding: '20px 20px 0 20px' }}>
+        {/* ========================================================================= */}
+        {/* FLOATING BALANCE & ACTION CARD (EXACT item_balance.xml & item_action_menu)*/}
+        {/* ========================================================================= */}
+        <div className="px-5 -mt-16 relative z-20">
           <div
-            style={{
-              backgroundColor: '#FFFFFF',
-              borderRadius: '24px',
-              padding: '20px 12px',
-              boxShadow: '0 4px 16px rgba(10, 37, 64, 0.04)',
-              border: '1px solid #ECEEF2',
-            }}
+            className="bg-white rounded-[24px] p-4 shadow-[0_4px_24px_rgba(0,0,0,0.08)] border border-[#ECEEF2]"
           >
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '18px 8px',
-              }}
-            >
-              {shortcuts.map((sc) => (
+            {/* Top Gray Sub-Card (item_balance.xml) */}
+            <div className="bg-[#F8FAFC] rounded-2xl p-4">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[13px] font-medium text-[#6B7280]">
+                  Ala Dompet
+                </span>
                 <Link
-                  key={sc.label}
-                  href={sc.href}
-                  className="flex flex-col items-center text-center cursor-pointer active:scale-95 transition-transform"
+                  href="/keuangan"
+                  className="text-[13px] font-bold text-[#1C20C4] hover:underline cursor-pointer"
                 >
-                  <div
-                    style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '16px',
-                      backgroundColor: sc.iconBg,
-                      border: `1.5px solid ${sc.borderColor}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.02)',
-                      position: 'relative',
-                    }}
-                  >
-                    {sc.icon}
-                    {sc.isNew && (
-                      <span
-                        style={{
-                          position: 'absolute',
-                          top: '-6px',
-                          right: '-6px',
-                          backgroundColor: '#00F3AD',
-                          color: '#081D48',
-                          fontSize: '8px',
-                          fontWeight: 900,
-                          padding: '2px 5.5px',
-                          borderRadius: '999px',
-                          letterSpacing: '0.4px',
-                          boxShadow: '0 2px 6px rgba(0, 243, 173, 0.45)',
-                          textTransform: 'uppercase',
-                          lineHeight: 1,
-                          border: '1.5px solid #FFFFFF',
-                          zIndex: 2,
-                        }}
-                      >
-                        BARU
-                      </span>
-                    )}
-                  </div>
-                  <div style={{ height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '6px' }}>
-                    <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#1E293B', lineHeight: 1.1, textAlign: 'center' }}>
-                      {sc.label}
-                    </span>
-                  </div>
+                  Detail
                 </Link>
-              ))}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-[24px] font-black text-[#1A1D26] tracking-tight">
+                  {showBalance ? 'Rp69.000' : 'Rp•••••••'}
+                </span>
+                {showBalance && (
+                  <span className="text-[14px] font-medium text-[#9CA3AF] -ml-1 mt-1">
+                    ,37
+                  </span>
+                )}
+
+                {/* Eye toggle icon */}
+                <button
+                  type="button"
+                  onClick={() => setShowBalance(!showBalance)}
+                  className="p-1 text-[#6B7280] hover:text-[#1C20C4] cursor-pointer"
+                  aria-label="Toggle Saldo"
+                >
+                  {showBalance ? (
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  ) : (
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* 4 Action Buttons Row (item_action_menu.xml) */}
+            <div className="grid grid-cols-4 gap-2 mt-4 px-1">
+              <Link
+                href="/transfer"
+                className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
+              >
+                <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
+                  <Image
+                    src="/assets/icons/btn_action_transfer.png"
+                    alt="Transfer"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+                <span className="text-[12px] font-medium text-[#1A1D26] text-center">
+                  Transfer
+                </span>
+              </Link>
+
+              <Link
+                href="/bayar-beli"
+                className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
+              >
+                <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
+                  <Image
+                    src="/assets/icons/btn_action_bayar.png"
+                    alt="Bayar & Beli"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+                <span className="text-[12px] font-medium text-[#1A1D26] text-center">
+                  Bayar &amp; Beli
+                </span>
+              </Link>
+
+              <Link
+                href="/rewards/alfa"
+                className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
+              >
+                <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
+                  <Image
+                    src="/assets/icons/btn_action_tarik.png"
+                    alt="Tarik"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+                <span className="text-[12px] font-medium text-[#1A1D26] text-center">
+                  Tarik
+                </span>
+              </Link>
+
+              <Link
+                href="/rewards/alfa"
+                className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
+              >
+                <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
+                  <Image
+                    src="/assets/icons/btn_action_setor.png"
+                    alt="Setor"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+                <span className="text-[12px] font-medium text-[#1A1D26] text-center">
+                  Setor
+                </span>
+              </Link>
             </div>
           </div>
         </div>
 
-        {/* Section: Temukan Berkah Carousel (Controlled Smooth Slide, Absolutely Zero Sliver) */}
-        <div style={{ padding: '24px 20px 0 20px' }}>
-          <div className="flex items-center justify-between mb-3 px-1">
-            <div>
-              <h2 className="text-[16px] font-extrabold text-[#1A1D26]">Temukan Berkah</h2>
-              <p className="text-[11px] text-[#64748B]">Lifestyle &amp; Program Inovasi Terkini</p>
-            </div>
-            <Link href="/hijrah" className="text-[12px] font-bold text-[#1C20C4] hover:underline">
-              Lihat Semua →
+        {/* ========================================================================= */}
+        {/* SHORTCUTS ROW: EXACT 1:1 APK item_explore_menu.xml                        */}
+        {/* ========================================================================= */}
+        <div className="mt-5 px-5">
+          <div className="flex items-start gap-4 overflow-x-auto no-scrollbar py-1">
+            {shortcuts.map((sc) => (
+              <Link
+                key={sc.id}
+                href={sc.href}
+                className="flex flex-col items-center shrink-0 active:scale-95 transition-transform cursor-pointer"
+                style={{ width: '64px' }}
+              >
+                <div className="relative w-[52px] h-[52px] rounded-2xl overflow-visible mb-1 flex items-center justify-center">
+                  <Image
+                    src={sc.iconSrc}
+                    alt={sc.label}
+                    width={52}
+                    height={52}
+                    className="object-contain"
+                    priority
+                  />
+                  {sc.badge && (
+                    <span className="absolute -top-1.5 -right-1.5 bg-[#064E3B] text-[#00F0A0] text-[8.5px] font-black px-1.5 py-0.2 rounded-full border border-emerald-400">
+                      {sc.badge}
+                    </span>
+                  )}
+                </div>
+                <span className="text-[11.5px] font-medium text-[#1A1D26] text-center leading-tight">
+                  {sc.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* SECTION: TEMUKAN BERKAH (EXACT item_section_promo.xml & item_promo_carousel)*/}
+        {/* ========================================================================= */}
+        <div className="mt-6 px-5">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+              Temukan Berkah
+            </h2>
+            <Link
+              href="/rewards/referral"
+              className="text-[13px] font-bold text-[#1C20C4] hover:underline cursor-pointer"
+            >
+              Lihat Semua
             </Link>
           </div>
 
-          {/* Controlled 100% Width Slide Wrapper */}
-          <div className="relative overflow-hidden rounded-[24px] shadow-sm border border-black/5">
-            <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(-${activeBanner * 100}%)` }}
-            >
-              {banners.map((b) => (
-                <Link
-                  key={b.id}
-                  href={b.href}
-                  className="w-full shrink-0 min-w-full rounded-[24px] overflow-hidden"
-                  style={{
-                    minHeight: '148px',
-                    background: b.bg,
-                    padding: '20px',
-                    color: 'white',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    boxSizing: 'border-box',
-                  }}
-                >
-                  <div>
-                    <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#00F3AD', letterSpacing: '1px', textTransform: 'uppercase' }}>
-                      {b.tag}
+          {/* Banner Carousel */}
+          <div className="flex items-center gap-3.5 overflow-x-auto no-scrollbar snap-x snap-mandatory">
+            {banners.map((b, idx) => (
+              <Link
+                key={b.id}
+                href={b.href}
+                className="shrink-0 w-[300px] h-[150px] rounded-3xl overflow-hidden relative shadow-sm border border-[#ECEEF2] snap-start active:scale-[0.99] transition-transform"
+                style={{
+                  background: b.bg || '#F8FAFC',
+                }}
+              >
+                {b.src ? (
+                  <Image
+                    src={b.src}
+                    alt={b.alt || 'Promo Aladin'}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                ) : (
+                  <div className="p-4 text-white h-full flex flex-col justify-between">
+                    <div>
+                      <span className="text-[9.5px] font-extrabold uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full inline-block mb-1">
+                        {b.sub}
+                      </span>
+                      <h3 className="text-[17px] font-black leading-tight mt-1">
+                        {b.title}
+                      </h3>
+                      <p className="text-[11px] text-white/90 line-clamp-2 mt-1">
+                        {b.desc}
+                      </p>
+                    </div>
+                    <span className="text-[11px] font-bold text-[#00F0A0]">
+                      Buka Fitur →
                     </span>
-                    <h3 style={{ fontSize: '16px', fontWeight: 900, color: '#FFFFFF', marginTop: '4px', letterSpacing: '-0.3px' }}>
-                      {b.title}
-                    </h3>
-                    <p style={{ fontSize: '12px', fontWeight: 600, color: 'rgba(255,255,255,0.92)', marginTop: '2px' }}>
-                      {b.sub}
-                    </p>
                   </div>
-                  <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.35, marginTop: '8px' }}>
-                    {b.desc}
-                  </p>
-                </Link>
-              ))}
-            </div>
+                )}
+              </Link>
+            ))}
           </div>
 
-          {/* Dots Indicator with Click to Change */}
+          {/* Carousel Dots */}
           <div className="flex items-center justify-center gap-1.5 mt-3">
-            {banners.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setActiveBanner(i)}
-                className="h-1.5 rounded-full transition-all duration-300 cursor-pointer"
-                style={{
-                  width: activeBanner === i ? '20px' : '6px',
-                  background: activeBanner === i ? '#1C20C4' : '#CBD5E1',
-                }}
-                aria-label={`Slide ${i + 1}`}
+            {[0, 1, 2, 3, 4, 5, 6, 7].map((dot) => (
+              <span
+                key={dot}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  dot === activeBanner % 8 ? 'w-4 bg-[#00F0A0]' : 'w-1.5 bg-[#E2E8F0]'
+                }`}
               />
             ))}
           </div>
         </div>
 
-        {/* Section: Tabungan & Deposito (Livin' Mandiri Style Card List) */}
-        <div style={{ padding: '24px 20px 100px 20px' }}>
-          <div className="flex items-center justify-between mb-3 px-1">
-            <div>
-              <h2 className="text-[16px] font-extrabold text-[#1A1D26]">Tabungan &amp; Deposito</h2>
-              <p className="text-[11px] text-[#64748B]">Akun simpanan syariah Anda</p>
-            </div>
-            <Link href="/keuangan" className="text-[12px] font-bold text-[#1C20C4] hover:underline">
-              Kelola →
-            </Link>
-          </div>
+        {/* ========================================================================= */}
+        {/* SECTION: BANYAK CARA NABUNG DI ALADIN (EXACT item_product_landing_content) */}
+        {/* ========================================================================= */}
+        <div className="mt-6 px-5 pb-6">
+          <h2 className="text-[17px] font-bold text-[#1A1D26] tracking-tight mb-3">
+            Banyak cara nabung di Aladin
+          </h2>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {/* Card 1: Ala Dompet */}
+          <div className="flex items-center gap-3.5 overflow-x-auto no-scrollbar snap-x snap-mandatory">
+            {/* Card 1: Ala Deposito */}
             <div
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '20px',
-                padding: '16px 18px',
-                border: '1px solid #ECEEF2',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
+              className="shrink-0 w-[300px] bg-[#EBF2FE] border border-[#D2E1FC] rounded-[24px] p-4 flex flex-col justify-between shadow-xs snap-start relative overflow-hidden"
+              style={{ minHeight: '165px' }}
             >
               <div>
-                <span style={{ fontSize: '10px', fontWeight: 800, color: '#1C20C4', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-                  TABUNGAN UTAMA
-                </span>
-                <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#1A1D26', marginTop: '2px' }}>
-                  Ala Dompet (Wadiah)
-                </h4>
-                <p style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>
-                  No. Rek: 0812-3456-7890
-                </p>
-                <span style={{ fontSize: '16px', fontWeight: 900, color: '#1A1D26', display: 'block', marginTop: '6px' }}>
-                  {showBalance ? `Rp${alaDompet.toLocaleString('id-ID')}` : 'Rp••••••••'}
-                </span>
+                <h3 className="text-[16px] font-black text-[#1A1D26]">
+                  Ala Deposito
+                </h3>
+
+                <div className="flex items-center gap-2 mt-1.5">
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#D97706] block">
+                      Bagi Hasil
+                    </span>
+                    <span className="text-[13px] font-black text-[#D97706] leading-none">
+                      8,5%p.a.*
+                    </span>
+                  </div>
+
+                  <div className="w-[1px] h-6 bg-gray-300 mx-1" />
+
+                  <span className="text-[11.5px] font-medium text-[#1A1D26] leading-tight max-w-[95px]">
+                    Maksimalkan bagi hasil
+                  </span>
+                </div>
               </div>
 
+              {/* Safe Box 3D Floating Icon */}
               <div
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '16px',
-                  backgroundColor: '#081D48',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#00F3AD',
-                }}
+                className="absolute right-3 top-3 w-[84px] h-[84px] pointer-events-none"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                  <line x1="2" y1="10" x2="22" y2="10" />
-                </svg>
+                <Image
+                  src="/assets/icons/keu_deposito_icon_clean.png"
+                  alt="Ala Deposito Safe Box"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
-            </div>
 
-            {/* Card: Ala Pocket (Sub-wallets / Kantong Pengeluaran) */}
-            <div
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '20px',
-                padding: '16px 18px',
-                border: '1px solid #ECEEF2',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ flex: 1 }}>
-                  <span style={{ fontSize: '10px', fontWeight: 800, color: '#D97706', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-                    KANTONG HARIAN • {pockets.length} POCKET AKTIF
-                  </span>
-                  <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#1A1D26', marginTop: '2px' }}>
-                    Ala Pocket (Sub-Wallets)
-                  </h4>
-                </div>
+              <div className="mt-4 pt-2">
                 <Link
-                  href="/pocket"
-                  style={{
-                    fontSize: '11.5px',
-                    fontWeight: 700,
-                    color: '#D97706',
-                    backgroundColor: '#FEF3C7',
-                    padding: '5px 12px',
-                    borderRadius: '999px',
-                  }}
+                  href="/simulasi-bagi-hasil"
+                  className="inline-block bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[12px] font-extrabold px-4 py-1.5 rounded-full shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
-                  Kelola Pocket →
+                  Buka Deposito
                 </Link>
-              </div>
 
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: '10px' }}>
-                <span style={{ fontSize: '16px', fontWeight: 900, color: '#1A1D26' }}>
-                  {showBalance ? `Rp${totalInPockets.toLocaleString('id-ID')}` : 'Rp••••••••'}
-                </span>
-                <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
-                  Terhubung ke Transfer
-                </span>
+                <p className="text-[8px] text-[#6C737E] mt-1.5 leading-tight">
+                  *Sesuai realisasi pendapatan Bank berdasarkan nisbah nasabah:bank 85%:15%, sebelum dipotong pajak.
+                </p>
               </div>
             </div>
 
-            {/* Card 2: Ala Impian Umroh */}
+            {/* Card 2: Ala Impian */}
             <div
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '20px',
-                padding: '16px 18px',
-                border: '1px solid #ECEEF2',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-              }}
+              className="shrink-0 w-[300px] bg-[#EBF2FE] border border-[#D2E1FC] rounded-[24px] p-4 flex flex-col justify-between shadow-xs snap-start relative overflow-hidden"
+              style={{ minHeight: '165px' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ flex: 1 }}>
-                  <span style={{ fontSize: '10px', fontWeight: 800, color: '#059669', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-                    TABUNGAN TARGET • NISBAH 8,0%
+              <div>
+                <h3 className="text-[16px] font-black text-[#1A1D26]">
+                  Ala Impian
+                </h3>
+
+                <div className="flex items-center gap-2 mt-1.5">
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#D97706] block">
+                      Bagi Hasil
+                    </span>
+                    <span className="text-[13px] font-black text-[#D97706] leading-none">
+                      8%p.a.*
+                    </span>
+                  </div>
+
+                  <div className="w-[1px] h-6 bg-gray-300 mx-1" />
+
+                  <span className="text-[11.5px] font-medium text-[#1A1D26] leading-tight max-w-[95px]">
+                    Nabung sesuai target &amp; capai impian
                   </span>
-                  <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#1A1D26', marginTop: '2px' }}>
-                    Ala Impian Umroh Akbar 1448 H
-                  </h4>
                 </div>
+              </div>
+
+              {/* Jar with Gold Coins */}
+              <div
+                className="absolute right-3 top-3 w-[80px] h-[80px] pointer-events-none"
+              >
+                <Image
+                  src="/assets/icons/impian-jar-icon.png"
+                  alt="Ala Impian Jar"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+
+              <div className="mt-4 pt-2">
                 <Link
                   href="/impian"
-                  style={{
-                    fontSize: '11.5px',
-                    fontWeight: 700,
-                    color: '#059669',
-                    backgroundColor: '#ECFDF5',
-                    padding: '5px 12px',
-                    borderRadius: '999px',
-                  }}
+                  className="inline-block bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[12px] font-extrabold px-4 py-1.5 rounded-full shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
-                  Detail →
+                  Buka Impian
                 </Link>
-              </div>
 
-              {/* Progress */}
-              <div style={{ marginTop: '10px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#64748B', marginBottom: '4px' }}>
-                  <span>Terkumpul: <strong style={{ color: '#1A1D26' }}>Rp{alaImpianUmroh.toLocaleString('id-ID')}</strong></span>
-                  <span>Target: Rp35.000.000</span>
-                </div>
-                <div style={{ width: '100%', height: '6px', borderRadius: '999px', backgroundColor: '#F1F5F9', overflow: 'hidden' }}>
-                  <div style={{ width: `${Math.min(100, Math.round((alaImpianUmroh / 35000000) * 100))}%`, height: '100%', borderRadius: '999px', backgroundColor: '#059669' }} />
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3: Ala Deposito */}
-            <div
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '20px',
-                padding: '16px 18px',
-                border: '1px solid #ECEEF2',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div>
-                <span style={{ fontSize: '10px', fontWeight: 800, color: '#D97706', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-                  DEPOSITO MUDHARABAH • 8,5% P.A.
-                </span>
-                <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#1A1D26', marginTop: '2px' }}>
-                  Ala Deposito Berjangka
-                </h4>
-                <p style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>
-                  Tenor 12 Bulan • Pokok Rp{alaDeposito.toLocaleString('id-ID')}
+                <p className="text-[8px] text-[#6C737E] mt-1.5 leading-tight">
+                  *Sesuai realisasi pendapatan Bank berdasarkan nisbah bagi hasil, sebelum dipotong pajak.
                 </p>
               </div>
-
-              <Link
-                href="/simulasi-bagi-hasil"
-                style={{
-                  fontSize: '11.5px',
-                  fontWeight: 700,
-                  color: '#D97706',
-                  backgroundColor: '#FEF3C7',
-                  padding: '6px 14px',
-                  borderRadius: '999px',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                Simulasi →
-              </Link>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Interactive Feature Guide Modal on Homepage (Matching Otbee Reference) */}
+      {/* Interactive Feature Guide Tour Modal (Otbee Style) */}
       <FeatureGuideModal />
     </div>
   )

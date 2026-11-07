@@ -40,8 +40,8 @@ export default function KeuanganPage() {
           className="flex items-center justify-between"
           style={{ marginBottom: '2px' }}
         >
-          <h1 className="text-[20px] font-extrabold text-[#1A1A2E] tracking-tight">
-            Keuangan
+          <h1 className="text-[20px] font-extrabold text-[#1A1D26] tracking-tight">
+            Keuangan Saya
           </h1>
 
           {/* E-Statement Document Action Button */}
@@ -325,60 +325,54 @@ export default function KeuanganPage() {
               </div>
             </div>
 
-            {/* Section 4: Ala Deposito (Yuk, tingkatkan bagi hasilmu!) (Exact Traced: y=1167 to y=1587 native) */}
+            {/* Section 4: Ala Deposito (Yuk, tingkatkan bagi hasilmu!) (Exact 1:1 to 04-keuangan.png) */}
             <div style={{ marginBottom: '24px' }}>
-              <h2 className="text-[15px] font-bold text-[#1A1A2E]" style={{ marginBottom: '20px' }}>
+              <h2 className="text-[15px] font-bold text-[#1A1D26]" style={{ marginBottom: '14px' }}>
                 Yuk, tingkatkan bagi hasilmu!
               </h2>
 
-              {/* Ala Deposito Card (Exact Traced: width 368px, height 181.5px, radius 24px, bg #E9F0FD) */}
+              {/* Ala Deposito Card (Exact 04-keuangan.png) */}
               <div
-                className="bg-[#E9F0FD] border border-[#D2E1FC] shadow-sm relative overflow-hidden"
-                style={{
-                  height: '181.5px',
-                  borderRadius: '24px',
-                  boxSizing: 'border-box',
-                }}
+                className="bg-[#EBF1FE] border border-[#D2E1FC] rounded-[24px] p-5 relative overflow-hidden shadow-xs"
+                style={{ minHeight: '175px' }}
               >
-                <h3
-                  className="text-[16px] font-extrabold text-[#1A1A2E] leading-tight absolute"
-                  style={{ left: '19px', top: '20px' }}
-                >
+                <h3 className="text-[17px] font-black text-[#1A1D26]">
                   Ala Deposito
                 </h3>
 
-                {/* Bullet Points */}
-                <div
-                  className="flex flex-col gap-2 absolute"
-                  style={{ left: '19px', top: '56px' }}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#EBAB3E] shrink-0" />
-                    <span className="text-[12px] font-semibold text-[#1A1A2E]">
-                      Bagi hasil hingga 8,5% p.a.
+                <div className="flex items-center gap-2 mt-2">
+                  <div>
+                    <span className="text-[10px] font-bold text-[#D97706] block">
+                      Bagi Hasil
+                    </span>
+                    <span className="text-[14px] font-black text-[#D97706] leading-none">
+                      8,5%p.a.*
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#EBAB3E] shrink-0" />
-                    <span className="text-[12px] font-semibold text-[#1A1A2E]">
-                      Bebas tentukan jangka waktu simpanan
-                    </span>
-                  </div>
+                  <div className="w-[1px] h-7 bg-gray-300 mx-1.5" />
+
+                  <span className="text-[12px] font-medium text-[#1A1D26] leading-tight max-w-[110px]">
+                    Maksimalkan bagi hasil
+                  </span>
                 </div>
 
-                <Link
-                  href="/simulasi-bagi-hasil"
-                  className="btn-aladin-pill inline-flex items-center justify-center text-center absolute"
-                  style={{ left: '19px', top: '123px', width: '140.5px', height: '27.5px', fontSize: '11.5px' }}
-                >
-                  Buka Deposito
-                </Link>
+                <div className="mt-5">
+                  <Link
+                    href="/simulasi-bagi-hasil"
+                    className="inline-block bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[12.5px] font-extrabold px-5 py-2 rounded-full shadow-xs active:scale-95 transition-all cursor-pointer"
+                  >
+                    Buka Deposito
+                  </Link>
+
+                  <p className="text-[8px] text-[#6C737E] mt-2 leading-tight max-w-[220px]">
+                    *Sesuai realisasi pendapatan Bank berdasarkan nisbah nasabah:bank 85%:15%, sebelum dipotong pajak.
+                  </p>
+                </div>
 
                 {/* Safe Box Illustration on right side (Full Uncut Icon, Vertically Centered) */}
                 <div
-                  className="absolute shrink-0 flex items-center justify-center pointer-events-none"
-                  style={{ top: '50%', transform: 'translateY(-50%)', right: '22px', width: '84px', height: '96px' }}
+                  className="absolute right-4 top-4 w-[96px] h-[96px] pointer-events-none"
                 >
                   <Image
                     src="/assets/icons/keu_deposito_icon_clean.png"
