@@ -600,6 +600,35 @@ export default function ProfilPage() {
 
             <div style={{ height: '1px', backgroundColor: '#F1F5F9' }} />
 
+            {/* 1.6 Maskot 3D Karpet Terbang Aladin */}
+            <Link
+              href="/mascot"
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', textDecoration: 'none' }}
+              className="active:opacity-70 transition-opacity"
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '14px', backgroundColor: '#ECFDF5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#00F0A0' }}>
+                  <span style={{ fontSize: '20px' }}>🧞‍♂️</span>
+                </div>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#1A1D26' }}>
+                      Maskot 3D Karpet Aladin
+                    </span>
+                    <span style={{ fontSize: '9px', fontWeight: 800, color: '#081D48', backgroundColor: '#00F0A0', padding: '1px 6px', borderRadius: '999px' }}>
+                      3D THREE.JS
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '11px', color: '#64748B' }}>
+                    Interaktif 3D &amp; Posing Real-Time
+                  </span>
+                </div>
+              </div>
+              <span style={{ color: '#9CA3AF', fontSize: '18px', fontWeight: 700 }}>›</span>
+            </Link>
+
+            <div style={{ height: '1px', backgroundColor: '#F1F5F9' }} />
+
             {/* 2. Ajak Teman Pakai Aladin */}
             <Link
               href="/rewards/referral"

@@ -24,6 +24,16 @@ export default function BerandaPage() {
 
   const banners = [
     {
+      id: 'mascot-banner',
+      type: 'card',
+      bg: 'linear-gradient(135deg, #1037A6 0%, #0D3396 60%, #00F0A0 100%)',
+      tag: 'MASKOT 3D THREE.JS RESMI',
+      title: 'Karpet Terbang Aladin',
+      sub: 'Interaktif 3D & Posing Real-Time',
+      desc: 'Kenalan dengan maskot 3D Aladin! Ajak terbang, putar 360°, dan coba berbagai pose interaktif.',
+      href: '/mascot',
+    },
+    {
       id: 'transaksi-nabung-banner',
       type: 'card',
       bg: 'linear-gradient(135deg, #091E42 0%, #162477 55%, #1C20C4 100%)',
