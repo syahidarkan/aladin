@@ -43,23 +43,112 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes carpetTransitionIn {
+@keyframes carpetFlyInCover {
   0% {
     opacity: 0;
-    transform: scale(0.65) translateY(40px);
+    transform: scale(0.15) translate3d(0, 120px, -400px) rotate(-18deg);
   }
-  50% {
+  30% {
     opacity: 1;
-    transform: scale(1.05) translateY(-5px);
+    transform: scale(0.85) translate3d(0, 25px, -150px) rotate(5deg);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(2.2) translate3d(0, -10px, 0) rotate(-2deg);
+  }
+  88% {
+    opacity: 1;
+    transform: scale(7.5) translate3d(0, 0, 50px) rotate(0deg);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(20) translate3d(0, 0, 100px) rotate(0deg);
   }
 }
 
-.scale-up-carpet {
-  animation: carpetTransitionIn 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+@keyframes carpetFlyOutReveal {
+  0% {
+    opacity: 1;
+    transform: scale(20) translate3d(0, 0, 100px);
+  }
+  35% {
+    opacity: 0.95;
+    transform: scale(6) translate3d(0, -30px, 50px) rotate(-5deg);
+  }
+  70% {
+    opacity: 0.7;
+    transform: scale(1.5) translate3d(120px, -140px, 0) rotate(15deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.4) translate3d(320px, -360px, 0) rotate(30deg);
+  }
+}
+
+@keyframes mascotFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(3deg);
+  }
+}
+
+@keyframes mascotAcrobatic {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-16px) rotate(-14deg) scale(1.08);
+  }
+  50% {
+    transform: translateY(-4px) rotate(180deg) scale(1.15);
+  }
+  75% {
+    transform: translateY(-22px) rotate(340deg) scale(1.06);
+  }
+  100% {
+    transform: translateY(0) rotate(360deg) scale(1);
+  }
+}
+
+@keyframes mascotSpinClick {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.28) rotate(180deg) translateY(-8px);
+  }
+  100% {
+    transform: scale(1) rotate(360deg) translateY(0);
+  }
+}
+
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.7) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.35) rotate(90deg);
+  }
+}
+
+.animate-mascot-float {
+  animation: mascotFloat 3.2s ease-in-out infinite;
+}
+
+.animate-mascot-acrobatic {
+  animation: mascotAcrobatic 2.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+.animate-mascot-spin {
+  animation: mascotSpinClick 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-star-twinkle {
+  animation: starTwinkle 1.8s ease-in-out infinite;
 }
 
 /* Outer layout */
@@ -409,5 +498,10 @@ body {
   width: 315px !important;
   min-height: 195px !important;
   box-sizing: border-box !important;
+}
+
+#devtools-indicator,
+nextjs-portal {
+  display: none !important;
 }
 

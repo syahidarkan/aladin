@@ -5,12 +5,41 @@ import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
 import BottomNav from '@/components/BottomNav'
 import CarpetFloatingBuddy from '@/components/mascot/CarpetFloatingBuddy'
+import { useMascot } from '@/context/MascotContext'
 
 export default function PhoneFrame({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
+  const { startTransition, isTransitioning } = useMascot()
   const [showSplash, setShowSplash] = useState(false)
   const [fading, setFading] = useState(false)
+
+  // Global Page Navigation Interceptor for Mascot Transition
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const anchor = (e.target as HTMLElement).closest('a')
+      if (!anchor) return
+
+      const href = anchor.getAttribute('href')
+      // Only internal routes (starts with / and not hash or external or download)
+      if (
+        href &&
+        href.startsWith('/') &&
+        !href.startsWith('//') &&
+        !href.startsWith('/#') &&
+        !anchor.hasAttribute('download') &&
+        anchor.target !== '_blank'
+      ) {
+        if (href === pathname || isTransitioning) return
+
+        e.preventDefault()
+        startTransition(href)
+      }
+    }
+
+    document.addEventListener('click', handleGlobalClick, { capture: true })
+    return () => document.removeEventListener('click', handleGlobalClick, { capture: true })
+  }, [pathname, isTransitioning, startTransition])
 
   useEffect(() => {
     // Only show splash on very first session load; do NOT show every time user navigates back to home

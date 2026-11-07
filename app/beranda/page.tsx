@@ -6,9 +6,11 @@ import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import FeatureGuideModal from '@/components/FeatureGuideModal'
 import { useBankState } from '@/lib/bankState'
+import { useMascot } from '@/context/MascotContext'
 
 export default function BerandaPage() {
   const { alaDompet, alaImpianUmroh, alaDeposito } = useBankState()
+  const { triggerReaction } = useMascot()
   const [showBalance, setShowBalance] = useState(true)
   const [activeBanner, setActiveBanner] = useState(0)
 
@@ -57,32 +59,32 @@ export default function BerandaPage() {
       id: 'deposito',
       label: 'Ala Deposito',
       href: '/simulasi-bagi-hasil',
-      iconSrc: '/assets/icons/home_menu_deposito.png',
+      iconSrc: '/assets/icons/shortcut_deposito_clean.png',
     },
     {
       id: 'impian',
       label: 'Ala Impian',
       href: '/impian',
-      iconSrc: '/assets/icons/home_menu_impian.png',
+      iconSrc: '/assets/icons/shortcut_impian_clean.png',
     },
     {
       id: 'pocket',
       label: 'Ala Pocket',
       href: '/pocket',
-      iconSrc: '/assets/icons/home_menu_pocket.png',
+      iconSrc: '/assets/icons/shortcut_pocket_clean.png',
     },
     {
       id: 'haramain',
       label: 'Ala Haramain',
       href: '/ala-haramain',
-      iconSrc: '/assets/icons/haji_circle_icon.png',
+      iconSrc: '/assets/icons/shortcut_haramain_clean.png',
       badge: 'SAR',
     },
     {
       id: 'donasi',
       label: 'Donasi',
       href: '/donasi',
-      iconSrc: '/assets/icons/home_menu_donasi.png',
+      iconSrc: '/assets/icons/shortcut_donasi_clean.png',
     },
   ]
 
@@ -113,12 +115,13 @@ export default function BerandaPage() {
           {/* Top Bar: Aladin Brand Logo & Notification/Profile Icons */}
           <div className="flex items-center justify-between mt-1">
             {/* Authentic Aladin Wordmark Logo with Smile */}
-            <div className="relative w-[88px] h-[32px]">
+            <div className="relative w-[84px] h-[30px] flex items-center">
               <Image
-                src="/assets/icons/splash_logo.png"
-                alt="Aladin Logo"
-                fill
-                className="object-contain object-left brightness-0 invert"
+                src="/assets/icons/ic_logo_aladin_white.svg"
+                alt="Bank Aladin Syariah"
+                width={84}
+                height={30}
+                className="object-contain object-left"
                 priority
               />
             </div>
@@ -214,6 +217,7 @@ export default function BerandaPage() {
             <div className="grid grid-cols-4 gap-2 mt-4 px-1">
               <Link
                 href="/transfer"
+                onClick={() => triggerReaction('success', 'Siap kirim saldo berkah via BI-FAST tanpa biaya!')}
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
               >
                 <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
@@ -232,6 +236,7 @@ export default function BerandaPage() {
 
               <Link
                 href="/bayar-beli"
+                onClick={() => triggerReaction('success', 'Beli pulsa, data & bayar tagihan serba praktis!')}
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
               >
                 <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
@@ -250,6 +255,7 @@ export default function BerandaPage() {
 
               <Link
                 href="/rewards/alfa"
+                onClick={() => triggerReaction('success', 'Tarik tunai tanpa kartu bebas biaya di Alfamart!')}
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
               >
                 <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
@@ -268,6 +274,7 @@ export default function BerandaPage() {
 
               <Link
                 href="/rewards/alfa"
+                onClick={() => triggerReaction('success', 'Setor tunai instan di seluruh kasir Alfamart!')}
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
               >
                 <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
@@ -291,30 +298,31 @@ export default function BerandaPage() {
         {/* SHORTCUTS ROW: EXACT 1:1 APK item_explore_menu.xml                        */}
         {/* ========================================================================= */}
         <div className="mt-5 px-5">
-          <div className="flex items-start gap-4 overflow-x-auto no-scrollbar py-1">
+          <div className="flex items-start justify-between gap-2 overflow-x-auto no-scrollbar py-1">
             {shortcuts.map((sc) => (
               <Link
                 key={sc.id}
                 href={sc.href}
+                onClick={() => triggerReaction('success', `Membuka layanan ${sc.label}...`)}
                 className="flex flex-col items-center shrink-0 active:scale-95 transition-transform cursor-pointer"
                 style={{ width: '64px' }}
               >
-                <div className="relative w-[52px] h-[52px] rounded-2xl overflow-visible mb-1 flex items-center justify-center">
+                <div className="relative w-[50px] h-[50px] rounded-2xl overflow-visible mb-1 flex items-center justify-center">
                   <Image
                     src={sc.iconSrc}
                     alt={sc.label}
-                    width={52}
-                    height={52}
+                    width={48}
+                    height={48}
                     className="object-contain"
                     priority
                   />
                   {sc.badge && (
-                    <span className="absolute -top-1.5 -right-1.5 bg-[#064E3B] text-[#00F0A0] text-[8.5px] font-black px-1.5 py-0.2 rounded-full border border-emerald-400">
+                    <span className="absolute -top-1.5 -right-1.5 bg-[#064E3B] text-[#00F0A0] text-[8.5px] font-black px-1.5 py-0.5 rounded-full border border-emerald-400 leading-none shadow-xs">
                       {sc.badge}
                     </span>
                   )}
                 </div>
-                <span className="text-[11.5px] font-medium text-[#1A1D26] text-center leading-tight">
+                <span className="text-[11px] font-medium text-[#1A1D26] text-center leading-tight">
                   {sc.label}
                 </span>
               </Link>
@@ -403,7 +411,7 @@ export default function BerandaPage() {
           <div className="flex items-center gap-3.5 overflow-x-auto no-scrollbar snap-x snap-mandatory">
             {/* Card 1: Ala Deposito */}
             <div
-              className="shrink-0 w-[300px] bg-[#EBF2FE] border border-[#D2E1FC] rounded-[24px] p-4 flex flex-col justify-between shadow-xs snap-start relative overflow-hidden"
+              className="shrink-0 w-[290px] bg-[#EBF2FE] border border-[#D2E1FC] rounded-[24px] p-4 flex flex-col justify-between shadow-xs snap-start relative overflow-hidden"
               style={{ minHeight: '165px' }}
             >
               <div>
@@ -431,10 +439,10 @@ export default function BerandaPage() {
 
               {/* Safe Box 3D Floating Icon */}
               <div
-                className="absolute right-3 top-3 w-[84px] h-[84px] pointer-events-none"
+                className="absolute right-2 top-3 w-[76px] h-[76px] pointer-events-none"
               >
                 <Image
-                  src="/assets/icons/keu_deposito_icon_clean.png"
+                  src="/assets/icons/prod-deposito.png"
                   alt="Ala Deposito Safe Box"
                   fill
                   className="object-contain"
@@ -445,6 +453,7 @@ export default function BerandaPage() {
               <div className="mt-4 pt-2">
                 <Link
                   href="/simulasi-bagi-hasil"
+                  onClick={() => triggerReaction('success', 'Bagi hasil hingga 8,5% p.a., mantap!')}
                   className="inline-block bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[12px] font-extrabold px-4 py-1.5 rounded-full shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
                   Buka Deposito
@@ -458,7 +467,7 @@ export default function BerandaPage() {
 
             {/* Card 2: Ala Impian */}
             <div
-              className="shrink-0 w-[300px] bg-[#EBF2FE] border border-[#D2E1FC] rounded-[24px] p-4 flex flex-col justify-between shadow-xs snap-start relative overflow-hidden"
+              className="shrink-0 w-[290px] bg-[#EBF2FE] border border-[#D2E1FC] rounded-[24px] p-4 flex flex-col justify-between shadow-xs snap-start relative overflow-hidden"
               style={{ minHeight: '165px' }}
             >
               <div>
@@ -486,10 +495,10 @@ export default function BerandaPage() {
 
               {/* Jar with Gold Coins */}
               <div
-                className="absolute right-3 top-3 w-[80px] h-[80px] pointer-events-none"
+                className="absolute right-2 top-3 w-[76px] h-[76px] pointer-events-none"
               >
                 <Image
-                  src="/assets/icons/impian-jar-icon.png"
+                  src="/assets/icons/prod-impian.png"
                   alt="Ala Impian Jar"
                   fill
                   className="object-contain"
@@ -500,6 +509,7 @@ export default function BerandaPage() {
               <div className="mt-4 pt-2">
                 <Link
                   href="/impian"
+                  onClick={() => triggerReaction('success', 'Yuk, capai impian ibadah & finansialmu!')}
                   className="inline-block bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[12px] font-extrabold px-4 py-1.5 rounded-full shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
                   Buka Impian

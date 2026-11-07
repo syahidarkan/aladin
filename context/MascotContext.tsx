@@ -4,10 +4,12 @@ import React, { createContext, useContext, useState, useCallback, useRef } from 
 import { useRouter } from 'next/navigation'
 
 export type MascotReaction = 'success' | 'lock-action' | 'copy-success' | 'shake-warning'
+export type TransitionPhase = 'covering' | 'revealing'
 
 interface MascotContextType {
   // Navigation & Page Transitions
   isTransitioning: boolean
+  transitionPhase: TransitionPhase
   transitionTarget: string | null
   startTransition: (url: string) => void
 
@@ -36,6 +38,7 @@ export function MascotProvider({ children }: { children: React.ReactNode }) {
 
   // Transition state
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [transitionPhase, setTransitionPhase] = useState<TransitionPhase>('covering')
   const [transitionTarget, setTransitionTarget] = useState<string | null>(null)
 
   // Loader state
@@ -54,18 +57,20 @@ export function MascotProvider({ children }: { children: React.ReactNode }) {
   // Cinematic page transition execution
   const startTransition = useCallback((url: string) => {
     setTransitionTarget(url)
+    setTransitionPhase('covering')
     setIsTransitioning(true)
 
-    // Phase 1 -> Phase 2 (380ms): Carpet zooms into screen covering camera
+    // Phase 1: Carpet flies in from distance and expands until 100% full screen coverage
     setTimeout(() => {
-      // Phase 3: Route Swap
+      // Phase 2: Route swaps while screen is 100% covered!
       router.push(url)
+      setTransitionPhase('revealing')
 
-      // Phase 4: Fly-out & reveal new page
+      // Phase 3: Fly-out past camera & reveal new page
       setTimeout(() => {
         setIsTransitioning(false)
         setTransitionTarget(null)
-      }, 350)
+      }, 380)
     }, 420)
   }, [router])
 
@@ -99,6 +104,7 @@ export function MascotProvider({ children }: { children: React.ReactNode }) {
     <MascotContext.Provider
       value={{
         isTransitioning,
+        transitionPhase,
         transitionTarget,
         startTransition,
         isLoading,

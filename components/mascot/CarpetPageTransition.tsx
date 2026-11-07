@@ -1,85 +1,76 @@
 'use client'
 
 import React from 'react'
+import Image from 'next/image'
 import { useMascot } from '@/context/MascotContext'
 
 /**
- * Cinematic Page Transition Overlay with Aladin Flying Carpet Maskot
- * Performs a dynamic swoop-and-zoom animation where the flying carpet
- * flies directly toward the camera, expands its royal blue velvet body to cover
- * the screen for route transition, and then swoops out smoothly.
+ * Cinematic Page Transition Overlay with 3D Aladin Flying Carpet Mascot
+ * Executes user-specified animation:
+ * 1. Flying from far away in the distance
+ * 2. Swooping closer and expanding until its body completely blankets the entire screen
+ * 3. Route swaps behind the covered screen
+ * 4. Swoops out forward past camera, cleanly revealing the newly mounted page!
  */
 export default function CarpetPageTransition() {
-  const { isTransitioning } = useMascot()
+  const { isTransitioning, transitionPhase } = useMascot()
 
   if (!isTransitioning) return null
 
+  const isCovering = transitionPhase === 'covering'
+
   return (
     <div
-      className="fixed inset-0 z-[9999] pointer-events-auto flex items-center justify-center overflow-hidden"
+      className="absolute inset-0 z-[9999] pointer-events-auto flex items-center justify-center overflow-hidden select-none"
       style={{
-        background: 'linear-gradient(135deg, #0A1020 0%, #1037A6 50%, #00F0A0 100%)',
-        animation: 'carpetTransitionIn 0.42s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+        background: isCovering
+          ? 'linear-gradient(135deg, #051230 0%, #0D2D8A 50%, #1037A6 100%)'
+          : 'transparent',
+        transition: 'background 0.35s ease',
       }}
     >
-      {/* Dynamic 3D Flying Mascot Graphic during Zoom */}
-      <div className="relative flex flex-col items-center justify-center scale-up-carpet">
-        <div className="relative w-48 h-40 filter drop-shadow-[0_20px_35px_rgba(0,240,160,0.4)]">
-          <svg
-            viewBox="0 0 120 100"
-            className="w-full h-full overflow-visible"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* Aerodynamic Body */}
-            <path
-              d="M12 60 C 18 30, 36 24, 60 40 C 84 56, 102 36, 110 20 C 112 25, 108 50, 84 66 C 60 82, 30 76, 12 60 Z"
-              fill="#154AD8"
-            />
-            {/* Turquoise Border */}
-            <path
-              d="M12 60 C 18 34, 34 28, 58 42 C 82 56, 98 38, 108 24"
-              stroke="#00F0A0"
-              strokeWidth="5"
-              strokeLinecap="round"
-            />
-            {/* Front Lip Curl */}
-            <path
-              d="M10 64 C 12 46, 26 40, 46 48 C 55 52, 54 70, 40 74 C 22 78, 10 72, 10 64 Z"
-              fill="#1037A6"
-              stroke="#00F0A0"
-              strokeWidth="3.5"
-            />
-            {/* Eyes */}
-            <circle cx="24" cy="56" r="4.5" fill="#0B0D17" />
-            <circle cx="36" cy="57" r="4.5" fill="#0B0D17" />
-            <circle cx="23" cy="55" r="1.6" fill="#FFFFFF" />
-            <circle cx="35" cy="56" r="1.6" fill="#FFFFFF" />
-            {/* Cheeks */}
-            <ellipse cx="17" cy="61" rx="4.5" ry="2.5" fill="#00F0A0" />
-            <ellipse cx="43" cy="62" rx="4.5" ry="2.5" fill="#00F0A0" />
-            {/* Smile */}
-            <path
-              d="M28 62 Q 30 67 32 62"
-              stroke="#0B0D17"
-              strokeWidth="2"
-              fill="#FF4D82"
-              strokeLinecap="round"
-            />
-          </svg>
+      {/* Flying Carpet Mascot Actor */}
+      <div
+        className="relative flex flex-col items-center justify-center"
+        style={{
+          animation: isCovering
+            ? 'carpetFlyInCover 0.42s cubic-bezier(0.25, 0.9, 0.3, 1) forwards'
+            : 'carpetFlyOutReveal 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+        }}
+      >
+        {/* Mascot High-Res 3D Image */}
+        <div
+          className="relative w-64 h-52 pointer-events-none"
+          style={{
+            filter: 'drop-shadow(0 20px 40px rgba(0, 240, 160, 0.6)) drop-shadow(0 8px 16px rgba(16, 55, 166, 0.5))',
+          }}
+        >
+          <Image
+            src="/assets/mascot/karpet_mascot_clean.png"
+            alt="Maskot Karpet Terbang Aladin"
+            fill
+            className="object-contain"
+            priority
+          />
         </div>
 
-        {/* Brand Tagline */}
-        <div className="mt-4 text-center">
-          <span className="text-[13px] font-black uppercase tracking-widest text-[#00F0A0] block">
-            #PakaiAladin
-          </span>
-          <span className="text-[12px] text-white/80 font-medium">
-            Terbang Menuju Halaman Berikutnya...
-          </span>
-        </div>
+        {/* Dynamic Flying Star Particles */}
+        <span className="absolute -top-6 -left-8 text-[#00F0A0] text-xl animate-star-twinkle">✦</span>
+        <span className="absolute top-10 -right-10 text-emerald-300 text-lg animate-star-twinkle" style={{ animationDelay: '200ms' }}>★</span>
+        <span className="absolute -bottom-4 right-4 text-[#00F0A0] text-sm animate-star-twinkle" style={{ animationDelay: '400ms' }}>✦</span>
+
+        {/* Subtext info */}
+        {isCovering && (
+          <div className="mt-2 text-center animate-in fade-in duration-200">
+            <span className="text-[12px] font-black uppercase tracking-widest text-[#00F0A0] block">
+              #PakaiAladin
+            </span>
+            <span className="text-[11px] text-white/90 font-medium">
+              Bikin Berkah Setiap Hari ✨
+            </span>
+          </div>
+        )}
       </div>
     </div>
   )
 }
-

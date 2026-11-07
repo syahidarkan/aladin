@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useMascot } from '@/context/MascotContext'
 
@@ -106,80 +107,70 @@ export default function CarpetFloatingBuddy() {
 
   return (
     <>
-      {/* 1. FLOATING MASCOT BUTTON (Bottom-Right, w-16 h-16) */}
+      {/* 1. FLOATING 3D MASCOT BUTTON (Replaces CS Button at Bottom-Right, Above BottomNav) */}
       <div
-        className="absolute bottom-20 right-4 z-40 flex items-center select-none"
+        className="absolute bottom-[80px] right-3 z-50 flex flex-col items-end select-none"
         style={{ pointerEvents: 'auto' }}
       >
+        {/* Floating Speech Bubble Hint */}
+        {!isOpen && (
+          <div
+            onClick={handleBuddyClick}
+            className="mb-1 bg-white/95 text-[#1037A6] text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md border border-[#00F0A0] flex items-center gap-1 cursor-pointer"
+            style={{
+              boxShadow: '0 4px 12px rgba(0, 240, 160, 0.25)',
+            }}
+          >
+            <span>Butuh bantuan?</span>
+            <span className="text-[11px]">✨</span>
+          </div>
+        )}
+
+        {/* Mascot Character Body Button */}
         <button
           type="button"
           onClick={handleBuddyClick}
           onMouseEnter={handleHover}
           aria-label="Staff Aladin & Concierge"
-          className={`relative w-15 h-15 rounded-full flex items-center justify-center cursor-pointer shadow-xl transition-all duration-300 ${
-            isSpinning ? 'rotate-[360deg] scale-110' : ''
-          } ${isBouncing ? '-translate-y-2' : 'hover:-translate-y-1'}`}
+          className={`relative group cursor-pointer transition-all duration-300 ${
+            isSpinning ? 'animate-mascot-spin' : isBouncing ? '-translate-y-2' : 'animate-mascot-float'
+          }`}
           style={{
-            background: 'linear-gradient(135deg, #1037A6 0%, #0D2D8A 60%, #091D5C 100%)',
-            border: '2.5px solid #00F0A0',
-            boxShadow: '0 8px 24px rgba(16, 55, 166, 0.45), 0 0 16px rgba(0, 240, 160, 0.3)',
+            width: '64px',
+            height: '52px',
+            background: 'transparent',
+            border: 'none',
+            padding: 0,
+            outline: 'none',
           }}
         >
-          {/* Animated Mascot Graphic */}
-          <div className="relative w-11 h-11 flex items-center justify-center animate-bounce-subtle">
-            <svg
-              viewBox="0 0 100 80"
-              className="w-full h-full drop-shadow-md overflow-visible"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* Carpet Body */}
-              <path
-                d="M10 52 C 15 28, 30 22, 50 35 C 70 48, 85 30, 92 18 C 94 22, 90 42, 70 56 C 50 70, 25 66, 10 52 Z"
-                fill="#154AD8"
-              />
-              <path
-                d="M10 52 C 15 32, 28 26, 48 38 C 68 50, 82 34, 90 22"
-                stroke="#00F0A0"
-                strokeWidth="4"
-                strokeLinecap="round"
-              />
-              {/* Front Lip with Chibi Face */}
-              <path
-                d="M8 55 C 10 40, 22 36, 38 42 C 45 46, 44 60, 32 64 C 18 68, 8 62, 8 55 Z"
-                fill="#1037A6"
-                stroke="#00F0A0"
-                strokeWidth="3"
-              />
-              {/* Eyes */}
-              <circle cx="20" cy="48" r="3.5" fill="#0B0D17" />
-              <circle cx="30" cy="49" r="3.5" fill="#0B0D17" />
-              <circle cx="19" cy="47" r="1.2" fill="#FFFFFF" />
-              <circle cx="29" cy="48" r="1.2" fill="#FFFFFF" />
-              {/* Blush */}
-              <ellipse cx="14" cy="52" rx="3.5" ry="2" fill="#00F0A0" />
-              <ellipse cx="35" cy="53" rx="3.5" ry="2" fill="#00F0A0" />
-              {/* Smile */}
-              <path
-                d="M23 53 Q 25 57 27 53"
-                stroke="#0B0D17"
-                strokeWidth="1.5"
-                fill="#FF4D82"
-                strokeLinecap="round"
-              />
-              {/* Sparkle */}
-              <path
-                d="M78 12 L 80 8 L 82 12 L 86 14 L 82 16 L 80 20 L 78 16 L 74 14 Z"
-                fill="#00F0A0"
-                className="animate-pulse"
-              />
-            </svg>
+          {/* Glowing Ambient Aura & Mascot Graphic */}
+          <div
+            className="relative w-full h-full pointer-events-none transition-all duration-300 group-hover:scale-105"
+            style={{
+              filter: 'drop-shadow(0 6px 14px rgba(0, 240, 160, 0.45)) drop-shadow(0 2px 6px rgba(16, 55, 166, 0.4))',
+            }}
+          >
+            <Image
+              src="/assets/mascot/karpet_mascot_clean.png"
+              alt="Maskot Karpet Terbang Aladin"
+              fill
+              className="object-contain"
+              priority
+            />
           </div>
 
-          {/* Active Online Pulse */}
-          <span className="absolute top-0 right-0 flex h-3.5 w-3.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00F0A0] opacity-75" />
-            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#00F0A0] border-2 border-[#1037A6]" />
+          {/* Online Active Status Dot */}
+          <span className="absolute top-0 right-1 flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00F0A0] opacity-80" />
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-[#00F0A0] border-2 border-white shadow-xs" />
+          </span>
+
+          {/* Twinkling Magical Star */}
+          <span
+            className="absolute -top-1 left-1 text-[#00F0A0] text-[10px] animate-star-twinkle pointer-events-none"
+          >
+            ✦
           </span>
         </button>
       </div>

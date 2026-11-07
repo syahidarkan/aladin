@@ -1,13 +1,14 @@
 'use client'
 
 import React from 'react'
+import Image from 'next/image'
 import { useMascot } from '@/context/MascotContext'
 
 /**
- * Global Loader & Dynamic Attraction Component
- * Displays the Aladin Carpet Mascot executing dynamic figure-8 / barrel-roll
- * maneuvers with turquoise star comet trails during transactions, currency conversions,
- * biometric verification, or async actions.
+ * Global Mascot Acrobatic Loader Component
+ * Displays the Aladin Carpet Mascot executing dynamic 3D acrobatics & tricks
+ * (loop-the-loop, barrel-roll, and levitation with turquoise star trails)
+ * whenever transactions, biometric checks, or currency conversions load.
  */
 export default function CarpetLoader() {
   const { isLoading, loadingText, hideLoader } = useMascot()
@@ -16,95 +17,67 @@ export default function CarpetLoader() {
 
   return (
     <div
-      className="fixed inset-0 z-[9990] flex items-center justify-center bg-black/75 backdrop-blur-md select-none animate-in fade-in duration-200"
+      className="absolute inset-0 z-[9990] flex items-center justify-center bg-black/75 backdrop-blur-md select-none animate-in fade-in duration-200"
       onClick={hideLoader}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-[320px] rounded-3xl p-6 flex flex-col items-center text-center relative overflow-hidden"
+        className="w-[310px] rounded-3xl p-6 flex flex-col items-center text-center relative overflow-hidden"
         style={{
-          background: 'linear-gradient(145deg, #0A1435 0%, #10266B 60%, #08153A 100%)',
-          border: '1.5px solid rgba(0, 240, 160, 0.35)',
-          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 240, 160, 0.2)',
+          background: 'linear-gradient(145deg, #07153D 0%, #0F2D84 55%, #081B4E 100%)',
+          border: '1.5px solid rgba(0, 240, 160, 0.45)',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 240, 160, 0.25)',
         }}
       >
         {/* Floating Background Stars */}
-        <div className="absolute top-4 left-6 text-[#00F0A0] text-xs animate-ping">✦</div>
-        <div className="absolute bottom-6 right-6 text-[#00F0A0] text-sm animate-pulse">✦</div>
-        <div className="absolute top-12 right-8 text-emerald-300 text-xs animate-bounce">★</div>
+        <div className="absolute top-4 left-6 text-[#00F0A0] text-xs animate-star-twinkle">✦</div>
+        <div className="absolute bottom-6 right-6 text-[#00F0A0] text-sm animate-star-twinkle" style={{ animationDelay: '300ms' }}>✦</div>
+        <div className="absolute top-10 right-8 text-emerald-300 text-xs animate-star-twinkle" style={{ animationDelay: '600ms' }}>★</div>
+        <div className="absolute bottom-12 left-8 text-[#00F0A0] text-xs animate-star-twinkle" style={{ animationDelay: '900ms' }}>★</div>
 
-        {/* Dynamic Flying Mascot Graphic with Loop Animation */}
-        <div className="relative w-36 h-28 my-2 flex items-center justify-center animate-pulse">
-          <svg
-            viewBox="0 0 100 80"
-            className="w-full h-full overflow-visible drop-shadow-[0_10px_20px_rgba(0,240,160,0.5)]"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        {/* Dynamic Flying Mascot Graphic Executing Acrobatics */}
+        <div className="relative w-44 h-32 my-2 flex items-center justify-center">
+          {/* Acrobatic Rotating Body */}
+          <div
+            className="relative w-full h-full animate-mascot-acrobatic"
+            style={{
+              filter: 'drop-shadow(0 12px 24px rgba(0, 240, 160, 0.55)) drop-shadow(0 4px 10px rgba(16, 55, 166, 0.6))',
+            }}
           >
-            {/* Comet Trail */}
-            <path
-              d="M90 22 Q 110 35 125 45"
-              stroke="#00F0A0"
-              strokeWidth="3"
-              strokeDasharray="4 4"
-              className="opacity-70 animate-pulse"
+            <Image
+              src="/assets/mascot/karpet_mascot_clean.png"
+              alt="Atraksi Maskot Karpet Aladin"
+              fill
+              className="object-contain"
+              priority
             />
-            {/* Body */}
-            <path
-              d="M10 52 C 15 28, 30 22, 50 35 C 70 48, 85 30, 92 18 C 94 22, 90 42, 70 56 C 50 70, 25 66, 10 52 Z"
-              fill="#154AD8"
-            />
-            <path
-              d="M10 52 C 15 32, 28 26, 48 38 C 68 50, 82 34, 90 22"
-              stroke="#00F0A0"
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
-            {/* Front Lip */}
-            <path
-              d="M8 55 C 10 40, 22 36, 38 42 C 45 46, 44 60, 32 64 C 18 68, 8 62, 8 55 Z"
-              fill="#1037A6"
-              stroke="#00F0A0"
-              strokeWidth="3"
-            />
-            {/* Eyes */}
-            <circle cx="20" cy="48" r="3.5" fill="#0B0D17" />
-            <circle cx="30" cy="49" r="3.5" fill="#0B0D17" />
-            <circle cx="19" cy="47" r="1.2" fill="#FFFFFF" />
-            <circle cx="29" cy="48" r="1.2" fill="#FFFFFF" />
-            {/* Blush */}
-            <ellipse cx="14" cy="52" rx="3.5" ry="2" fill="#00F0A0" />
-            <ellipse cx="35" cy="53" rx="3.5" ry="2" fill="#00F0A0" />
-            {/* Smile */}
-            <path
-              d="M23 53 Q 25 57 27 53"
-              stroke="#0B0D17"
-              strokeWidth="1.5"
-              fill="#FF4D82"
-              strokeLinecap="round"
-            />
-          </svg>
+          </div>
+
+          {/* Comet Particle Trail */}
+          <span className="absolute -bottom-2 -left-3 text-[#00F0A0] text-lg animate-ping">✨</span>
+          <span className="absolute -top-1 -right-2 text-emerald-200 text-base animate-pulse">💫</span>
         </div>
 
         {/* Dynamic Status Title */}
-        <h4 className="text-[16px] font-extrabold text-white mt-1">
+        <h4 className="text-[16px] font-black text-white mt-1 leading-snug">
           {loadingText}
         </h4>
 
         {/* Subtext info */}
-        <p className="text-[12px] text-gray-300 mt-1 mb-4">
-          Mohon tunggu, Bank Aladin Syariah sedang memproses permintaanmu...
+        <p className="text-[12px] text-gray-300 mt-1 mb-4 leading-relaxed">
+          Mohon tunggu sejenak, Maskot Aladin sedang menyiapkan berkah untukmu...
         </p>
 
-        {/* Progress Spinner Pill */}
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20">
-          <div className="w-3.5 h-3.5 rounded-full border-2 border-[#00F0A0] border-t-transparent animate-spin" />
-          <span className="text-[11px] font-bold text-[#00F0A0] uppercase tracking-wider">
-            Memverifikasi Sistem
+        {/* Animated Progress Dots Pill */}
+        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20">
+          <div className="w-2 h-2 rounded-full bg-[#00F0A0] animate-bounce" style={{ animationDelay: '0ms' }} />
+          <div className="w-2 h-2 rounded-full bg-[#00F0A0] animate-bounce" style={{ animationDelay: '150ms' }} />
+          <div className="w-2 h-2 rounded-full bg-white animate-bounce" style={{ animationDelay: '300ms' }} />
+          <span className="text-[11px] font-bold text-white/90 ml-1">
+            Memproses
           </span>
         </div>
       </div>
     </div>
   )
 }
-
