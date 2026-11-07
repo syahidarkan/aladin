@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
+import { useMascot } from '@/context/MascotContext'
 
 export default function VirtualCardPage() {
+  const { triggerReaction } = useMascot()
   const [isRevealed, setIsRevealed] = useState(false)
   const [showBiometricModal, setShowBiometricModal] = useState(false)
   const [cvvRevealed, setCvvRevealed] = useState(false)
@@ -32,6 +34,7 @@ export default function VirtualCardPage() {
   const handleCopyCard = () => {
     navigator.clipboard?.writeText?.('4111223344557890')
     setCopied(true)
+    triggerReaction('copy-success', 'Nomor kartu virtual berhasil disalin!')
     setTimeout(() => setCopied(false), 2000)
   }
 

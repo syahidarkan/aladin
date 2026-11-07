@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" fill="none">
+  <path d="M0,0h72v72h-72z" fill="#FFFFFF" />
+  <path d="M10,7H42C38.4,7 38.833,12.333 39.5,15C39.5,15 7.5,15.5 6.5,15C5.5,14.5 8,7 10,7Z" fill="#22262F" />
+  <path d="M10,7H54.5C62.5,7 60,40 60,64C60,64 23,64 18,64C13,64 13,54 13,54C13.5,21.5 14,7.5 10,7Z" fill="#00C88F" />
+  <path d="M64.79,56.001C63.08,55.001 24.5,54.501 22.622,56.001C22.622,63.357 18.874,63.482 17,63.981C28.994,63.815 54.332,63.582 59.73,63.981C65.127,64.38 66.5,57.001 64.79,56.001Z" fill="#22262F" />
+  <path d="M24,62C22.5,63 13,67 13.5,54.5C13.606,51.863 13.629,47.432 13.618,42.5M13.5,20.5C13.5,25.126 13.47,24.893 13.5,32" fill="#000000" fill-opacity="0.0" stroke="#22262F" stroke-width="2" stroke-linecap="1" />
+  <path d="M22.463,20.556L23.676,22.105L26.604,18.035" fill="#000000" fill-opacity="0.0" stroke="#FFFFFF" stroke-width="1.30933" stroke-linecap="1" stroke-linejoin="1" />
+  <path d="M22.463,33.556L23.676,35.105L26.604,31.035" fill="#000000" fill-opacity="0.0" stroke="#FFFFFF" stroke-width="1.30933" stroke-linecap="1" stroke-linejoin="1" />
+  <path d="M22.463,47.556L23.676,49.105L26.604,45.035" fill="#000000" fill-opacity="0.0" stroke="#FFFFFF" stroke-width="1.30933" stroke-linecap="1" stroke-linejoin="1" />
+  <path d="M23.786,18.706L20.686,18.708L20.692,23.962L26.505,23.991L26.467,21.219" fill="#000000" fill-opacity="0.0" stroke="#FFFFFF" stroke-width="1.30933" stroke-linecap="1" stroke-linejoin="1" />
+  <path d="M23.786,31.706L20.686,31.708L20.692,36.962L26.505,36.991L26.467,34.219" fill="#000000" fill-opacity="0.0" stroke="#FFFFFF" stroke-width="1.30933" stroke-linecap="1" stroke-linejoin="1" />
+  <path d="M23.786,45.706L20.686,45.708L20.692,50.962L26.505,50.991L26.467,48.219" fill="#000000" fill-opacity="0.0" stroke="#FFFFFF" stroke-width="1.30933" stroke-linecap="1" stroke-linejoin="1" />
+  <path d="M33,21.501C39,23.501 50.5,19.001 55.5,21.501" fill="#000000" fill-opacity="0.0" stroke="#FFFFFF" stroke-width="2" stroke-linecap="1" />
+  <path d="M34,33.779C40,33.779 52,33.001 56.5,33.779" fill="#000000" fill-opacity="0.0" stroke="#FFFFFF" stroke-width="2" stroke-linecap="1" />
+  <path d="M34,47.778C40,49.778 51.5,45.278 56.5,47.778" fill="#000000" fill-opacity="0.0" stroke="#FFFFFF" stroke-width="2" stroke-linecap="1" />
+  <path d="M70,64.432C70,66.274 63.918,66.083 38.5,65.865C9.211,65.613 7,66.274 7,64.228C7,63.437 9.211,63 38.5,63C66.684,63 70,63 70,64.432Z" fill="#22262F" />
+</svg>

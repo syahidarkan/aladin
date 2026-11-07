@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import { useBankState, executeTransfer } from '@/lib/bankState'
+import { useMascot } from '@/context/MascotContext'
 
 const POPULAR_BANKS = [
   { id: 'bca', name: 'BCA (Bank Central Asia)', code: '014', color: '#0066AE' },
@@ -28,6 +29,7 @@ const RECENT_RECIPIENTS = [
 
 export default function TransferPage() {
   const { alaDompet, pockets = [] } = useBankState()
+  const { triggerReaction, showLoader, hideLoader } = useMascot()
   const [selectedSource, setSelectedSource] = useState<string>('ala_dompet')
   const [showSourceModal, setShowSourceModal] = useState<boolean>(false)
 
@@ -121,18 +123,23 @@ export default function TransferPage() {
       return
     }
 
-    setReceiptData({
-      refNumber: res.refNumber,
-      date: '07 Nov 2026 • ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
-      recipientName: recipient,
-      recipientBank: bankName,
-      recipientAccount: acc,
-      amount: num,
-      method: transferType === 'aladin' ? 'Sesama Aladin (Gratis)' : transferMethod === 'bifast' ? 'BI-FAST (Rp0)' : 'Real-time Online (Rp0 Promo)',
-      note: transferNote ? `${transferNote} (Sumber: ${activeSourceName})` : `Transfer dari ${activeSourceName}`,
-      source: activeSourceName,
-    })
-    setIsSuccess(true)
+    showLoader('Memproses pengiriman via BI-FAST Rp0...')
+    setTimeout(() => {
+      hideLoader()
+      setReceiptData({
+        refNumber: res.refNumber,
+        date: '07 Nov 2026 • ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
+        recipientName: recipient,
+        recipientBank: bankName,
+        recipientAccount: acc,
+        amount: num,
+        method: transferType === 'aladin' ? 'Sesama Aladin (Gratis)' : transferMethod === 'bifast' ? 'BI-FAST (Rp0)' : 'Real-time Online (Rp0 Promo)',
+        note: transferNote ? `${transferNote} (Sumber: ${activeSourceName})` : `Transfer dari ${activeSourceName}`,
+        source: activeSourceName,
+      })
+      setIsSuccess(true)
+      triggerReaction('success', `Transfer Rp${num.toLocaleString('id-ID')} berhasil dikirim!`)
+    }, 600)
   }
 
   const filteredBanks = POPULAR_BANKS.filter((b) =>

@@ -5,8 +5,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import MilestoneOverlay, { MilestoneData, MILESTONES } from '@/components/MilestoneOverlay'
+import { useMascot } from '@/context/MascotContext'
 
 export default function BuatImpianUmrahPage() {
+  const { triggerReaction } = useMascot()
   const [monthlyAmount, setMonthlyAmount] = useState<string>('2.500.000')
   const [isLocked, setIsLocked] = useState<boolean>(true)
   const [selectedTravel, setSelectedTravel] = useState<string>('Maktour Travel (AMPHURI)')
@@ -282,7 +284,11 @@ export default function BuatImpianUmrahPage() {
           </div>
 
           <button
-            onClick={() => setIsLocked(!isLocked)}
+            onClick={() => {
+              const nextState = !isLocked
+              setIsLocked(nextState)
+              triggerReaction('lock-action', nextState ? 'Fitur Kunci Impian Berhasil Diaktifkan' : 'Kunci Impian Dinonaktifkan')
+            }}
             className={`relative w-[48px] h-[28px] rounded-full transition-colors cursor-pointer shrink-0 ${
               isLocked ? 'bg-[#1C20C4]' : 'bg-gray-200'
             }`}
@@ -298,7 +304,10 @@ export default function BuatImpianUmrahPage() {
         {/* Submit Button */}
         <button
           onClick={() => {
-            if (numAmount > 0) setIsSuccess(true)
+            if (numAmount > 0) {
+              setIsSuccess(true)
+              triggerReaction('success', 'Impian Umrah Berhasil Dibuat!')
+            }
           }}
           disabled={numAmount === 0}
           className="w-full h-12 bg-[#1C20C4] text-white rounded-full font-extrabold text-[14px] shadow-lg active:scale-98 transition-all flex items-center justify-center cursor-pointer disabled:opacity-50"

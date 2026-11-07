@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
 import BottomNav from '@/components/BottomNav'
-import FloatingConcierge from '@/components/FloatingConcierge'
+import CarpetFloatingBuddy from '@/components/mascot/CarpetFloatingBuddy'
 
 export default function PhoneFrame({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -115,8 +115,8 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
           {children}
         </div>
 
-        {/* Global Floating Concierge & Relationship Desk Chatbot (Available Across All Pages) */}
-        {!showSplash && <FloatingConcierge />}
+        {/* Global Floating Mascot Companion & Relationship Desk (Available Across All Pages) */}
+        {!showSplash && <CarpetFloatingBuddy />}
 
         {/* Global Bottom Navigation Bar (Always Present Across All Pages) */}
         {!showSplash && <BottomNav />}

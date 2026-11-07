@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 312 113" width="312" height="113" fill="none">
+  <path d="M0,16.5C0,7.66 7.16,0.5 16,0.5H296C304.84,0.5 312,7.66 312,16.5V84.5C312,93.34 304.84,100.5 296,100.5H16C7.16,100.5 0,93.34 0,84.5V16.5Z" fill="#FFFFFF" />
+  <g>
+    <clipPath><path d="M272,100.5h16v12h-16z" /></clipPath>
+    <path d="M280,112.5L272,100.5H288L280,112.5Z" fill="#FFFFFF" />
+  </g>
+</svg>

@@ -5,9 +5,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import { useBankState, convertIdrToSar, paySaudiMerchant, depositAlaDompet } from '@/lib/bankState'
+import { useMascot } from '@/context/MascotContext'
 
 export default function AlaHaramainHubPage() {
   const { alaDompet, dompetSar } = useBankState()
+  const { triggerReaction, showLoader, hideLoader } = useMascot()
 
   // First-time Onboarding State
   const [showOnboarding, setShowOnboarding] = useState(false)
@@ -88,20 +90,25 @@ export default function AlaHaramainHubPage() {
   const sarEstimate = (idrNum / sarExchangeRate).toFixed(2)
 
   const handleExecuteConvert = () => {
-    const res = convertIdrToSar({
-      fundingSource: 'ala_dompet',
-      idrAmount: idrNum,
-      sarRate: sarExchangeRate,
-    })
-
-    if (!res.success) {
-      alert(res.error || 'Saldo IDR tidak mencukupi')
-      return
-    }
-
     setShowConvertModal(false)
-    setSuccessToast(`Konversi Rp${idrNum.toLocaleString('id-ID')} berhasil. Saldo +SAR ${sarEstimate} siap digunakan di Saudi!`)
-    setTimeout(() => setSuccessToast(null), 3500)
+    showLoader('Mengonversi Saldo ke Riyal Saudi (SAR)...')
+    setTimeout(() => {
+      const res = convertIdrToSar({
+        fundingSource: 'ala_dompet',
+        idrAmount: idrNum,
+        sarRate: sarExchangeRate,
+      })
+      hideLoader()
+
+      if (!res.success) {
+        triggerReaction('shake-warning', res.error || 'Saldo IDR tidak mencukupi')
+        return
+      }
+
+      triggerReaction('success', `Konversi Rp${idrNum.toLocaleString('id-ID')} ke SAR ${sarEstimate} sukses!`)
+      setSuccessToast(`Konversi Rp${idrNum.toLocaleString('id-ID')} berhasil. Saldo +SAR ${sarEstimate} siap digunakan di Saudi!`)
+      setTimeout(() => setSuccessToast(null), 3500)
+    }, 700)
   }
 
   const handleTapNfc = () => {

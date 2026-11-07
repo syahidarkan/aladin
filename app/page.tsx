@@ -43,9 +43,9 @@ export default function SplashScreen() {
 
       {/* Center Bank Aladin Logo & Slogan */}
       <div className="flex flex-col items-center justify-center -mt-16 animate-in fade-in zoom-in-95 duration-700">
-        <div className="relative w-[150px] h-[64px] mb-3">
+        <div className="relative w-[180px] h-[72px] mb-3">
           <Image
-            src="/assets/icons/splash_logo.png"
+            src="/assets/icons/logo_splash_screen.svg"
             alt="Bank Aladin Syariah"
             fill
             className="object-contain"

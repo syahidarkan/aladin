@@ -35,6 +35,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# large apk binaries & zips
+aladin.zip
+aladin apk/
+public/assets/ref_*
+public/assets/verif_*
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
