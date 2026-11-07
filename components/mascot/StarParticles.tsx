@@ -129,3 +129,4 @@ export default function StarParticles({ count = 18 }: StarParticlesProps) {
     </group>
   )
 }
+

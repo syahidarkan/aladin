@@ -25,16 +25,16 @@ function CarpetCanvas({
   return (
     <Canvas
       dpr={[1, 1.5]}
-      camera={{ position: [0, 0.25, 4.8], fov: 42 }}
+      camera={{ position: [0, 1.2, 3.5], fov: 42 }}
       gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
       style={{ pointerEvents: interactive ? 'auto' : 'none' }}
     >
-      {/* 3-Point Studio Lighting with Mint & Blue Accents */}
-      <ambientLight intensity={1.5} />
-      <directionalLight position={[4, 6, 5]} intensity={2.6} color="#FFFBF0" />
-      <directionalLight position={[-4, -2, -3]} intensity={1.2} color="#1037A6" />
-      <pointLight position={[0, -1, 3]} intensity={1.8} color="#00F0A0" distance={8} />
-      <pointLight position={[0, 2, 2.5]} intensity={1.2} color="#4361EE" distance={6} />
+      {/* 3-Point Studio Lighting with Rich Velvet Depth & Mint Accents */}
+      <ambientLight intensity={0.85} />
+      <directionalLight position={[3, 5, 4]} intensity={2.2} color="#FFFFFF" />
+      <directionalLight position={[-3, -1, -2]} intensity={0.9} color="#1037A6" />
+      <pointLight position={[0, 0.5, 2.5]} intensity={0.8} color="#00F0A0" distance={6} />
+      <pointLight position={[1, 2, 1.5]} intensity={1.0} color="#3B82F6" distance={5} />
 
       <Suspense fallback={null}>
         <CarpetModel pose={pose} interactive={interactive} onClick={onClick} />
@@ -87,3 +87,4 @@ export default function AladinCarpetMascot({
     </div>
   )
 }
+

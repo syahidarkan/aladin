@@ -478,7 +478,7 @@ export default function KeuanganPage() {
           <div
             onClick={(e) => e.stopPropagation()}
             className="bg-white w-full max-w-[414px] rounded-t-[32px] shadow-2xl animate-in slide-in-from-bottom duration-200"
-            style={{ boxSizing: 'border-box', padding: '20px 24px 36px 24px' }}
+            style={{ boxSizing: 'border-box', padding: '24px 24px 44px 24px' }}
           >
             {/* Native Top Drag Handle */}
             <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 shrink-0" />

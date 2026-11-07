@@ -616,7 +616,7 @@ export default function ProfilPage() {
                       Maskot 3D Karpet Aladin
                     </span>
                     <span style={{ fontSize: '9px', fontWeight: 800, color: '#081D48', backgroundColor: '#00F0A0', padding: '1px 6px', borderRadius: '999px' }}>
-                      3D THREE.JS
+                      3D RESMI
                     </span>
                   </div>
                   <span style={{ fontSize: '11px', color: '#64748B' }}>
