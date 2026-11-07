@@ -1,0 +1,394 @@
+@import "tailwindcss";
+
+:root {
+  --al-navy: #081D48;
+  --al-navy-dark: #051330;
+  --al-blue: #1C20C4;
+  --al-blue-dark: #1319D4;
+  --al-blue-hover: #15189E;
+  --al-blue-light: #E9F0FD;
+  --al-blue-tint: #EEF2FF;
+  --al-teal: #00F3AD;
+  --al-green: #22C55E;
+  --al-mint-bg: #E8F5E9;
+  --al-gold: #EBAB3E;
+  --al-gold-dark: #D4921E;
+  --al-red: #B62821;
+  --al-red-badge: #E11D48;
+  --al-grey-bg: #F7F8FC;
+  --al-grey-card: #FFFFFF;
+  --al-grey-border: #E5E7EB;
+  --al-grey-subtle: #F3F4F6;
+  --al-text-primary: #1A1A2E;
+  --al-text-secondary: #6B7280;
+  --al-text-muted: #9CA3AF;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #0B132B;
+  color: var(--al-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Outer layout */
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Desktop & Tablet Mockup */
+@media (min-width: 501px) {
+  body {
+    background: radial-gradient(circle at 50% 30%, #152243 0%, #0A1020 100%);
+    padding: 16px;
+  }
+
+  .phone-wrapper {
+    width: 436px;
+    height: 918px;
+    max-height: calc(100vh - 20px);
+    border-radius: 52px;
+    background: #000000;
+    padding: 11px;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.15),
+      0 30px 80px rgba(0, 0, 0, 0.75),
+      0 10px 25px rgba(0, 0, 0, 0.5);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .phone-screen {
+    width: 414px;
+    height: 896px;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 42px;
+    background: #FFFFFF;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
+
+/* Mobile Screen: 100% Native App Feel */
+@media (max-width: 500px) {
+  body {
+    padding: 0;
+    background: #FFFFFF;
+    align-items: stretch;
+  }
+
+  .phone-wrapper {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .phone-screen {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    background: #FFFFFF;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+}
+
+.phone-screen::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbars for any horizontal sliders */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Reusable buttons & badges */
+.al-btn-primary {
+  background: var(--al-blue);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 20px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.al-btn-primary:active {
+  transform: scale(0.98);
+  opacity: 0.92;
+}
+
+.al-btn-secondary {
+  background: var(--al-blue-light);
+  color: var(--al-blue);
+  border: none;
+  border-radius: 50px;
+  padding: 14px 20px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.al-btn-disabled {
+  background: #E5E7EB;
+  color: #9CA3AF;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 20px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: not-allowed;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 76px;
+  background: #FFFFFF;
+  border-top: 1px solid #F0F2F5;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: 8px;
+  z-index: 40;
+  flex-shrink: 0;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex: 1;
+  height: 100%;
+  text-decoration: none;
+}
+
+/* Toggle Switch */
+.al-toggle {
+  width: 48px;
+  height: 28px;
+  border-radius: 14px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.al-toggle.on {
+  background: var(--al-blue);
+}
+
+.al-toggle.off {
+  background: #D1D5DB;
+}
+
+.al-toggle::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  top: 3px;
+  transition: left 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.al-toggle.on::after {
+  left: 23px;
+}
+
+.al-toggle.off::after {
+  left: 3px;
+}
+
+/* Scanner Laser Animation */
+@keyframes scanLaser {
+  0% {
+    top: 5%;
+    opacity: 0.9;
+  }
+  50% {
+    top: 90%;
+    opacity: 0.9;
+  }
+  100% {
+    top: 5%;
+    opacity: 0.9;
+  }
+}
+
+.scan-laser-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #00F3AD;
+  box-shadow: 0 0 16px 4px #00F3AD, 0 0 30px #00F3AD;
+  animation: scanLaser 3s ease-in-out infinite;
+}
+
+/* Precision button & card rules ensuring 1:1 fidelity across all browsers */
+.btn-aladin-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1C20C4;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 9px 22px;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(28, 32, 196, 0.25);
+  text-decoration: none;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.btn-aladin-primary:active {
+  transform: scale(0.96);
+  opacity: 0.9;
+}
+
+.btn-aladin-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1C20C4;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 10.5px;
+  height: 24px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  text-decoration: none;
+  line-height: 1;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 1px 4px rgba(28, 32, 196, 0.2);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.btn-aladin-pill:active {
+  transform: scale(0.96);
+  opacity: 0.9;
+}
+
+.btn-aladin-pill-green {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #059669;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 10.5px;
+  height: 24px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  text-decoration: none;
+  line-height: 1;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 1px 4px rgba(5, 150, 105, 0.2);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.btn-aladin-pill-green:active {
+  transform: scale(0.96);
+  opacity: 0.9;
+}
+
+.btn-aladin-green {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #059669;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 9px 22px;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+  text-decoration: none;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.card-nabung-aladin {
+  background-color: #EBF3FE !important;
+  border-radius: 24px !important;
+  padding: 20px !important;
+  border: 1px solid #D7E6FD !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  flex-shrink: 0 !important;
+  scroll-snap-align: start !important;
+  width: 315px !important;
+  min-height: 195px !important;
+  box-sizing: border-box !important;
+}
+
