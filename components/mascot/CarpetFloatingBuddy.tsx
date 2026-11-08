@@ -217,13 +217,25 @@ export default function CarpetFloatingBuddy() {
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm cursor-pointer transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/mascot-studio"
+                  onClick={() => setIsOpen(false)}
+                  className="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-[#1037A6] text-[10px] font-bold rounded-lg border border-[#00F0A0]/40 flex items-center gap-1 transition-colors"
+                  title="Buka Mascot 3D Studio & Rig Inspector"
+                >
+                  <Sparkles className="w-3 h-3 text-[#00F0A0]" />
+                  <span>3D Studio</span>
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm cursor-pointer transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             {/* Mode Selector Tabs */}

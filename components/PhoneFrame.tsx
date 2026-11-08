@@ -81,6 +81,14 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
     }, 200)
   }
 
+  if (pathname === '/mascot-studio') {
+    return (
+      <div className="w-screen h-screen overflow-hidden bg-slate-950 text-white">
+        {children}
+      </div>
+    )
+  }
+
   return (
     <div className="phone-wrapper">
       <div className="phone-screen relative flex flex-col overflow-hidden">
