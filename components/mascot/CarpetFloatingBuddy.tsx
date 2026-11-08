@@ -4,7 +4,9 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { Canvas } from '@react-three/fiber'
 import { useMascot } from '@/context/MascotContext'
+import CarpetModel from './CarpetModel'
 
 interface ChatMessage {
   id: string
@@ -133,42 +135,45 @@ export default function CarpetFloatingBuddy() {
           onMouseEnter={handleHover}
           aria-label="Staff Aladin & Concierge"
           className={`relative group cursor-pointer transition-all duration-300 ${
-            isSpinning ? 'animate-mascot-spin' : isBouncing ? '-translate-y-2' : 'animate-mascot-float'
+            isSpinning ? 'animate-mascot-spin' : isBouncing ? '-translate-y-2' : ''
           }`}
           style={{
-            width: '64px',
-            height: '52px',
+            width: '76px',
+            height: '66px',
             background: 'transparent',
             border: 'none',
             padding: 0,
             outline: 'none',
           }}
         >
-          {/* Glowing Ambient Aura & Mascot Graphic */}
+          {/* 3D WebGL Rigged Mascot Floating in Horizontal Idle S-Curve */}
           <div
-            className="relative w-full h-full pointer-events-none transition-all duration-300 group-hover:scale-105"
+            className="w-full h-full pointer-events-none transition-all duration-300 group-hover:scale-105"
             style={{
-              filter: 'drop-shadow(0 6px 14px rgba(0, 240, 160, 0.45)) drop-shadow(0 2px 6px rgba(16, 55, 166, 0.4))',
+              filter: 'drop-shadow(0 8px 16px rgba(0, 240, 160, 0.45)) drop-shadow(0 2px 6px rgba(16, 55, 166, 0.4))',
             }}
           >
-            <Image
-              src="/assets/mascot/karpet_mascot_clean.png"
-              alt="Maskot Karpet Terbang Aladin"
-              fill
-              className="object-contain"
-              priority
-            />
+            <Canvas
+              camera={{ position: [0, 0, 4.2], fov: 45 }}
+              gl={{ antialias: true, alpha: true }}
+              style={{ width: '100%', height: '100%' }}
+            >
+              <ambientLight intensity={1.6} />
+              <directionalLight position={[3, 4, 3]} intensity={2.2} />
+              <pointLight position={[-2, -1, 2]} intensity={1.5} color="#00F0A0" />
+              <CarpetModel pose="idle" interactive={false} scale={0.72} />
+            </Canvas>
           </div>
 
           {/* Online Active Status Dot */}
-          <span className="absolute top-0 right-1 flex h-3 w-3">
+          <span className="absolute top-1 right-2 flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00F0A0] opacity-80" />
             <span className="relative inline-flex rounded-full h-3 w-3 bg-[#00F0A0] border-2 border-white shadow-xs" />
           </span>
 
           {/* Twinkling Magical Star */}
           <span
-            className="absolute -top-1 left-1 text-[#00F0A0] text-[10px] animate-star-twinkle pointer-events-none"
+            className="absolute top-0 left-2 text-[#00F0A0] text-[10px] animate-star-twinkle pointer-events-none"
           >
             ✦
           </span>

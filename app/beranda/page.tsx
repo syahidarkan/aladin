@@ -6,11 +6,9 @@ import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import FeatureGuideModal from '@/components/FeatureGuideModal'
 import { useBankState } from '@/lib/bankState'
-import { useMascot } from '@/context/MascotContext'
 
 export default function BerandaPage() {
   const { alaDompet, alaImpianUmroh, alaDeposito } = useBankState()
-  const { triggerReaction } = useMascot()
   const [showBalance, setShowBalance] = useState(true)
   const [activeBanner, setActiveBanner] = useState(0)
 
@@ -23,34 +21,52 @@ export default function BerandaPage() {
 
   const banners = [
     {
-      id: 'jumat-berkah',
-      src: '/assets/banners/banner_jumat_berkah_full.png',
-      alt: 'Jumat Berkah - Berbagi',
-      href: '/donasi',
+      id: 'alfagift',
+      tag: 'PROMO ALADIN x ALFAGIFT',
+      title: 'Belanja Hemat di Alfagift, Cashback s.d. Rp25.000',
+      desc: 'Tarik & setor tunai bebas biaya admin di Alfamart seluruh Indonesia.',
+      cta: 'Klaim Cashback',
+      href: '/rewards/alfa',
+      bg: 'linear-gradient(135deg, #0A256B 0%, #1037A6 60%, #1D4ED8 100%)',
+      badgeColor: '#EF4444',
+      iconEmoji: '🎁',
+      iconBg: 'bg-red-500/20 text-red-300',
     },
     {
-      id: 'alfagift',
-      src: '/assets/banners/banner_alfagift_full.png',
-      alt: 'Alfagift x Aladin Promo',
-      href: '/rewards/alfa',
+      id: 'jumat-berkah',
+      tag: 'JUMAT BERKAH',
+      title: 'Jumat Bermakna Dimulai dari Berbagi',
+      desc: 'Salurkan donasi & sedekah tanpa biaya admin melalui Ala Berbagi.',
+      cta: 'Salurkan Donasi',
+      href: '/donasi',
+      bg: 'linear-gradient(135deg, #064E3B 0%, #047857 60%, #00F0A0 120%)',
+      badgeColor: '#00F0A0',
+      iconEmoji: '🌿',
+      iconBg: 'bg-emerald-500/20 text-emerald-300',
     },
     {
       id: 'mascot-3d',
-      title: 'Karpet Terbang Aladin',
-      sub: 'Maskot 3D Interaktif',
-      desc: 'Coba pose 3D & kenalan langsung dengan pendamping syariah barumu!',
+      tag: 'MASKOT 3D INTERAKTIF',
+      title: 'Kenalan dengan Karpet Terbang Aladin',
+      desc: 'Sahabat finansial ceria dengan atraksi 3D yang siap membimbingmu!',
+      cta: 'Buka Studio 3D',
       href: '/mascot',
-      isCustom: true,
-      bg: 'linear-gradient(135deg, #1037A6 0%, #0D3396 60%, #00F0A0 100%)',
+      bg: 'linear-gradient(135deg, #1E1B4B 0%, #312E81 60%, #4338CA 100%)',
+      badgeColor: '#818CF8',
+      iconEmoji: '🧞‍♂️',
+      iconBg: 'bg-indigo-500/20 text-indigo-300',
     },
     {
-      id: 'wrapped',
-      title: 'Aladin Wrapped 2026',
-      sub: 'Kilas Balik Transaksi Berkah',
-      desc: 'Lihat penghematan biaya admin & rekor ibadah finansial setahun!',
-      href: '/wrapped',
-      isCustom: true,
-      bg: 'linear-gradient(135deg, #831843 0%, #BE185D 55%, #DB2777 100%)',
+      id: 'deposito-promo',
+      tag: 'NISBAH 85:15',
+      title: 'Bagi Hasil Ala Deposito Hingga 8,5% p.a.',
+      desc: 'Simpanan berjangka syariah aman, fleksibel, berkah dan menguntungkan.',
+      cta: 'Buka Deposito',
+      href: '/simulasi-bagi-hasil',
+      bg: 'linear-gradient(135deg, #0F172A 0%, #1E293B 60%, #0D3396 100%)',
+      badgeColor: '#F59E0B',
+      iconEmoji: '📈',
+      iconBg: 'bg-amber-500/20 text-amber-300',
     },
   ]
 
@@ -71,43 +87,43 @@ export default function BerandaPage() {
       id: 'pocket',
       label: 'Ala Pocket',
       href: '/pocket',
-      iconSrc: '/assets/icons/shortcut_pocket_clean.png',
-      badge: 'BARU',
+      iconSrc: '/assets/icons/shortcut_pocket_v2.png',
+      badge: 'Baru',
     },
     {
       id: 'haramain',
       label: 'Ala Haramain',
       href: '/ala-haramain',
-      iconSrc: '/assets/icons/shortcut_haramain_clean.png',
-      badge: 'SAR',
+      iconSrc: '/assets/icons/shortcut_haramain_v2.png',
+      badge: 'Baru',
     },
     {
       id: 'hijrah',
       label: 'Ala Hijrah',
       href: '/hijrah',
-      iconSrc: '/assets/icons/shortcut_hijrah_clean.png',
-      badge: 'SYARIAH',
+      iconSrc: '/assets/icons/shortcut_hijrah_v2.png',
+      badge: 'Baru',
     },
     {
       id: 'investasi',
       label: 'Ala Investasi',
       href: '/investasi',
-      iconSrc: '/assets/icons/shortcut_investasi_clean.png',
-      badge: 'SUKUK',
+      iconSrc: '/assets/icons/shortcut_investasi_v2.png',
+      badge: 'Baru',
     },
     {
       id: 'kartu',
       label: 'Kartu Visa',
       href: '/kartu',
-      iconSrc: '/assets/icons/shortcut_kartu_clean.png',
-      badge: 'VISA',
+      iconSrc: '/assets/icons/shortcut_kartu_v2.png',
+      badge: 'Baru',
     },
     {
       id: 'pilgrims',
       label: 'Ala Pilgrims',
       href: '/impian/haji/buat',
-      iconSrc: '/assets/icons/shortcut_pilgrims_clean.png',
-      badge: 'HAJI',
+      iconSrc: '/assets/icons/shortcut_pilgrims_v2.png',
+      badge: 'Baru',
     },
   ]
 
@@ -130,18 +146,18 @@ export default function BerandaPage() {
             background: 'linear-gradient(180deg, #051937 0%, #08214D 60%, #0A2E5C 100%)',
           }}
         >
-          {/* iOS / Android Status Bar (22.25, 4G, Wifi, 33%) */}
-          <StatusBar dark time="22.25" batteryLevel={33} />
+          {/* Top Safe-Area Spacer */}
+          <StatusBar dark />
 
           {/* Top Bar: Aladin Brand Logo & Notification/Profile Icons */}
           <div className="flex items-center justify-between px-6 pt-2 pb-3">
-            {/* Authentic Aladin Wordmark Logo with Smile */}
-            <div className="relative w-[100px] h-[26px] flex items-center">
+            {/* Authentic Aladin Wordmark Logo in Pure White Vector SVG */}
+            <div className="relative w-[88px] h-[34px] flex items-center">
               <Image
-                src="/assets/icons/header_aladin_wordmark_exact.png"
+                src="/assets/icons/ic_logo_aladin_white.svg"
                 alt="Bank Aladin Syariah"
-                width={100}
-                height={26}
+                width={88}
+                height={34}
                 className="object-contain object-left"
                 priority
               />
@@ -333,7 +349,7 @@ export default function BerandaPage() {
                     priority
                   />
                   {sc.badge && (
-                    <span className="absolute -top-1.5 -right-1.5 bg-[#064E3B] text-[#00F0A0] text-[8.5px] font-black px-1.5 py-0.5 rounded-full border border-emerald-400 leading-none shadow-xs">
+                    <span className="absolute -top-1.5 -right-1.5 bg-[#00F0A0] text-[#064E3B] text-[8.5px] font-black px-1.5 py-0.5 rounded-full border border-emerald-300 leading-none shadow-xs">
                       {sc.badge}
                     </span>
                   )}
@@ -347,7 +363,7 @@ export default function BerandaPage() {
         </div>
 
         {/* ========================================================================= */}
-        {/* SECTION: TEMUKAN BERKAH (EXACT item_section_promo.xml & item_promo_carousel)*/}
+        {/* SECTION: TEMUKAN BERKAH (FULL-BLEED NATIVE DESIGN, ZERO CROPPED ARTIFACTS)*/}
         {/* ========================================================================= */}
         <div className="mt-6 px-5">
           <div className="flex items-center justify-between mb-3">
@@ -364,52 +380,62 @@ export default function BerandaPage() {
 
           {/* Banner Carousel */}
           <div className="flex items-center gap-3.5 overflow-x-auto no-scrollbar snap-x snap-mandatory">
-            {banners.map((b, idx) => (
+            {banners.map((b) => (
               <Link
                 key={b.id}
                 href={b.href}
-                className="shrink-0 w-[300px] h-[150px] rounded-3xl overflow-hidden relative shadow-sm border border-[#ECEEF2] snap-start active:scale-[0.99] transition-transform"
+                className="shrink-0 w-[300px] h-[150px] rounded-3xl overflow-hidden relative shadow-sm border border-white/10 snap-start active:scale-[0.99] transition-transform p-4 text-white flex flex-col justify-between"
                 style={{
-                  background: b.bg || '#F8FAFC',
+                  background: b.bg,
                 }}
               >
-                {b.src ? (
-                  <Image
-                    src={b.src}
-                    alt={b.alt || 'Promo Aladin'}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                ) : (
-                  <div className="p-4 text-white h-full flex flex-col justify-between">
-                    <div>
-                      <span className="text-[9.5px] font-extrabold uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full inline-block mb-1">
-                        {b.sub}
-                      </span>
-                      <h3 className="text-[17px] font-black leading-tight mt-1">
-                        {b.title}
-                      </h3>
-                      <p className="text-[11px] text-white/90 line-clamp-2 mt-1">
-                        {b.desc}
-                      </p>
-                    </div>
-                    <span className="text-[11px] font-bold text-[#00F0A0]">
-                      Buka Fitur →
-                    </span>
+                {/* Top Badge & Emoji Icon */}
+                <div className="flex items-center justify-between">
+                  <span
+                    className="text-[9.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full inline-block backdrop-blur-xs"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.18)',
+                      color: '#FFFFFF',
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
+                    }}
+                  >
+                    {b.tag}
+                  </span>
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-lg ${b.iconBg}`}>
+                    {b.iconEmoji}
                   </div>
-                )}
+                </div>
+
+                {/* Title & Desc */}
+                <div className="my-auto pr-2">
+                  <h3 className="text-[15px] font-black leading-snug line-clamp-2">
+                    {b.title}
+                  </h3>
+                  <p className="text-[11px] text-white/85 line-clamp-1 mt-0.5">
+                    {b.desc}
+                  </p>
+                </div>
+
+                {/* CTA Action Pill */}
+                <div className="flex items-center justify-between pt-1">
+                  <span className="text-[11px] font-extrabold text-[#00F0A0] flex items-center gap-1">
+                    {b.cta} →
+                  </span>
+                  <span className="text-[9.5px] text-white/60 font-semibold tracking-wider uppercase">
+                    #PakaiAladin
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
 
           {/* Carousel Dots */}
           <div className="flex items-center justify-center gap-1.5 mt-3">
-            {[0, 1, 2, 3, 4, 5, 6, 7].map((dot) => (
+            {[0, 1, 2, 3].map((dot) => (
               <span
                 key={dot}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  dot === activeBanner % 8 ? 'w-4 bg-[#00F0A0]' : 'w-1.5 bg-[#E2E8F0]'
+                  dot === activeBanner % 4 ? 'w-4 bg-[#00F0A0]' : 'w-1.5 bg-[#E2E8F0]'
                 }`}
               />
             ))}

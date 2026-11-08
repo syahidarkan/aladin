@@ -3,10 +3,7 @@ import localFont from 'next/font/local'
 import './globals.css'
 import PhoneFrame from '@/components/PhoneFrame'
 import { MascotProvider } from '@/context/MascotContext'
-import CarpetFloatingBuddy from '@/components/mascot/CarpetFloatingBuddy'
-import CarpetPageTransition from '@/components/mascot/CarpetPageTransition'
-import CarpetLoader from '@/components/mascot/CarpetLoader'
-import CarpetReactionToast from '@/components/mascot/CarpetReactionToast'
+
 
 const poppins = localFont({
   src: [
@@ -59,9 +56,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <MascotProvider>
           <PhoneFrame>
             {children}
-            <CarpetPageTransition />
-            <CarpetLoader />
-            <CarpetReactionToast />
           </PhoneFrame>
         </MascotProvider>
       </body>

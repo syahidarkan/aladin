@@ -10,6 +10,7 @@ export type CarpetPose =
   | 'lay-flat'
   | 'curious-bow'
   | 'fold-arms'
+  | 'loading'
   | 'transition-sweep'
 
 interface BoneRotations {
@@ -22,25 +23,34 @@ interface BoneRotations {
  * Spine_0 (Root) -> Spine_1 -> Spine_2 -> Spine_3 -> Spine_4 (Head / Front Lip)
  */
 export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
-  // 1. Stand: Standing upright 90°, chest proudly forward, greeting friendly
+  // 1. Idle: Horizontal aerodynamic 3D flight with S-curve and front lip scoop
+  idle: {
+    Spine_0: { x: 1.0, y: -0.2, z: 0.1 },
+    Spine_1: { x: -0.3, y: 0.05, z: -0.05 },
+    Spine_2: { x: 0.4, y: 0.0, z: 0.0 },
+    Spine_3: { x: -0.5, y: 0.0, z: 0.0 },
+    Spine_4: { x: -0.85, y: 0.1, z: -0.05 },
+  },
+
+  // 2. Stand: Standing upright 90°, chest proudly forward, greeting friendly
   stand: {
     Spine_0: { x: 0.1, y: 0, z: 0 },
     Spine_1: { x: 0.2, y: 0, z: 0 },
     Spine_2: { x: -0.15, y: 0, z: 0 },
     Spine_3: { x: -0.2, y: 0, z: 0 },
-    Spine_4: { x: 0.25, y: 0, z: 0 }, // Head upright looking at user
+    Spine_4: { x: 0.25, y: 0, z: 0 },
   },
 
-  // 2. Lay-Flat: Relaxed horizontal flight
+  // 3. Lay-Flat: Relaxed horizontal flight
   'lay-flat': {
     Spine_0: { x: Math.PI / 2.2, y: 0, z: 0 },
     Spine_1: { x: 0.05, y: 0, z: 0 },
     Spine_2: { x: 0, y: 0, z: 0 },
     Spine_3: { x: 0, y: 0, z: 0 },
-    Spine_4: { x: -0.3, y: 0, z: 0 }, // Front lip slightly raised
+    Spine_4: { x: -0.3, y: 0, z: 0 },
   },
 
-  // 3. Curious-Bow: Polite greeting bow (Sharia Salam)
+  // 4. Curious-Bow: Polite greeting bow (Sharia Salam)
   'curious-bow': {
     Spine_0: { x: 0.3, y: 0, z: 0 },
     Spine_1: { x: 0.4, y: 0, z: 0 },
@@ -49,7 +59,7 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
     Spine_4: { x: -0.4, y: 0, z: 0 },
   },
 
-  // 4. Fold-Arms: Confident hero pose
+  // 5. Fold-Arms: Confident hero pose
   'fold-arms': {
     Spine_0: { x: 0.15, y: 0, z: 0 },
     Spine_1: { x: 0.25, y: 0, z: 0 },
@@ -58,7 +68,16 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
     Spine_4: { x: 0.4, y: 0, z: 0 },
   },
 
-  // 5. Transition-Sweep: Dynamic wide swoop covering camera viewport
+  // 6. Loading: High-energy flight pose ready for ripple oscillation
+  loading: {
+    Spine_0: { x: 0.8, y: -0.1, z: 0.1 },
+    Spine_1: { x: -0.3, y: 0.05, z: -0.05 },
+    Spine_2: { x: 0.4, y: 0.0, z: 0.0 },
+    Spine_3: { x: -0.5, y: 0.0, z: 0.0 },
+    Spine_4: { x: -0.85, y: 0.1, z: -0.05 },
+  },
+
+  // 7. Transition-Sweep: Dynamic wide swoop covering camera viewport
   'transition-sweep': {
     Spine_0: { x: 0.4, y: 0.6, z: 0.2 },
     Spine_1: { x: 0.6, y: 0.3, z: 0.4 },
@@ -66,21 +85,13 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
     Spine_3: { x: 0.4, y: -0.4, z: 0.2 },
     Spine_4: { x: 0.2, y: 0, z: 0 },
   },
-
-  // 6. Idle: Default graceful flying S-curve
-  idle: {
-    Spine_0: { x: 0.2, y: 0, z: 0 },
-    Spine_1: { x: -0.1, y: 0, z: 0 },
-    Spine_2: { x: 0.15, y: 0, z: 0 },
-    Spine_3: { x: -0.1, y: 0, z: 0 },
-    Spine_4: { x: 0.35, y: 0, z: 0 }, // Front lip curled upwards
-  },
 }
 
 interface CarpetModelProps {
   pose?: CarpetPose
   interactive?: boolean
   onClick?: () => void
+  scale?: number
 }
 
 /**
@@ -166,7 +177,7 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
 
   if (blink) {
     // Blinking eye arcs
-    ctx.strokeStyle = '#0b0d17'
+    ctx.strokeStyle = '#0A0A14'
     ctx.lineWidth = 16
     ctx.lineCap = 'round'
     ctx.beginPath()
@@ -176,15 +187,15 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
     ctx.arc(faceCenterX + 110, faceCenterY - 10, 42, 0.85 * Math.PI, 0.15 * Math.PI, true)
     ctx.stroke()
   } else {
-    // 5b. Chibi Glossy Black Eyes (#0b0d17)
-    ctx.fillStyle = '#0b0d17'
+    // 5b. Chibi Glossy Black Eyes (#0A0A14)
+    ctx.fillStyle = '#0A0A14'
     ctx.beginPath()
     ctx.arc(faceCenterX - 110, faceCenterY - 15, 54, 0, Math.PI * 2)
     ctx.arc(faceCenterX + 110, faceCenterY - 15, 54, 0, Math.PI * 2)
     ctx.fill()
 
-    // 5c. Dual White Specular Highlights in Each Eye
-    ctx.fillStyle = '#ffffff'
+    // 5c. Dual White Specular Highlights in Each Eye (Large top-left, small bottom-right)
+    ctx.fillStyle = '#FFFFFF'
     // Left eye
     ctx.beginPath()
     ctx.arc(faceCenterX - 124, faceCenterY - 32, 21, 0, Math.PI * 2)
@@ -198,7 +209,7 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
   }
 
   // 5d. Cheerful Open D-Shape Smile with Pink Tongue
-  ctx.fillStyle = '#0b0d17'
+  ctx.fillStyle = '#0A0A14'
   ctx.beginPath()
   ctx.arc(faceCenterX, faceCenterY + 30, 48, 0.05 * Math.PI, 0.95 * Math.PI, false)
   ctx.closePath()
@@ -282,6 +293,7 @@ export default function CarpetModel({
   pose = 'idle',
   interactive = true,
   onClick,
+  scale = 1,
 }: CarpetModelProps) {
   const groupRef = useRef<THREE.Group>(null)
   const bonesRef = useRef<THREE.Bone[]>([])
@@ -375,40 +387,82 @@ export default function CarpetModel({
     const t = state.clock.getElapsedTime()
     const targetRotations = POSE_DEFINITIONS[pose] || POSE_DEFINITIONS.idle
 
-    bonesRef.current.forEach((bone) => {
+    bonesRef.current.forEach((bone, idx) => {
       const target = targetRotations[bone.name]
       if (target) {
-        // Natural silk cloth flutter/breathing
-        const breathX = Math.sin(t * 2.2 + bone.position.y) * 0.035
-        const breathZ = Math.cos(t * 1.8 + bone.position.y) * 0.025
+        let flutterX = 0
+        let flutterZ = 0
 
-        bone.rotation.x = THREE.MathUtils.damp(bone.rotation.x, target.x + breathX, 5.5, delta)
-        bone.rotation.y = THREE.MathUtils.damp(bone.rotation.y, target.y, 5.5, delta)
-        bone.rotation.z = THREE.MathUtils.damp(bone.rotation.z, target.z + breathZ, 5.5, delta)
+        if (pose === 'loading') {
+          // High-speed fabric ripple oscillation
+          flutterX = Math.sin(t * 8.0 + idx * 1.5) * 0.18
+          flutterZ = Math.cos(t * 8.0 + idx * 1.5) * 0.12
+        } else {
+          // Natural silk cloth flutter/breathing
+          flutterX = Math.sin(t * 2.2 + idx * 0.8) * 0.03
+          flutterZ = Math.cos(t * 1.8 + idx * 0.8) * 0.02
+        }
+
+        bone.rotation.x = THREE.MathUtils.damp(bone.rotation.x, target.x + flutterX, 6.0, delta)
+        bone.rotation.y = THREE.MathUtils.damp(bone.rotation.y, target.y, 6.0, delta)
+        bone.rotation.z = THREE.MathUtils.damp(bone.rotation.z, target.z + flutterZ, 6.0, delta)
       }
     })
 
-    // Group floating levitation & interactive tilt
+    // Group floating levitation & orientation
     if (groupRef.current) {
-      // Gentle vertical levitation bobbing
-      const levitateY = Math.sin(t * 1.8) * 0.08
-      groupRef.current.position.y = levitateY
+      if (pose === 'idle') {
+        // Base orientation: X = 0.2, Y = -0.35, Z = -0.15
+        const baseX = 0.2
+        const baseY = -0.35
+        const baseZ = -0.15
 
-      // Click Spin
-      if (isSpinningRef.current) {
-        groupRef.current.rotation.y += delta * 12
-      } else if (interactive) {
-        // Subtly track user cursor
-        const targetRotY = pointer.x * 0.25
-        const targetRotX = -pointer.y * 0.2
-        groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, targetRotY, 4, delta)
-        groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, targetRotX, 4, delta)
+        // Vertical levitation bobbing
+        const levitateY = Math.sin(t * 1.8) * 0.12
+        groupRef.current.position.y = levitateY
+
+        if (isSpinningRef.current) {
+          groupRef.current.rotation.y += delta * 12
+        } else if (interactive) {
+          const targetRotY = baseY + pointer.x * 0.2
+          const targetRotX = baseX - pointer.y * 0.15
+          groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, targetRotY, 4, delta)
+          groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, targetRotX, 4, delta)
+          groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, baseZ, 4, delta)
+        } else {
+          groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, baseX, 4, delta)
+          groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, baseY, 4, delta)
+          groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, baseZ, 4, delta)
+        }
+      } else if (pose === 'loading') {
+        // Continuous 3D Acrobatic Figure-8 Loop
+        groupRef.current.position.x = Math.sin(t * 2.5) * 0.6
+        groupRef.current.position.y = Math.sin(t * 5.0) * 0.3
+        groupRef.current.position.z = Math.cos(t * 2.5) * 0.2
+
+        // Banking roll & pitch
+        groupRef.current.rotation.z = -Math.cos(t * 2.5) * 0.5
+        groupRef.current.rotation.x = 0.2 + Math.sin(t * 2.5) * 0.2
+        groupRef.current.rotation.y = Math.sin(t * 2.5) * 0.4
+      } else {
+        // Stand or other poses
+        const levitateY = Math.sin(t * 1.8) * 0.08
+        groupRef.current.position.y = levitateY
+
+        if (isSpinningRef.current) {
+          groupRef.current.rotation.y += delta * 12
+        } else if (interactive) {
+          const targetRotY = pointer.x * 0.25
+          const targetRotX = -pointer.y * 0.2
+          groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, targetRotY, 4, delta)
+          groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, targetRotX, 4, delta)
+        }
       }
     }
   })
 
   return (
-    <group ref={groupRef} onClick={handleClick}>
+    <group ref={groupRef} onClick={handleClick} scale={[scale, scale, scale]}>
       <primitive object={skinnedMesh} />
 
       {/* 4 Corner Tassels attached to rear/front */}

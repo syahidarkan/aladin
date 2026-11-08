@@ -5,6 +5,9 @@ import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
 import BottomNav from '@/components/BottomNav'
 import CarpetFloatingBuddy from '@/components/mascot/CarpetFloatingBuddy'
+import CarpetPageTransition from '@/components/mascot/CarpetPageTransition'
+import CarpetLoader from '@/components/mascot/CarpetLoader'
+import CarpetReactionToast from '@/components/mascot/CarpetReactionToast'
 import { useMascot } from '@/context/MascotContext'
 
 export default function PhoneFrame({ children }: { children: React.ReactNode }) {
@@ -30,7 +33,9 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
         !anchor.hasAttribute('download') &&
         anchor.target !== '_blank'
       ) {
-        if (href === pathname || isTransitioning) return
+        const cleanHref = href.split('?')[0].replace(/\/$/, '') || '/'
+        const cleanPath = pathname.split('?')[0].replace(/\/$/, '') || '/'
+        if (cleanHref === cleanPath || isTransitioning) return
 
         e.preventDefault()
         startTransition(href)
@@ -149,6 +154,11 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
 
         {/* Global Bottom Navigation Bar (Always Present Across All Pages) */}
         {!showSplash && <BottomNav />}
+
+        {/* Global 3D Mascot Transition & Overlays - Covers ENTIRE phone screen including BottomNav */}
+        <CarpetPageTransition />
+        <CarpetLoader />
+        <CarpetReactionToast />
       </div>
     </div>
   )

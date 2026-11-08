@@ -1,14 +1,15 @@
 'use client'
 
 import React from 'react'
-import Image from 'next/image'
+import { Canvas } from '@react-three/fiber'
 import { useMascot } from '@/context/MascotContext'
+import CarpetModel from './CarpetModel'
 
 /**
- * Global Mascot Acrobatic Loader Component
- * Displays the Aladin Carpet Mascot executing dynamic 3D acrobatics & tricks
- * (loop-the-loop, barrel-roll, and levitation with turquoise star trails)
- * whenever transactions, biometric checks, or currency conversions load.
+ * 3D Mascot Acrobatic Loader Component (Three.js WebGL)
+ * Executes continuous 3D Figure-8 flight, dynamic banking roll,
+ * and high-speed fabric ripple oscillation via Three.js bone rigging.
+ * ZERO CSS scale or DOM zoom transforms!
  */
 export default function CarpetLoader() {
   const { isLoading, loadingText, hideLoader } = useMascot()
@@ -22,7 +23,7 @@ export default function CarpetLoader() {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-[310px] rounded-3xl p-6 flex flex-col items-center text-center relative overflow-hidden"
+        className="w-[320px] rounded-3xl p-6 flex flex-col items-center text-center relative overflow-hidden"
         style={{
           background: 'linear-gradient(145deg, #07153D 0%, #0F2D84 55%, #081B4E 100%)',
           border: '1.5px solid rgba(0, 240, 160, 0.45)',
@@ -35,27 +36,20 @@ export default function CarpetLoader() {
         <div className="absolute top-10 right-8 text-emerald-300 text-xs animate-star-twinkle" style={{ animationDelay: '600ms' }}>★</div>
         <div className="absolute bottom-12 left-8 text-[#00F0A0] text-xs animate-star-twinkle" style={{ animationDelay: '900ms' }}>★</div>
 
-        {/* Dynamic Flying Mascot Graphic Executing Acrobatics */}
-        <div className="relative w-44 h-32 my-2 flex items-center justify-center">
-          {/* Acrobatic Rotating Body */}
-          <div
-            className="relative w-full h-full animate-mascot-acrobatic"
-            style={{
-              filter: 'drop-shadow(0 12px 24px rgba(0, 240, 160, 0.55)) drop-shadow(0 4px 10px rgba(16, 55, 166, 0.6))',
-            }}
+        {/* 3D WebGL Canvas for Mascot Acrobatic Flight */}
+        <div className="relative w-48 h-36 my-1">
+          <Canvas
+            camera={{ position: [0, 0, 4.2], fov: 45 }}
+            gl={{ antialias: true, alpha: true }}
+            style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
           >
-            <Image
-              src="/assets/mascot/karpet_mascot_clean.png"
-              alt="Atraksi Maskot Karpet Aladin"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
+            <ambientLight intensity={1.4} />
+            <directionalLight position={[3, 5, 4]} intensity={2.2} />
+            <pointLight position={[-3, -2, 2]} intensity={1.5} color="#00F0A0" />
+            <pointLight position={[0, 2, 3]} intensity={1.2} color="#3B82F6" />
 
-          {/* Comet Particle Trail */}
-          <span className="absolute -bottom-2 -left-3 text-[#00F0A0] text-lg animate-ping">✨</span>
-          <span className="absolute -top-1 -right-2 text-emerald-200 text-base animate-pulse">💫</span>
+            <CarpetModel pose="loading" interactive={false} scale={0.82} />
+          </Canvas>
         </div>
 
         {/* Dynamic Status Title */}
