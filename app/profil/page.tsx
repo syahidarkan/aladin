@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import StatusBar from '@/components/StatusBar'
+import { Sparkles, Delete } from 'lucide-react'
 
 export default function ProfilPage() {
   const router = useRouter()
@@ -185,7 +186,7 @@ export default function ProfilPage() {
                     flexShrink: 0,
                   }}
                 >
-                  KYC Aktif ✓
+                  KYC Aktif 
                 </span>
               </div>
               <p style={{ fontSize: '12px', color: '#64748B', margin: '3px 0 0 0' }}>
@@ -347,7 +348,7 @@ export default function ProfilPage() {
               <button
                 onClick={() => {
                   setBiometricEnabled(!biometricEnabled)
-                  showToast(!biometricEnabled ? 'Biometrik Face ID diaktifkan ✓' : 'Biometrik Face ID dinonaktifkan')
+                  showToast(!biometricEnabled ? 'Biometrik Face ID diaktifkan ' : 'Biometrik Face ID dinonaktifkan')
                 }}
                 style={{
                   width: '46px',
@@ -587,7 +588,7 @@ export default function ProfilPage() {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '14px', backgroundColor: '#ECFDF5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#00F0A0' }}>
-                  <span style={{ fontSize: '20px' }}>🧞‍♂️</span>
+                  <Sparkles className="w-5 h-5 text-[#059669]" />
                 </div>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -687,7 +688,7 @@ export default function ProfilPage() {
               <button
                 onClick={() => {
                   setNotifEnabled(!notifEnabled)
-                  showToast(!notifEnabled ? 'Notifikasi transaksi diaktifkan ✓' : 'Notifikasi transaksi dinonaktifkan')
+                  showToast(!notifEnabled ? 'Notifikasi transaksi diaktifkan ' : 'Notifikasi transaksi dinonaktifkan')
                 }}
                 style={{
                   width: '46px',
@@ -842,7 +843,7 @@ export default function ProfilPage() {
                 onClick={() => setShowDataDiriModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -873,7 +874,7 @@ export default function ProfilPage() {
                       onClick={handleCopyRekening}
                       className="px-3 py-1.5 bg-[#1C20C4] text-white rounded-full text-[11px] font-extrabold cursor-pointer active:scale-95 transition-all shadow-xs"
                     >
-                      {copiedRekening ? 'Tersalin ✓' : 'Salin'}
+                      {copiedRekening ? 'Tersalin ' : 'Salin'}
                     </button>
                   )}
                 </div>
@@ -922,7 +923,7 @@ export default function ProfilPage() {
                 onClick={() => setShowAkunModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -1006,7 +1007,7 @@ export default function ProfilPage() {
                 onClick={() => setShowPinModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -1034,16 +1035,16 @@ export default function ProfilPage() {
 
             {/* Numeric Keypad */}
             <div className="grid grid-cols-3 gap-2.5 max-w-[280px] mx-auto mb-2">
-              {['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '⌫'].map(
+              {['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'del'].map(
                 (k, idx) => {
                   if (k === '') return <div key={idx} />
                   return (
                     <button
                       key={idx}
-                      onClick={() => (k === '⌫' ? handlePinDelete() : handlePinKey(k))}
+                      onClick={() => (k === 'del' ? handlePinDelete() : handlePinKey(k))}
                       className="h-12 rounded-xl bg-gray-50 hover:bg-gray-100 text-[18px] font-bold text-[#1A1D26] active:scale-95 transition-transform flex items-center justify-center cursor-pointer border border-gray-100 shadow-2xs"
                     >
-                      {k}
+                      {k === 'del' ? <Delete className="w-5 h-5 text-gray-600" /> : k}
                     </button>
                   )
                 }
@@ -1080,7 +1081,7 @@ export default function ProfilPage() {
                 onClick={() => setShowBiFastModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -1095,7 +1096,7 @@ export default function ProfilPage() {
                   <span className="text-[14px] font-extrabold text-[#1A1D26] mt-0.5 block">+62 812-3456-7890</span>
                 </div>
                 <span className="text-[11px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
-                  Terhubung ✓
+                  Terhubung 
                 </span>
               </div>
 
@@ -1105,7 +1106,7 @@ export default function ProfilPage() {
                   <span className="text-[14px] font-extrabold text-[#1A1D26] mt-0.5 block">syahid.arkan@gmail.com</span>
                 </div>
                 <span className="text-[11px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
-                  Terhubung ✓
+                  Terhubung 
                 </span>
               </div>
             </div>
@@ -1150,7 +1151,7 @@ export default function ProfilPage() {
                 onClick={() => setShowTermsModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 

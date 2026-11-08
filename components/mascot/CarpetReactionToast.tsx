@@ -2,11 +2,12 @@
 
 import React from 'react'
 import { useMascot, MascotReaction } from '@/context/MascotContext'
+import { CheckCircle2, Lock, ClipboardCheck, AlertCircle, Sparkles } from 'lucide-react'
 
 const REACTION_CONFIG: Record<
   MascotReaction,
   {
-    icon: string
+    icon: React.ReactNode
     title: string
     bgGradient: string
     borderColor: string
@@ -14,28 +15,28 @@ const REACTION_CONFIG: Record<
   }
 > = {
   success: {
-    icon: '🎉',
+    icon: <CheckCircle2 className="w-6 h-6 text-[#00F0A0]" />,
     title: 'Alhamdulillah, Berhasil!',
     bgGradient: 'linear-gradient(135deg, #064E3B 0%, #047857 60%, #00F0A0 100%)',
     borderColor: '#00F0A0',
-    soundDesc: 'Takbir & Confetti',
+    soundDesc: 'Transaksi Syariah Berhasil',
   },
   'lock-action': {
-    icon: '🔒',
+    icon: <Lock className="w-6 h-6 text-[#818CF8]" />,
     title: 'Dana Aman Terkunci!',
     bgGradient: 'linear-gradient(135deg, #1E1B4B 0%, #312E81 60%, #4338CA 100%)',
     borderColor: '#818CF8',
     soundDesc: 'Proteksi Syariah',
   },
   'copy-success': {
-    icon: '📋',
+    icon: <ClipboardCheck className="w-6 h-6 text-[#93C5FD]" />,
     title: 'Nomor Berhasil Disalin!',
     bgGradient: 'linear-gradient(135deg, #1037A6 0%, #1D4ED8 60%, #60A5FA 100%)',
     borderColor: '#93C5FD',
     soundDesc: 'Tersimpan di Clipboard',
   },
   'shake-warning': {
-    icon: '⚠️',
+    icon: <AlertCircle className="w-6 h-6 text-[#FDA4AF]" />,
     title: 'Periksa Kembali Input Anda',
     bgGradient: 'linear-gradient(135deg, #881337 0%, #BE123C 60%, #FB7185 100%)',
     borderColor: '#FDA4AF',
@@ -60,7 +61,7 @@ export default function CarpetReactionToast() {
           boxShadow: `0 10px 30px rgba(0,0,0,0.35)`,
         }}
       >
-        <div className="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-2xl shrink-0">
+        <div className="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
           {config.icon}
         </div>
 
@@ -73,11 +74,10 @@ export default function CarpetReactionToast() {
           </span>
         </div>
 
-        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-white/80">
-          🧞‍♂️
+        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-[#00F0A0]">
+          <Sparkles className="w-4 h-4 text-[#00F0A0]" />
         </div>
       </div>
     </div>
   )
 }
-

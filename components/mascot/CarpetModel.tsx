@@ -23,13 +23,14 @@ interface BoneRotations {
  * Spine_0 (Root) -> Spine_1 -> Spine_2 -> Spine_3 -> Spine_4 (Head / Front Lip)
  */
 export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
-  // 1. Idle: Horizontal aerodynamic 3D flight with S-curve and front lip scoop
+  // 1. Idle: Exact 1:1 S-curve wave matching reference render (media_fa94c464.jpg)
+  // Front-left scoop with chibi face facing camera, deep trough belly, elevated back-right tail
   idle: {
-    Spine_0: { x: 1.0, y: -0.2, z: 0.1 },
-    Spine_1: { x: -0.3, y: 0.05, z: -0.05 },
-    Spine_2: { x: 0.4, y: 0.0, z: 0.0 },
-    Spine_3: { x: -0.5, y: 0.0, z: 0.0 },
-    Spine_4: { x: -0.85, y: 0.1, z: -0.05 },
+    Spine_0: { x: 1.25, y: 0.0, z: 0.0 },
+    Spine_1: { x: -0.65, y: 0.0, z: 0.0 },
+    Spine_2: { x: -0.45, y: 0.0, z: 0.0 },
+    Spine_3: { x: 0.75, y: 0.0, z: 0.0 },
+    Spine_4: { x: 0.45, y: 0.0, z: 0.0 },
   },
 
   // 2. Stand: Standing upright 90°, chest proudly forward, greeting friendly
@@ -154,7 +155,7 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
 
   // 4. Center Stylized Geometric Diamond / Rectangle Motif
   const midX = 512
-  const midY = 960
+  const midY = 680
   const boxW = 270
   const boxH = 340
 
@@ -164,15 +165,15 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
   ctx.roundRect(midX - boxW / 2, midY - boxH / 2, boxW, boxH, 40)
   ctx.stroke()
 
-  // 5. Draw Cute Chibi Face Directly on the Front Lip (Top of canvas, Y = 100 to 360)
+  // 5. Draw Cute Chibi Face Directly on the Front Lip (Bottom of canvas, near Spine_0, facing camera)
   const faceCenterX = 512
-  const faceCenterY = 220
+  const faceCenterY = 1360
 
-  // 5a. Glowing Turquoise Blush Cheeks (#00F0A0)
+  // 5a. Glowing Vibrant Turquoise Blush Cheeks (#00F0A0)
   ctx.fillStyle = '#00F0A0'
   ctx.beginPath()
-  ctx.ellipse(faceCenterX - 175, faceCenterY + 45, 62, 38, 0, 0, Math.PI * 2)
-  ctx.ellipse(faceCenterX + 175, faceCenterY + 45, 62, 38, 0, 0, Math.PI * 2)
+  ctx.ellipse(faceCenterX - 180, faceCenterY + 10, 58, 44, 0, 0, Math.PI * 2)
+  ctx.ellipse(faceCenterX + 180, faceCenterY + 10, 58, 44, 0, 0, Math.PI * 2)
   ctx.fill()
 
   if (blink) {
@@ -181,37 +182,37 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
     ctx.lineWidth = 16
     ctx.lineCap = 'round'
     ctx.beginPath()
-    ctx.arc(faceCenterX - 110, faceCenterY - 10, 42, 0.85 * Math.PI, 0.15 * Math.PI, true)
+    ctx.arc(faceCenterX - 110, faceCenterY + 40, 42, 0.15 * Math.PI, 0.85 * Math.PI, false)
     ctx.stroke()
     ctx.beginPath()
-    ctx.arc(faceCenterX + 110, faceCenterY - 10, 42, 0.85 * Math.PI, 0.15 * Math.PI, true)
+    ctx.arc(faceCenterX + 110, faceCenterY + 40, 42, 0.15 * Math.PI, 0.85 * Math.PI, false)
     ctx.stroke()
   } else {
     // 5b. Chibi Glossy Black Eyes (#0A0A14)
     ctx.fillStyle = '#0A0A14'
     ctx.beginPath()
-    ctx.arc(faceCenterX - 110, faceCenterY - 15, 54, 0, Math.PI * 2)
-    ctx.arc(faceCenterX + 110, faceCenterY - 15, 54, 0, Math.PI * 2)
+    ctx.arc(faceCenterX - 110, faceCenterY + 40, 54, 0, Math.PI * 2)
+    ctx.arc(faceCenterX + 110, faceCenterY + 40, 54, 0, Math.PI * 2)
     ctx.fill()
 
     // 5c. Dual White Specular Highlights in Each Eye (Large top-left, small bottom-right)
     ctx.fillStyle = '#FFFFFF'
     // Left eye
     ctx.beginPath()
-    ctx.arc(faceCenterX - 124, faceCenterY - 32, 21, 0, Math.PI * 2)
-    ctx.arc(faceCenterX - 93, faceCenterY + 8, 10, 0, Math.PI * 2)
+    ctx.arc(faceCenterX - 124, faceCenterY + 25, 21, 0, Math.PI * 2)
+    ctx.arc(faceCenterX - 93, faceCenterY + 55, 10, 0, Math.PI * 2)
     ctx.fill()
     // Right eye
     ctx.beginPath()
-    ctx.arc(faceCenterX + 96, faceCenterY - 32, 21, 0, Math.PI * 2)
-    ctx.arc(faceCenterX + 127, faceCenterY + 8, 10, 0, Math.PI * 2)
+    ctx.arc(faceCenterX + 96, faceCenterY + 25, 21, 0, Math.PI * 2)
+    ctx.arc(faceCenterX + 127, faceCenterY + 55, 10, 0, Math.PI * 2)
     ctx.fill()
   }
 
   // 5d. Cheerful Open D-Shape Smile with Pink Tongue
   ctx.fillStyle = '#0A0A14'
   ctx.beginPath()
-  ctx.arc(faceCenterX, faceCenterY + 30, 48, 0.05 * Math.PI, 0.95 * Math.PI, false)
+  ctx.arc(faceCenterX, faceCenterY - 15, 48, 0.05 * Math.PI, 0.95 * Math.PI, false)
   ctx.closePath()
   ctx.fill()
 
@@ -220,7 +221,7 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
   ctx.clip()
   ctx.fillStyle = '#FF4D82'
   ctx.beginPath()
-  ctx.arc(faceCenterX, faceCenterY + 74, 38, 0, Math.PI * 2)
+  ctx.arc(faceCenterX, faceCenterY + 25, 38, 0, Math.PI * 2)
   ctx.fill()
   ctx.restore()
 
@@ -412,13 +413,13 @@ export default function CarpetModel({
     // Group floating levitation & orientation
     if (groupRef.current) {
       if (pose === 'idle') {
-        // Base orientation: X = 0.2, Y = -0.35, Z = -0.15
-        const baseX = 0.2
-        const baseY = -0.35
-        const baseZ = -0.15
+        // Isometric 3/4 Perspective: front-left head scoop facing camera, rear-right tail elevated
+        const baseX = 0.75
+        const baseY = 0.0
+        const baseZ = -0.65
 
         // Vertical levitation bobbing
-        const levitateY = Math.sin(t * 1.8) * 0.12
+        const levitateY = Math.sin(t * 1.8) * 0.1
         groupRef.current.position.y = levitateY
 
         if (isSpinningRef.current) {
@@ -465,49 +466,49 @@ export default function CarpetModel({
     <group ref={groupRef} onClick={handleClick} scale={[scale, scale, scale]}>
       <primitive object={skinnedMesh} />
 
-      {/* 4 Corner Tassels attached to rear/front */}
-      <group position={[-0.8, -1.2, 0]}>
+      {/* 2 Rear Tail Tassels (exact 1:1 to reference render media_fa94c464.jpg) */}
+      <group position={[-0.78, 1.2, 0]} rotation={[0, 0, 0.25]}>
         <mesh>
-          <torusGeometry args={[0.04, 0.015, 8, 16]} />
+          <torusGeometry args={[0.045, 0.016, 8, 16]} />
           <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.8} />
         </mesh>
-        <mesh position={[0, -0.08, 0]}>
-          <coneGeometry args={[0.04, 0.12, 12]} />
-          <meshStandardMaterial color="#1037A6" roughness={0.4} />
+        <mesh position={[0, 0.1, 0]}>
+          <coneGeometry args={[0.045, 0.14, 12]} />
+          <meshStandardMaterial color="#1037A6" roughness={0.35} />
         </mesh>
       </group>
 
-      <group position={[0.8, -1.2, 0]}>
+      <group position={[0.78, 1.2, 0]} rotation={[0, 0, -0.25]}>
         <mesh>
-          <torusGeometry args={[0.04, 0.015, 8, 16]} />
+          <torusGeometry args={[0.045, 0.016, 8, 16]} />
           <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.8} />
         </mesh>
-        <mesh position={[0, -0.08, 0]}>
-          <coneGeometry args={[0.04, 0.12, 12]} />
-          <meshStandardMaterial color="#1037A6" roughness={0.4} />
+        <mesh position={[0, 0.1, 0]}>
+          <coneGeometry args={[0.045, 0.14, 12]} />
+          <meshStandardMaterial color="#1037A6" roughness={0.35} />
         </mesh>
       </group>
 
-      <group position={[-0.8, 1.2, 0]}>
-        <mesh>
-          <torusGeometry args={[0.04, 0.015, 8, 16]} />
-          <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.8} />
-        </mesh>
-        <mesh position={[0, 0.08, 0]}>
-          <coneGeometry args={[0.04, 0.12, 12]} />
-          <meshStandardMaterial color="#1037A6" roughness={0.4} />
-        </mesh>
-      </group>
-
-      <group position={[0.8, 1.2, 0]}>
-        <mesh>
-          <torusGeometry args={[0.04, 0.015, 8, 16]} />
-          <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.8} />
-        </mesh>
-        <mesh position={[0, 0.08, 0]}>
-          <coneGeometry args={[0.04, 0.12, 12]} />
-          <meshStandardMaterial color="#1037A6" roughness={0.4} />
-        </mesh>
+      {/* Magical Floating 3D Sparkle Star Particles (exact 1:1 to reference media_fa94c464.jpg) */}
+      <group>
+        {[
+          { pos: [-0.95, 0.45, 0.35], s: 0.06 },
+          { pos: [0.85, 0.85, 0.25], s: 0.075 },
+          { pos: [-0.55, -0.65, 0.4], s: 0.05 },
+          { pos: [0.95, -0.75, 0.2], s: 0.065 },
+          { pos: [-0.3, 0.9, 0.3], s: 0.055 },
+          { pos: [0.4, -0.1, 0.45], s: 0.06 },
+        ].map((star, idx) => (
+          <mesh key={idx} position={star.pos as [number, number, number]} scale={[star.s, star.s, star.s]}>
+            <octahedronGeometry args={[1, 0]} />
+            <meshStandardMaterial
+              color="#00F0A0"
+              emissive="#00F0A0"
+              emissiveIntensity={1.2}
+              roughness={0.1}
+            />
+          </mesh>
+        ))}
       </group>
     </group>
   )

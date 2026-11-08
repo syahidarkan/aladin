@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { Lock, X } from 'lucide-react'
 
 interface ChatMessage {
   id: string
@@ -175,7 +176,7 @@ export default function FloatingConcierge() {
                 onClick={() => setIsOpen(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm cursor-pointer transition-colors"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -312,7 +313,7 @@ export default function FloatingConcierge() {
             {/* Official Security Notice */}
             <div className="px-5 pt-2">
               <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center gap-2 text-left">
-                <span className="text-amber-600 font-extrabold text-sm">🔒</span>
+                <Lock className="w-3.5 h-3.5 text-amber-600 inline mr-1" />
                 <span className="text-[10px] text-amber-900 leading-tight">
                   <strong>Peringatan Keamanan:</strong> Petugas resmi Aladin tidak pernah meminta PIN, password, atau OTP Anda.
                 </span>

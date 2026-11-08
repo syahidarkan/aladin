@@ -689,7 +689,7 @@ export default function BayarSaudiPage() {
                 onClick={() => setShowTopupModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -805,7 +805,7 @@ export default function BayarSaudiPage() {
               onClick={() => setShowScannerModal(false)}
               className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-bold text-white cursor-pointer active:scale-95"
             >
-              ✕
+              ×
             </button>
           </div>
 
@@ -875,7 +875,7 @@ export default function BayarSaudiPage() {
           >
             <div className="flex justify-between items-center mb-2">
               <span style={{ fontSize: '13px', fontWeight: 800, color: '#1A1D26' }}>Tampilkan ke Kasir Geidea</span>
-              <button onClick={() => setShowCustomerQrModal(false)} className="text-gray-400 font-bold">✕</button>
+              <button onClick={() => setShowCustomerQrModal(false)} className="text-gray-400 font-bold">×</button>
             </div>
             <p style={{ fontSize: '11px', color: '#64748B', marginBottom: '16px' }}>
               Kasir akan scan barcode ini di terminal POS Geidea
@@ -985,7 +985,7 @@ export default function BayarSaudiPage() {
               <h3 className="text-[17px] font-extrabold text-[#1A1D26]">
                 Konfirmasi Pembayaran SAR
               </h3>
-              <button onClick={() => setShowPin(false)} className="text-gray-400 font-bold p-1 cursor-pointer">✕</button>
+              <button onClick={() => setShowPin(false)} className="text-gray-400 font-bold p-1 cursor-pointer">×</button>
             </div>
             <p className="text-[12.5px] text-[#64748B] mb-2 leading-relaxed">
               Pembayaran ke <strong>{selectedMerchant.name}</strong> sebesar <strong>SAR {selectedMerchant.amountSar.toFixed(2)}</strong> (≈ Rp{(selectedMerchant.amountSar * sarRate).toLocaleString('id-ID')}).

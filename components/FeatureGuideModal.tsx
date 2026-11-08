@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { Sparkles, Wallet, Landmark, Wifi, Gem, Headphones } from 'lucide-react'
 
 interface FeatureGuideModalProps {
   forceOpen?: boolean
@@ -24,12 +25,12 @@ export default function FeatureGuideModal({ forceOpen = false, onClose }: Featur
       const shouldOpenFromQuery = urlParams.get('openGuide') === 'true'
       const completed = localStorage.getItem('aladin_feature_guide_seen')
 
-      if (shouldOpenFromQuery || !completed) {
-        // Automatically pop up on homepage
+      if (shouldOpenFromQuery) {
+        // Pop up when triggered from navigation/button
         const timer = setTimeout(() => {
           setIsOpen(true)
           setStep(0)
-        }, 600)
+        }, 300)
         return () => clearTimeout(timer)
       }
     }
@@ -52,8 +53,8 @@ export default function FeatureGuideModal({ forceOpen = false, onClose }: Featur
       secondaryBtn: 'Nanti aja',
       featureHref: null,
       badge: 'Selamat Datang',
-      mascotEmoji: '🧞‍♂️',
-      mascotBg: 'bg-amber-100 border-amber-300 text-amber-600',
+      icon: <Sparkles className="w-6 h-6 text-amber-600" />,
+      mascotBg: 'bg-amber-100 border-amber-300',
     },
     {
       stepLabel: 'LANGKAH 2 DARI 6',
@@ -64,8 +65,8 @@ export default function FeatureGuideModal({ forceOpen = false, onClose }: Featur
       featureHref: '/pocket',
       featureBtnText: 'Buka Ala Pocket ↗',
       badge: 'Bebas Target',
-      mascotEmoji: '👛',
-      mascotBg: 'bg-emerald-100 border-emerald-300 text-emerald-700',
+      icon: <Wallet className="w-6 h-6 text-emerald-700" />,
+      mascotBg: 'bg-emerald-100 border-emerald-300',
     },
     {
       stepLabel: 'LANGKAH 3 DARI 6',
@@ -76,8 +77,8 @@ export default function FeatureGuideModal({ forceOpen = false, onClose }: Featur
       featureHref: '/ala-haramain',
       featureBtnText: 'Buka Ala Haramain ↗',
       badge: '0% Kurs Markup',
-      mascotEmoji: '🕋',
-      mascotBg: 'bg-emerald-100 border-emerald-300 text-emerald-700',
+      icon: <Landmark className="w-6 h-6 text-emerald-700" />,
+      mascotBg: 'bg-emerald-100 border-emerald-300',
     },
     {
       stepLabel: 'LANGKAH 4 DARI 6',
@@ -85,11 +86,11 @@ export default function FeatureGuideModal({ forceOpen = false, onClose }: Featur
       desc: 'Paket kuota internet dan aktivasi nomor e-SIM Arab Saudi resmi langsung aktif saat mendarat di Jeddah atau Madinah, tanpa repot antre beli kartu fisik di bandara.',
       primaryBtn: 'Lanjut tur →',
       secondaryBtn: 'Lewati',
-      featureHref: '/pilgrim-bundle',
-      featureBtnText: 'Buka Pilgrim Bundle ↗',
+      featureHref: '/ala-haramain',
+      featureBtnText: 'Buka Pilgrim Essentials ↗',
       badge: 'eSIM Instant',
-      mascotEmoji: '📶',
-      mascotBg: 'bg-blue-100 border-blue-300 text-blue-700',
+      icon: <Wifi className="w-6 h-6 text-blue-700" />,
+      mascotBg: 'bg-blue-100 border-blue-300',
     },
     {
       stepLabel: 'LANGKAH 5 DARI 6',
@@ -100,20 +101,20 @@ export default function FeatureGuideModal({ forceOpen = false, onClose }: Featur
       featureHref: '/wealth',
       featureBtnText: 'Buka Wealth Hub ↗',
       badge: 'Visualisasi 3D Interaktif',
-      mascotEmoji: '💎',
-      mascotBg: 'bg-indigo-100 border-indigo-300 text-indigo-700',
+      icon: <Gem className="w-6 h-6 text-indigo-700" />,
+      mascotBg: 'bg-indigo-100 border-indigo-300',
     },
     {
       stepLabel: 'LANGKAH 6 DARI 6',
       title: 'Concierge Desk & Video Call 24/7',
       desc: 'Butuh bantuan kapan pun? Floating Concierge mengambang di pojok layar siap melayani via WhatsApp dan Video Call tatap muka bersama Sharia Officer bersertifikat.',
-      primaryBtn: 'Selesai & Jelajah! 🚀',
+      primaryBtn: 'Selesai & Jelajah!',
       secondaryBtn: 'Tutup',
       featureHref: '/bantu',
       featureBtnText: 'Buka Aladin Bantu ↗',
       badge: 'Layanan 24 Jam',
-      mascotEmoji: '🎧',
-      mascotBg: 'bg-purple-100 border-purple-300 text-purple-700',
+      icon: <Headphones className="w-6 h-6 text-purple-700" />,
+      mascotBg: 'bg-purple-100 border-purple-300',
     },
   ]
 
@@ -128,9 +129,9 @@ export default function FeatureGuideModal({ forceOpen = false, onClose }: Featur
         {/* Top Header: Mascot Avatar + Step Counter + Title */}
         <div className="flex items-start gap-3.5 mb-4">
           <div
-            className={`w-12 h-12 rounded-2xl border-2 flex items-center justify-center text-[22px] shrink-0 shadow-sm ${current.mascotBg}`}
+            className={`w-12 h-12 rounded-2xl border-2 flex items-center justify-center shrink-0 shadow-sm ${current.mascotBg}`}
           >
-            {current.mascotEmoji}
+            {current.icon}
           </div>
 
           <div className="flex-1 min-w-0">

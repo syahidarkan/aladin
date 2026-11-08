@@ -388,7 +388,7 @@ export default function AlaImpianLandingPage() {
       {/* TOAST SUCCESS NOTIFICATION */}
       {successToast && (
         <div className="absolute top-[60px] left-1/2 -translate-x-1/2 z-[110] bg-[#064E3B] text-white px-5 py-2.5 rounded-full text-[12.5px] font-bold shadow-2xl border border-emerald-400">
-          ✓ {successToast}
+           {successToast}
         </div>
       )}
 
@@ -414,7 +414,7 @@ export default function AlaImpianLandingPage() {
                 onClick={() => setShowTargetModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -516,7 +516,7 @@ export default function AlaImpianLandingPage() {
                 onClick={() => setShowTanpaTargetModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -578,7 +578,7 @@ export default function AlaImpianLandingPage() {
                 onClick={() => setShowQurbanModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold cursor-pointer shrink-0 mt-1"
               >
-                ✕
+                ×
               </button>
             </div>
 

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import AladinCarpetMascot from '@/components/mascot/AladinCarpetMascot'
 import { CarpetPose } from '@/components/mascot/CarpetModel'
+import { Sparkles } from 'lucide-react'
 
 export default function MascotDemoPage() {
   const [currentPose, setCurrentPose] = useState<CarpetPose>('idle')
@@ -15,32 +16,32 @@ export default function MascotDemoPage() {
   const poses: { id: CarpetPose; label: string; desc: string }[] = [
     {
       id: 'idle',
-      label: '🌊 Idle Melayang',
-      desc: 'Gelombang kain sutra lembut dengan bobbing vertikal dan kedipan mata otomatis.',
+      label: 'Idle Melayang 1:1',
+      desc: 'Gelombang kurva S aerodinamis dengan bobbing vertikal dan kedipan mata otomatis.',
     },
     {
       id: 'stand',
-      label: '🧍 Berdiri Tegak 90°',
+      label: 'Berdiri Tegak 90°',
       desc: 'Pose tegak menyapa pengguna (digunakan pada CS Buddy & Onboarding).',
     },
     {
       id: 'lay-flat',
-      label: '✈️ Lay Flat Terbang',
+      label: 'Lay Flat Meluncur',
       desc: 'Pose rebahan datar horizontal saat meluncur cepat.',
     },
     {
       id: 'curious-bow',
-      label: '🙏 Membungkuk Salam',
+      label: 'Membungkuk Salam',
       desc: 'Pose membungkuk hormat syariah (Sharia Greeting Bow).',
     },
     {
       id: 'fold-arms',
-      label: '💪 Fold Arms (Hero)',
+      label: 'Fold Arms (Hero)',
       desc: 'Pose percaya diri dengan lipatan sudut depan mantap.',
     },
     {
       id: 'transition-sweep',
-      label: '🌀 Dynamic Sweep',
+      label: 'Dynamic Sweep',
       desc: 'Manuver swoop sinematik menutupi layar saat transisi antar halaman.',
     },
   ]
@@ -121,13 +122,14 @@ export default function MascotDemoPage() {
           {/* Quick particle toggle */}
           <button
             onClick={() => setShowStars(!showStars)}
-            className={`px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all cursor-pointer ${
+            className={`px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all cursor-pointer flex items-center gap-1 ${
               showStars
                 ? 'bg-[#00F0A0] text-[#081D48] border-[#00F0A0]'
                 : 'bg-white/10 text-white/70 border-white/20'
             }`}
           >
-            {showStars ? '✦ Bintang ON' : '✦ Bintang OFF'}
+            <Sparkles className="w-3 h-3" />
+            <span>{showStars ? 'Bintang ON' : 'Bintang OFF'}</span>
           </button>
         </div>
 

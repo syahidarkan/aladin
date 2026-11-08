@@ -109,7 +109,7 @@ export default function AladinWrappedPage() {
           href="/beranda"
           className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center font-bold text-white hover:bg-white/25 transition-colors"
         >
-          ✕
+          ×
         </Link>
       </div>
 

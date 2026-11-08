@@ -265,7 +265,7 @@ export default function RewardsAlfaPage() {
                           : 'bg-gray-200 text-gray-500'
                       }`}
                     >
-                      {isDone ? '✓' : m.step}
+                      {isDone ? '' : m.step}
                     </div>
 
                     <div className="min-w-0 flex-1">
@@ -283,7 +283,7 @@ export default function RewardsAlfaPage() {
                       onClick={() => setClaimedReward(m.id)}
                       className="h-7 px-3.5 rounded-full bg-[#1C20C4] text-white text-[11px] font-extrabold shadow-xs active:scale-95 transition-all cursor-pointer shrink-0"
                     >
-                      {claimedReward === m.id ? 'Terklaim! ✓' : 'Klaim'}
+                      {claimedReward === m.id ? 'Terklaim! ' : 'Klaim'}
                     </button>
                   )}
                   {isDone && (

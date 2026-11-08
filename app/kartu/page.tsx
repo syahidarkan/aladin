@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import { useMascot } from '@/context/MascotContext'
+import { Lock } from 'lucide-react'
 
 export default function VirtualCardPage() {
   const { triggerReaction } = useMascot()
@@ -217,7 +218,8 @@ export default function VirtualCardPage() {
                   marginBottom: '8px',
                 }}
               >
-                <span>🔒</span> KARTU DIBEKUKAN SEMENTARA
+                <Lock className="w-3.5 h-3.5 text-white" />
+                <span>KARTU DIBEKUKAN SEMENTARA</span>
               </div>
               <p style={{ fontSize: '12px', color: '#CBD5E1', maxWidth: '260px', margin: 0 }}>
                 Transaksi dinonaktifkan untuk keamanan. Buka kembali kapan pun melalui tombol di bawah.
@@ -319,7 +321,7 @@ export default function VirtualCardPage() {
               }}
               className="active:opacity-75 transition-opacity"
             >
-              {copied ? 'Tersalin ✓' : 'Salin'}
+              {copied ? 'Tersalin ' : 'Salin'}
             </button>
           </div>
 
@@ -696,7 +698,7 @@ export default function VirtualCardPage() {
                   )}
                   {tx.status === 'Berhasil' && (
                     <span style={{ fontSize: '9.5px', fontWeight: 700, color: '#6C737E', display: 'block' }}>
-                      Sukses ✓
+                      Sukses 
                     </span>
                   )}
                 </div>

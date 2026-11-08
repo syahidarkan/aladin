@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import StatusBar from '@/components/StatusBar'
+import { Sparkles } from 'lucide-react'
 
 export default function TujuanFinansialPage() {
   const router = useRouter()
@@ -187,8 +188,8 @@ export default function TujuanFinansialPage() {
         {/* Dynamic Personalized Recommendation Box */}
         <div className="bg-white rounded-[20px] p-[18px] border border-[#F0F1F5] shadow-[0_2px_10px_rgba(0,0,0,0.03)] space-y-2.5">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-[#EFF0FC] text-[#1C20C4] flex items-center justify-center font-bold text-[12px]">
-              ★
+            <div className="w-6 h-6 rounded-full bg-[#EFF0FC] text-[#1C20C4] flex items-center justify-center">
+              <Sparkles className="w-3.5 h-3.5 text-[#1C20C4]" />
             </div>
             <span className="text-[11.5px] font-extrabold text-[#1C20C4] uppercase tracking-wide">
               Rekomendasi Sobat Aladin

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import StatusBar from '@/components/StatusBar'
+import { User, Camera } from 'lucide-react'
 
 export default function VideoCallDeskPage() {
   const router = useRouter()
@@ -291,7 +292,7 @@ export default function VideoCallDeskPage() {
               {isCameraOff ? (
                 <div className="flex flex-col items-center justify-center p-2 text-center">
                   <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white/60 mb-1">
-                    ✕
+                    ×
                   </div>
                   <span className="text-[9px] text-white/60 font-bold">Kamera Nonaktif</span>
                 </div>
@@ -320,17 +321,18 @@ export default function VideoCallDeskPage() {
                 <div className="flex flex-col items-center justify-center p-2 text-center w-full h-full bg-gradient-to-b from-slate-900 to-[#081D48] relative">
                   {/* Subtle viewfinder corner reticle */}
                   <div className="absolute inset-1.5 border border-white/20 rounded-[16px] pointer-events-none" />
-                  <div className="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-400 flex items-center justify-center text-white text-[14px] font-bold mb-1.5 animate-pulse">
-                    👤
+                  <div className="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-400 flex items-center justify-center text-white mb-1.5 animate-pulse">
+                    <User className="w-4 h-4 text-emerald-300" />
                   </div>
                   <span className="text-[9px] text-white/90 font-bold mb-2">
                     Kamera Anda
                   </span>
                   <button
                     onClick={requestCameraAccess}
-                    className="px-2 py-1 bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[8.5px] font-extrabold rounded-full active:scale-95 transition-all shadow-md cursor-pointer"
+                    className="px-2.5 py-1 bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[8.5px] font-extrabold rounded-full active:scale-95 transition-all shadow-md cursor-pointer flex items-center gap-1"
                   >
-                    📷 Buka Kamera
+                    <Camera className="w-2.5 h-2.5 text-white" />
+                    <span>Buka Kamera</span>
                   </button>
                 </div>
               )}

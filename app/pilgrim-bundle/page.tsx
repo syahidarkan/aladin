@@ -931,7 +931,7 @@ export default function TemanIbadahSaudiPage() {
                 onClick={() => setShowClaimModal(false)}
                 style={{ width: '32px', height: '32px', borderRadius: '999px', backgroundColor: '#F4F5F9', border: 'none', cursor: 'pointer' }}
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -1026,7 +1026,7 @@ export default function TemanIbadahSaudiPage() {
                 onClick={() => setShowBuyModal(false)}
                 style={{ width: '32px', height: '32px', borderRadius: '999px', backgroundColor: '#F4F5F9', border: 'none', cursor: 'pointer' }}
               >
-                ✕
+                ×
               </button>
             </div>
 

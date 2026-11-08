@@ -6,10 +6,35 @@ import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import { useBankState, convertIdrToSar, paySaudiMerchant, depositAlaDompet } from '@/lib/bankState'
 import { useMascot } from '@/context/MascotContext'
+import {
+  CreditCard,
+  ShoppingBag,
+  Wifi,
+  Smartphone,
+  Sparkles,
+  ShieldCheck,
+  CheckCircle2,
+  X,
+  Check,
+  ArrowRightLeft,
+  QrCode,
+  MapPin,
+  Utensils,
+  BookOpen,
+  Info,
+  ChevronRight,
+  PhoneCall,
+  Clock,
+  Compass,
+  Radio,
+} from 'lucide-react'
 
 export default function AlaHaramainHubPage() {
   const { alaDompet, dompetSar } = useBankState()
   const { triggerReaction, showLoader, hideLoader } = useMascot()
+
+  // Sub-Feature Hub State: 'wallet' (Haramain Wallet) vs 'pilgrims' (Ala Pilgrims Store & Services)
+  const [activeSubFeature, setActiveSubFeature] = useState<'wallet' | 'pilgrims'>('wallet')
 
   // First-time Onboarding State
   const [showOnboarding, setShowOnboarding] = useState(false)
@@ -32,7 +57,7 @@ export default function AlaHaramainHubPage() {
   const [isDragging, setIsDragging] = useState(false)
   const [dragStartX, setDragStartX] = useState<number | null>(null)
 
-  // Modals
+  // Modals for Wallet
   const [showConvertModal, setShowConvertModal] = useState(false)
   const [convertAmountIdr, setConvertAmountIdr] = useState('1.000.000')
   const [sarExchangeRate] = useState(4220)
@@ -52,6 +77,33 @@ export default function AlaHaramainHubPage() {
   } | null>(null)
   const [showPinModal, setShowPinModal] = useState(false)
   const [successToast, setSuccessToast] = useState<string | null>(null)
+
+  // Modals & States for Ala Pilgrims Store
+  const [selectedEsim, setSelectedEsim] = useState<{
+    provider: string
+    name: string
+    quota: string
+    validity: string
+    sar: number
+  } | null>(null)
+  const [showEsimModal, setShowEsimModal] = useState(false)
+  const [esimPurchased, setEsimPurchased] = useState(false)
+
+  const [selectedRental, setSelectedRental] = useState<{
+    name: string
+    type: string
+    sar: number
+    desc: string
+  } | null>(null)
+  const [showRentalModal, setShowRentalModal] = useState(false)
+
+  const [selectedPrayer, setSelectedPrayer] = useState<{
+    title: string
+    sub: string
+    arabic: string
+    latin: string
+    meaning: string
+  } | null>(null)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -118,33 +170,41 @@ export default function AlaHaramainHubPage() {
         merchantName: 'Al Baik Express Ajyad',
         terminalId: 'D360-NFC #AL-9842',
         amountSar: 35.0,
-        sarRate: sarExchangeRate,
-        method: 'NFC Tap Contactless',
+        method: 'nfc',
       })
       setNfcTapping(false)
-      if (res.success) {
-        setNfcSuccess(true)
-        setTimeout(() => {
-          setNfcSuccess(false)
-          setShowNfcModal(false)
-          setSuccessToast('Pembayaran NFC SAR 35.00 di Al Baik berhasil!')
-          setTimeout(() => setSuccessToast(null), 3500)
-        }, 1500)
-      } else {
-        alert(res.error || 'Saldo SAR tidak mencukupi')
-        setShowNfcModal(false)
+
+      if (!res.success) {
+        triggerReaction('shake-warning', res.error || 'Saldo SAR tidak mencukupi')
+        return
       }
-    }, 1200)
+
+      setNfcSuccess(true)
+      triggerReaction('success', 'NFC Payment Sukses di Mesin EDC Kasir Al Baik!')
+      setTimeout(() => {
+        setShowNfcModal(false)
+        setNfcSuccess(false)
+      }, 1600)
+    }, 900)
+  }
+
+  const handleTopUpIdr = () => {
+    const nominal = parseInt(topUpNominal.replace(/\D/g, '') || '0', 10)
+    if (nominal <= 0) return
+    depositAlaDompet(nominal)
+    setShowTopUpModal(false)
+    triggerReaction('success', `Top up Rp${nominal.toLocaleString('id-ID')} berhasil!`)
+    setSuccessToast(`Saldo Ala Dompet bertambah Rp${nominal.toLocaleString('id-ID')}`)
+    setTimeout(() => setSuccessToast(null), 3000)
   }
 
   const handlePayMerchant = () => {
     if (!selectedMerchant) return
     const res = paySaudiMerchant({
       merchantName: selectedMerchant.name,
-      terminalId: 'D360-QR #GD-2041',
+      terminalId: 'POS-HARAMAIN',
       amountSar: selectedMerchant.sar,
-      sarRate: sarExchangeRate,
-      method: 'Scan QR Kasir',
+      method: 'card',
     })
 
     if (!res.success) {
@@ -153,8 +213,30 @@ export default function AlaHaramainHubPage() {
     }
 
     setShowPinModal(false)
+    triggerReaction('success', `Pembayaran SAR ${selectedMerchant.sar.toFixed(2)} ke ${selectedMerchant.name} berhasil!`)
     setSuccessToast(`Pembayaran SAR ${selectedMerchant.sar.toFixed(2)} ke ${selectedMerchant.name} berhasil!`)
     setSelectedMerchant(null)
+    setTimeout(() => setSuccessToast(null), 3500)
+  }
+
+  const handleBuyEsim = () => {
+    if (!selectedEsim) return
+    showLoader('Mengaktifkan Profil eSIM Saudi 5G...')
+    setTimeout(() => {
+      hideLoader()
+      setEsimPurchased(true)
+      triggerReaction('success', `eSIM ${selectedEsim.provider} 5G aktif dengan kuota ${selectedEsim.quota}!`)
+      setSuccessToast(`eSIM ${selectedEsim.provider} berhasil diinstal dan terhubung ke jaringan 5G Saudi!`)
+      setTimeout(() => setSuccessToast(null), 3500)
+    }, 800)
+  }
+
+  const handleBookRental = () => {
+    if (!selectedRental) return
+    setShowRentalModal(false)
+    triggerReaction('success', `Reservasi ${selectedRental.name} berhasil! Ambil di Counter Ajyad.`)
+    setSuccessToast(`Reservasi ${selectedRental.name} terkonfirmasi. Tunjukkan QR Aladin di counter pintu King Abdulaziz.`)
+    setSelectedRental(null)
     setTimeout(() => setSuccessToast(null), 3500)
   }
 
@@ -187,575 +269,899 @@ export default function AlaHaramainHubPage() {
           />
         </Link>
 
-        <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
-          Ala Haramain
-        </h1>
+        <div className="text-center">
+          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+            Ala Haramain
+          </h1>
+          <span className="text-[10px] font-extrabold text-[#059669] block leading-none">
+            Saudi Financial &amp; Pilgrim Hub
+          </span>
+        </div>
 
-        <Link
-          href="/pilgrim-bundle"
-          className="text-[11.5px] font-extrabold text-[#1C20C4] bg-[#EEF2FF] px-2.5 py-1 rounded-full hover:bg-[#E0E7FF] transition-colors"
-        >
-          eSIM Saudi →
-        </Link>
+        <div className="flex items-center gap-1 bg-emerald-50 px-2 py-1 rounded-full border border-emerald-200">
+          <ShieldCheck className="w-3.5 h-3.5 text-[#064E3B]" />
+          <span className="text-[9.5px] font-black uppercase text-[#064E3B]">
+            D360 / SAMA
+          </span>
+        </div>
       </div>
 
       {/* Scrollable Container */}
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 pb-24 space-y-4">
         {/* Toast Notification */}
         {successToast && (
-          <div className="p-3.5 bg-emerald-700 text-white rounded-2xl text-[12px] font-bold shadow-lg animate-in fade-in duration-200">
-            {successToast}
+          <div className="p-3.5 bg-[#064E3B] text-white rounded-2xl text-[12px] font-bold shadow-lg animate-in fade-in duration-200 flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-[#00F0A0] shrink-0" />
+            <span>{successToast}</span>
           </div>
         )}
 
         {/* ========================================================================= */}
-        {/* 1 PHYSICAL DUAL-SIDED HYBRID CARD (FRONT = IDR, BACK = SAR)              */}
+        {/* 2 SUB-FEATURE INTERACTIVE PORTAL CARDS (NOT GENERIC TABS)                 */}
         {/* ========================================================================= */}
-        <div>
-          {/* Card Side Indicator & Flip Button */}
-          <div className="flex items-center justify-between mb-2.5 px-1">
-            <div className="flex items-center gap-1.5 p-1 bg-gray-200/80 rounded-xl">
-              <button
-                type="button"
-                onClick={() => setIsFlipped(false)}
-                className={`py-1 px-3 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer ${
-                  !isFlipped
-                    ? 'bg-[#1C20C4] text-white shadow-xs'
-                    : 'text-gray-600 hover:text-gray-900'
+        <div className="grid grid-cols-2 gap-3">
+          {/* Sub-Feature Card 1: Haramain Wallet */}
+          <button
+            type="button"
+            onClick={() => setActiveSubFeature('wallet')}
+            className={`p-3.5 rounded-2xl text-left border transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between ${
+              activeSubFeature === 'wallet'
+                ? 'bg-gradient-to-br from-[#081D48] via-[#1037A6] to-[#1E40AF] text-white border-[#1037A6] shadow-lg ring-2 ring-[#00F0A0]'
+                : 'bg-white text-[#1A1D26] border-[#ECEEF2] hover:border-gray-300 shadow-xs'
+            }`}
+            style={{ minHeight: '115px' }}
+          >
+            <div className="flex items-center justify-between w-full">
+              <div
+                className={`w-8 h-8 rounded-xl flex items-center justify-center ${
+                  activeSubFeature === 'wallet' ? 'bg-white/20 text-[#00F0A0]' : 'bg-[#EEF2FF] text-[#1037A6]'
                 }`}
               >
-                Kartu Indo (IDR)
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsFlipped(true)}
-                className={`py-1 px-3 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer ${
-                  isFlipped
-                    ? 'bg-[#064E3B] text-white shadow-xs'
-                    : 'text-gray-600 hover:text-gray-900'
+                <CreditCard className="w-4 h-4" />
+              </div>
+              <span
+                className={`text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                  activeSubFeature === 'wallet' ? 'bg-[#00F0A0] text-[#064E3B]' : 'bg-gray-100 text-gray-600'
                 }`}
               >
-                Kartu Saudi (SAR)
-              </button>
+                Multi-Currency
+              </span>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setIsFlipped((prev) => !prev)}
-              className="flex items-center gap-1.5 py-1 px-2.5 bg-white border border-gray-200 hover:border-gray-300 rounded-xl text-[11px] font-extrabold text-[#1A1D26] shadow-xs active:scale-95 transition-all cursor-pointer"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-              </svg>
-              <span>{isFlipped ? 'Balik ke Kartu Indo (IDR)' : 'Balik ke Kartu Saudi (SAR)'}</span>
-            </button>
-          </div>
-
-          {/* 3D Card Viewport with Touch/Mouse Swipe Listeners & Tap to Flip */}
-          <div
-            onClick={() => setIsFlipped((prev) => !prev)}
-            onTouchStart={(e) => {
-              setTouchStartX(e.targetTouches[0].clientX)
-              setTouchEndX(null)
-            }}
-            onTouchMove={(e) => {
-              setTouchEndX(e.targetTouches[0].clientX)
-            }}
-            onTouchEnd={() => {
-              if (touchStartX !== null && touchEndX !== null) {
-                const diff = touchStartX - touchEndX
-                if (Math.abs(diff) > 35) {
-                  setIsFlipped((prev) => !prev)
-                }
-              }
-              setTouchStartX(null)
-              setTouchEndX(null)
-            }}
-            onMouseDown={(e) => {
-              setIsDragging(true)
-              setDragStartX(e.clientX)
-            }}
-            onMouseMove={(e) => {
-              if (!isDragging || dragStartX === null) return
-              const diff = dragStartX - e.clientX
-              if (Math.abs(diff) > 40) {
-                setIsFlipped((prev) => !prev)
-                setIsDragging(false)
-                setDragStartX(null)
-              }
-            }}
-            onMouseUp={() => {
-              setIsDragging(false)
-              setDragStartX(null)
-            }}
-            onMouseLeave={() => {
-              setIsDragging(false)
-              setDragStartX(null)
-            }}
-            style={{
-              perspective: '1200px',
-              width: '100%',
-              height: '215px',
-              cursor: 'pointer',
-              userSelect: 'none',
-              touchAction: 'pan-y',
-            }}
-          >
-            <div
-              style={{
-                width: '100%',
-                height: '100%',
-                position: 'relative',
-                transformStyle: 'preserve-3d',
-                transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-              }}
-            >
-              {/* ============================================================= */}
-              {/* SISI DEPAN: KARTU WALLET INDO (BANK ALADIN SYARIAH - IDR)     */}
-              {/* ============================================================= */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
-                  transform: 'rotateY(0deg) translateZ(1px)',
-                  opacity: isFlipped ? 0 : 1,
-                  transition: 'opacity 0.2s ease',
-                  borderRadius: '20px',
-                  background: 'linear-gradient(135deg, #081D48 0%, #162477 50%, #1C20C4 100%)',
-                  boxShadow: '0 12px 28px rgba(28, 32, 196, 0.35)',
-                  padding: '20px',
-                  color: 'white',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  boxSizing: 'border-box',
-                  overflow: 'hidden',
-                  pointerEvents: isFlipped ? 'none' : 'auto',
-                }}
-              >
-                {/* Background decorative pattern */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '-30px',
-                    right: '-30px',
-                    width: '180px',
-                    height: '180px',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)',
-                    pointerEvents: 'none',
-                  }}
-                />
-
-                {/* Top Row: Brand & Product */}
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="flex items-center gap-2">
-                    <span className="font-extrabold text-[15px] tracking-tight text-white">
-                      BANK ALADIN
-                    </span>
-                    <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/20 text-[#00F3AD] uppercase tracking-wider">
-                      Platinum GPN
-                    </span>
-                  </div>
-
-                  <span className="text-[10px] font-bold text-white/80 tracking-wider">
-                    DEBIT SYARIAH
-                  </span>
-                </div>
-
-                {/* EMV Chip & Contactless Wave */}
-                <div className="flex items-center gap-3 relative z-10 mt-1">
-                  {/* EMV Gold Chip SVG */}
-                  <div className="w-11 h-8 rounded-md bg-gradient-to-tr from-[#D4AF37] via-[#F3E5AB] to-[#AA771C] p-0.5 shadow-sm border border-amber-300/60 relative overflow-hidden flex items-center justify-center">
-                    <div className="w-full h-full border border-amber-800/30 rounded-xs flex flex-col justify-between p-0.5">
-                      <div className="h-[1px] bg-amber-900/40 w-full" />
-                      <div className="flex justify-between w-full">
-                        <div className="w-[1px] h-3 bg-amber-900/40" />
-                        <div className="w-2 h-2 rounded-full border border-amber-900/40" />
-                        <div className="w-[1px] h-3 bg-amber-900/40" />
-                      </div>
-                      <div className="h-[1px] bg-amber-900/40 w-full" />
-                    </div>
-                  </div>
-
-                  {/* Contactless Wave Icon */}
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" className="opacity-80">
-                    <path d="M8.5 16.5a5 5 0 0 1 0-7" />
-                    <path d="M12 19a9 9 0 0 0 0-14" />
-                    <path d="M15.5 21.5a13 13 0 0 0 0-19" />
-                  </svg>
-                </div>
-
-                {/* Embossed Card Number */}
-                <div className="relative z-10 my-1">
-                  <span
-                    style={{
-                      fontFamily: 'monospace',
-                      fontSize: '18px',
-                      fontWeight: 800,
-                      letterSpacing: '2.5px',
-                      textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-                      color: '#FFFFFF',
-                    }}
-                  >
-                    5241 •••• •••• 9842
-                  </span>
-                </div>
-
-                {/* Bottom Row: Holder Name & Valid Thru */}
-                <div className="flex items-end justify-between relative z-10">
-                  <div>
-                    <span className="text-[8.5px] uppercase tracking-wider text-white/60 block">
-                      Card Holder (Sisi Depan)
-                    </span>
-                    <span
-                      style={{
-                        fontSize: '12px',
-                        fontWeight: 800,
-                        letterSpacing: '0.8px',
-                        textTransform: 'uppercase',
-                        textShadow: '0 1px 2px rgba(0,0,0,0.5)',
-                      }}
-                    >
-                      {userName}
-                    </span>
-                  </div>
-
-                  <div className="text-right">
-                    <span className="text-[8.5px] uppercase tracking-wider text-white/60 block">
-                      Valid Thru
-                    </span>
-                    <span className="font-mono text-[12px] font-bold text-white">
-                      11/30
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* ============================================================= */}
-              {/* SISI KEDUA: KARTU WALLET SAUDI (TAMPAK DEPAN D360 SAUDI SAR)  */}
-              {/* ============================================================= */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
-                  transform: 'rotateY(180deg) translateZ(1px)',
-                  opacity: isFlipped ? 1 : 0,
-                  transition: 'opacity 0.2s ease',
-                  borderRadius: '20px',
-                  background: 'linear-gradient(135deg, #022C22 0%, #064E3B 45%, #047857 80%, #09382E 100%)',
-                  boxShadow: '0 12px 28px rgba(6, 78, 59, 0.45)',
-                  padding: '20px',
-                  color: 'white',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  boxSizing: 'border-box',
-                  overflow: 'hidden',
-                  pointerEvents: isFlipped ? 'auto' : 'none',
-                }}
-              >
-                {/* Background decorative gold ring */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '-35px',
-                    right: '-35px',
-                    width: '190px',
-                    height: '190px',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, rgba(253, 224, 71, 0.18) 0%, transparent 70%)',
-                    pointerEvents: 'none',
-                  }}
-                />
-
-                {/* Top Row: Saudi Brand & Mada Network */}
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="flex items-center gap-2">
-                    <span className="font-extrabold text-[15px] tracking-tight text-white">
-                      D360 SAUDI
-                    </span>
-                    <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-900/60 border border-emerald-400/40 text-[#00F3AD] uppercase tracking-wider">
-                      MADA SYARIAH
-                    </span>
-                  </div>
-
-                  <span className="text-[10px] font-bold text-emerald-200/90 tracking-wider">
-                    DEBIT SYARIAH (SAR)
-                  </span>
-                </div>
-
-                {/* EMV Chip & Contactless Wave & Saldo SAR */}
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="flex items-center gap-2.5">
-                    {/* Realistic Gold EMV Chip */}
-                    <div
-                      style={{
-                        width: '38px',
-                        height: '28px',
-                        borderRadius: '6px',
-                        background: 'linear-gradient(135deg, #FFF3C4 0%, #F59E0B 50%, #D97706 100%)',
-                        boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.7), 0 2px 4px rgba(0,0,0,0.25)',
-                        border: '1px solid rgba(180, 83, 9, 0.6)',
-                        position: 'relative',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: '26px',
-                          height: '18px',
-                          border: '1px solid rgba(180, 83, 9, 0.45)',
-                          borderRadius: '3px',
-                        }}
-                      />
-                    </div>
-
-                    {/* Contactless Wave */}
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="text-white/80">
-                      <path d="M8.5 16.5a5 5 0 0 1 0-7" />
-                      <path d="M12 19a8.5 8.5 0 0 0 0-12" />
-                      <path d="M15.5 21.5a12 12 0 0 0 0-17" />
-                    </svg>
-                  </div>
-
-                  <div className="text-right">
-                    <span className="text-[9px] text-emerald-200/80 font-medium block">
-                      Saldo Riyal di Saudi
-                    </span>
-                    <span className="text-[15px] font-black text-[#00F3AD] tracking-tight">
-                      SAR {(dompetSar || 0).toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Saudi Card Number */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <span
-                    style={{
-                      fontFamily: 'monospace',
-                      fontSize: '15.5px',
-                      fontWeight: 800,
-                      letterSpacing: '2.5px',
-                      textShadow: '0 2px 4px rgba(0,0,0,0.4)',
-                    }}
-                  >
-                    {showCardNumber ? '9660 5481 9284 2841' : '9660 •••• •••• 2841'}
-                  </span>
-
-                  <button
-                    type="button"
-                    onClick={() => setShowCardNumber((prev) => !prev)}
-                    className="p-1 rounded-md bg-white/10 hover:bg-white/20 active:scale-95 transition-all text-white/80 text-[11px] font-bold"
-                  >
-                    {showCardNumber ? 'Sembunyi' : 'Lihat'}
-                  </button>
-                </div>
-
-                {/* Bottom Row: Cardholder & Exp */}
-                <div className="flex items-end justify-between relative z-10">
-                  <div>
-                    <span className="text-[8.5px] uppercase tracking-wider text-emerald-200/70 block">
-                      Card Holder (Saudi Mada)
-                    </span>
-                    <span
-                      style={{
-                        fontSize: '12px',
-                        fontWeight: 800,
-                        letterSpacing: '0.8px',
-                        textTransform: 'uppercase',
-                        textShadow: '0 1px 2px rgba(0,0,0,0.5)',
-                      }}
-                    >
-                      {userName}
-                    </span>
-                  </div>
-
-                  <div className="text-right">
-                    <span className="text-[8.5px] uppercase tracking-wider text-emerald-200/70 block">
-                      Valid Thru
-                    </span>
-                    <span className="font-mono text-[12px] font-bold text-white">
-                      11/30
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Swipe Hint */}
-          <div className="flex items-center justify-center gap-1.5 mt-2">
-            <span className="text-[10.5px] text-gray-500 font-medium">
-              💡 Usap (swipe) kartu atau klik tombol di atas untuk membalikkan sisi kartu
-            </span>
-          </div>
-
-          {/* Quick Balance Details of the Currently Visible Face */}
-          <div
-            className="mt-3 bg-white rounded-2xl p-4 border border-[#ECEEF2] shadow-xs flex items-center justify-between"
-          >
             <div>
-              <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block">
-                {isFlipped ? 'Saldo Sisi Belakang: Dompet Saudi (SAR)' : 'Saldo Sisi Depan: Dompet Aladin (IDR)'}
-              </span>
-              <span className="text-[22px] font-black text-[#1A1D26] tracking-tight block">
-                {isFlipped ? `SAR ${dompetSar.toFixed(2)}` : `Rp${alaDompet.toLocaleString('id-ID')}`}
-              </span>
-              <span className="text-[10.5px] text-gray-500 font-medium">
-                {isFlipped
-                  ? `≈ Rp${Math.round(dompetSar * sarExchangeRate).toLocaleString('id-ID')} (Kurs 0% Markup)`
-                  : 'Sumber Rekening Utama Aladin'}
+              <h3 className="text-[14px] font-black leading-tight">Haramain Wallet</h3>
+              <p
+                className={`text-[10.5px] mt-1 leading-tight line-clamp-2 ${
+                  activeSubFeature === 'wallet' ? 'text-white/85' : 'text-gray-500'
+                }`}
+              >
+                Kartu Hybrid IDR &amp; SAR, Konversi Kurs &amp; Tap NFC Kasir
+              </p>
+            </div>
+          </button>
+
+          {/* Sub-Feature Card 2: Ala Pilgrims Store */}
+          <button
+            type="button"
+            onClick={() => setActiveSubFeature('pilgrims')}
+            className={`p-3.5 rounded-2xl text-left border transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between ${
+              activeSubFeature === 'pilgrims'
+                ? 'bg-gradient-to-br from-[#064E3B] via-[#047857] to-[#059669] text-white border-[#064E3B] shadow-lg ring-2 ring-[#00F0A0]'
+                : 'bg-white text-[#1A1D26] border-[#ECEEF2] hover:border-gray-300 shadow-xs'
+            }`}
+            style={{ minHeight: '115px' }}
+          >
+            <div className="flex items-center justify-between w-full">
+              <div
+                className={`w-8 h-8 rounded-xl flex items-center justify-center ${
+                  activeSubFeature === 'pilgrims' ? 'bg-white/20 text-[#00F0A0]' : 'bg-emerald-50 text-[#064E3B]'
+                }`}
+              >
+                <ShoppingBag className="w-4 h-4" />
+              </div>
+              <span
+                className={`text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                  activeSubFeature === 'pilgrims' ? 'bg-[#00F0A0] text-[#064E3B]' : 'bg-gray-100 text-gray-600'
+                }`}
+              >
+                Store &amp; Layanan
               </span>
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              {isFlipped ? (
-                <>
+            <div>
+              <h3 className="text-[14px] font-black leading-tight">Ala Pilgrims</h3>
+              <p
+                className={`text-[10.5px] mt-1 leading-tight line-clamp-2 ${
+                  activeSubFeature === 'pilgrims' ? 'text-white/85' : 'text-gray-500'
+                }`}
+              >
+                eSIM Roaming 5G, Sewa Skuter Tawaf &amp; Panduan Doa
+              </p>
+            </div>
+          </button>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* SUB-FEATURE VIEW 1: HARAMAIN WALLET (CARDS, SAR BALANCE & PAYMENTS)       */}
+        {/* ========================================================================= */}
+        {activeSubFeature === 'wallet' && (
+          <div className="space-y-4 animate-in fade-in duration-200">
+            {/* 1 PHYSICAL DUAL-SIDED HYBRID CARD (FRONT = IDR, BACK = SAR) */}
+            <div>
+              {/* Card Side Indicator & Flip Button */}
+              <div className="flex items-center justify-between mb-2.5 px-1">
+                <div className="flex items-center gap-1.5 p-1 bg-gray-200/80 rounded-xl">
                   <button
                     type="button"
-                    onClick={() => setShowConvertModal(true)}
-                    className="py-2 px-3.5 bg-[#064E3B] hover:bg-[#047857] text-white text-[12px] font-extrabold rounded-xl shadow-xs active:scale-95 transition-all cursor-pointer"
+                    onClick={() => setIsFlipped(false)}
+                    className={`py-1 px-3 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer ${
+                      !isFlipped
+                        ? 'bg-[#1C20C4] text-white shadow-xs'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
                   >
-                    ⇄ Convert ke SAR
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowNfcModal(true)}
-                    className="py-1.5 px-3.5 bg-emerald-50 text-[#064E3B] border border-emerald-200 text-[11px] font-bold rounded-xl active:scale-95 transition-all cursor-pointer"
-                  >
-                    Tap NFC Kasir
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => setShowTopUpModal(true)}
-                    className="py-2 px-3.5 bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[12px] font-extrabold rounded-xl shadow-xs active:scale-95 transition-all cursor-pointer"
-                  >
-                    + Isi Saldo IDR
+                    Kartu Indo (IDR)
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsFlipped(true)}
-                    className="py-1.5 px-3.5 bg-[#EEF2FF] text-[#1C20C4] border border-[#C7D2FE] text-[11px] font-bold rounded-xl active:scale-95 transition-all cursor-pointer"
+                    className={`py-1 px-3 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer ${
+                      isFlipped
+                        ? 'bg-[#064E3B] text-white shadow-xs'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
                   >
-                    Buka Sisi Saudi →
+                    Kartu Saudi (SAR)
                   </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* METODE PEMBAYARAN DI SAUDI */}
-        <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
-          <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block mb-2">
-            PILIHAN METODE BAYAR DI TANAH SUCI
-          </span>
-
-          <div className="grid grid-cols-2 gap-3">
-            {/* 1. Default: NFC Tap */}
-            <div
-              onClick={() => setShowNfcModal(true)}
-              className="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50 cursor-pointer transition-all active:scale-98"
-            >
-              <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center mb-2 shadow-xs">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M6 18h12M6 14h12M6 10h12M6 6h12" />
-                </svg>
-              </div>
-              <span className="text-[13px] font-extrabold text-[#1A1D26] block">
-                Tap NFC Kasir
-              </span>
-              <span className="text-[10.5px] text-[#059669] font-bold block mt-0.5">
-                Default • Instan di EDC
-              </span>
-            </div>
-
-            {/* 2. Fallback: Kartu Fisik */}
-            <Link
-              href="/ala-haramain/kartu-fisik"
-              className="p-3.5 rounded-xl border border-gray-200 bg-gray-50 hover:bg-gray-100 cursor-pointer transition-all active:scale-98 block"
-            >
-              <div className="w-10 h-10 rounded-xl bg-[#081D48] text-white flex items-center justify-center mb-2 shadow-xs">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                  <line x1="2" y1="10" x2="22" y2="10" />
-                </svg>
-              </div>
-              <span className="text-[13px] font-extrabold text-[#1A1D26] block">
-                Kartu Fisik
-              </span>
-              <span className="text-[10.5px] text-gray-500 font-bold block mt-0.5">
-                {cardLinked ? '✓ Tertaut Aktif' : 'Ambil di Booth Bandara'}
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        {/* MERCHANT REKOMENDASI MAKKAH & MADINAH */}
-        <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
-          <div className="flex justify-between items-center mb-3">
-            <div>
-              <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block">
-                MERCHANT RESMI SAUDI
-              </span>
-              <h3 className="text-[14px] font-extrabold text-[#1A1D26]">Sekitar Masjidil Haram &amp; Nabawi</h3>
-            </div>
-            <span className="text-[11px] font-bold text-[#059669]">Langsung SAR</span>
-          </div>
-
-          <div className="space-y-3">
-            {[
-              { name: 'Al Baik Restaurant Ajyad', category: 'Kuliner Halal', sar: 32.0, location: '150m dari Haram' },
-              { name: 'Nahdi Pharmacy Clock Tower', category: 'Farmasi & Medis', sar: 45.5, location: 'Abraj Al Bait Lt. 2' },
-              { name: 'Bin Dawood Supermarket Misfalah', category: 'Oleh-Oleh & Kurma', sar: 68.0, location: 'Depan Hotel Jemaah' },
-              { name: 'Jarir Bookstore Madinah', category: 'Kitab & Mushaf', sar: 50.0, location: '300m dari Nabawi' },
-            ].map((m) => (
-              <div
-                key={m.name}
-                className="flex items-center justify-between p-3.5 rounded-2xl bg-[#F8FAFC] border border-[#ECEEF2] hover:border-gray-300 transition-colors"
-              >
-                <div className="pr-3 flex-1">
-                  <h4 className="text-[13.5px] font-extrabold text-[#1A1D26]">{m.name}</h4>
-                  <p className="text-[11px] text-gray-500 mt-0.5">{m.location} • {m.category}</p>
                 </div>
+
                 <button
-                  onClick={() => {
-                    setSelectedMerchant(m)
-                    setShowPinModal(true)
-                  }}
-                  className="px-4 py-2 rounded-full bg-[#064E3B] text-white text-[12px] font-extrabold hover:bg-emerald-800 cursor-pointer active:scale-95 transition-all shrink-0 shadow-xs"
+                  type="button"
+                  onClick={() => setIsFlipped((prev) => !prev)}
+                  className="flex items-center gap-1.5 py-1 px-2.5 bg-white border border-gray-200 hover:border-gray-300 rounded-xl text-[11px] font-extrabold text-[#1A1D26] shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
-                  Bayar SAR {m.sar.toFixed(2)}
+                  <ArrowRightLeft className="w-3.5 h-3.5 text-[#1037A6]" />
+                  <span>{isFlipped ? 'Balik ke Kartu Indo' : 'Balik ke Kartu Saudi'}</span>
                 </button>
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Security & Partner Endorsement Banner */}
-        <div className="p-3.5 rounded-2xl bg-[#F8FAFC] border border-[#ECEEF2] text-center">
-          <span className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider block">
+              {/* 3D Card Viewport with Touch/Mouse Swipe Listeners & Tap to Flip */}
+              <div
+                onClick={() => setIsFlipped((prev) => !prev)}
+                onTouchStart={(e) => {
+                  setTouchStartX(e.targetTouches[0].clientX)
+                  setTouchEndX(null)
+                }}
+                onTouchMove={(e) => {
+                  setTouchEndX(e.targetTouches[0].clientX)
+                }}
+                onTouchEnd={() => {
+                  if (touchStartX !== null && touchEndX !== null) {
+                    const diff = touchStartX - touchEndX
+                    if (Math.abs(diff) > 35) {
+                      setIsFlipped((prev) => !prev)
+                    }
+                  }
+                  setTouchStartX(null)
+                  setTouchEndX(null)
+                }}
+                onMouseDown={(e) => {
+                  setIsDragging(true)
+                  setDragStartX(e.clientX)
+                }}
+                onMouseMove={(e) => {
+                  if (!isDragging || dragStartX === null) return
+                  const diff = dragStartX - e.clientX
+                  if (Math.abs(diff) > 40) {
+                    setIsFlipped((prev) => !prev)
+                    setIsDragging(false)
+                    setDragStartX(null)
+                  }
+                }}
+                onMouseUp={() => {
+                  setIsDragging(false)
+                  setDragStartX(null)
+                }}
+                onMouseLeave={() => {
+                  setIsDragging(false)
+                  setDragStartX(null)
+                }}
+                style={{
+                  perspective: '1200px',
+                  width: '100%',
+                  height: '215px',
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  touchAction: 'pan-y',
+                }}
+              >
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    position: 'relative',
+                    transformStyle: 'preserve-3d',
+                    transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                    transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                  }}
+                >
+                  {/* SISI DEPAN: KARTU WALLET INDO (BANK ALADIN SYARIAH - IDR) */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      backfaceVisibility: 'hidden',
+                      WebkitBackfaceVisibility: 'hidden',
+                      transform: 'rotateY(0deg) translateZ(1px)',
+                      opacity: isFlipped ? 0 : 1,
+                      transition: 'opacity 0.2s ease',
+                      borderRadius: '20px',
+                      background: 'linear-gradient(135deg, #081D48 0%, #162477 50%, #1C20C4 100%)',
+                      boxShadow: '0 12px 28px rgba(28, 32, 196, 0.35)',
+                      padding: '20px',
+                      color: 'white',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      boxSizing: 'border-box',
+                      overflow: 'hidden',
+                      pointerEvents: isFlipped ? 'none' : 'auto',
+                    }}
+                  >
+                    {/* Top Row */}
+                    <div className="flex items-center justify-between relative z-10">
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-[15px] tracking-tight text-white">
+                          BANK ALADIN
+                        </span>
+                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/20 text-[#00F3AD] uppercase tracking-wider">
+                          Platinum GPN
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-bold text-white/80 tracking-wider">
+                        DEBIT SYARIAH
+                      </span>
+                    </div>
+
+                    {/* EMV Chip & Contactless Wave */}
+                    <div className="flex items-center gap-3 relative z-10 mt-1">
+                      <div className="w-11 h-8 rounded-md bg-gradient-to-tr from-[#D4AF37] via-[#F3E5AB] to-[#AA771C] p-0.5 shadow-sm border border-amber-300/60 relative overflow-hidden flex items-center justify-center">
+                        <div className="w-full h-full border border-amber-800/30 rounded-xs flex flex-col justify-between p-0.5">
+                          <div className="h-[1px] bg-amber-900/40 w-full" />
+                          <div className="flex justify-between w-full">
+                            <div className="w-[1px] h-3 bg-amber-900/40" />
+                            <div className="w-2 h-2 rounded-full border border-amber-900/40" />
+                            <div className="w-[1px] h-3 bg-amber-900/40" />
+                          </div>
+                          <div className="h-[1px] bg-amber-900/40 w-full" />
+                        </div>
+                      </div>
+                      <Radio className="w-5 h-5 text-white/80" />
+                    </div>
+
+                    {/* Card Number */}
+                    <div className="relative z-10 my-1">
+                      <span
+                        style={{
+                          fontFamily: 'monospace',
+                          fontSize: '18px',
+                          fontWeight: 800,
+                          letterSpacing: '2.5px',
+                          textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                        }}
+                      >
+                        {showCardNumber ? '4000 1234 5678 9010' : '4000 •••• •••• 9010'}
+                      </span>
+                    </div>
+
+                    {/* Bottom Row */}
+                    <div className="flex items-end justify-between relative z-10">
+                      <div>
+                        <span className="text-[8.5px] uppercase tracking-wider text-white/60 block">
+                          Card Holder
+                        </span>
+                        <span className="font-extrabold text-[12px] uppercase text-white tracking-wide">
+                          {userName}
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[8.5px] uppercase tracking-wider text-white/60 block">
+                          Valid Thru
+                        </span>
+                        <span className="font-mono text-[12px] font-bold text-white">
+                          11/29
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* SISI BELAKANG: KARTU SAUDI MADA (D360 BANK SAUDI - SAR) */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      backfaceVisibility: 'hidden',
+                      WebkitBackfaceVisibility: 'hidden',
+                      transform: 'rotateY(180deg) translateZ(1px)',
+                      opacity: !isFlipped ? 0 : 1,
+                      transition: 'opacity 0.2s ease',
+                      borderRadius: '20px',
+                      background: 'linear-gradient(135deg, #03362A 0%, #064E3B 50%, #0D6852 100%)',
+                      boxShadow: '0 12px 28px rgba(6, 78, 59, 0.45)',
+                      padding: '20px',
+                      color: 'white',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      boxSizing: 'border-box',
+                      overflow: 'hidden',
+                      pointerEvents: !isFlipped ? 'none' : 'auto',
+                    }}
+                  >
+                    {/* Top Row */}
+                    <div className="flex items-center justify-between relative z-10">
+                      <div className="flex items-center gap-2">
+                        <span className="font-black text-[15px] tracking-tight text-[#00F0A0]">
+                          D360 BANK
+                        </span>
+                        <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-400/20 text-[#00F0A0] border border-[#00F0A0]/30 uppercase">
+                          MADA • SAUDI
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-bold text-emerald-200/80 tracking-wider">
+                        SAR MULTI-WALLET
+                      </span>
+                    </div>
+
+                    {/* Chip & NFC */}
+                    <div className="flex items-center gap-3 relative z-10 mt-1">
+                      <div className="w-11 h-8 rounded-md bg-gradient-to-tr from-[#E6C665] via-[#FFF1BD] to-[#B08928] p-0.5 shadow-sm border border-amber-200/70 relative overflow-hidden flex items-center justify-center">
+                        <div className="w-full h-full border border-amber-900/40 rounded-xs flex flex-col justify-between p-0.5">
+                          <div className="h-[1px] bg-amber-900/40 w-full" />
+                          <div className="flex justify-between w-full">
+                            <div className="w-[1px] h-3 bg-amber-900/40" />
+                            <div className="w-2 h-2 rounded-full border border-amber-900/40" />
+                            <div className="w-[1px] h-3 bg-amber-900/40" />
+                          </div>
+                          <div className="h-[1px] bg-amber-900/40 w-full" />
+                        </div>
+                      </div>
+                      <Radio className="w-5 h-5 text-emerald-200" />
+                    </div>
+
+                    {/* Card Number */}
+                    <div className="relative z-10 my-1">
+                      <span
+                        style={{
+                          fontFamily: 'monospace',
+                          fontSize: '18px',
+                          fontWeight: 800,
+                          letterSpacing: '2.5px',
+                          textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                        }}
+                      >
+                        {showCardNumber ? '9660 5481 9284 2841' : '9660 •••• •••• 2841'}
+                      </span>
+                    </div>
+
+                    {/* Bottom Row */}
+                    <div className="flex items-end justify-between relative z-10">
+                      <div>
+                        <span className="text-[8.5px] uppercase tracking-wider text-emerald-200/70 block">
+                          Card Holder (Saudi Mada)
+                        </span>
+                        <span className="font-extrabold text-[12px] uppercase text-white tracking-wide">
+                          {userName}
+                        </span>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[8.5px] uppercase tracking-wider text-emerald-200/70 block">
+                          Valid Thru
+                        </span>
+                        <span className="font-mono text-[12px] font-bold text-white">
+                          11/30
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Swipe Hint */}
+              <div className="flex items-center justify-center gap-1.5 mt-2 text-gray-500">
+                <Info className="w-3.5 h-3.5 text-[#1037A6]" />
+                <span className="text-[10.5px] font-medium">
+                  Usap kartu atau klik tombol di atas untuk membalikkan sisi kartu
+                </span>
+              </div>
+
+              {/* Quick Balance Details of the Currently Visible Face */}
+              <div className="mt-3 bg-white rounded-2xl p-4 border border-[#ECEEF2] shadow-xs flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block">
+                    {isFlipped ? 'Saldo Sisi Belakang: Dompet Saudi (SAR)' : 'Saldo Sisi Depan: Dompet Aladin (IDR)'}
+                  </span>
+                  <span className="text-[22px] font-black text-[#1A1D26] tracking-tight block">
+                    {isFlipped ? `SAR ${dompetSar.toFixed(2)}` : `Rp${alaDompet.toLocaleString('id-ID')}`}
+                  </span>
+                  <span className="text-[10.5px] text-gray-500 font-medium">
+                    {isFlipped
+                      ? `≈ Rp${Math.round(dompetSar * sarExchangeRate).toLocaleString('id-ID')} (Kurs 0% Markup)`
+                      : 'Sumber Rekening Utama Aladin'}
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  {isFlipped ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setShowConvertModal(true)}
+                        className="py-2 px-3.5 bg-[#064E3B] hover:bg-[#047857] text-white text-[12px] font-extrabold rounded-xl shadow-xs active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
+                      >
+                        <ArrowRightLeft className="w-3.5 h-3.5" />
+                        <span>Convert SAR</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowNfcModal(true)}
+                        className="py-1.5 px-3.5 bg-emerald-50 text-[#064E3B] border border-emerald-200 text-[11px] font-bold rounded-xl active:scale-95 transition-all cursor-pointer flex items-center gap-1"
+                      >
+                        <Radio className="w-3 h-3" />
+                        <span>Tap NFC</span>
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setShowTopUpModal(true)}
+                        className="py-2 px-3.5 bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[12px] font-extrabold rounded-xl shadow-xs active:scale-95 transition-all cursor-pointer"
+                      >
+                        + Isi Saldo IDR
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsFlipped(true)}
+                        className="py-1.5 px-3.5 bg-[#EEF2FF] text-[#1C20C4] border border-[#C7D2FE] text-[11px] font-bold rounded-xl active:scale-95 transition-all cursor-pointer flex items-center gap-1"
+                      >
+                        <span>Sisi Saudi</span>
+                        <ChevronRight className="w-3 h-3" />
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* METODE PEMBAYARAN DI SAUDI */}
+            <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
+              <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block mb-2">
+                PILIHAN METODE BAYAR DI TANAH SUCI
+              </span>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div
+                  onClick={() => setShowNfcModal(true)}
+                  className="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50 cursor-pointer transition-all active:scale-98"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center mb-2 shadow-xs">
+                    <Radio className="w-5 h-5" />
+                  </div>
+                  <span className="text-[13px] font-extrabold text-[#1A1D26] block">
+                    Tap NFC Kasir
+                  </span>
+                  <span className="text-[10.5px] text-[#059669] font-bold block mt-0.5">
+                    Default • Instan di EDC
+                  </span>
+                </div>
+
+                <Link
+                  href="/ala-haramain/kartu-fisik"
+                  className="p-3.5 rounded-xl border border-gray-200 bg-gray-50 hover:bg-gray-100 cursor-pointer transition-all active:scale-98 block"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-[#081D48] text-white flex items-center justify-center mb-2 shadow-xs">
+                    <CreditCard className="w-5 h-5" />
+                  </div>
+                  <span className="text-[13px] font-extrabold text-[#1A1D26] block">
+                    Kartu Fisik
+                  </span>
+                  <span className="text-[10.5px] text-gray-500 font-bold block mt-0.5">
+                    {cardLinked ? 'Tertaut Aktif' : 'Ambil di Booth Bandara'}
+                  </span>
+                </Link>
+              </div>
+            </div>
+
+            {/* MERCHANT REKOMENDASI MAKKAH & MADINAH */}
+            <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
+              <div className="flex justify-between items-center mb-3">
+                <div>
+                  <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block">
+                    MERCHANT RESMI SAUDI
+                  </span>
+                  <h3 className="text-[14px] font-extrabold text-[#1A1D26]">
+                    Sekitar Masjidil Haram &amp; Nabawi
+                  </h3>
+                </div>
+                <span className="text-[11px] font-bold text-[#059669]">Langsung SAR</span>
+              </div>
+
+              <div className="space-y-3">
+                {[
+                  { name: 'Al Baik Restaurant Ajyad', category: 'Kuliner Halal', sar: 32.0, location: '150m dari Haram' },
+                  { name: 'Nahdi Pharmacy Clock Tower', category: 'Farmasi & Medis', sar: 45.5, location: 'Abraj Al Bait Lt. 2' },
+                  { name: 'Bin Dawood Supermarket Misfalah', category: 'Oleh-Oleh & Kurma', sar: 68.0, location: 'Depan Hotel Jemaah' },
+                  { name: 'Jarir Bookstore Madinah', category: 'Kitab & Mushaf', sar: 50.0, location: '300m dari Nabawi' },
+                ].map((m) => (
+                  <div
+                    key={m.name}
+                    className="flex items-center justify-between p-3.5 rounded-2xl bg-[#F8FAFC] border border-[#ECEEF2] hover:border-gray-300 transition-colors"
+                  >
+                    <div className="pr-3 flex-1">
+                      <h4 className="text-[13.5px] font-extrabold text-[#1A1D26]">{m.name}</h4>
+                      <p className="text-[11px] text-gray-500 mt-0.5">{m.location} • {m.category}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setSelectedMerchant(m)
+                        setShowPinModal(true)
+                      }}
+                      className="px-4 py-2 rounded-full bg-[#064E3B] text-white text-[12px] font-extrabold hover:bg-emerald-800 cursor-pointer active:scale-95 transition-all shrink-0 shadow-xs"
+                    >
+                      Bayar SAR {m.sar.toFixed(2)}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================================= */}
+        {/* SUB-FEATURE VIEW 2: ALA PILGRIMS (STORE, ESIM, RENTAL & PRAYER GUIDE)     */}
+        {/* ========================================================================= */}
+        {activeSubFeature === 'pilgrims' && (
+          <div className="space-y-4 animate-in fade-in duration-200">
+            {/* Promo Header Banner */}
+            <div className="bg-gradient-to-br from-[#064E3B] to-[#0D6852] rounded-2xl p-4 text-white shadow-md">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-white/20 text-[#00F0A0] border border-white/20">
+                  Layanan Khusus Jamaah
+                </span>
+                <span className="text-[11px] text-emerald-200 font-bold">100% Resmi</span>
+              </div>
+              <h3 className="text-[16px] font-black">Kebutuhan Ibadah di Tanah Suci</h3>
+              <p className="text-[11.5px] text-white/85 mt-1 leading-relaxed">
+                Pesan paket data roaming eSIM Saudi 5G tanpa ganti kartu fisik, sewa skuter tawaf lantai 3, dan akses panduan manasik audio offline.
+              </p>
+            </div>
+
+            {/* Section 1: eSIM Saudi 5G (Roaming Langsung Aktif) */}
+            <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block">
+                    PAKET DATA SAUDI 5G (ROAMING)
+                  </span>
+                  <h3 className="text-[14.5px] font-black text-[#1A1D26]">eSIM Jamaah Haji &amp; Umrah</h3>
+                </div>
+                <div className="flex items-center gap-1 text-[#059669] font-bold text-[11px]">
+                  <Wifi className="w-3.5 h-3.5" />
+                  <span>Langsung Aktif</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {[
+                  {
+                    provider: 'STC Sawa Ziyarah 5G',
+                    name: 'Paket Hemat Ziyarah',
+                    quota: '10 GB Data 5G + 100 Menit Nelpon',
+                    validity: 'Masa Aktif 15 Hari',
+                    sar: 55,
+                    popular: false,
+                  },
+                  {
+                    provider: 'Mobily Umrah & Hajj Pass',
+                    name: 'Paket Populer Jamaah',
+                    quota: '20 GB Data + Bebas Kuota WhatsApp & Maps',
+                    validity: 'Masa Aktif 30 Hari',
+                    sar: 85,
+                    popular: true,
+                  },
+                  {
+                    provider: 'Zain Saudi Pilgrim Ultimate',
+                    name: 'Paket Unlimited Sebulan',
+                    quota: 'Unlimited Data 5G + 150 Menit Domestik',
+                    validity: 'Masa Aktif 30 Hari',
+                    sar: 120,
+                    popular: false,
+                  },
+                ].map((pkg) => (
+                  <div
+                    key={pkg.provider}
+                    className={`p-3.5 rounded-2xl border transition-all ${
+                      pkg.popular
+                        ? 'border-emerald-500 bg-emerald-50/40 shadow-xs'
+                        : 'border-[#ECEEF2] bg-[#F8FAFC]'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[13px] font-black text-[#1A1D26]">
+                            {pkg.provider}
+                          </span>
+                          {pkg.popular && (
+                            <span className="text-[8.5px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-700 text-white">
+                              Pilihan Utama
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-[11.5px] font-bold text-gray-700 mt-0.5">
+                          {pkg.quota}
+                        </p>
+                        <span className="text-[10px] text-gray-500 block mt-0.5">
+                          {pkg.validity}
+                        </span>
+                      </div>
+
+                      <div className="text-right">
+                        <span className="text-[15px] font-black text-[#064E3B] block">
+                          SAR {pkg.sar}
+                        </span>
+                        <span className="text-[9.5px] text-gray-500 font-medium block">
+                          ≈ Rp{Math.round(pkg.sar * sarExchangeRate).toLocaleString('id-ID')}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 pt-2 border-t border-gray-200/60 flex items-center justify-between">
+                      <span className="text-[10.5px] text-gray-500 flex items-center gap-1">
+                        <QrCode className="w-3.5 h-3.5 text-gray-500" />
+                        Instal via Scan QR
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedEsim(pkg)
+                          setShowEsimModal(true)
+                          setEsimPurchased(false)
+                        }}
+                        className="py-1.5 px-3.5 rounded-full bg-[#064E3B] text-white text-[11.5px] font-black hover:bg-emerald-800 active:scale-95 transition-all shadow-xs"
+                      >
+                        Beli &amp; Pasang eSIM
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Section 2: Sewa Skuter Listrik & Kursi Roda Tawaf */}
+            <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block">
+                    FASILITAS MASJIDIL HARAM
+                  </span>
+                  <h3 className="text-[14.5px] font-black text-[#1A1D26]">
+                    Sewa Skuter Tawaf &amp; Kursi Roda
+                  </h3>
+                </div>
+                <span className="text-[11px] font-bold text-[#1037A6]">Lantai 3 Mezzanine</span>
+              </div>
+
+              <div className="space-y-3">
+                {[
+                  {
+                    name: 'Skuter Listrik Tunggal (1 Orang)',
+                    type: 'Self-Drive',
+                    sar: 57.5,
+                    desc: 'Jalur khusus skuter ber-AC lantai 3 untuk Tawaf & Sa’i mandiri dengan kontrol pedal mudah.',
+                  },
+                  {
+                    name: 'Skuter Listrik Ganda (2 Orang)',
+                    type: 'Keluarga / Berdua',
+                    sar: 115.0,
+                    desc: 'Kapasitas 2 orang dewasa untuk melaksanakan Tawaf & Sa’i bersama pasangan atau orang tua.',
+                  },
+                  {
+                    name: 'Jasa Pendorong Kursi Roda Resmi',
+                    type: 'Petugas Berizin Resmi',
+                    sar: 150.0,
+                    desc: 'Dipandu petugas resmi berrompi khusus Masjidil Haram untuk seluruh putaran Tawaf & Sa’i.',
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.name}
+                    className="p-3.5 rounded-2xl bg-[#F8FAFC] border border-[#ECEEF2] flex flex-col justify-between"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="pr-3">
+                        <span className="text-[9.5px] font-bold px-2 py-0.5 rounded-md bg-blue-100 text-[#1037A6] uppercase tracking-wider inline-block mb-1">
+                          {item.type}
+                        </span>
+                        <h4 className="text-[13.5px] font-black text-[#1A1D26]">{item.name}</h4>
+                        <p className="text-[11px] text-gray-600 mt-1 leading-relaxed">{item.desc}</p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="text-[15px] font-black text-[#064E3B] block">
+                          SAR {item.sar.toFixed(2)}
+                        </span>
+                        <span className="text-[9px] text-gray-500 block">
+                          ≈ Rp{Math.round(item.sar * sarExchangeRate).toLocaleString('id-ID')}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 pt-2 border-t border-gray-200/60 flex items-center justify-between">
+                      <span className="text-[10px] text-gray-500 flex items-center gap-1">
+                        <MapPin className="w-3.5 h-3.5 text-gray-400" />
+                        Ambil di Gate King Abdulaziz
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedRental(item)
+                          setShowRentalModal(true)
+                        }}
+                        className="py-1.5 px-3 rounded-full bg-[#1037A6] text-white text-[11.5px] font-extrabold hover:bg-blue-800 active:scale-95 transition-all shadow-xs"
+                      >
+                        Pesan Layanan
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Section 3: Direktori Resto Cita Rasa Nusantara di Makkah & Madinah */}
+            <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block">
+                    KULINER NUSANTARA &amp; HALAL
+                  </span>
+                  <h3 className="text-[14.5px] font-black text-[#1A1D26]">Resto Favorit Jamaah</h3>
+                </div>
+                <div className="flex items-center gap-1 text-amber-600 font-bold text-[11px]">
+                  <Utensils className="w-3.5 h-3.5" />
+                  <span>Halal 100%</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-2.5">
+                {[
+                  {
+                    name: 'Rumah Makan Garuda Makkah',
+                    menu: 'Nasi Padang Rendang, Gulai Tunjang, Sambal Hijau',
+                    dist: '150m dari Masjidil Haram (Ajyad)',
+                    tag: 'Cita Rasa Minang',
+                  },
+                  {
+                    name: "D'Penyetz Clock Tower Makkah",
+                    menu: 'Ayam Penyet Sambal Korek & Bakso Sapi Hangat',
+                    dist: 'Abraj Al Bait Food Court Lantai 3',
+                    tag: 'Menu Nusantara',
+                  },
+                  {
+                    name: 'Al Baik Express Ajyad',
+                    menu: 'Ayam Goreng Crispy Khas Saudi & Garlic Sauce Legendaris',
+                    dist: 'Depan Tower Zamzam Makkah',
+                    tag: 'Favorit Jamaah',
+                  },
+                  {
+                    name: 'Resto Wong Solo Madinah',
+                    menu: 'Ayam Bakar Madu, Nasi Ulam, Rawon & Es Teh Manis',
+                    dist: '200m dari Pintu Utama Masjid Nabawi (Gate 333)',
+                    tag: 'Cita Rasa Jawa',
+                  },
+                ].map((resto) => (
+                  <div
+                    key={resto.name}
+                    className="p-3 rounded-xl bg-[#F8FAFC] border border-[#ECEEF2] flex items-center justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <h4 className="text-[13px] font-black text-[#1A1D26]">{resto.name}</h4>
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-sm bg-amber-100 text-amber-800">
+                          {resto.tag}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-gray-600 mt-0.5">{resto.menu}</p>
+                      <span className="text-[10px] text-gray-400 flex items-center gap-1 mt-0.5">
+                        <MapPin className="w-3 h-3 text-gray-400" />
+                        {resto.dist}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Section 4: Panduan Doa Digital & Manasik Offline */}
+            <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block">
+                    BIMBINGAN IBADAH
+                  </span>
+                  <h3 className="text-[14.5px] font-black text-[#1A1D26]">
+                    Panduan Doa Thawaf &amp; Sa&apos;i
+                  </h3>
+                </div>
+                <div className="flex items-center gap-1 text-[#064E3B] font-bold text-[11px]">
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>Akses Offline</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  {
+                    title: 'Doa Thawaf Putaran 1-7',
+                    sub: 'Teks Arab, Latin & Arti',
+                    arabic: 'سُبْحَانَ اللهِ وَالحَمْدُ لِلهِ وَلَا إِلَهَ إِلَّا اللهُ وَاللهُ أَكْبَرُ',
+                    latin: 'Subhanallah walhamdulillah wala ilaha illallah wallahu akbar',
+                    meaning: 'Maha Suci Allah, segala puji bagi Allah, tiada tuhan selain Allah, dan Allah Maha Besar.',
+                  },
+                  {
+                    title: "Doa Sa'i Shafa-Marwah",
+                    sub: '7 Putaran Lengkap',
+                    arabic: 'إِنَّ الصَّفَا وَالْمَرْوَةَ مِنْ شَعَائِرِ اللَّهِ',
+                    latin: "Innas-shafa wal-marwata min sya'a-irillah",
+                    meaning: 'Sesungguhnya Shafa dan Marwah merupakan sebahagian daripada syiar-syiar Allah.',
+                  },
+                  {
+                    title: 'Bacaan Talbiyah Haji & Umrah',
+                    sub: 'Lafadz & Audio Manasik',
+                    arabic: 'لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لاَ شَرِيكَ لَكَ لَبَّيْكَ',
+                    latin: 'Labbaikallahumma labbaik, labbaika la syarika laka labbaik',
+                    meaning: 'Aku penuhi panggilan-Mu ya Allah, aku penuhi panggilan-Mu, tiada sekutu bagi-Mu.',
+                  },
+                  {
+                    title: 'Doa Minum Air Zamzam',
+                    sub: 'Khasiat & Adab Minum',
+                    arabic: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا وَاسِعًا وَشِفَاءً مِنْ كُلِّ دَاءٍ',
+                    latin: "Allahumma inni as'aluka 'ilman nafi'an wa rizqan wasi'an wa syifa'an min kulli da'in",
+                    meaning: 'Ya Allah, sesungguhnya aku memohon ilmu yang bermanfaat, rezeki yang lapang, dan kesembuhan dari segala penyakit.',
+                  },
+                ].map((p) => (
+                  <button
+                    key={p.title}
+                    type="button"
+                    onClick={() => setSelectedPrayer(p)}
+                    className="p-3 rounded-xl bg-[#F8FAFC] border border-[#ECEEF2] text-left hover:border-emerald-300 hover:bg-emerald-50/30 transition-all cursor-pointer flex flex-col justify-between"
+                  >
+                    <div>
+                      <h4 className="text-[12px] font-black text-[#1A1D26] leading-tight">{p.title}</h4>
+                      <p className="text-[10px] text-gray-500 mt-0.5">{p.sub}</p>
+                    </div>
+                    <span className="text-[10.5px] font-black text-[#064E3B] mt-2 block">
+                      Buka Teks Doa →
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Official Partnership Endorsement */}
+        <div className="p-3.5 rounded-2xl bg-white border border-[#ECEEF2] text-center">
+          <span className="text-[9.5px] font-black text-gray-400 uppercase tracking-wider block">
             Kemitraan Resmi Ekosistem Haji &amp; Umrah
           </span>
-          <p className="text-[11.5px] font-bold text-gray-600 mt-0.5">
-            D360 Bank Saudi • BPKH • HIMPUH • AMPHURI • Bank Aladin Syariah
+          <p className="text-[11px] font-bold text-gray-600 mt-0.5">
+            D360 Bank Saudi • STC Saudi Telecom • SAMA • AMPHURI • Bank Aladin Syariah
           </p>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* ONBOARDING MODAL: AKTIVASI NOMOR SAUDI & WALLET D360 (GATED)               */}
+      {/* MODAL: ONBOARDING AKTIVASI NOMOR SAUDI & WALLET                           */}
       {/* ========================================================================= */}
       {showOnboarding && (
         <div className="absolute inset-0 z-[150] bg-black/70 backdrop-blur-md flex items-end justify-center">
@@ -763,7 +1169,6 @@ export default function AlaHaramainHubPage() {
             className="w-full max-w-[414px] bg-white rounded-t-[32px] shadow-2xl animate-in slide-in-from-bottom duration-300"
             style={{ boxSizing: 'border-box', padding: '24px 24px 44px 24px' }}
           >
-            {/* Top Handle */}
             <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 shrink-0" />
 
             <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
@@ -779,7 +1184,7 @@ export default function AlaHaramainHubPage() {
                 onClick={() => setShowOnboarding(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -798,7 +1203,7 @@ export default function AlaHaramainHubPage() {
                         : 'bg-gray-100 text-gray-400'
                     }`}
                   >
-                    {onboardingStep > s.step ? '✓' : s.step}
+                    {onboardingStep > s.step ? <Check className="w-3.5 h-3.5" /> : s.step}
                   </div>
                   <span className="text-[9.5px] font-bold text-gray-500 text-center">
                     {s.label}
@@ -877,10 +1282,6 @@ export default function AlaHaramainHubPage() {
                   </div>
                 </div>
 
-                <p className="text-[10.5px] text-gray-400">
-                  Data terhubung secara aman ke Sistem Informasi dan Komputerisasi Haji Terpadu (Siskohat) &amp; SAMA.
-                </p>
-
                 <div className="flex gap-2 pt-1">
                   <button
                     type="button"
@@ -900,27 +1301,24 @@ export default function AlaHaramainHubPage() {
               </div>
             )}
 
-            {/* Step 3: Success Completion */}
+            {/* Step 3: Siap Digunakan */}
             {onboardingStep === 3 && (
-              <div className="space-y-4 text-center">
-                <div className="w-16 h-16 rounded-full bg-emerald-100 text-[#064E3B] flex items-center justify-center text-3xl font-black mx-auto">
-                  ✓
+              <div className="text-center space-y-4 py-2">
+                <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto text-[#064E3B]">
+                  <CheckCircle2 className="w-8 h-8 text-[#064E3B]" />
                 </div>
-                <div>
-                  <h4 className="text-[17px] font-extrabold text-[#1A1D26]">
-                    Ala Haramain Wallet Aktif!
-                  </h4>
-                  <p className="text-[12px] text-gray-500 mt-1 max-w-[280px] mx-auto">
-                    Kartu D360 Saudi virtual &amp; nomor +966 telah terbit. Anda kini dapat mengisi saldo IDR dan mengonversi ke SAR dengan kurs 0% markup.
-                  </p>
-                </div>
-
+                <h4 className="text-[16px] font-black text-[#1A1D26]">
+                  Wallet Saudi Siap Digunakan!
+                </h4>
+                <p className="text-[11.5px] text-gray-600 px-4">
+                  Nomor STC 5G Anda dan rekening SAR D360 Bank telah terintegrasi dengan Bank Aladin Syariah.
+                </p>
                 <button
                   type="button"
                   onClick={handleFinishOnboarding}
-                  className="w-full h-12 bg-[#064E3B] hover:bg-emerald-900 text-white rounded-full font-extrabold text-[14px] shadow-lg active:scale-98 transition-all cursor-pointer"
+                  className="w-full h-12 bg-[#064E3B] text-white rounded-full font-extrabold text-[14px] shadow-lg active:scale-98 transition-all cursor-pointer"
                 >
-                  Mulai Gunakan Haramain Wallet →
+                  Mulai Gunakan Ala Haramain
                 </button>
               </div>
             )}
@@ -929,7 +1327,7 @@ export default function AlaHaramainHubPage() {
       )}
 
       {/* ========================================================================= */}
-      {/* MODAL: TOP UP SALDO IDR (DENGAN EXPLICIT PADDING MELEGA)                   */}
+      {/* MODAL: TOP UP SALDO IDR                                                   */}
       {/* ========================================================================= */}
       {showTopUpModal && (
         <div className="absolute inset-0 z-[120] bg-black/60 backdrop-blur-xs flex items-end justify-center">
@@ -937,34 +1335,33 @@ export default function AlaHaramainHubPage() {
             className="w-full max-w-[414px] bg-white rounded-t-[32px] shadow-2xl animate-in slide-in-from-bottom duration-300"
             style={{ boxSizing: 'border-box', padding: '24px 24px 44px 24px' }}
           >
-            {/* Top Drag Handle */}
             <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 shrink-0" />
 
             <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-100">
               <div>
-                <h3 className="text-[17px] font-extrabold text-[#1A1D26]">Top Up Saldo Ala Dompet</h3>
-                <p className="text-[11.5px] text-gray-500">Isi saldo langsung untuk transaksi Tanah Suci</p>
+                <h3 className="text-[17px] font-extrabold text-[#1A1D26]">Isi Saldo Ala Dompet (IDR)</h3>
+                <p className="text-[11.5px] text-gray-500">Sumber dana utama untuk transaksi &amp; konversi ke SAR</p>
               </div>
               <button
                 onClick={() => setShowTopUpModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="mb-5">
-              <label className="text-[11px] font-bold text-gray-500 block mb-2">
-                Pilih Nominal Top Up:
-              </label>
-              <div className="grid grid-cols-3 gap-2.5 mb-2">
-                {['250.000', '500.000', '1.000.000'].map((nom) => (
+            <div className="p-4 bg-gray-50 rounded-2xl border border-gray-200 mb-4">
+              <span className="text-[11px] text-gray-500 block mb-1">Pilih Nominal Top Up:</span>
+              <div className="grid grid-cols-3 gap-2">
+                {['250.000', '500.000', '1.000.000', '2.000.000', '5.000.000'].map((nom) => (
                   <button
                     key={nom}
                     type="button"
                     onClick={() => setTopUpNominal(nom)}
-                    className={`py-3 rounded-xl border text-[12.5px] font-bold cursor-pointer transition-all ${
-                      topUpNominal === nom ? 'bg-[#1C20C4] text-white border-[#1C20C4]' : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border-gray-200'
+                    className={`py-2 px-1 text-center rounded-xl font-bold text-[12px] border transition-all cursor-pointer ${
+                      topUpNominal === nom
+                        ? 'bg-[#1C20C4] text-white border-[#1C20C4]'
+                        : 'bg-white text-gray-700 border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     Rp{nom}
@@ -974,16 +1371,10 @@ export default function AlaHaramainHubPage() {
             </div>
 
             <button
-              onClick={() => {
-                const raw = parseInt(topUpNominal.replace(/\D/g, '') || '0', 10)
-                depositAlaDompet(raw)
-                setShowTopUpModal(false)
-                setSuccessToast(`Top up Rp${topUpNominal} berhasil disetorkan ke Ala Dompet!`)
-                setTimeout(() => setSuccessToast(null), 3500)
-              }}
-              className="w-full h-12 bg-[#1C20C4] text-white rounded-full font-extrabold text-[14px] shadow-lg active:scale-95 transition-all cursor-pointer"
+              onClick={handleTopUpIdr}
+              className="w-full h-12 bg-[#1C20C4] hover:bg-[#151AA8] text-white rounded-full font-extrabold text-[14px] shadow-lg active:scale-95 transition-all cursor-pointer"
             >
-              Simulasikan Top Up Masuk
+              Konfirmasi Top Up Sekarang
             </button>
           </div>
         </div>
@@ -1002,50 +1393,49 @@ export default function AlaHaramainHubPage() {
 
             <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-100">
               <div>
-                <h3 className="text-[17px] font-extrabold text-[#1A1D26]">Konversi IDR ke SAR</h3>
-                <p className="text-[11.5px] text-[#059669] font-bold">Kurs Real-Time Bank Indonesia • 0% Markup</p>
+                <h3 className="text-[17px] font-extrabold text-[#1A1D26]">Tukar Saldo ke SAR</h3>
+                <p className="text-[11.5px] text-gray-500">Kurs Transparan SAMA • 0% Markup Admin</p>
               </div>
               <button
                 onClick={() => setShowConvertModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="space-y-4 mb-5">
-              <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200">
-                <span className="text-[10px] font-bold text-gray-500 block mb-1">
-                  Nominal Tukar (IDR):
+            <div className="space-y-3 mb-5">
+              <div className="p-3.5 bg-blue-50/60 rounded-2xl border border-blue-200">
+                <span className="text-[10.5px] font-extrabold text-blue-900 block mb-1">
+                  DARI: Rekening Ala Dompet (IDR)
                 </span>
-                <div className="flex items-center text-[22px] font-black text-[#1A1D26]">
-                  <span className="text-[#1C20C4] mr-2">Rp</span>
-                  <input
-                    type="text"
-                    value={convertAmountIdr}
-                    onChange={(e) => {
-                      const raw = e.target.value.replace(/\D/g, '')
-                      setConvertAmountIdr(raw ? Number(raw).toLocaleString('id-ID') : '0')
-                    }}
-                    className="w-full bg-transparent font-black outline-none text-[#1A1D26]"
-                  />
-                </div>
-                <span className="text-[10.5px] text-gray-400 block mt-1">
-                  Saldo Tersedia: Rp{alaDompet.toLocaleString('id-ID')}
+                <input
+                  type="text"
+                  value={convertAmountIdr}
+                  onChange={(e) => setConvertAmountIdr(e.target.value)}
+                  className="w-full font-black text-[22px] text-[#1A1D26] bg-transparent outline-none"
+                  placeholder="Rp1.000.000"
+                />
+                <span className="text-[11px] text-gray-500">
+                  Saldo tersedia: Rp{alaDompet.toLocaleString('id-ID')}
                 </span>
               </div>
 
-              <div className="p-3.5 bg-emerald-50 rounded-2xl border border-emerald-200 flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] font-bold text-emerald-800 uppercase block">
-                    Saldo Riyal yang Diterima:
-                  </span>
-                  <span className="text-[20px] font-black text-emerald-900">
-                    SAR {sarEstimate}
-                  </span>
+              <div className="flex justify-center -my-2 relative z-10">
+                <div className="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-500">
+                  <ArrowRightLeft className="w-4 h-4 text-[#064E3B]" />
                 </div>
-                <span className="text-[11px] font-extrabold text-emerald-700 bg-emerald-200/60 px-2.5 py-1 rounded-full">
-                  1 SAR = Rp{sarExchangeRate.toLocaleString('id-ID')}
+              </div>
+
+              <div className="p-3.5 bg-emerald-50/60 rounded-2xl border border-emerald-200">
+                <span className="text-[10.5px] font-extrabold text-emerald-900 block mb-1">
+                  MENJADI: Saldo Dompet Saudi (SAR)
+                </span>
+                <span className="font-black text-[22px] text-[#064E3B] block">
+                  SAR {sarEstimate}
+                </span>
+                <span className="text-[11px] text-emerald-700">
+                  Kurs Real: 1 SAR = Rp{sarExchangeRate.toLocaleString('id-ID')}
                 </span>
               </div>
             </div>
@@ -1070,13 +1460,11 @@ export default function AlaHaramainHubPage() {
             style={{ boxSizing: 'border-box', padding: '24px 24px 32px 24px' }}
           >
             <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4 text-[#064E3B]">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={nfcTapping ? 'animate-bounce' : ''}>
-                <path d="M6 18h12M6 14h12M6 10h12M6 6h12" />
-              </svg>
+              <Radio className={`w-10 h-10 ${nfcTapping ? 'animate-bounce' : ''}`} />
             </div>
 
             <h3 className="text-[18px] font-extrabold text-[#1A1D26]">
-              {nfcSuccess ? 'Transaksi Sukses! ✓' : nfcTapping ? 'Mendekatkan ke Mesin EDC...' : 'Dekatkan ke Terminal Kasir'}
+              {nfcSuccess ? 'Transaksi Sukses!' : nfcTapping ? 'Mendekatkan ke Mesin EDC...' : 'Dekatkan ke Terminal Kasir'}
             </h3>
             <p className="text-[12px] text-gray-500 mt-1 mb-6">
               {nfcSuccess
@@ -1127,7 +1515,7 @@ export default function AlaHaramainHubPage() {
                 onClick={() => setShowPinModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -1147,6 +1535,235 @@ export default function AlaHaramainHubPage() {
             >
               Bayar Sekarang (Konfirmasi PIN Biometrik)
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL: BELI & PASANG ESIM SAUDI 5G                                        */}
+      {/* ========================================================================= */}
+      {showEsimModal && selectedEsim && (
+        <div className="absolute inset-0 z-[130] bg-black/70 backdrop-blur-md flex items-end justify-center">
+          <div
+            className="w-full max-w-[414px] bg-white rounded-t-[32px] shadow-2xl animate-in slide-in-from-bottom duration-300"
+            style={{ boxSizing: 'border-box', padding: '24px 24px 44px 24px' }}
+          >
+            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 shrink-0" />
+
+            <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-100">
+              <div>
+                <span className="text-[10px] font-extrabold text-[#059669] uppercase tracking-wider block">
+                  Aktivasi Instan eSIM
+                </span>
+                <h3 className="text-[17px] font-extrabold text-[#1A1D26]">{selectedEsim.provider}</h3>
+              </div>
+              <button
+                onClick={() => setShowEsimModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {!esimPurchased ? (
+              <div className="space-y-4">
+                <div className="p-4 bg-emerald-50/60 rounded-2xl border border-emerald-200">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-[12px] font-black text-emerald-950">{selectedEsim.name}</span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-700 text-white">
+                      {selectedEsim.validity}
+                    </span>
+                  </div>
+                  <p className="text-[12.5px] font-bold text-gray-700">{selectedEsim.quota}</p>
+                  <div className="mt-3 pt-2 border-t border-emerald-200 flex justify-between items-baseline">
+                    <span className="text-[11px] text-gray-600">Total Harga:</span>
+                    <div className="text-right">
+                      <span className="text-[20px] font-black text-[#064E3B] block leading-none">
+                        SAR {selectedEsim.sar}
+                      </span>
+                      <span className="text-[10px] text-gray-500">
+                        ≈ Rp{Math.round(selectedEsim.sar * sarExchangeRate).toLocaleString('id-ID')}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-gray-50 rounded-xl text-[11px] text-gray-600 space-y-1.5">
+                  <p className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>Langsung terhubung ke jaringan 5G terkuat di Makkah, Madinah &amp; Jeddah.</span>
+                  </p>
+                  <p className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>Tidak perlu antre di counter bandara atau lepas SIM card fisik Indonesia.</span>
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleBuyEsim}
+                  className="w-full h-12 bg-[#064E3B] hover:bg-emerald-900 text-white rounded-full font-extrabold text-[14px] shadow-lg active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <QrCode className="w-4 h-4" />
+                  <span>Beli &amp; Dapatkan QR Code eSIM</span>
+                </button>
+              </div>
+            ) : (
+              <div className="text-center space-y-4 py-2">
+                <div className="w-36 h-36 mx-auto bg-white p-3 rounded-2xl border-2 border-[#064E3B] shadow-sm flex items-center justify-center">
+                  <div className="w-full h-full bg-gray-900 rounded-xl flex flex-col items-center justify-center text-white p-2">
+                    <QrCode className="w-16 h-16 text-[#00F0A0]" />
+                    <span className="text-[8px] font-mono mt-1 text-gray-300">LPA:1$sa.stc.com$K981</span>
+                  </div>
+                </div>
+
+                <div className="px-4">
+                  <h4 className="text-[15px] font-black text-[#1A1D26]">
+                    Scan QR Code atau Buka Pengaturan Seluler
+                  </h4>
+                  <p className="text-[11.5px] text-gray-600 mt-1">
+                    Buka <b>Pengaturan &gt; Seluler &gt; Tambah eSIM</b> di smartphone Anda, lalu scan QR di atas.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowEsimModal(false)}
+                  className="w-full h-11 bg-[#064E3B] text-white rounded-full font-extrabold text-[13.5px] shadow-md cursor-pointer"
+                >
+                  Selesai
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL: SEWA SKUTER LISTRIK TAWAF / KURSI RODA                              */}
+      {/* ========================================================================= */}
+      {showRentalModal && selectedRental && (
+        <div className="absolute inset-0 z-[130] bg-black/70 backdrop-blur-md flex items-end justify-center">
+          <div
+            className="w-full max-w-[414px] bg-white rounded-t-[32px] shadow-2xl animate-in slide-in-from-bottom duration-300"
+            style={{ boxSizing: 'border-box', padding: '24px 24px 44px 24px' }}
+          >
+            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 shrink-0" />
+
+            <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-100">
+              <div>
+                <span className="text-[10px] font-extrabold text-[#1037A6] uppercase tracking-wider block">
+                  Reservasi Fasilitas Thawaf &amp; Sa&apos;i
+                </span>
+                <h3 className="text-[17px] font-extrabold text-[#1A1D26]">{selectedRental.name}</h3>
+              </div>
+              <button
+                onClick={() => setShowRentalModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-4 bg-blue-50/50 rounded-2xl border border-blue-200 mb-4">
+              <p className="text-[12px] text-gray-700 leading-relaxed mb-3">{selectedRental.desc}</p>
+              <div className="flex justify-between items-baseline pt-2 border-t border-blue-200">
+                <span className="text-[11px] font-bold text-gray-600">Tarif Resmi SAMA:</span>
+                <div className="text-right">
+                  <span className="text-[20px] font-black text-[#1037A6] block leading-none">
+                    SAR {selectedRental.sar.toFixed(2)}
+                  </span>
+                  <span className="text-[10px] text-gray-500">
+                    ≈ Rp{Math.round(selectedRental.sar * sarExchangeRate).toLocaleString('id-ID')}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-3 bg-gray-50 rounded-xl text-[11px] text-gray-600 space-y-1 mb-5">
+              <p className="flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-gray-500" />
+                <b>Lokasi Pengambilan:</b> Mezzanine Lantai 3 Gate King Abdulaziz
+              </p>
+              <p className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-gray-500" />
+                <b>Operasional:</b> Siap sedia 24 jam non-stop
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleBookRental}
+              className="w-full h-12 bg-[#1037A6] hover:bg-blue-900 text-white rounded-full font-extrabold text-[14px] shadow-lg active:scale-95 transition-all cursor-pointer"
+            >
+              Konfirmasi Reservasi &amp; Ambil Nomor Antrean
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL: BACAAN PANDUAN DOA DIGITAL (OFFLINE)                                */}
+      {/* ========================================================================= */}
+      {selectedPrayer && (
+        <div className="absolute inset-0 z-[130] bg-black/70 backdrop-blur-md flex items-end justify-center">
+          <div
+            className="w-full max-w-[414px] bg-white rounded-t-[32px] shadow-2xl animate-in slide-in-from-bottom duration-300 max-h-[85vh] overflow-y-auto no-scrollbar"
+            style={{ boxSizing: 'border-box', padding: '24px 24px 44px 24px' }}
+          >
+            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 shrink-0" />
+
+            <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-100">
+              <div>
+                <span className="text-[10px] font-extrabold text-[#064E3B] uppercase tracking-wider block">
+                  Panduan Ibadah Digital
+                </span>
+                <h3 className="text-[17px] font-extrabold text-[#1A1D26]">{selectedPrayer.title}</h3>
+              </div>
+              <button
+                onClick={() => setSelectedPrayer(null)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* Arabic Box */}
+              <div className="p-4 bg-emerald-50/60 rounded-2xl border border-emerald-200 text-right">
+                <span className="text-[22px] font-serif font-black text-[#064E3B] leading-loose block">
+                  {selectedPrayer.arabic}
+                </span>
+              </div>
+
+              {/* Latin Box */}
+              <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200">
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
+                  Transliterasi Latin:
+                </span>
+                <p className="text-[13px] font-medium text-gray-800 italic leading-relaxed">
+                  &ldquo;{selectedPrayer.latin}&rdquo;
+                </p>
+              </div>
+
+              {/* Meaning Box */}
+              <div className="p-3.5 bg-white rounded-xl border border-gray-200 shadow-xs">
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
+                  Arti Terjemahan:
+                </span>
+                <p className="text-[12.5px] text-gray-700 leading-relaxed">
+                  {selectedPrayer.meaning}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedPrayer(null)}
+                className="w-full h-11 bg-[#064E3B] text-white rounded-full font-extrabold text-[13px] shadow-md cursor-pointer"
+              >
+                Tutup Panduan
+              </button>
+            </div>
           </div>
         </div>
       )}

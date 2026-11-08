@@ -485,7 +485,7 @@ export default function KeuanganPage() {
                 onClick={() => setShowStatementModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 cursor-pointer text-sm font-bold"
               >
-                ✕
+                ×
               </button>
             </div>
 

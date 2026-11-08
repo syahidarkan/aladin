@@ -1222,7 +1222,7 @@ export default function WealthEnginePage() {
                   >
                     <span style={{ fontSize: '12.5px', fontWeight: 700, color: '#1A1D26' }}>{amil}</span>
                     <span style={{ fontSize: '14px', fontWeight: 900, color: selectedAmil === amil ? '#059669' : 'transparent' }}>
-                      ✓
+                      
                     </span>
                   </div>
                 ))}
@@ -1302,7 +1302,7 @@ export default function WealthEnginePage() {
                   color: '#6C737E',
                 }}
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -1414,7 +1414,7 @@ export default function WealthEnginePage() {
                   color: '#6C737E',
                 }}
               >
-                ✕
+                ×
               </button>
             </div>
 

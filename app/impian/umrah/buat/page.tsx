@@ -259,7 +259,7 @@ export default function BuatImpianUmrahPage() {
                 </svg>
               </div>
               <span className="text-[8.5px] font-extrabold text-[#081D48]/70 block">30 Jt</span>
-              <span className="text-[9.5px] font-black text-[#081D48] block leading-tight">Ka&apos;bah! ✦</span>
+              <span className="text-[9.5px] font-black text-[#081D48] block leading-tight">Ka&apos;bah!</span>
             </button>
           </div>
         </div>
@@ -321,7 +321,7 @@ export default function BuatImpianUmrahPage() {
         <div className="absolute inset-0 z-[120] bg-black/60 backdrop-blur-xs flex items-center justify-center p-6">
           <div className="bg-white rounded-3xl p-6 w-full max-w-sm text-center shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-[#047857] text-2xl font-black">
-              ✓
+              
             </div>
             <h3 className="text-[18px] font-extrabold text-[#1A1D26]">
               Ala Impian Umrah Aktif!

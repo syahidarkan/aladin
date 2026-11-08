@@ -367,7 +367,7 @@ export default function PocketPage() {
                         className="text-gray-300 hover:text-red-500 p-1.5 text-[14px] cursor-pointer"
                         title="Tutup Pocket"
                       >
-                        ✕
+                        ×
                       </button>
                     </div>
 
@@ -451,7 +451,7 @@ export default function PocketPage() {
                 onClick={() => setShowTopUpModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -539,7 +539,7 @@ export default function PocketPage() {
                 onClick={() => setShowWithdrawModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -631,7 +631,7 @@ export default function PocketPage() {
                 onClick={() => setShowCreateModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 

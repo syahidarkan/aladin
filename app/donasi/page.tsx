@@ -309,7 +309,7 @@ export default function DonasiPage() {
                     </span>
                     <span style={{ fontSize: '11px', fontWeight: 700, color: '#6C737E', display: 'flex', alignItems: 'center', gap: '4px' }}>
                       {c.institution}
-                      {c.verified && <span style={{ color: '#059669', fontWeight: 900, fontSize: '11px' }}>✓</span>}
+                      {c.verified && <span style={{ color: '#059669', fontWeight: 900, fontSize: '11px' }}></span>}
                     </span>
                   </div>
                   <span style={{ fontSize: '10.5px', color: '#9CA3AF', fontWeight: 600 }}>{c.donorsCount} Donatur</span>
@@ -402,7 +402,7 @@ export default function DonasiPage() {
                 onClick={() => setSelectedCampaign(null)}
                 style={{ width: '32px', height: '32px', borderRadius: '999px', backgroundColor: '#F4F5F9', border: 'none', cursor: 'pointer', fontWeight: 800, color: '#6C737E' }}
               >
-                ✕
+                ×
               </button>
             </div>
 

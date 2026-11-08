@@ -349,7 +349,7 @@ export default function EWalletPage() {
                 <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#1A1D26' }}>Ala Dompet • Rp69.000,37</span>
               </div>
               <span style={{ fontSize: '11px', fontWeight: 800, color: '#059669', backgroundColor: '#ECFDF5', padding: '3px 10px', borderRadius: '999px' }}>
-                Bebas Biaya ✓
+                Bebas Biaya 
               </span>
             </div>
           </div>

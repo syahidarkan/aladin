@@ -454,7 +454,7 @@ export default function TransferPage() {
                   opacity: !accountNumber ? 0.6 : 1,
                 }}
               >
-                {isVerifying ? 'Cek...' : verifiedName ? '✓ Terverifikasi' : 'Periksa'}
+                {isVerifying ? 'Cek...' : verifiedName ? ' Terverifikasi' : 'Periksa'}
               </button>
             </div>
           </div>
@@ -474,7 +474,7 @@ export default function TransferPage() {
               }}
             >
               <div style={{ width: '18px', height: '18px', borderRadius: '999px', backgroundColor: '#059669', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 900 }}>
-                ✓
+                
               </div>
               <div>
                 <span style={{ fontSize: '10px', fontWeight: 800, color: '#047857', display: 'block', textTransform: 'uppercase' }}>
@@ -660,7 +660,7 @@ export default function TransferPage() {
                 onClick={() => setShowSourceModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -784,7 +784,7 @@ export default function TransferPage() {
                 onClick={() => setShowBankModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -837,7 +837,7 @@ export default function TransferPage() {
                 onClick={() => setShowConfirmModal(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -896,7 +896,7 @@ export default function TransferPage() {
                 onClick={() => setShowPin(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer"
               >
-                ✕
+                ×
               </button>
             </div>
             <p className="text-[12px] text-[#64748B] mb-6">

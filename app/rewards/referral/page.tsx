@@ -194,7 +194,7 @@ export default function ReferralPage() {
               }}
               className="active:scale-95 transition-all"
             >
-              {copied ? 'Tersalin! ✓' : 'Salin'}
+              {copied ? 'Tersalin! ' : 'Salin'}
             </button>
           </div>
 

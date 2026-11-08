@@ -372,7 +372,7 @@ export default function QrisScanPage() {
                 onClick={() => setScannedMerchant(null)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold"
               >
-                ✕
+                ×
               </button>
             </div>
 
@@ -417,7 +417,7 @@ export default function QrisScanPage() {
                 onClick={() => setShowPin(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold"
               >
-                ✕
+                ×
               </button>
             </div>
             <p className="text-[12px] text-[#64748B] mb-6">
@@ -516,7 +516,7 @@ export default function QrisScanPage() {
                 onClick={() => setShowMyQr(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 font-bold hover:bg-gray-200 cursor-pointer active:scale-95 transition-transform"
               >
-                ✕
+                ×
               </button>
             </div>
 

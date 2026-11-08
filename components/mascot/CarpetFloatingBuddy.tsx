@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import { Canvas } from '@react-three/fiber'
 import { useMascot } from '@/context/MascotContext'
 import CarpetModel from './CarpetModel'
+import { Sparkles, Video, MessageCircle, Send, X } from 'lucide-react'
 
 interface ChatMessage {
   id: string
@@ -124,7 +125,7 @@ export default function CarpetFloatingBuddy() {
             }}
           >
             <span>Butuh bantuan?</span>
-            <span className="text-[11px]">✨</span>
+            <Sparkles className="w-3 h-3 text-[#00F0A0]" />
           </div>
         )}
 
@@ -173,9 +174,9 @@ export default function CarpetFloatingBuddy() {
 
           {/* Twinkling Magical Star */}
           <span
-            className="absolute top-0 left-2 text-[#00F0A0] text-[10px] animate-star-twinkle pointer-events-none"
+            className="absolute top-0 left-2 text-[#00F0A0] pointer-events-none"
           >
-            ✦
+            <Sparkles className="w-2.5 h-2.5 text-[#00F0A0]" />
           </span>
         </button>
       </div>
@@ -198,7 +199,7 @@ export default function CarpetFloatingBuddy() {
             <div className="px-5 py-3 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-gray-50 to-white">
               <div className="flex items-center gap-3">
                 <div className="relative w-11 h-11 rounded-full bg-[#1037A6] flex items-center justify-center text-white font-extrabold text-sm shrink-0 shadow-sm border border-white">
-                  <span className="text-xl">🧞‍♂️</span>
+                  <Sparkles className="w-5 h-5 text-[#00F0A0]" />
                   <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#00F0A0] border-2 border-white" />
                 </div>
                 <div>
@@ -221,7 +222,7 @@ export default function CarpetFloatingBuddy() {
                 onClick={() => setIsOpen(false)}
                 className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm cursor-pointer transition-colors"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -336,8 +337,8 @@ export default function CarpetFloatingBuddy() {
             {activeTab === 'video' && (
               <div className="p-5 space-y-4">
                 <div className="rounded-2xl p-4 bg-gradient-to-br from-[#EEF2FF] to-[#E0E7FF] border border-[#C7D2FE] flex items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-[#1037A6] text-white flex items-center justify-center text-xl shrink-0 shadow-sm">
-                    📹
+                  <div className="w-10 h-10 rounded-xl bg-[#1037A6] text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <Video className="w-5 h-5 text-white" />
                   </div>
                   <div>
                     <h4 className="text-[13.5px] font-extrabold text-[#1037A6]">
@@ -357,10 +358,7 @@ export default function CarpetFloatingBuddy() {
                   }}
                   className="w-full py-3.5 px-4 rounded-xl bg-[#1037A6] hover:bg-[#0D2D8A] text-white font-extrabold text-[13.5px] flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <polygon points="23 7 16 12 23 17 23 7" />
-                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
-                  </svg>
+                  <Video className="w-4 h-4 text-white" />
                   Mulai Video Call Sekarang
                 </Link>
 
@@ -373,7 +371,7 @@ export default function CarpetFloatingBuddy() {
                     }}
                     className="flex-1 py-3 px-3 rounded-xl border border-gray-200 bg-white hover:bg-emerald-50 hover:border-emerald-500 text-[12px] font-extrabold text-[#1A1D26] flex items-center justify-center gap-2 cursor-pointer transition-colors"
                   >
-                    <span>💬</span>
+                    <MessageCircle className="w-4 h-4 text-[#10B981]" />
                     <span>Chat WhatsApp</span>
                   </button>
 
@@ -382,7 +380,7 @@ export default function CarpetFloatingBuddy() {
                     onClick={() => setIsOpen(false)}
                     className="flex-1 py-3 px-3 rounded-xl border border-gray-200 bg-white hover:bg-blue-50 hover:border-[#1037A6] text-[12px] font-extrabold text-[#1037A6] flex items-center justify-center gap-1.5 transition-colors"
                   >
-                    <span>✨</span>
+                    <Sparkles className="w-4 h-4 text-[#1037A6]" />
                     <span>Atraksi 3D Karpet</span>
                   </Link>
                 </div>

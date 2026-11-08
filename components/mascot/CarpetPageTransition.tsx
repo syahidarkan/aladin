@@ -5,10 +5,16 @@ import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useMascot } from '@/context/MascotContext'
 import { createFullCarpetCanvas, createRiggedCarpet } from './CarpetModel'
+import { Sparkles } from 'lucide-react'
 
 /**
  * 3D WebGL Rigged SkinnedMesh Carpet Transition Actor
- * Controls internal skeletal bones, 3D barrel roll, and camera swoop.
+ * Controls:
+ * 1. Starting far away in 3D distance (z: -9.0, small size)
+ * 2. High-speed 3D Figure-8 aerobatic looping flight across the active page
+ * 3. Swooping up close to the camera lens until carpet body blankets the viewport
+ * 4. Swooping away past top-left camera to reveal the newly mounted page
+ * BACKGROUND IS 100% TRANSPARENT - The user's active page remains visible underneath!
  */
 function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
   const groupRef = useRef<THREE.Group>(null)
@@ -54,40 +60,63 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
 
     if (groupRef.current) {
       if (phase === 'covering') {
-        // Phase 1: 0–380ms (Covering viewport with dynamic banking swoop & unfurl)
-        const progress = Math.min(1, elapsed / 0.38)
-        const ease = 1 - Math.pow(1 - progress, 3)
+        // Phase 1: 0 to 580ms
+        // Far away in 3D (z: -9.0) looping in figure-8, then swooping into camera
+        const progress = Math.min(1, elapsed / 0.55)
 
-        // 3D Position: Swooping from bottom-right into full camera close-up
-        groupRef.current.position.x = THREE.MathUtils.lerp(1.4, 0.0, ease)
-        groupRef.current.position.y = THREE.MathUtils.lerp(-1.2, 0.0, ease)
-        groupRef.current.position.z = THREE.MathUtils.lerp(-2.0, 2.2, ease)
+        if (progress < 0.7) {
+          // Loop 1: Far away figure-8 acrobatics across screen (z: -9.0 to -2.0)
+          const loopProg = progress / 0.7
+          const tAngle = loopProg * Math.PI * 2.5
 
-        // 3D Dynamic Banking: Rolls gracefully then levels flat
-        groupRef.current.rotation.z = Math.sin(progress * Math.PI) * 0.45
-        groupRef.current.rotation.x = THREE.MathUtils.lerp(0.35, 0.0, ease)
-        groupRef.current.rotation.y = THREE.MathUtils.lerp(-0.4, 0.0, ease)
+          // Figure-8 infinity path
+          const fig8X = Math.sin(tAngle) * 1.8 * (1 - loopProg * 0.4)
+          const fig8Y = Math.sin(tAngle * 2.0) * 0.9 * (1 - loopProg * 0.4)
+          const curZ = THREE.MathUtils.lerp(-9.0, -1.5, loopProg)
 
-        // Bone Unfurl to wide blanket with head looking happily at camera
-        bonesRef.current.forEach((bone, i) => {
-          let targetX = 0
-          if (i === 4) {
-            targetX = THREE.MathUtils.lerp(-0.4, 0.1, ease) // front lip smiling towards camera
-          } else {
-            targetX = THREE.MathUtils.lerp(0.3 - i * 0.15, 0.0, ease)
-          }
-          bone.rotation.x = THREE.MathUtils.damp(bone.rotation.x, targetX, 10, delta)
-        })
+          groupRef.current.position.set(fig8X, fig8Y, curZ)
+
+          // Dynamic banking roll & pitch
+          groupRef.current.rotation.z = -Math.cos(tAngle) * 0.65
+          groupRef.current.rotation.y = Math.sin(tAngle) * 0.4
+          groupRef.current.rotation.x = 0.3 + Math.sin(tAngle * 2.0) * 0.25
+
+          // Ripple fabric oscillation during high-speed acrobatics
+          bonesRef.current.forEach((bone, idx) => {
+            const ripple = Math.sin(tAngle * 4.0 + idx * 1.2) * 0.22
+            bone.rotation.x = THREE.MathUtils.damp(bone.rotation.x, ripple, 12, delta)
+          })
+        } else {
+          // Loop 2: 0.7 to 1.0 -> Rapid close-up swoop to blanket camera viewport
+          const swoopProg = (progress - 0.7) / 0.3
+          const ease = swoopProg * swoopProg * (3 - 2 * swoopProg) // smoothstep
+
+          const curX = THREE.MathUtils.lerp(groupRef.current.position.x, 0.0, ease)
+          const curY = THREE.MathUtils.lerp(groupRef.current.position.y, 0.0, ease)
+          const curZ = THREE.MathUtils.lerp(-1.5, 2.5, ease)
+
+          groupRef.current.position.set(curX, curY, curZ)
+
+          groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, 0.0, ease)
+          groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, 0.0, ease)
+          groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, 0.0, ease)
+
+          // Unfurl to wide blanket covering viewport
+          bonesRef.current.forEach((bone, idx) => {
+            const targetX = idx === 4 ? 0.05 : 0.0
+            bone.rotation.x = THREE.MathUtils.damp(bone.rotation.x, targetX, 15, delta)
+          })
+        }
       } else {
         // Phase 2: Revealing (Swoop out toward top-left past camera)
-        const progress = Math.min(1, elapsed / 0.3)
+        const progress = Math.min(1, elapsed / 0.35)
         const ease = progress * progress
 
-        groupRef.current.position.x = THREE.MathUtils.lerp(0.0, -2.6, ease)
-        groupRef.current.position.y = THREE.MathUtils.lerp(0.0, 2.2, ease)
-        groupRef.current.position.z = THREE.MathUtils.lerp(2.2, 3.8, ease)
+        groupRef.current.position.x = THREE.MathUtils.lerp(0.0, -3.2, ease)
+        groupRef.current.position.y = THREE.MathUtils.lerp(0.0, 2.6, ease)
+        groupRef.current.position.z = THREE.MathUtils.lerp(2.5, 4.2, ease)
 
-        groupRef.current.rotation.z = THREE.MathUtils.lerp(0.0, 0.5, ease)
+        groupRef.current.rotation.z = THREE.MathUtils.lerp(0.0, 0.6, ease)
         groupRef.current.rotation.y = THREE.MathUtils.lerp(0.0, -0.4, ease)
       }
     }
@@ -102,7 +131,8 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
 
 /**
  * Cinematic Page Transition Overlay with True 3D Aladin Flying Carpet Mascot
- * Driven 100% by Three.js SkinnedMesh internal bone dynamics & WebGL camera.
+ * 100% TRANSPARENT BACKGROUND - Active page remains visible underneath!
+ * Zero raw emojis.
  */
 export default function CarpetPageTransition() {
   const { isTransitioning, transitionPhase } = useMascot()
@@ -115,8 +145,7 @@ export default function CarpetPageTransition() {
     <div
       className="absolute inset-0 z-[9999] pointer-events-auto flex items-center justify-center overflow-hidden select-none"
       style={{
-        background: isCovering ? '#1037A6' : 'rgba(16, 55, 166, 0)',
-        transition: isCovering ? 'background 0.25s ease-in' : 'background 0.22s ease-out',
+        background: 'transparent',
       }}
     >
       {/* 3D WebGL Canvas Layer */}
@@ -135,20 +164,15 @@ export default function CarpetPageTransition() {
         </Canvas>
       </div>
 
-      {/* Dynamic Star Sparkle Particle FX */}
-      <span className="absolute top-1/4 left-1/4 text-[#00F0A0] text-2xl animate-star-twinkle">✦</span>
-      <span className="absolute bottom-1/3 right-1/4 text-emerald-300 text-xl animate-star-twinkle" style={{ animationDelay: '150ms' }}>★</span>
-      <span className="absolute top-1/3 right-1/3 text-[#00F0A0] text-lg animate-star-twinkle" style={{ animationDelay: '300ms' }}>✦</span>
-
-      {/* Brand Subtext during coverage */}
+      {/* Vector Sparkle Indicator during close-up */}
       {isCovering && (
-        <div className="absolute bottom-16 z-20 text-center animate-in fade-in duration-150">
-          <span className="text-[13px] font-black uppercase tracking-widest text-[#00F0A0] block drop-shadow-md">
-            #PakaiAladin
-          </span>
-          <span className="text-[11.5px] text-white/90 font-medium drop-shadow-sm">
-            Bikin Berkah Setiap Hari ✨
-          </span>
+        <div className="absolute bottom-16 z-20 flex flex-col items-center animate-in fade-in duration-150 pointer-events-none">
+          <div className="flex items-center gap-1.5 bg-[#051937]/80 backdrop-blur-md px-3.5 py-1 rounded-full border border-[#00F0A0]/40 shadow-lg">
+            <Sparkles className="w-3.5 h-3.5 text-[#00F0A0] animate-spin" />
+            <span className="text-[11.5px] font-black uppercase tracking-wider text-white">
+              #PakaiAladin
+            </span>
+          </div>
         </div>
       )}
     </div>

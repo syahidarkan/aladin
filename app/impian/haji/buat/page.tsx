@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import MilestoneOverlay, { MilestoneData, MILESTONES } from '@/components/MilestoneOverlay'
+import { CheckCircle2 } from 'lucide-react'
 
 export default function BuatImpianHajiPage() {
   const [monthlyAmount, setMonthlyAmount] = useState<string>('1.500.000')
@@ -121,7 +122,7 @@ export default function BuatImpianHajiPage() {
         {/* Badge Siskohat Info */}
         <div className="flex items-center gap-2.5 p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
           <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
-            ✓
+            
           </div>
           <div className="text-[11.5px]">
             <span className="font-extrabold text-emerald-950 block">Terhubung Siskohat Kemenag RI</span>
@@ -280,7 +281,7 @@ export default function BuatImpianHajiPage() {
                 </svg>
               </div>
               <span className="text-[8.5px] font-extrabold text-[#064E3B]/70 block">30 Jt</span>
-              <span className="text-[9.5px] font-black text-[#064E3B] block leading-tight">Ka&apos;bah! ✦</span>
+              <span className="text-[9.5px] font-black text-[#064E3B] block leading-tight">Ka&apos;bah!</span>
             </button>
           </div>
         </div>
@@ -334,8 +335,8 @@ export default function BuatImpianHajiPage() {
       {isSuccess && (
         <div className="absolute inset-0 z-[120] bg-black/60 backdrop-blur-xs flex items-center justify-center p-6">
           <div className="bg-white rounded-3xl p-6 w-full max-w-sm text-center shadow-2xl animate-in zoom-in-95 duration-200">
-            <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 text-amber-800 text-2xl font-black">
-              🕋
+            <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-[#059669]">
+              <CheckCircle2 className="w-9 h-9 text-[#059669]" />
             </div>
             <h3 className="text-[18px] font-extrabold text-[#1A1D26]">
               Ala Impian Haji Terdaftar!

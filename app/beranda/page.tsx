@@ -1,23 +1,30 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import FeatureGuideModal from '@/components/FeatureGuideModal'
 import { useBankState } from '@/lib/bankState'
+import {
+  Gift,
+  HeartHandshake,
+  Sparkles,
+  TrendingUp,
+  Wallet,
+  Target,
+  Landmark,
+  ChevronRight,
+  ShieldCheck,
+  ArrowUpRight,
+  Lock,
+} from 'lucide-react'
 
 export default function BerandaPage() {
   const { alaDompet, alaImpianUmroh, alaDeposito } = useBankState()
   const [showBalance, setShowBalance] = useState(true)
   const [activeBanner, setActiveBanner] = useState(0)
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveBanner((prev) => (prev + 1) % 4)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [])
+  const carouselRef = useRef<HTMLDivElement>(null)
 
   const banners = [
     {
@@ -29,7 +36,7 @@ export default function BerandaPage() {
       href: '/rewards/alfa',
       bg: 'linear-gradient(135deg, #0A256B 0%, #1037A6 60%, #1D4ED8 100%)',
       badgeColor: '#EF4444',
-      iconEmoji: '🎁',
+      Icon: Gift,
       iconBg: 'bg-red-500/20 text-red-300',
     },
     {
@@ -41,7 +48,7 @@ export default function BerandaPage() {
       href: '/donasi',
       bg: 'linear-gradient(135deg, #064E3B 0%, #047857 60%, #00F0A0 120%)',
       badgeColor: '#00F0A0',
-      iconEmoji: '🌿',
+      Icon: HeartHandshake,
       iconBg: 'bg-emerald-500/20 text-emerald-300',
     },
     {
@@ -53,7 +60,7 @@ export default function BerandaPage() {
       href: '/mascot',
       bg: 'linear-gradient(135deg, #1E1B4B 0%, #312E81 60%, #4338CA 100%)',
       badgeColor: '#818CF8',
-      iconEmoji: '🧞‍♂️',
+      Icon: Sparkles,
       iconBg: 'bg-indigo-500/20 text-indigo-300',
     },
     {
@@ -65,11 +72,29 @@ export default function BerandaPage() {
       href: '/simulasi-bagi-hasil',
       bg: 'linear-gradient(135deg, #0F172A 0%, #1E293B 60%, #0D3396 100%)',
       badgeColor: '#F59E0B',
-      iconEmoji: '📈',
+      Icon: TrendingUp,
       iconBg: 'bg-amber-500/20 text-amber-300',
     },
   ]
 
+  // Auto-scroll Carousel every 4.5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveBanner((prev) => {
+        const next = (prev + 1) % banners.length
+        if (carouselRef.current) {
+          carouselRef.current.scrollTo({
+            left: next * 314,
+            behavior: 'smooth',
+          })
+        }
+        return next
+      })
+    }, 4500)
+    return () => clearInterval(timer)
+  }, [banners.length])
+
+  // Exact 7 Shortcuts (Ala Pilgrims is integrated into Ala Haramain Hub)
   const shortcuts = [
     {
       id: 'deposito',
@@ -116,13 +141,6 @@ export default function BerandaPage() {
       label: 'Kartu Visa',
       href: '/kartu',
       iconSrc: '/assets/icons/shortcut_kartu_v2.png',
-      badge: 'Baru',
-    },
-    {
-      id: 'pilgrims',
-      label: 'Ala Pilgrims',
-      href: '/impian/haji/buat',
-      iconSrc: '/assets/icons/shortcut_pilgrims_v2.png',
       badge: 'Baru',
     },
   ]
@@ -328,7 +346,7 @@ export default function BerandaPage() {
         </div>
 
         {/* ========================================================================= */}
-        {/* SHORTCUTS ROW: EXACT 1:1 APK item_explore_menu.xml                        */}
+        {/* SHORTCUTS ROW: EXACT 1:1 APK item_explore_menu.xml (7 SHORTCUTS)          */}
         {/* ========================================================================= */}
         <div className="mt-5 px-5">
           <div className="flex items-start gap-3 overflow-x-auto no-scrollbar py-1 px-1">
@@ -363,7 +381,162 @@ export default function BerandaPage() {
         </div>
 
         {/* ========================================================================= */}
-        {/* SECTION: TEMUKAN BERKAH (FULL-BLEED NATIVE DESIGN, ZERO CROPPED ARTIFACTS)*/}
+        {/* SECTION: TABUNGAN & IMPIAN SAYA (CENTRAL HUB LIHAT SEMUA TABUNGAN)        */}
+        {/* ========================================================================= */}
+        <div className="mt-6 px-5">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h2 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+                Tabungan &amp; Impian Saya
+              </h2>
+              <span className="text-[11px] text-gray-500 font-medium">
+                Pantau seluruh rekening &amp; target finansialmu
+              </span>
+            </div>
+            <Link
+              href="/keuangan"
+              className="text-[12.5px] font-bold text-[#1C20C4] hover:underline cursor-pointer flex items-center gap-0.5"
+            >
+              <span>Lihat Semua</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-3 overflow-x-auto no-scrollbar snap-x snap-mandatory py-1">
+            {/* Card 1: Ala Dompet */}
+            <Link
+              href="/keuangan"
+              className="shrink-0 w-[240px] bg-white rounded-2xl p-4 border border-[#ECEEF2] shadow-xs snap-start hover:border-gray-300 transition-all flex flex-col justify-between"
+              style={{ minHeight: '135px' }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center">
+                    <Wallet className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-[13px] font-black text-[#1A1D26]">Ala Dompet</h3>
+                    <span className="text-[9.5px] text-gray-400 font-medium">Rekening Utama</span>
+                  </div>
+                </div>
+                <span className="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">
+                  Aktif
+                </span>
+              </div>
+
+              <div className="mt-3">
+                <span className="text-[18px] font-black text-[#1A1D26] tracking-tight block">
+                  Rp69.000,37
+                </span>
+                <span className="text-[10px] text-gray-500 mt-0.5 block">
+                  Bebas biaya admin &amp; transfer
+                </span>
+              </div>
+            </Link>
+
+            {/* Card 2: Ala Impian Umrah */}
+            <Link
+              href="/impian"
+              className="shrink-0 w-[240px] bg-white rounded-2xl p-4 border border-emerald-200/80 bg-emerald-50/20 shadow-xs snap-start hover:border-emerald-300 transition-all flex flex-col justify-between"
+              style={{ minHeight: '135px' }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-100 text-[#064E3B] flex items-center justify-center">
+                    <Target className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-[13px] font-black text-[#1A1D26]">Umroh Keluarga</h3>
+                    <span className="text-[9.5px] text-emerald-700 font-bold">Ala Impian</span>
+                  </div>
+                </div>
+                <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-[#00F0A0] text-[#064E3B]">
+                  52%
+                </span>
+              </div>
+
+              <div className="mt-3">
+                <div className="flex items-baseline justify-between">
+                  <span className="text-[16px] font-black text-[#064E3B]">
+                    Rp18.500.000
+                  </span>
+                  <span className="text-[10px] text-gray-400 font-medium">
+                    / Rp35.000.000
+                  </span>
+                </div>
+                {/* Progress bar */}
+                <div className="w-full h-1.5 bg-gray-200 rounded-full mt-1.5 overflow-hidden">
+                  <div className="h-full bg-[#00F0A0] rounded-full" style={{ width: '52%' }} />
+                </div>
+              </div>
+            </Link>
+
+            {/* Card 3: Ala Deposito */}
+            <Link
+              href="/simulasi-bagi-hasil"
+              className="shrink-0 w-[240px] bg-white rounded-2xl p-4 border border-[#ECEEF2] shadow-xs snap-start hover:border-gray-300 transition-all flex flex-col justify-between"
+              style={{ minHeight: '135px' }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
+                    <Landmark className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-[13px] font-black text-[#1A1D26]">Ala Deposito</h3>
+                    <span className="text-[9.5px] text-amber-600 font-bold">Nisbah 85:15</span>
+                  </div>
+                </div>
+                <span className="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                  8,5% p.a.
+                </span>
+              </div>
+
+              <div className="mt-3">
+                <span className="text-[18px] font-black text-[#1A1D26] tracking-tight block">
+                  Rp10.000.000
+                </span>
+                <span className="text-[10px] text-gray-500 mt-0.5 block">
+                  Jatuh tempo: 12 Bulan (Otomatis)
+                </span>
+              </div>
+            </Link>
+
+            {/* Card 4: Ala Pocket */}
+            <Link
+              href="/pocket"
+              className="shrink-0 w-[240px] bg-white rounded-2xl p-4 border border-[#ECEEF2] shadow-xs snap-start hover:border-gray-300 transition-all flex flex-col justify-between"
+              style={{ minHeight: '135px' }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center">
+                    <Wallet className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-[13px] font-black text-[#1A1D26]">Ala Pocket</h3>
+                    <span className="text-[9.5px] text-gray-400 font-medium">Jajan &amp; Harian</span>
+                  </div>
+                </div>
+                <span className="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
+                  Sub-Wallet
+                </span>
+              </div>
+
+              <div className="mt-3">
+                <span className="text-[18px] font-black text-[#1A1D26] tracking-tight block">
+                  Rp450.000
+                </span>
+                <span className="text-[10px] text-gray-500 mt-0.5 block">
+                  Pos pengeluaran terpisah
+                </span>
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* SECTION: TEMUKAN BERKAH (AUTO-SCROLLING CAROUSEL WITH LUCIDE ICONS)        */}
         {/* ========================================================================= */}
         <div className="mt-6 px-5">
           <div className="flex items-center justify-between mb-3">
@@ -378,64 +551,70 @@ export default function BerandaPage() {
             </Link>
           </div>
 
-          {/* Banner Carousel */}
-          <div className="flex items-center gap-3.5 overflow-x-auto no-scrollbar snap-x snap-mandatory">
-            {banners.map((b) => (
-              <Link
-                key={b.id}
-                href={b.href}
-                className="shrink-0 w-[300px] h-[150px] rounded-3xl overflow-hidden relative shadow-sm border border-white/10 snap-start active:scale-[0.99] transition-transform p-4 text-white flex flex-col justify-between"
-                style={{
-                  background: b.bg,
-                }}
-              >
-                {/* Top Badge & Emoji Icon */}
-                <div className="flex items-center justify-between">
-                  <span
-                    className="text-[9.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full inline-block backdrop-blur-xs"
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.18)',
-                      color: '#FFFFFF',
-                      border: '1px solid rgba(255, 255, 255, 0.25)',
-                    }}
-                  >
-                    {b.tag}
-                  </span>
-                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-lg ${b.iconBg}`}>
-                    {b.iconEmoji}
+          {/* Banner Carousel with auto-scroll ref */}
+          <div
+            ref={carouselRef}
+            className="flex items-center gap-3.5 overflow-x-auto no-scrollbar snap-x snap-mandatory"
+          >
+            {banners.map((b) => {
+              const IconComp = b.Icon
+              return (
+                <Link
+                  key={b.id}
+                  href={b.href}
+                  className="shrink-0 w-[300px] h-[150px] rounded-3xl overflow-hidden relative shadow-sm border border-white/10 snap-start active:scale-[0.99] transition-transform p-4 text-white flex flex-col justify-between"
+                  style={{
+                    background: b.bg,
+                  }}
+                >
+                  {/* Top Badge & Vector Icon */}
+                  <div className="flex items-center justify-between">
+                    <span
+                      className="text-[9.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full inline-block backdrop-blur-xs"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.18)',
+                        color: '#FFFFFF',
+                        border: '1px solid rgba(255, 255, 255, 0.25)',
+                      }}
+                    >
+                      {b.tag}
+                    </span>
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${b.iconBg}`}>
+                      <IconComp className="w-4 h-4" />
+                    </div>
                   </div>
-                </div>
 
-                {/* Title & Desc */}
-                <div className="my-auto pr-2">
-                  <h3 className="text-[15px] font-black leading-snug line-clamp-2">
-                    {b.title}
-                  </h3>
-                  <p className="text-[11px] text-white/85 line-clamp-1 mt-0.5">
-                    {b.desc}
-                  </p>
-                </div>
+                  {/* Title & Desc */}
+                  <div className="my-auto pr-2">
+                    <h3 className="text-[15px] font-black leading-snug line-clamp-2">
+                      {b.title}
+                    </h3>
+                    <p className="text-[11px] text-white/85 line-clamp-1 mt-0.5">
+                      {b.desc}
+                    </p>
+                  </div>
 
-                {/* CTA Action Pill */}
-                <div className="flex items-center justify-between pt-1">
-                  <span className="text-[11px] font-extrabold text-[#00F0A0] flex items-center gap-1">
-                    {b.cta} →
-                  </span>
-                  <span className="text-[9.5px] text-white/60 font-semibold tracking-wider uppercase">
-                    #PakaiAladin
-                  </span>
-                </div>
-              </Link>
-            ))}
+                  {/* CTA Action Pill */}
+                  <div className="flex items-center justify-between pt-1">
+                    <span className="text-[11px] font-extrabold text-[#00F0A0] flex items-center gap-1">
+                      {b.cta} →
+                    </span>
+                    <span className="text-[9.5px] text-white/60 font-semibold tracking-wider uppercase">
+                      #PakaiAladin
+                    </span>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
 
           {/* Carousel Dots */}
           <div className="flex items-center justify-center gap-1.5 mt-3">
-            {[0, 1, 2, 3].map((dot) => (
+            {banners.map((_, dot) => (
               <span
                 key={dot}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  dot === activeBanner % 4 ? 'w-4 bg-[#00F0A0]' : 'w-1.5 bg-[#E2E8F0]'
+                  dot === activeBanner % banners.length ? 'w-4 bg-[#00F0A0]' : 'w-1.5 bg-[#E2E8F0]'
                 }`}
               />
             ))}
