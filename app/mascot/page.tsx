@@ -16,28 +16,38 @@ export default function MascotDemoPage() {
     {
       id: 'idle',
       label: '🌊 Idle Melayang',
-      desc: 'Gelombang kain sinusoidal lembut dengan bobbing vertikal dan kedipan mata otomatis.',
+      desc: 'Gelombang kain sutra lembut dengan bobbing vertikal dan kedipan mata otomatis.',
     },
     {
-      id: 'fly-forward',
-      label: '🚀 Fly Forward',
-      desc: 'Menukik rata ke depan, gelombang lebih cepat, rumbai tertiup ke belakang.',
+      id: 'stand',
+      label: '🧍 Berdiri Tegak 90°',
+      desc: 'Pose tegak menyapa pengguna (digunakan pada CS Buddy & Onboarding).',
     },
     {
-      id: 'happy-spin',
-      label: '✨ Happy 360 Spin',
-      desc: 'Putaran barrel roll 360 derajat riang gembira saat di-tap/klik.',
+      id: 'lay-flat',
+      label: '✈️ Lay Flat Terbang',
+      desc: 'Pose rebahan datar horizontal saat meluncur cepat.',
     },
     {
-      id: 'curious',
-      label: '👀 Curious Head-Up',
-      desc: 'Lipatan depan menengadah lebih tinggi dan menoleh ingin tahu ke kursor.',
+      id: 'curious-bow',
+      label: '🙏 Membungkuk Salam',
+      desc: 'Pose membungkuk hormat syariah (Sharia Greeting Bow).',
+    },
+    {
+      id: 'fold-arms',
+      label: '💪 Fold Arms (Hero)',
+      desc: 'Pose percaya diri dengan lipatan sudut depan mantap.',
+    },
+    {
+      id: 'transition-sweep',
+      label: '🌀 Dynamic Sweep',
+      desc: 'Manuver swoop sinematik menutupi layar saat transisi antar halaman.',
     },
   ]
 
   const handleCarpetClick = () => {
     setTapCount((prev) => prev + 1)
-    setCurrentPose('happy-spin')
+    setCurrentPose((prev) => (prev === 'stand' ? 'transition-sweep' : 'stand'))
   }
 
   return (

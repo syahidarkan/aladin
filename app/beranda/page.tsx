@@ -24,13 +24,13 @@ export default function BerandaPage() {
   const banners = [
     {
       id: 'jumat-berkah',
-      src: '/assets/banners/banner_jumat_berkah_native.png',
+      src: '/assets/banners/banner_jumat_berkah_full.png',
       alt: 'Jumat Berkah - Berbagi',
       href: '/donasi',
     },
     {
       id: 'alfagift',
-      src: '/assets/banners/banner-alfagift.png',
+      src: '/assets/banners/banner_alfagift_full.png',
       alt: 'Alfagift x Aladin Promo',
       href: '/rewards/alfa',
     },
@@ -72,6 +72,7 @@ export default function BerandaPage() {
       label: 'Ala Pocket',
       href: '/pocket',
       iconSrc: '/assets/icons/shortcut_pocket_clean.png',
+      badge: 'BARU',
     },
     {
       id: 'haramain',
@@ -81,10 +82,32 @@ export default function BerandaPage() {
       badge: 'SAR',
     },
     {
-      id: 'donasi',
-      label: 'Donasi',
-      href: '/donasi',
-      iconSrc: '/assets/icons/shortcut_donasi_clean.png',
+      id: 'hijrah',
+      label: 'Ala Hijrah',
+      href: '/hijrah',
+      iconSrc: '/assets/icons/shortcut_hijrah_clean.png',
+      badge: 'SYARIAH',
+    },
+    {
+      id: 'investasi',
+      label: 'Ala Investasi',
+      href: '/investasi',
+      iconSrc: '/assets/icons/shortcut_investasi_clean.png',
+      badge: 'SUKUK',
+    },
+    {
+      id: 'kartu',
+      label: 'Kartu Visa',
+      href: '/kartu',
+      iconSrc: '/assets/icons/shortcut_kartu_clean.png',
+      badge: 'VISA',
+    },
+    {
+      id: 'pilgrims',
+      label: 'Ala Pilgrims',
+      href: '/impian/haji/buat',
+      iconSrc: '/assets/icons/shortcut_pilgrims_clean.png',
+      badge: 'HAJI',
     },
   ]
 
@@ -103,24 +126,22 @@ export default function BerandaPage() {
         <div
           className="relative text-white overflow-hidden shrink-0"
           style={{
-            height: '185px',
+            height: '190px',
             background: 'linear-gradient(180deg, #051937 0%, #08214D 60%, #0A2E5C 100%)',
-            paddingLeft: '20px',
-            paddingRight: '20px',
           }}
         >
-          {/* iOS Status Bar */}
+          {/* iOS / Android Status Bar (22.25, 4G, Wifi, 33%) */}
           <StatusBar dark time="22.25" batteryLevel={33} />
 
           {/* Top Bar: Aladin Brand Logo & Notification/Profile Icons */}
-          <div className="flex items-center justify-between mt-1">
+          <div className="flex items-center justify-between px-6 pt-2 pb-3">
             {/* Authentic Aladin Wordmark Logo with Smile */}
-            <div className="relative w-[84px] h-[30px] flex items-center">
+            <div className="relative w-[100px] h-[26px] flex items-center">
               <Image
-                src="/assets/icons/ic_logo_aladin_white.svg"
+                src="/assets/icons/header_aladin_wordmark_exact.png"
                 alt="Bank Aladin Syariah"
-                width={84}
-                height={30}
+                width={100}
+                height={26}
                 className="object-contain object-left"
                 priority
               />
@@ -217,7 +238,6 @@ export default function BerandaPage() {
             <div className="grid grid-cols-4 gap-2 mt-4 px-1">
               <Link
                 href="/transfer"
-                onClick={() => triggerReaction('success', 'Siap kirim saldo berkah via BI-FAST tanpa biaya!')}
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
               >
                 <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
@@ -236,7 +256,6 @@ export default function BerandaPage() {
 
               <Link
                 href="/bayar-beli"
-                onClick={() => triggerReaction('success', 'Beli pulsa, data & bayar tagihan serba praktis!')}
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
               >
                 <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
@@ -255,7 +274,6 @@ export default function BerandaPage() {
 
               <Link
                 href="/rewards/alfa"
-                onClick={() => triggerReaction('success', 'Tarik tunai tanpa kartu bebas biaya di Alfamart!')}
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
               >
                 <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
@@ -274,7 +292,6 @@ export default function BerandaPage() {
 
               <Link
                 href="/rewards/alfa"
-                onClick={() => triggerReaction('success', 'Setor tunai instan di seluruh kasir Alfamart!')}
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
               >
                 <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
@@ -298,14 +315,13 @@ export default function BerandaPage() {
         {/* SHORTCUTS ROW: EXACT 1:1 APK item_explore_menu.xml                        */}
         {/* ========================================================================= */}
         <div className="mt-5 px-5">
-          <div className="flex items-start justify-between gap-2 overflow-x-auto no-scrollbar py-1">
+          <div className="flex items-start gap-3 overflow-x-auto no-scrollbar py-1 px-1">
             {shortcuts.map((sc) => (
               <Link
                 key={sc.id}
                 href={sc.href}
-                onClick={() => triggerReaction('success', `Membuka layanan ${sc.label}...`)}
                 className="flex flex-col items-center shrink-0 active:scale-95 transition-transform cursor-pointer"
-                style={{ width: '64px' }}
+                style={{ width: '68px' }}
               >
                 <div className="relative w-[50px] h-[50px] rounded-2xl overflow-visible mb-1 flex items-center justify-center">
                   <Image
@@ -453,7 +469,6 @@ export default function BerandaPage() {
               <div className="mt-4 pt-2">
                 <Link
                   href="/simulasi-bagi-hasil"
-                  onClick={() => triggerReaction('success', 'Bagi hasil hingga 8,5% p.a., mantap!')}
                   className="inline-block bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[12px] font-extrabold px-4 py-1.5 rounded-full shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
                   Buka Deposito
@@ -509,7 +524,6 @@ export default function BerandaPage() {
               <div className="mt-4 pt-2">
                 <Link
                   href="/impian"
-                  onClick={() => triggerReaction('success', 'Yuk, capai impian ibadah & finansialmu!')}
                   className="inline-block bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[12px] font-extrabold px-4 py-1.5 rounded-full shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
                   Buka Impian

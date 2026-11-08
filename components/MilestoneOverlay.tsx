@@ -160,87 +160,142 @@ export default function MilestoneOverlay({ milestone, onClose }: MilestoneOverla
     const modelType: MilestoneType = milestone.type || 'kabah'
 
     // =========================================================================
-    // 1. KAIN IHRAM PUTIH SUCI (Procedural Unstitched White Cloth & Belt)
+    // 1. KAIN IHRAM PUTIH SUCI (Pakaian Ihram Resmi, Sabuk Haji & Sandal)
     // =========================================================================
     if (modelType === 'ihram') {
       const ihramGroup = new THREE.Group()
 
-      // White cloth material with subtle texture and soft lighting
-      const clothMat = new THREE.MeshStandardMaterial({
-        color: 0xfdfdfd,
-        roughness: 0.85,
-        metalness: 0.05,
+      // Polished White Marble Display Plinth (Dudukan Suci)
+      const plinthGeo = new THREE.CylinderGeometry(1.6, 1.7, 0.14, 32)
+      const plinthMat = new THREE.MeshStandardMaterial({
+        color: 0x1e293b,
+        roughness: 0.3,
+        metalness: 0.4,
       })
+      const plinth = new THREE.Mesh(plinthGeo, plinthMat)
+      plinth.position.y = -0.85
+      ihramGroup.add(plinth)
 
-      // Izar (Lower Garment Wrap) - Layered Flared Cylinder
-      const izarGeo = new THREE.CylinderGeometry(0.7, 0.88, 1.4, 28, 4)
-      const izarMesh = new THREE.Mesh(izarGeo, clothMat)
-      izarMesh.position.y = -0.6
-      ihramGroup.add(izarMesh)
-
-      // Izar Folds (Layered Wraps)
-      for (let i = 0; i < 3; i++) {
-        const foldGeo = new THREE.TorusGeometry(0.72 + i * 0.04, 0.035, 12, 32)
-        const foldMesh = new THREE.Mesh(foldGeo, clothMat)
-        foldMesh.rotation.x = Math.PI / 2
-        foldMesh.position.y = -0.2 - i * 0.35
-        ihramGroup.add(foldMesh)
-      }
-
-      // Traditional Green Waist Belt (Sabuk Ihram)
-      const beltGeo = new THREE.CylinderGeometry(0.73, 0.73, 0.16, 28)
-      const beltMat = new THREE.MeshStandardMaterial({
-        color: 0x065f46,
-        roughness: 0.4,
-        metalness: 0.2,
-      })
-      const beltMesh = new THREE.Mesh(beltGeo, beltMat)
-      beltMesh.position.y = 0.12
-      ihramGroup.add(beltMesh)
-
-      // Gold Buckle on Belt
-      const buckleGeo = new THREE.BoxGeometry(0.24, 0.22, 0.12)
+      // Gold Trim Ring around Plinth
+      const trimGeo = new THREE.TorusGeometry(1.62, 0.02, 16, 64)
       const goldMat = new THREE.MeshStandardMaterial({
         color: 0xffd700,
         metalness: 0.9,
         roughness: 0.2,
+        emissive: 0xffb700,
+        emissiveIntensity: 0.3,
       })
-      const buckleMesh = new THREE.Mesh(buckleGeo, goldMat)
-      buckleMesh.position.set(0, 0.12, 0.72)
-      ihramGroup.add(buckleMesh)
+      const trim = new THREE.Mesh(trimGeo, goldMat)
+      trim.rotation.x = Math.PI / 2
+      trim.position.y = -0.78
+      ihramGroup.add(trim)
 
-      // Rida' (Upper Garment) - Draped Diagonal Over Left Shoulder
-      const ridaGeo = new THREE.CylinderGeometry(0.68, 0.76, 1.1, 28, 4)
+      // Premium Pure White Textured Waffle Cloth Material
+      const clothMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        roughness: 0.85,
+        metalness: 0.02,
+      })
+
+      // Layer 1: Kain Sarung Bawah (Izar) - Neatly Folded
+      const izarGeo = new THREE.BoxGeometry(1.4, 0.24, 1.1)
+      const izarMesh = new THREE.Mesh(izarGeo, clothMat)
+      izarMesh.position.set(0, -0.65, 0)
+      ihramGroup.add(izarMesh)
+
+      // Layer 2: Kain Selendang Atas (Rida') - Folded on top with slight diagonal angle
+      const ridaGeo = new THREE.BoxGeometry(1.25, 0.22, 0.95)
       const ridaMesh = new THREE.Mesh(ridaGeo, clothMat)
-      ridaMesh.position.set(0, 0.68, 0)
-      ridaMesh.rotation.z = -0.15
+      ridaMesh.position.set(0, -0.42, 0)
+      ridaMesh.rotation.y = 0.06
       ihramGroup.add(ridaMesh)
 
-      // Draped Shoulder Sash (Kain Melintang)
-      const sashShape = new THREE.Shape()
-      sashShape.moveTo(-0.7, 1.2)
-      sashShape.lineTo(-0.2, 1.3)
-      sashShape.lineTo(0.6, -0.1)
-      sashShape.lineTo(0.2, -0.2)
-      sashShape.closePath()
-      const sashExtrude = new THREE.ExtrudeGeometry(sashShape, { depth: 0.1, bevelEnabled: true, bevelThickness: 0.02, bevelSize: 0.02 })
-      const sashMesh = new THREE.Mesh(sashExtrude, clothMat)
-      sashMesh.position.set(0, 0, 0.65)
-      ihramGroup.add(sashMesh)
+      // Layer 3: Folded Crease Edge (Tekukan Kain Sutra Putih)
+      const foldEdgeGeo = new THREE.CylinderGeometry(0.11, 0.11, 1.25, 16)
+      const foldEdge = new THREE.Mesh(foldEdgeGeo, clothMat)
+      foldEdge.rotation.z = Math.PI / 2
+      foldEdge.position.set(0, -0.42, 0.48)
+      ihramGroup.add(foldEdge)
 
-      // Floating Golden Halo of Blessings
-      const haloGeo = new THREE.TorusGeometry(1.2, 0.025, 16, 64)
+      // Traditional Emerald Green Hajj Belt (Sabuk Haji / Sabuk Ihram)
+      const beltMat = new THREE.MeshStandardMaterial({
+        color: 0x065f46,
+        roughness: 0.45,
+        metalness: 0.2,
+      })
+      const beltGeo = new THREE.BoxGeometry(1.28, 0.12, 0.18)
+      const beltMesh = new THREE.Mesh(beltGeo, beltMat)
+      beltMesh.position.set(0, -0.26, 0.2)
+      ihramGroup.add(beltMesh)
+
+      // Buckle & Storage Pouches on Belt
+      const buckleGeo = new THREE.BoxGeometry(0.26, 0.16, 0.08)
+      const buckleMesh = new THREE.Mesh(buckleGeo, goldMat)
+      buckleMesh.position.set(0, -0.26, 0.3)
+      ihramGroup.add(buckleMesh)
+
+      const pouchGeo = new THREE.BoxGeometry(0.18, 0.12, 0.06)
+      const pouch1 = new THREE.Mesh(pouchGeo, beltMat)
+      pouch1.position.set(-0.35, -0.26, 0.28)
+      const pouch2 = new THREE.Mesh(pouchGeo, beltMat)
+      pouch2.position.set(0.35, -0.26, 0.28)
+      ihramGroup.add(pouch1, pouch2)
+
+      // Sandal Jepit Ihram (White Leather Pilgrim Sandals)
+      const sandalSoleMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.4 })
+      const sandalStrapMat = new THREE.MeshStandardMaterial({ color: 0x00f3ad, roughness: 0.3 })
+
+      // Left Sandal
+      const leftSole = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.04, 0.65), sandalSoleMat)
+      leftSole.position.set(-0.9, -0.75, 0.2)
+      leftSole.rotation.y = 0.2
+      const leftStrap = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.02, 8, 16, Math.PI), sandalStrapMat)
+      leftStrap.position.set(-0.9, -0.72, 0.25)
+      leftStrap.rotation.x = Math.PI / 2
+      leftStrap.rotation.z = -0.2
+      ihramGroup.add(leftSole, leftStrap)
+
+      // Right Sandal
+      const rightSole = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.04, 0.65), sandalSoleMat)
+      rightSole.position.set(0.9, -0.75, 0.2)
+      rightSole.rotation.y = -0.2
+      const rightStrap = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.02, 8, 16, Math.PI), sandalStrapMat)
+      rightStrap.position.set(0.9, -0.72, 0.25)
+      rightStrap.rotation.x = Math.PI / 2
+      rightStrap.rotation.z = 0.2
+      ihramGroup.add(rightSole, rightStrap)
+
+      // Tasbih Manik-manik Berkah (Prayer Beads Draped Across)
+      const beadGeo = new THREE.SphereGeometry(0.038, 10, 10)
+      const beadMat = new THREE.MeshStandardMaterial({
+        color: 0x059669,
+        roughness: 0.2,
+        metalness: 0.6,
+      })
+      const tasbihGroup = new THREE.Group()
+      for (let i = 0; i < 24; i++) {
+        const angle = (i / 24) * Math.PI * 1.6 - 0.4
+        const bx = Math.cos(angle) * 0.55
+        const bz = Math.sin(angle) * 0.4
+        const bead = new THREE.Mesh(beadGeo, beadMat)
+        bead.position.set(bx, -0.28 + Math.sin(i * 0.3) * 0.04, bz + 0.1)
+        tasbihGroup.add(bead)
+      }
+      ihramGroup.add(tasbihGroup)
+
+      // Floating Golden Blessing Halo
+      const haloGeo = new THREE.TorusGeometry(1.2, 0.02, 16, 64)
       const haloMat = new THREE.MeshBasicMaterial({
-        color: 0xffd700,
+        color: 0x00f3ad,
         transparent: true,
-        opacity: 0.8,
+        opacity: 0.75,
       })
       const haloMesh = new THREE.Mesh(haloGeo, haloMat)
       haloMesh.rotation.x = Math.PI / 2.2
-      haloMesh.position.y = 1.35
+      haloMesh.position.y = 0.4
       ihramGroup.add(haloMesh)
 
-      ihramGroup.position.y = 0.1
+      ihramGroup.position.y = 0.15
       rootGroup.add(ihramGroup)
     }
 
@@ -334,160 +389,217 @@ export default function MilestoneOverlay({ milestone, onClose }: MilestoneOverla
     }
 
     // =========================================================================
-    // 3. PESAWAT MENGUDARA (Realistic Sleek Widebody Airliner Soaring Over Clouds)
+    // 3. PESAWAT MENGUDARA (Realistic Sleek Boeing/Airbus Widebody Airliner)
     // =========================================================================
     else if (modelType === 'pesawat') {
       const planeGroup = new THREE.Group()
 
-      // Aircraft Fuselage (Smooth Streamlined Jet Body)
+      // Materials
       const fuselageMat = new THREE.MeshStandardMaterial({
         color: 0xffffff,
-        roughness: 0.2,
-        metalness: 0.35,
+        roughness: 0.25,
+        metalness: 0.2,
       })
+      const airlineBlueMat = new THREE.MeshStandardMaterial({
+        color: 0x1037a6,
+        roughness: 0.3,
+        metalness: 0.4,
+      })
+      const cockpitGlassMat = new THREE.MeshStandardMaterial({
+        color: 0x0a1128,
+        roughness: 0.1,
+        metalness: 0.9,
+      })
+      const engineCowlMat = new THREE.MeshStandardMaterial({
+        color: 0xe2e8f0,
+        roughness: 0.25,
+        metalness: 0.6,
+      })
+      const cyanGlowMat = new THREE.MeshBasicMaterial({ color: 0x00f3ad })
 
-      // Main Cylinder Body
-      const bodyGeo = new THREE.CylinderGeometry(0.38, 0.34, 2.6, 32)
+      // 1. Fuselage Main Tube (Panjang Berkelanjutan)
+      const bodyGeo = new THREE.CylinderGeometry(0.34, 0.34, 2.3, 32)
       const bodyMesh = new THREE.Mesh(bodyGeo, fuselageMat)
       bodyMesh.rotation.x = Math.PI / 2
       planeGroup.add(bodyMesh)
 
-      // Aerodynamic Nose Radome
-      const noseGeo = new THREE.SphereGeometry(0.38, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2)
+      // 2. Aerodynamic Tapered Nose Radome (+Z)
+      const noseGeo = new THREE.ConeGeometry(0.34, 0.7, 32)
       const noseMesh = new THREE.Mesh(noseGeo, fuselageMat)
       noseMesh.rotation.x = Math.PI / 2
-      noseMesh.position.z = 1.3
+      noseMesh.position.z = 1.5
       planeGroup.add(noseMesh)
 
-      // Cockpit Windshield Visor (Dark Glossy Glass)
-      const visorGeo = new THREE.TorusGeometry(0.36, 0.05, 12, 24, Math.PI * 0.7)
-      const glassMat = new THREE.MeshStandardMaterial({
-        color: 0x0f172a,
-        roughness: 0.1,
-        metalness: 0.9,
-      })
-      const visorMesh = new THREE.Mesh(visorGeo, glassMat)
-      visorMesh.rotation.x = Math.PI / 2.3
-      visorMesh.position.set(0, 0.16, 1.15)
+      // Nose Tip Rounded Sphere (Smooth Boeing Radome)
+      const noseTip = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), fuselageMat)
+      noseTip.position.z = 1.84
+      planeGroup.add(noseTip)
+
+      // 3. Cockpit Windshield Visor (Kaca Depan Hitam Mengkilap)
+      const visorGeo = new THREE.BoxGeometry(0.28, 0.08, 0.2)
+      const visorMesh = new THREE.Mesh(visorGeo, cockpitGlassMat)
+      visorMesh.position.set(0, 0.18, 1.4)
+      visorMesh.rotation.x = -0.22
       planeGroup.add(visorMesh)
 
-      // Swept Wings with Aerodynamic Airfoil Shape
+      // 4. Livery Cheatline (Garis Biru Aladin & Jendela)
+      const stripeGeo = new THREE.CylinderGeometry(0.345, 0.345, 1.8, 32, 1, true, 0, Math.PI)
+      const stripeMesh = new THREE.Mesh(stripeGeo, airlineBlueMat)
+      stripeMesh.rotation.x = Math.PI / 2
+      stripeMesh.rotation.z = Math.PI / 2
+      stripeMesh.position.set(0, -0.06, 0.1)
+      stripeMesh.scale.set(1.01, 1, 0.18)
+      planeGroup.add(stripeMesh)
+
+      // 5. Tail Cone (-Z)
+      const tailConeGeo = new THREE.ConeGeometry(0.34, 0.8, 32)
+      const tailCone = new THREE.Mesh(tailConeGeo, fuselageMat)
+      tailCone.rotation.x = -Math.PI / 2
+      tailCone.position.z = -1.55
+      planeGroup.add(tailCone)
+
+      // APU Exhaust Metal Nozzle
+      const apuNozzle = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.06, 0.08, 0.15, 16),
+        new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.9, roughness: 0.2 })
+      )
+      apuNozzle.rotation.x = Math.PI / 2
+      apuNozzle.position.z = -2.1
+      planeGroup.add(apuNozzle)
+
+      // 6. Main Wings (Sayap Swept-Back Berkecepatan Tinggi)
+      // Sayap Kanan
       const wingShape = new THREE.Shape()
-      wingShape.moveTo(0, 0.4)
-      wingShape.lineTo(2.5, -0.9)
-      wingShape.lineTo(2.35, -1.3)
-      wingShape.lineTo(0, -0.6)
+      wingShape.moveTo(0, 0.45)
+      wingShape.lineTo(2.2, -0.7)
+      wingShape.lineTo(2.1, -1.0)
+      wingShape.lineTo(0, -0.45)
       wingShape.closePath()
 
       const wingExtrude = new THREE.ExtrudeGeometry(wingShape, {
-        depth: 0.05,
+        depth: 0.04,
         bevelEnabled: true,
-        bevelThickness: 0.02,
-        bevelSize: 0.02,
+        bevelThickness: 0.015,
+        bevelSize: 0.015,
       })
 
-      const wingMat = new THREE.MeshStandardMaterial({
-        color: 0x1c20c4,
-        roughness: 0.25,
-        metalness: 0.4,
-      })
-
-      // Right Wing
-      const rightWing = new THREE.Mesh(wingExtrude, wingMat)
+      const rightWing = new THREE.Mesh(wingExtrude, airlineBlueMat)
       rightWing.rotation.x = Math.PI / 2
-      rightWing.position.set(0.2, 0, 0.3)
+      rightWing.rotation.y = -0.07 // Dihedral +4 deg
+      rightWing.position.set(0.18, 0.02, 0.25)
       planeGroup.add(rightWing)
 
-      // Left Wing
-      const leftWing = new THREE.Mesh(wingExtrude, wingMat)
-      leftWing.rotation.x = Math.PI / 2
-      leftWing.rotation.y = Math.PI
-      leftWing.position.set(-0.2, 0, 0.3)
+      // Sayap Kiri (Mirror Sempurna)
+      const leftWing = rightWing.clone()
+      leftWing.scale.set(-1, 1, 1)
+      leftWing.rotation.y = 0.07 // Dihedral +4 deg
+      leftWing.position.set(-0.18, 0.02, 0.25)
       planeGroup.add(leftWing)
 
-      // Winglets (Angled Vertical Wingtips)
-      const wingletGeo = new THREE.BoxGeometry(0.04, 0.35, 0.18)
-      const rightWinglet = new THREE.Mesh(wingletGeo, wingMat)
-      rightWinglet.position.set(2.45, 0.16, -0.7)
+      // Winglets (Ujung Sayap Vertikal Glowing Cyan LED)
+      const wingletGeo = new THREE.BoxGeometry(0.03, 0.28, 0.15)
+      const rightWinglet = new THREE.Mesh(wingletGeo, cyanGlowMat)
+      rightWinglet.position.set(2.24, 0.16, -0.55)
       rightWinglet.rotation.z = -0.3
       planeGroup.add(rightWinglet)
 
-      const leftWinglet = new THREE.Mesh(wingletGeo, wingMat)
-      leftWinglet.position.set(-2.45, 0.16, -0.7)
+      const leftWinglet = new THREE.Mesh(wingletGeo, cyanGlowMat)
+      leftWinglet.position.set(-2.24, 0.16, -0.55)
       leftWinglet.rotation.z = 0.3
       planeGroup.add(leftWinglet)
 
-      // Twin High-Bypass Turbofan Jet Engines
-      const engineGeo = new THREE.CylinderGeometry(0.18, 0.16, 0.75, 24)
-      const engineMat = new THREE.MeshStandardMaterial({
-        color: 0x475569,
-        roughness: 0.3,
-        metalness: 0.7,
-      })
-      const thrusterGlowMat = new THREE.MeshBasicMaterial({ color: 0x00f3ad })
+      // 7. Twin High-Bypass Jet Engines (Mesin Jet Turbofan Bawah Sayap)
+      const makeEngine = (xPos: number) => {
+        const engGroup = new THREE.Group()
 
-      // Left Engine
-      const leftEngine = new THREE.Mesh(engineGeo, engineMat)
-      leftEngine.rotation.x = Math.PI / 2
-      leftEngine.position.set(-0.95, -0.28, 0.15)
-      const leftGlow = new THREE.Mesh(new THREE.CircleGeometry(0.14, 16), thrusterGlowMat)
-      leftGlow.position.set(-0.95, -0.28, -0.23)
-      leftGlow.rotation.y = Math.PI
-      planeGroup.add(leftEngine, leftGlow)
+        // Pylon mount
+        const pylon = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.16, 0.38), fuselageMat)
+        pylon.position.set(0, 0.14, 0)
+        engGroup.add(pylon)
 
-      // Right Engine
-      const rightEngine = new THREE.Mesh(engineGeo, engineMat)
-      rightEngine.rotation.x = Math.PI / 2
-      rightEngine.position.set(0.95, -0.28, 0.15)
-      const rightGlow = new THREE.Mesh(new THREE.CircleGeometry(0.14, 16), thrusterGlowMat)
-      rightGlow.position.set(0.95, -0.28, -0.23)
-      rightGlow.rotation.y = Math.PI
-      planeGroup.add(rightEngine, rightGlow)
+        // Outer Nacelle Cowl
+        const nacelle = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.17, 0.72, 24), engineCowlMat)
+        nacelle.rotation.x = Math.PI / 2
+        engGroup.add(nacelle)
 
-      // Swept Vertical Stabilizer Tail Fin
-      const tailShape = new THREE.Shape()
-      tailShape.moveTo(0, 0)
-      tailShape.lineTo(0, 1.1)
-      tailShape.lineTo(-0.7, 0.95)
-      tailShape.lineTo(-0.9, 0)
-      tailShape.closePath()
-      const tailGeo = new THREE.ExtrudeGeometry(tailShape, { depth: 0.05, bevelEnabled: false })
-      const tailMesh = new THREE.Mesh(tailGeo, wingMat)
-      tailMesh.position.set(-0.025, 0.25, -1.25)
-      planeGroup.add(tailMesh)
+        // Silver Intake Rim Lip
+        const rim = new THREE.Mesh(new THREE.TorusGeometry(0.185, 0.02, 12, 24), new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.9 }))
+        rim.position.z = 0.36
+        engGroup.add(rim)
 
-      // Horizontal Stabilizers (Tail Wings)
-      const hTailGeo = new THREE.BoxGeometry(1.3, 0.04, 0.35)
-      const hTailMesh = new THREE.Mesh(hTailGeo, wingMat)
-      hTailMesh.position.set(0, 0.3, -1.2)
+        // Center Turbine Fan Spinner Cone
+        const spinner = new THREE.Mesh(new THREE.ConeGeometry(0.07, 0.18, 16), new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.8 }))
+        spinner.rotation.x = -Math.PI / 2
+        spinner.position.z = 0.28
+        engGroup.add(spinner)
+
+        // Exhaust Glowing Core (Afterburner Thrust)
+        const exhaust = new THREE.Mesh(new THREE.CircleGeometry(0.13, 16), cyanGlowMat)
+        exhaust.position.z = -0.37
+        exhaust.rotation.y = Math.PI
+        engGroup.add(exhaust)
+
+        engGroup.position.set(xPos, -0.22, 0.2)
+        return engGroup
+      }
+
+      planeGroup.add(makeEngine(-0.95))
+      planeGroup.add(makeEngine(0.95))
+
+      // 8. Empennage (Ekor Vertikal & Stabilizer Horizontal)
+      const finShape = new THREE.Shape()
+      finShape.moveTo(0, 0)
+      finShape.lineTo(0, 1.15)
+      finShape.lineTo(-0.65, 1.0)
+      finShape.lineTo(-0.85, 0)
+      finShape.closePath()
+
+      const finGeo = new THREE.ExtrudeGeometry(finShape, { depth: 0.04, bevelEnabled: false })
+      const finMesh = new THREE.Mesh(finGeo, airlineBlueMat)
+      finMesh.position.set(-0.02, 0.28, -1.25)
+      planeGroup.add(finMesh)
+
+      // Gold Crescent Decal on Tail
+      const finCrescent = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.03, 8, 24, Math.PI * 1.3), cyanGlowMat)
+      finCrescent.rotation.y = Math.PI / 2
+      finCrescent.position.set(0.025, 0.95, -1.6)
+      planeGroup.add(finCrescent)
+
+      // Horizontal Stabilizers (Tailplanes)
+      const hTailGeo = new THREE.BoxGeometry(1.4, 0.03, 0.36)
+      const hTailMesh = new THREE.Mesh(hTailGeo, airlineBlueMat)
+      hTailMesh.position.set(0, 0.28, -1.75)
       planeGroup.add(hTailMesh)
 
-      // Fluffy 3D Cloud Clusters Floating Below Plane
+      // 9. Floating 3D Cloud Clusters Floating Below Plane
       const cloudMat = new THREE.MeshStandardMaterial({
         color: 0xffffff,
-        roughness: 0.9,
+        roughness: 0.95,
         transparent: true,
-        opacity: 0.85,
+        opacity: 0.88,
       })
 
       const cloudGroup = new THREE.Group()
-      const cloudPositions = [
-        [-1.2, -1.2, 0.3, 0.55],
-        [-0.4, -1.1, 0.5, 0.7],
-        [0.5, -1.3, -0.2, 0.65],
-        [1.3, -1.2, 0.2, 0.5],
-        [0.1, -1.4, 0.8, 0.6],
+      const cloudPuffs = [
+        [-1.3, -1.2, 0.4, 0.58],
+        [-0.4, -1.1, 0.8, 0.72],
+        [0.6, -1.3, -0.1, 0.64],
+        [1.4, -1.2, 0.3, 0.52],
+        [0.1, -1.45, 0.9, 0.65],
+        [-0.8, -1.3, -0.6, 0.48],
       ]
-      cloudPositions.forEach(([x, y, z, r]) => {
-        const cloudSphere = new THREE.Mesh(new THREE.SphereGeometry(r, 16, 16), cloudMat)
-        cloudSphere.position.set(x, y, z)
+      cloudPuffs.forEach(([cx, cy, cz, cr]) => {
+        const cloudSphere = new THREE.Mesh(new THREE.SphereGeometry(cr, 16, 16), cloudMat)
+        cloudSphere.position.set(cx, cy, cz)
         cloudGroup.add(cloudSphere)
       })
       planeGroup.add(cloudGroup)
 
-      planeGroup.rotation.x = 0.22
-      planeGroup.rotation.y = -0.35
-      planeGroup.position.y = 0.2
+      // Dynamic Flight Attitude: Sleek 3/4 Perspective Viewing Angle
+      planeGroup.rotation.x = 0.28
+      planeGroup.rotation.y = -0.42
+      planeGroup.rotation.z = 0.08
+      planeGroup.position.y = 0.1
       rootGroup.add(planeGroup)
     }
 

@@ -251,8 +251,9 @@ export default function AlaHaramainHubPage() {
             </button>
           </div>
 
-          {/* 3D Card Viewport with Touch/Mouse Swipe Listeners */}
+          {/* 3D Card Viewport with Touch/Mouse Swipe Listeners & Tap to Flip */}
           <div
+            onClick={() => setIsFlipped((prev) => !prev)}
             onTouchStart={(e) => {
               setTouchStartX(e.targetTouches[0].clientX)
               setTouchEndX(null)
@@ -295,7 +296,7 @@ export default function AlaHaramainHubPage() {
               perspective: '1200px',
               width: '100%',
               height: '215px',
-              cursor: 'grab',
+              cursor: 'pointer',
               userSelect: 'none',
               touchAction: 'pan-y',
             }}
