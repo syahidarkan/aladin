@@ -42,7 +42,7 @@ export default function CarpetLoader() {
         {/* 3D WebGL Canvas for Mascot Acrobatic Flight */}
         <div className="relative w-48 h-36 my-1">
           <Canvas
-            camera={{ position: [0, 0, 4.2], fov: 45 }}
+            camera={{ position: [0, 0.12, 3.8], fov: 40 }}
             gl={{ antialias: true, alpha: true }}
             style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
           >

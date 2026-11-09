@@ -155,7 +155,7 @@ export default function CarpetFloatingBuddy() {
             }}
           >
             <Canvas
-              camera={{ position: [0, 0, 4.2], fov: 45 }}
+              camera={{ position: [0, 0.12, 3.8], fov: 40 }}
               gl={{ antialias: true, alpha: true }}
               style={{ width: '100%', height: '100%' }}
             >

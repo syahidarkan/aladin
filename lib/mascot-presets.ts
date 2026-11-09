@@ -74,7 +74,8 @@ export const BUILTIN_PRESETS: Record<string, MascotPoseConfig> = (presetsData as
 /**
  * Built-in animation sequences from mascot-presets.json
  */
-export const BUILTIN_ANIMATIONS: Record<string, MascotAnimationSequence> = (presetsData as any).animationSequences
+export const BUILTIN_ANIMATIONS: Record<string, MascotAnimationSequence> =
+  (presetsData as any).animationSequences || {}
 
 /**
  * Lerp helper for single numeric values

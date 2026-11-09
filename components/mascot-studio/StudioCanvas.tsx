@@ -76,25 +76,25 @@ export default function StudioCanvas({
             Kamera:
           </span>
           <button
-            onClick={() => setCameraView([2.5, 1.8, 3.2])}
+            onClick={() => setCameraView([2.2, 1.4, 2.8])}
             className="px-2 py-1 text-[11px] font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 hover:text-white rounded-lg transition-colors border border-slate-700"
           >
             3/4 Isometrik
           </button>
           <button
-            onClick={() => setCameraView([0, 0.2, 4.0])}
+            onClick={() => setCameraView([0, 0.12, 3.8])}
             className="px-2 py-1 text-[11px] font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 hover:text-white rounded-lg transition-colors border border-slate-700"
           >
             Depan
           </button>
           <button
-            onClick={() => setCameraView([4.0, 0.2, 0])}
+            onClick={() => setCameraView([-4.0, 0.0, 0])}
             className="px-2 py-1 text-[11px] font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 hover:text-white rounded-lg transition-colors border border-slate-700"
           >
             Samping
           </button>
           <button
-            onClick={() => setCameraView([0, 4.5, 0.01])}
+            onClick={() => setCameraView([0, 4.2, 0.01])}
             className="px-2 py-1 text-[11px] font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 hover:text-white rounded-lg transition-colors border border-slate-700"
           >
             Atas

@@ -1,117 +1,115 @@
 {
-  "version": "1.0.0",
-  "name": "Aladin SkinnedMesh Mascot Presets & Animations",
   "presets": {
     "idle": {
-      "name": "Idle Floating S-Curve",
-      "description": "Exact 1:1 isometric S-curve matching official Aladin brand mascot render",
+      "name": "Idle Official S-Curve",
+      "description": "Exact 1:1 match to Bank Aladin official 3D mascot model sheet (Maskot All View)",
       "meshTransform": {
-        "position": [-0.05, 0.35, 0],
-        "rotation": [-60, 22, -10],
-        "scale": [1, 1, 1]
-      },
-      "bonesRotation": {
-        "Spine_0": [30, 0, 0],
-        "Spine_1": [-22, 0, 0],
-        "Spine_2": [-10, 0, 0],
-        "Spine_3": [18, 0, 0],
-        "Spine_4": [26, 0, 0]
-      }
-    },
-    "stand": {
-      "name": "Standing Upright & Greeting",
-      "description": "Upright 90-degree stance with welcoming friendly curve for customer service & chat",
-      "meshTransform": {
-        "position": [0, -0.2, 0],
+        "position": [0, 0.05, 0],
         "rotation": [0, 0, 0],
         "scale": [1, 1, 1]
       },
       "bonesRotation": {
-        "Spine_0": [5.7, 0, 0],
-        "Spine_1": [11.5, 0, 0],
-        "Spine_2": [-8.6, 0, 0],
-        "Spine_3": [-11.5, 0, 0],
-        "Spine_4": [14.3, 0, 0]
+        "Spine_0": [0, 0, 0],
+        "Spine_1": [0, 0, 0],
+        "Spine_2": [0, 0, 0],
+        "Spine_3": [0, 0, 0],
+        "Spine_4": [0, 0, 0]
+      }
+    },
+    "stand": {
+      "name": "Berdiri Tegak 90°",
+      "description": "Pose tegak ramah dengan dada membusung memberi salam",
+      "meshTransform": {
+        "position": [0, 0, 0],
+        "rotation": [-20, 0, 0],
+        "scale": [1, 1, 1]
+      },
+      "bonesRotation": {
+        "Spine_0": [12, 0, 0],
+        "Spine_1": [8, 0, 0],
+        "Spine_2": [-6, 0, 0],
+        "Spine_3": [-8, 0, 0],
+        "Spine_4": [10, 0, 0]
       }
     },
     "lay-flat": {
-      "name": "Relaxed Horizontal Glide",
-      "description": "Aerodynamic horizontal glide for speedy forward travel",
+      "name": "Meluncur Santai (Gliding)",
+      "description": "Badan meluncur lebih mendatar lurus di udara",
       "meshTransform": {
         "position": [0, 0, 0],
-        "rotation": [23, 0, 0],
+        "rotation": [0, 0, 0],
         "scale": [1, 1, 1]
       },
       "bonesRotation": {
-        "Spine_0": [82.0, 0, 0],
-        "Spine_1": [2.9, 0, 0],
-        "Spine_2": [0, 0, 0],
-        "Spine_3": [0, 0, 0],
-        "Spine_4": [-17.2, 0, 0]
+        "Spine_0": [-12, 0, 0],
+        "Spine_1": [-6, 0, 0],
+        "Spine_2": [4, 0, 0],
+        "Spine_3": [6, 0, 0],
+        "Spine_4": [10, 0, 0]
       }
     },
     "curious-bow": {
-      "name": "Curious Salam Bow",
-      "description": "Polite Islamic greeting bow with tilted head",
+      "name": "Membungkuk Salam (Sharia)",
+      "description": "Pose sopan santun membungkuk anggun",
       "meshTransform": {
-        "position": [0, -0.1, 0],
-        "rotation": [11.5, 17.2, -5.7],
+        "position": [0, -0.05, 0],
+        "rotation": [0, 0, 0],
         "scale": [1, 1, 1]
       },
       "bonesRotation": {
-        "Spine_0": [17.2, 0, 0],
-        "Spine_1": [22.9, 0, 0],
-        "Spine_2": [17.2, 0, 0],
-        "Spine_3": [-11.5, 0, 0],
-        "Spine_4": [-22.9, 0, 0]
+        "Spine_0": [15, 0, 0],
+        "Spine_1": [10, 0, 0],
+        "Spine_2": [-10, 0, 0],
+        "Spine_3": [12, 0, 0],
+        "Spine_4": [20, 0, 0]
       }
     },
     "fold-arms": {
-      "name": "Confident Hero Stance",
-      "description": "Confident hero pose with arched back and proud chest",
+      "name": "Hero Confident",
+      "description": "Pose percaya diri gagah melindungi finansial syariah",
       "meshTransform": {
         "position": [0, 0, 0],
-        "rotation": [5.7, -11.5, 5.7],
+        "rotation": [0, 0, 0],
         "scale": [1, 1, 1]
       },
       "bonesRotation": {
-        "Spine_0": [8.6, 0, 0],
-        "Spine_1": [14.3, 0, 0],
-        "Spine_2": [-5.7, 0, 0],
-        "Spine_3": [-17.2, 0, 0],
-        "Spine_4": [22.9, 0, 0]
+        "Spine_0": [10, 0, 0],
+        "Spine_1": [-6, 0, 0],
+        "Spine_2": [-4, 0, 0],
+        "Spine_3": [12, 0, 0],
+        "Spine_4": [18, 0, 0]
       }
     },
     "loading": {
-      "name": "High-Speed Ripple Wave",
-      "description": "High-energy ripple pose optimized for continuous figure-8 oscillations",
+      "name": "High-Speed Flutter Wave",
+      "description": "High-energy flutter pose optimized for continuous figure-8 oscillations",
       "meshTransform": {
-        "position": [0, 0.42, 0],
-        "rotation": [-60, 22, -10],
+        "position": [0, 0.05, 0],
+        "rotation": [0, 0, 0],
         "scale": [1, 1, 1]
       },
       "bonesRotation": {
-        "Spine_0": [30, -3, 3],
-        "Spine_1": [-22, 3, -3],
-        "Spine_2": [-10, 0, 0],
-        "Spine_3": [18, 0, 0],
-        "Spine_4": [26, 3, -3]
+        "Spine_0": [3, -2, 2],
+        "Spine_1": [-2, 2, -2],
+        "Spine_2": [1, 0, 0],
+        "Spine_3": [5, 0, 0],
+        "Spine_4": [8, 2, -2]
       }
     },
     "transition-sweep": {
-      "name": "Transition Viewport Blanket",
-      "description": "Curved banking swoop ready to blanket camera screen",
+      "name": "Transition Swoop",
+      "description": "Keyframe transisi swoop menyapu layar",
       "meshTransform": {
-        "position": [0, 0, 1.2],
-        "rotation": [22.9, 34.4, 11.5],
-        "scale": [1.4, 1.4, 1.4]
+        "position": [0, 0, 0],
+        "rotation": [0, 0, 0],
+        "scale": [1, 1, 1]
       },
       "bonesRotation": {
-        "Spine_0": [22.9, 34.4, 11.5],
-        "Spine_1": [34.4, 17.2, 22.9],
-        "Spine_2": [28.6, -11.5, 17.2],
-        "Spine_3": [22.9, -22.9, 11.5],
-        "Spine_4": [11.5, 0, 0]
+        "Spine_0": [0, 0, 0],
+        "Spine_1": [0, 0, 0],
+        "Spine_2": [0, 0, 0],
+        "Spine_3": [0, 0, 0],
+        "Spine_4": [0, 0, 0]
       }
     }
   },
@@ -125,155 +123,51 @@
           "id": "twirl-0",
           "timestamp": 0.0,
           "meshTransform": {
-            "position": [-0.6, 0.2, 0],
-            "rotation": [15, -20, 25],
+            "position": [-0.4, 0.1, 0],
+            "rotation": [5, -15, 15],
             "scale": [1, 1, 1]
           },
           "bonesRotation": {
-            "Spine_0": [45, -5, 5],
-            "Spine_1": [-20, 5, -5],
-            "Spine_2": [25, 0, 0],
-            "Spine_3": [-30, 0, 0],
-            "Spine_4": [-45, 5, -5]
+            "Spine_0": [5, 0, 0],
+            "Spine_1": [-5, 0, 0],
+            "Spine_2": [0, 0, 0],
+            "Spine_3": [5, 0, 0],
+            "Spine_4": [10, 0, 0]
           }
         },
         {
           "id": "twirl-1",
-          "timestamp": 0.5,
+          "timestamp": 1.0,
           "meshTransform": {
-            "position": [0, -0.3, 0.2],
-            "rotation": [25, 0, -15],
-            "scale": [1.05, 1.05, 1.05]
+            "position": [0.4, 0.1, 0],
+            "rotation": [5, 15, -15],
+            "scale": [1, 1, 1]
           },
           "bonesRotation": {
-            "Spine_0": [60, 0, 0],
-            "Spine_1": [-30, 0, 0],
-            "Spine_2": [35, 0, 0],
-            "Spine_3": [-25, 0, 0],
-            "Spine_4": [-30, 0, 0]
+            "Spine_0": [-5, 0, 0],
+            "Spine_1": [5, 0, 0],
+            "Spine_2": [0, 0, 0],
+            "Spine_3": [-5, 0, 0],
+            "Spine_4": [-10, 0, 0]
           }
         },
         {
           "id": "twirl-2",
-          "timestamp": 1.0,
+          "timestamp": 2.0,
           "meshTransform": {
-            "position": [0.6, 0.2, 0],
-            "rotation": [15, 20, -25],
+            "position": [-0.4, 0.1, 0],
+            "rotation": [5, -15, 15],
             "scale": [1, 1, 1]
           },
           "bonesRotation": {
-            "Spine_0": [45, 5, -5],
-            "Spine_1": [-20, -5, 5],
-            "Spine_2": [25, 0, 0],
-            "Spine_3": [-30, 0, 0],
-            "Spine_4": [-45, -5, 5]
-          }
-        },
-        {
-          "id": "twirl-3",
-          "timestamp": 1.5,
-          "meshTransform": {
-            "position": [0, 0.3, -0.2],
-            "rotation": [5, 0, 15],
-            "scale": [0.95, 0.95, 0.95]
-          },
-          "bonesRotation": {
-            "Spine_0": [35, 0, 0],
-            "Spine_1": [-15, 0, 0],
-            "Spine_2": [20, 0, 0],
-            "Spine_3": [-35, 0, 0],
-            "Spine_4": [-50, 0, 0]
-          }
-        },
-        {
-          "id": "twirl-4",
-          "timestamp": 2.0,
-          "meshTransform": {
-            "position": [-0.6, 0.2, 0],
-            "rotation": [15, -20, 25],
-            "scale": [1, 1, 1]
-          },
-          "bonesRotation": {
-            "Spine_0": [45, -5, 5],
-            "Spine_1": [-20, 5, -5],
-            "Spine_2": [25, 0, 0],
-            "Spine_3": [-30, 0, 0],
-            "Spine_4": [-45, 5, -5]
-          }
-        }
-      ]
-    },
-    "transition-zoom": {
-      "name": "Transition Zoom & Blanket",
-      "duration": 2.0,
-      "loop": false,
-      "keyframes": [
-        {
-          "id": "trans-0",
-          "timestamp": 0.0,
-          "meshTransform": {
-            "position": [0, 0, -32.0],
-            "rotation": [48, 12, -32],
-            "scale": [0.35, 0.35, 0.35]
-          },
-          "bonesRotation": {
-            "Spine_0": [62, 0, 0],
-            "Spine_1": [-36, 0, 0],
+            "Spine_0": [5, 0, 0],
+            "Spine_1": [-5, 0, 0],
             "Spine_2": [0, 0, 0],
-            "Spine_3": [0, 0, 0],
-            "Spine_4": [20, 0, 0]
-          }
-        },
-        {
-          "id": "trans-1",
-          "timestamp": 0.8,
-          "meshTransform": {
-            "position": [1.8, 0.6, -14.0],
-            "rotation": [48, 25, -45],
-            "scale": [0.65, 0.65, 0.65]
-          },
-          "bonesRotation": {
-            "Spine_0": [62, 0, 0],
-            "Spine_1": [-36, 0, 0],
-            "Spine_2": [0, 0, 0],
-            "Spine_3": [0, 0, 0],
-            "Spine_4": [20, 0, 0]
-          }
-        },
-        {
-          "id": "trans-2",
-          "timestamp": 1.4,
-          "meshTransform": {
-            "position": [-0.8, -0.2, -1.2],
-            "rotation": [35, -15, 10],
-            "scale": [1.1, 1.1, 1.1]
-          },
-          "bonesRotation": {
-            "Spine_0": [62, 0, 0],
-            "Spine_1": [-36, 0, 0],
-            "Spine_2": [0, 0, 0],
-            "Spine_3": [0, 0, 0],
-            "Spine_4": [20, 0, 0]
-          }
-        },
-        {
-          "id": "trans-3",
-          "timestamp": 2.0,
-          "meshTransform": {
-            "position": [0, 0, 2.8],
-            "rotation": [0, 0, 0],
-            "scale": [2.4, 2.4, 2.4]
-          },
-          "bonesRotation": {
-            "Spine_0": [0, 0, 0],
-            "Spine_1": [0, 0, 0],
-            "Spine_2": [0, 0, 0],
-            "Spine_3": [0, 0, 0],
-            "Spine_4": [0, 0, 0]
+            "Spine_3": [5, 0, 0],
+            "Spine_4": [10, 0, 0]
           }
         }
       ]
     }
   }
 }
-

@@ -25,7 +25,7 @@ function CarpetCanvas({
   return (
     <Canvas
       dpr={[1, 1.5]}
-      camera={{ position: [0, 0.2, 4.2], fov: 42 }}
+      camera={{ position: [0, 0.12, 3.8], fov: 40 }}
       gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
       style={{ pointerEvents: interactive ? 'auto' : 'none' }}
     >

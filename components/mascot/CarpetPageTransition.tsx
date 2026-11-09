@@ -98,31 +98,25 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
           groupRef.current.position.set(flightX, flightY, curZ)
 
           // Banking roll, pitch & yaw:
-          // Aerodinamis HORIZONTAL FLIGHT (TIDURAN - lying flat horizontal along flight plane!):
-          const basePitch = -1.05 // -60 deg (tiduran mendatar horizontal, BUKAN berdiri tegak!)
-          const pitchAngle = basePitch + Math.sin(t * 2.0) * 0.12
-          const yawTurn = 0.38 + Math.sin(t) * 0.2
-          const bankingRoll = -0.18 - Math.cos(t) * 0.35
+          // Dynamic aerobatic flight with figure-8 slalom and banking turns
+          const pitchAngle = Math.sin(t * 2.0) * 0.12
+          const yawTurn = Math.sin(t) * 0.22
+          const bankingRoll = -Math.cos(t) * 0.28
 
           groupRef.current.rotation.set(pitchAngle, yawTurn, bankingRoll)
 
           // Scale grows smoothly from distant small silhouette to full size
-          const curScale = THREE.MathUtils.lerp(0.32, 1.15, easeApproach)
+          const curScale = THREE.MathUtils.lerp(0.35, 1.15, easeApproach)
           groupRef.current.scale.set(curScale, curScale, curScale)
 
-          // SKELETAL RIG POSE (Kepala dongak melengkung NAIK ke atas, badan mendatar):
-          // Spine_0: melengkung NAIK ke atas (kepala dongak melipat ke atas menghadap kamera)
-          // Spine_1: meratakan badan karpet agar tiduran mendatar horizontal
-          // Spine_2: aerodinamis S-wave
-          // Spine_3: badan menanjak ke arah ekor
-          // Spine_4: ekor belakang terangkat dengan 2 rumbai terpasang
-          const flutter1 = Math.sin(t * 5.0) * 0.08
+          // Subtle natural silk flutter along the curved spine
+          const flutter1 = Math.sin(t * 5.0) * 0.06
           const targetRotations = [
-            0.52,
-            -0.38 + flutter1,
-            -0.17 + flutter1 * 0.5,
-            0.31,
-            0.45,
+            flutter1 * 0.4,
+            flutter1 * 0.2,
+            0,
+            flutter1 * 0.3,
+            flutter1 * 0.8,
           ]
 
           bonesRef.current.forEach((bone, idx) => {
