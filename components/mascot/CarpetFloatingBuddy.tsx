@@ -147,11 +147,13 @@ export default function CarpetFloatingBuddy() {
             outline: 'none',
           }}
         >
-          {/* 3D WebGL Rigged Mascot Floating in Horizontal Idle S-Curve */}
+          {/* 3D WebGL Rigged Mascot Floating - Generous 180x150 canvas eliminates ANY frame boundary clipping */}
           <div
-            className="w-full h-full pointer-events-none transition-all duration-300 group-hover:scale-105"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-300 group-hover:scale-105"
             style={{
-              filter: 'drop-shadow(0 10px 20px rgba(0, 240, 160, 0.55)) drop-shadow(0 3px 8px rgba(16, 55, 166, 0.45))',
+              width: '180px',
+              height: '150px',
+              filter: 'drop-shadow(0 10px 22px rgba(0, 240, 160, 0.55)) drop-shadow(0 3px 8px rgba(16, 55, 166, 0.45))',
             }}
           >
             <Canvas
@@ -219,16 +221,6 @@ export default function CarpetFloatingBuddy() {
               </div>
 
               <div className="flex items-center gap-2">
-                <Link
-                  href="/mascot-studio"
-                  onClick={() => setIsOpen(false)}
-                  className="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-[#1037A6] text-[10px] font-bold rounded-lg border border-[#00F0A0]/40 flex items-center gap-1 transition-colors"
-                  title="Buka Mascot 3D Studio & Rig Inspector"
-                >
-                  <Sparkles className="w-3 h-3 text-[#00F0A0]" />
-                  <span>3D Studio</span>
-                </Link>
-
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
@@ -382,20 +374,11 @@ export default function CarpetFloatingBuddy() {
                       alert('Membuka WhatsApp resmi Bank Aladin Syariah (+62 811 1500 123)...')
                       setIsOpen(false)
                     }}
-                    className="flex-1 py-3 px-3 rounded-xl border border-gray-200 bg-white hover:bg-emerald-50 hover:border-emerald-500 text-[12px] font-extrabold text-[#1A1D26] flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                    className="w-full py-3.5 px-4 rounded-xl border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-100/70 text-[13px] font-extrabold text-[#065F46] flex items-center justify-center gap-2 cursor-pointer transition-colors"
                   >
                     <MessageCircle className="w-4 h-4 text-[#10B981]" />
-                    <span>Chat WhatsApp</span>
+                    <span>Chat WhatsApp Resmi Aladin (+62 811 1500 123)</span>
                   </button>
-
-                  <Link
-                    href="/mascot"
-                    onClick={() => setIsOpen(false)}
-                    className="flex-1 py-3 px-3 rounded-xl border border-gray-200 bg-white hover:bg-blue-50 hover:border-[#1037A6] text-[12px] font-extrabold text-[#1037A6] flex items-center justify-center gap-1.5 transition-colors"
-                  >
-                    <Sparkles className="w-4 h-4 text-[#1037A6]" />
-                    <span>Atraksi 3D Karpet</span>
-                  </Link>
                 </div>
               </div>
             )}

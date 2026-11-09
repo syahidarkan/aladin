@@ -536,6 +536,41 @@ export default function BerandaPage() {
         </div>
 
         {/* ========================================================================= */}
+        {/* SECTION: SOBAT ALADIN ACTIVATION HUB                                      */}
+        {/* ========================================================================= */}
+        <div className="mt-5 px-5">
+          <Link
+            href="/onboarding/tujuan-finansial"
+            className="w-full p-4 rounded-2xl bg-gradient-to-r from-[#07194D] via-[#1037A6] to-[#1C20C4] text-white flex items-center justify-between shadow-md active:scale-98 transition-all group border border-blue-400/20"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+                <Sparkles className="w-5 h-5 text-[#00F0A0]" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[9.5px] font-black uppercase tracking-wider text-[#00F0A0] bg-white/10 px-2 py-0.5 rounded-full">
+                    Sobat Aladin
+                  </span>
+                  <span className="text-[10px] text-blue-200 font-bold">
+                    Target 30-Day Active
+                  </span>
+                </div>
+                <h3 className="text-[13.5px] font-black text-white mt-0.5 leading-snug">
+                  Atur Fokus Finansial Pasca-KYC
+                </h3>
+                <p className="text-[11px] text-blue-100/80 leading-tight">
+                  Pilih prioritas (Ibadah, Harian, Investasi, Anak) &amp; aksi berikutnya
+                </p>
+              </div>
+            </div>
+            <div className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center shrink-0 group-hover:translate-x-0.5 transition-transform">
+              <ChevronRight className="w-4 h-4 text-white" />
+            </div>
+          </Link>
+        </div>
+
+        {/* ========================================================================= */}
         {/* SECTION: TEMUKAN BERKAH (AUTO-SCROLLING CAROUSEL WITH LUCIDE ICONS)        */}
         {/* ========================================================================= */}
         <div className="mt-6 px-5">
