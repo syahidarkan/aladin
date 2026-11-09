@@ -33,33 +33,33 @@ interface StudioInspectorProps {
 const BONES_METADATA = [
   {
     key: 'Spine_0',
-    name: 'Spine 0 (Root / Ekor Belakang)',
-    desc: 'Tumpuan pangkal belakang dan sudut kemiringan dasar karpet',
-    color: '#3B82F6',
+    name: 'Spine 0 (Head / Bibir Depan Tempat Wajah)',
+    desc: 'Bibir depan tempat wajah chibi menghadap langsung ke arah kamera',
+    color: '#EC4899',
   },
   {
     key: 'Spine_1',
-    name: 'Spine 1 (Punggung Bawah)',
-    desc: 'Melengkungkan badan bawah mendekati perut',
+    name: 'Spine 1 (Punggung Bawah / Transisi Perut)',
+    desc: 'Melengkungkan badan bawah mendekati perut horizontal',
     color: '#06B6D4',
   },
   {
     key: 'Spine_2',
     name: 'Spine 2 (Palung / Lembah Perut)',
-    desc: 'Pusat lengkungan huruf S (trough / cekungan melayang)',
+    desc: 'Pusat lengkungan huruf S (trough / cekungan melayang horizontal)',
     color: '#10B981',
   },
   {
     key: 'Spine_3',
-    name: 'Spine 3 (Punggung Atas / Leher)',
-    desc: 'Mengarahkan kenaikan leher menuju kepala depan',
+    name: 'Spine 3 (Puncak Gelombang Ekor)',
+    desc: 'Mengarahkan kenaikan leher belakang menuju ekor',
     color: '#F59E0B',
   },
   {
     key: 'Spine_4',
-    name: 'Spine 4 (Head / Bibir Depan Chibi)',
-    desc: 'Mengontrol orientasi bibir depan tempat wajah menghadap',
-    color: '#EC4899',
+    name: 'Spine 4 (Ekor Belakang dengan 2 Rumbai)',
+    desc: 'Ujung ekor belakang terangkat dengan sepasang rumbai toska-biru',
+    color: '#3B82F6',
   },
 ]
 

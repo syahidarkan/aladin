@@ -55,13 +55,13 @@ export default function ControlledCarpetMesh({
     return new THREE.MeshPhysicalMaterial({
       map: (isBlinking ? blinkTexture : normalTexture) || undefined,
       color: 0xffffff,
-      roughness: 0.35,
+      roughness: 0.42,
       metalness: 0.05,
       sheen: 1.0,
       sheenColor: new THREE.Color('#2555E0'),
-      sheenRoughness: 0.3,
-      clearcoat: 0.2,
-      clearcoatRoughness: 0.2,
+      sheenRoughness: 0.35,
+      clearcoat: 0.08,
+      clearcoatRoughness: 0.3,
       side: THREE.FrontSide,
       wireframe: showWireframe,
     })

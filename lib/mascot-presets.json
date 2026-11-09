@@ -6,16 +6,16 @@
       "name": "Idle Floating S-Curve",
       "description": "Exact 1:1 isometric S-curve matching official Aladin brand mascot render",
       "meshTransform": {
-        "position": [0, 0, 0],
-        "rotation": [-48, 12, -14],
+        "position": [-0.05, 0.35, 0],
+        "rotation": [-60, 22, -10],
         "scale": [1, 1, 1]
       },
       "bonesRotation": {
-        "Spine_0": [-37.2, 0, 0],
-        "Spine_1": [20.1, 0, 0],
-        "Spine_2": [5.7, 0, 0],
-        "Spine_3": [-5.7, 0, 0],
-        "Spine_4": [-17.2, 0, 0]
+        "Spine_0": [30, 0, 0],
+        "Spine_1": [-22, 0, 0],
+        "Spine_2": [-10, 0, 0],
+        "Spine_3": [18, 0, 0],
+        "Spine_4": [26, 0, 0]
       }
     },
     "stand": {
@@ -86,16 +86,16 @@
       "name": "High-Speed Ripple Wave",
       "description": "High-energy ripple pose optimized for continuous figure-8 oscillations",
       "meshTransform": {
-        "position": [0, 0, 0],
-        "rotation": [15, 0, 0],
+        "position": [0, 0.42, 0],
+        "rotation": [-60, 22, -10],
         "scale": [1, 1, 1]
       },
       "bonesRotation": {
-        "Spine_0": [45.8, -5.7, 5.7],
-        "Spine_1": [-17.2, 2.9, -2.9],
-        "Spine_2": [22.9, 0, 0],
-        "Spine_3": [-28.6, 0, 0],
-        "Spine_4": [-48.7, 5.7, -2.9]
+        "Spine_0": [30, -3, 3],
+        "Spine_1": [-22, 3, -3],
+        "Spine_2": [-10, 0, 0],
+        "Spine_3": [18, 0, 0],
+        "Spine_4": [26, 3, -3]
       }
     },
     "transition-sweep": {

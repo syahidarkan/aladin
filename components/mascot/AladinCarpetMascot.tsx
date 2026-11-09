@@ -25,15 +25,15 @@ function CarpetCanvas({
   return (
     <Canvas
       dpr={[1, 1.5]}
-      camera={{ position: [0, 1.2, 3.5], fov: 42 }}
+      camera={{ position: [0, 0.2, 4.2], fov: 42 }}
       gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
       style={{ pointerEvents: interactive ? 'auto' : 'none' }}
     >
       {/* 3-Point Studio Lighting with Rich Velvet Depth & Mint Accents */}
-      <ambientLight intensity={0.85} />
+      <ambientLight intensity={0.9} />
       <directionalLight position={[3, 5, 4]} intensity={2.2} color="#FFFFFF" />
       <directionalLight position={[-3, -1, -2]} intensity={0.9} color="#1037A6" />
-      <pointLight position={[0, 0.5, 2.5]} intensity={0.8} color="#00F0A0" distance={6} />
+      <pointLight position={[0, 1.2, 3.0]} intensity={0.6} color="#00F0A0" distance={6} />
       <pointLight position={[1, 2, 1.5]} intensity={1.0} color="#3B82F6" distance={5} />
 
       <Suspense fallback={null}>

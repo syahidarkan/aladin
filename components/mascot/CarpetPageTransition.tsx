@@ -99,10 +99,10 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
 
           // Banking roll, pitch & yaw:
           // Aerodinamis HORIZONTAL FLIGHT (TIDURAN - lying flat horizontal along flight plane!):
-          const basePitch = -0.84 // -48 deg (tiduran mendatar horizontal, BUKAN berdiri tegak!)
+          const basePitch = -1.05 // -60 deg (tiduran mendatar horizontal, BUKAN berdiri tegak!)
           const pitchAngle = basePitch + Math.sin(t * 2.0) * 0.12
-          const yawTurn = 0.21 + Math.sin(t) * 0.2
-          const bankingRoll = -0.25 - Math.cos(t) * 0.35
+          const yawTurn = 0.38 + Math.sin(t) * 0.2
+          const bankingRoll = -0.18 - Math.cos(t) * 0.35
 
           groupRef.current.rotation.set(pitchAngle, yawTurn, bankingRoll)
 
@@ -114,15 +114,15 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
           // Spine_0: melengkung NAIK ke atas (kepala dongak melipat ke atas menghadap kamera)
           // Spine_1: meratakan badan karpet agar tiduran mendatar horizontal
           // Spine_2: aerodinamis S-wave
-          // Spine_3: badan horizontal
+          // Spine_3: badan menanjak ke arah ekor
           // Spine_4: ekor belakang terangkat dengan 2 rumbai terpasang
           const flutter1 = Math.sin(t * 5.0) * 0.08
           const targetRotations = [
-            -0.65,
-            0.35 + flutter1,
-            0.1 + flutter1 * 0.5,
-            -0.1,
-            -0.3,
+            0.52,
+            -0.38 + flutter1,
+            -0.17 + flutter1 * 0.5,
+            0.31,
+            0.45,
           ]
 
           bonesRef.current.forEach((bone, idx) => {
