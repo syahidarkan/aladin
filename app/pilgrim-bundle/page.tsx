@@ -241,7 +241,7 @@ export default function PilgrimBundleTelecomPage() {
       }}
     >
       {/* 0. Top Native Status Bar (Dark mode on Royal Blue Header) */}
-      <StatusBar time="22.25" batteryLevel={33} dark={true} />
+      <StatusBar time="22.25" batteryLevel={33} dark={true} className="bg-[#1037A6]" />
 
       {/* ========================================================================= */}
       {/* 1. TOP CARRIER HEADER & QUICK MENU (myXL & myIM3 Exact Match per image 4) */}

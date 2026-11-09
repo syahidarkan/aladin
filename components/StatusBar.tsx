@@ -11,14 +11,14 @@ interface StatusBarProps {
  * Clean Top Safe-Area Spacer & Notch Adapter
  * Guarantees that the top safe area seamlessly matches the navbar color:
  * - Pure solid white (`#FFFFFF`) on light headers to eliminate any gap / off-color band.
- * - Deep Royal Blue (`#1037A6` / `#07194D`) on dark headers.
+ * - Transparent / Seamless on dark headers so parent container color/gradient flows without seam.
  */
 export default function StatusBar({
   className = '',
   dark = false,
 }: StatusBarProps) {
   const hasCustomBg = /bg-/.test(className)
-  const defaultBg = dark ? 'bg-[#1037A6]' : 'bg-white'
+  const defaultBg = dark ? 'bg-transparent' : 'bg-white'
 
   return (
     <div

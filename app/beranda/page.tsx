@@ -176,7 +176,7 @@ export default function BerandaPage() {
           }}
         >
           {/* Top Safe-Area Spacer */}
-          <StatusBar dark />
+          <StatusBar dark className="bg-transparent" />
 
           {/* Top Bar: Aladin Brand Logo & Notification/Profile Icons */}
           <div className="flex items-center justify-between px-6 pt-2 pb-3">
