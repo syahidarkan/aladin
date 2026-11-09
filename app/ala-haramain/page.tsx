@@ -8,6 +8,7 @@ import { useBankState, convertIdrToSar, paySaudiMerchant, depositAlaDompet } fro
 import { useMascot } from '@/context/MascotContext'
 import DigitalVerticalCard from '@/components/card/DigitalVerticalCard'
 import {
+  ArrowLeft,
   CreditCard,
   ShoppingBag,
   Wifi,
@@ -259,43 +260,35 @@ export default function AlaHaramainHubPage() {
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
       }}
     >
-      <StatusBar />
+      {/* Unified Seamless White Header (No Notch Gap) */}
+      <header className="sticky top-0 z-30 w-full bg-white border-b border-gray-100 shrink-0">
+        <StatusBar />
+        <div className="h-14 px-4 flex items-center justify-between">
+          <Link
+            href="/beranda"
+            className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+            aria-label="Kembali ke Beranda"
+          >
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+          </Link>
 
-      {/* Header Bar */}
-      <div
-        className="w-full bg-white border-b border-[#ECEEF2] flex items-center justify-between shrink-0"
-        style={{ height: '52px', paddingLeft: '20px', paddingRight: '20px' }}
-      >
-        <Link
-          href="/beranda"
-          className="w-8 h-8 rounded-full flex items-center justify-center p-1 -ml-1 active:opacity-60 transition-opacity"
-        >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={16}
-            height={16}
-            style={{ width: '15.5px', height: '15.5px' }}
-            priority
-          />
-        </Link>
+          <div className="text-center">
+            <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+              Ala Haramain
+            </h1>
+            <span className="text-[10px] font-extrabold text-[#059669] block leading-none mt-0.5">
+              Saudi Financial &amp; Pilgrim Hub
+            </span>
+          </div>
 
-        <div className="text-center">
-          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
-            Ala Haramain
-          </h1>
-          <span className="text-[10px] font-extrabold text-[#059669] block leading-none">
-            Saudi Financial &amp; Pilgrim Hub
-          </span>
+          <div className="flex items-center gap-1 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#064E3B]" />
+            <span className="text-[10px] font-black uppercase text-[#064E3B]">
+              D360 / SAMA
+            </span>
+          </div>
         </div>
-
-        <div className="flex items-center gap-1 bg-emerald-50 px-2 py-1 rounded-full border border-emerald-200">
-          <ShieldCheck className="w-3.5 h-3.5 text-[#064E3B]" />
-          <span className="text-[9.5px] font-black uppercase text-[#064E3B]">
-            D360 / SAMA
-          </span>
-        </div>
-      </div>
+      </header>
 
       {/* Scrollable Container */}
       <div className="flex-1 overflow-y-auto no-scrollbar p-5 pb-24 space-y-4">

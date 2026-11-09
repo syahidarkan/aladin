@@ -234,7 +234,9 @@ export default function DonasiPage() {
             </div>
             <div>
               <span style={{ fontSize: '10.5px', color: '#6C737E', display: 'block' }}>Sumber Dana</span>
-              <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#1A1D26' }}>Ala Dompet • Rp69.000,37</span>
+              <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#1A1D26' }}>
+                Ala Dompet • Rp{alaDompet.toLocaleString('id-ID')}
+              </span>
             </div>
           </div>
 

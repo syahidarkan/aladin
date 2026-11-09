@@ -86,29 +86,29 @@ const STORAGE_KEY = 'aladin_bank_state_v1'
 const EVENT_NAME = 'aladin_bank_state_updated'
 
 export const DEFAULT_INITIAL_STATE: BankState = {
-  alaDompet: 7400000, // Rp7.400.000 (after allocating Rp2.600.000 to default pockets)
-  alaImpianUmroh: 8440366,
-  alaDeposito: 25000000,
-  dompetSar: 450.0,
+  alaDompet: 24500000, // Rp24.500.000 (Rekening Utama)
+  alaImpianUmroh: 14500000, // Rp14.500.000 (Umrah & Haji)
+  alaDeposito: 25000000, // Rp25.000.000 (Ala Deposito Mudharabah)
+  dompetSar: 450.0, // SAR 450.00 (Haramain Wallet)
 
   pockets: [
     {
       id: 'pocket-makan',
       name: 'Makan & Kopi Harian',
       category: 'makan',
-      balance: 750000,
-      target: 1000000,
-      color: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+      balance: 1250000,
+      target: 2000000,
+      color: 'linear-gradient(135deg, #1037A6 0%, #1C20C4 100%)',
       icon: 'makan',
       createdAt: Date.now() - 86400000 * 5,
     },
     {
       id: 'pocket-belanja',
-      name: 'Belanja Bulanan',
+      name: 'Belanja & Dapur Bulanan',
       category: 'belanja',
-      balance: 1500000,
-      target: 2000000,
-      color: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+      balance: 2500000,
+      target: 3500000,
+      color: 'linear-gradient(135deg, #059669 0%, #047857 100%)',
       icon: 'belanja',
       createdAt: Date.now() - 86400000 * 4,
     },
@@ -116,15 +116,15 @@ export const DEFAULT_INITIAL_STATE: BankState = {
       id: 'pocket-sedekah',
       name: 'Sedekah Subuh & Berkah',
       category: 'sedekah',
-      balance: 350000,
-      target: 500000,
-      color: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)',
+      balance: 500000,
+      target: 1000000,
+      color: 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)',
       icon: 'sedekah',
       createdAt: Date.now() - 86400000 * 3,
     },
   ],
 
-  reksaDanaBalance: 8167500,
+  reksaDanaBalance: 5250000,
   emasGrams: 2.76,
   emasPricePerGram: 1345000,
   depositoTenor: 12,

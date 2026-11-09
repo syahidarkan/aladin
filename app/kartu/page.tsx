@@ -166,34 +166,34 @@ export default function VirtualCardPage() {
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* 0. Top Native Status Bar (Safe Area Offset) */}
-      <StatusBar time="22.25" batteryLevel={33} dark={false} />
+      {/* Unified Seamless White Header (No Notch Gap) */}
+      <header className="sticky top-0 z-30 w-full bg-white border-b border-gray-100 shrink-0">
+        <StatusBar />
+        <div className="h-14 px-4 flex items-center justify-between">
+          {/* Back Button */}
+          <Link
+            href="/beranda"
+            className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+            aria-label="Kembali ke Beranda"
+          >
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+          </Link>
 
-      {/* 1. TOP NATIVE HEADER BAR with proper safe spacing */}
-      <header className="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 flex items-center justify-between px-4 h-14">
-        {/* Back Button */}
-        <Link
-          href="/beranda"
-          className="w-10 h-10 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
-          aria-label="Kembali ke Beranda"
-        >
-          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
-        </Link>
+          {/* Title */}
+          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight text-center">
+            Rincian Kartu
+          </h1>
 
-        {/* Title */}
-        <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight text-center">
-          Rincian Kartu
-        </h1>
-
-        {/* Help Circle Button */}
-        <button
-          type="button"
-          onClick={() => setShowHelpModal(true)}
-          className="w-10 h-10 -mr-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
-          aria-label="Pusat Bantuan Kartu"
-        >
-          <HelpCircle className="w-5 h-5 text-gray-700" />
-        </button>
+          {/* Help Circle Button */}
+          <button
+            type="button"
+            onClick={() => setShowHelpModal(true)}
+            className="w-9 h-9 -mr-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+            aria-label="Pusat Bantuan Kartu"
+          >
+            <HelpCircle className="w-5 h-5 text-gray-700" />
+          </button>
+        </div>
       </header>
 
       {/* 2. SCROLLABLE BODY CONTENT */}

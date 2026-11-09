@@ -47,6 +47,11 @@ const inter = localFont({
 export const metadata: Metadata = {
   title: 'Bank Aladin Syariah — #PakaiAladin',
   description: 'Prototipe fungsional Bank Aladin Syariah untuk kompetisi #PakaiAladin',
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

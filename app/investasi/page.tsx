@@ -52,6 +52,20 @@ export default function AlaInvestasiSyariahPage() {
   const [depositoTenor, setDepositoTenor] = useState<'1' | '3' | '6' | '12'>('12')
   const [selectedStock, setSelectedStock] = useState('BRIS')
 
+  // 4 Top Quick Action Modals (Portofolio, Nabung Rutin, Referral, Fatwa MUI)
+  const [showPortofolioModal, setShowPortofolioModal] = useState(false)
+  const [showNabungRutinModal, setShowNabungRutinModal] = useState(false)
+  const [showReferralModal, setShowReferralModal] = useState(false)
+  const [showFatwaModal, setShowFatwaModal] = useState(false)
+
+  // Sub-states inside modals
+  const [nabungProduct, setNabungProduct] = useState<'reksadana' | 'sukuk' | 'emas'>('reksadana')
+  const [nabungAmount, setNabungAmount] = useState('250.000')
+  const [nabungDate, setNabungDate] = useState<'1' | '10' | '25'>('1')
+  const [nabungSuccess, setNabungSuccess] = useState(false)
+  const [referralCopied, setReferralCopied] = useState(false)
+  const [downloadSuccessToast, setDownloadSuccessToast] = useState<string | null>(null)
+
   // Portofolios Data
   const [portfolios, setPortfolios] = useState([
     {
@@ -172,37 +186,37 @@ export default function AlaInvestasiSyariahPage() {
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* 0. Top Native Status Bar (Safe Area Offset) */}
-      <StatusBar time="22.25" batteryLevel={33} dark={false} />
-
-      {/* 1. TOP NATIVE HEADER BAR (Bank Aladin Syariah Identity) */}
-      <header className="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 flex items-center justify-between px-4 h-14">
-        <div className="flex items-center gap-2">
-          <Link
-            href="/beranda"
-            className="w-9 h-9 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
-            aria-label="Kembali ke Beranda"
-          >
-            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
-          </Link>
-          <div>
-            <h1 className="text-[16px] font-black text-[#1037A6] tracking-tight leading-tight">
-              Ala Investasi Syariah
-            </h1>
-            <span className="text-[10px] font-bold text-[#059669] flex items-center gap-1">
-              <ShieldCheck className="w-3 h-3 text-[#059669]" />
-              OJK &amp; Dewan Pengawas Syariah MUI
-            </span>
+      {/* 1. TOP NATIVE HEADER BAR (Bank Aladin Syariah Identity - Seamless White Header) */}
+      <header className="sticky top-0 z-30 w-full bg-white border-b border-gray-100 shrink-0">
+        <StatusBar className="bg-white" />
+        <div className="flex items-center justify-between px-4 h-14">
+          <div className="flex items-center gap-2">
+            <Link
+              href="/beranda"
+              className="w-9 h-9 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+              aria-label="Kembali ke Beranda"
+            >
+              <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+            </Link>
+            <div>
+              <h1 className="text-[16px] font-black text-[#1037A6] tracking-tight leading-tight">
+                Ala Investasi Syariah
+              </h1>
+              <span className="text-[10px] font-bold text-[#059669] flex items-center gap-1">
+                <ShieldCheck className="w-3 h-3 text-[#059669]" />
+                OJK &amp; Dewan Pengawas Syariah MUI
+              </span>
+            </div>
           </div>
-        </div>
 
-        <button
-          type="button"
-          onClick={() => triggerReaction('success', 'Instrumen 100% Syariah: Akad Bebas Riba, Gharar & Maisir.')}
-          className="text-[11px] font-extrabold text-[#1037A6] bg-blue-50 border border-blue-200 px-3 py-1 rounded-full hover:bg-blue-100 transition-all cursor-pointer"
-        >
-          Prinsip Syariah
-        </button>
+          <button
+            type="button"
+            onClick={() => setShowFatwaModal(true)}
+            className="text-[11px] font-extrabold text-[#1037A6] bg-blue-50 border border-blue-200 px-3 py-1 rounded-full hover:bg-blue-100 transition-all cursor-pointer"
+          >
+            Prinsip Syariah
+          </button>
+        </div>
       </header>
 
       {/* 2. BODY CONTENT */}
@@ -257,11 +271,11 @@ export default function AlaInvestasiSyariahPage() {
             </button>
           </div>
 
-          {/* 4 Quick Actions */}
+          {/* 4 Quick Actions (Interactive Portofolio, Nabung Rutin, Referral, Fatwa MUI) */}
           <div className="grid grid-cols-4 gap-2 mt-4 pt-3 border-t border-gray-100 text-center">
             <button
               type="button"
-              onClick={() => triggerReaction('success', 'Rincian alokasi aset syariah terverifikasi.')}
+              onClick={() => setShowPortofolioModal(true)}
               className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
             >
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center shadow-xs group-hover:bg-blue-100">
@@ -272,7 +286,7 @@ export default function AlaInvestasiSyariahPage() {
 
             <button
               type="button"
-              onClick={() => triggerReaction('success', 'Nabung Rutin autodebit syariah aktif per bulan.')}
+              onClick={() => setShowNabungRutinModal(true)}
               className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
             >
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center shadow-xs group-hover:bg-blue-100">
@@ -283,10 +297,7 @@ export default function AlaInvestasiSyariahPage() {
 
             <button
               type="button"
-              onClick={() => {
-                startTransition('/rewards/referral')
-                router.push('/rewards/referral')
-              }}
+              onClick={() => setShowReferralModal(true)}
               className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
             >
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center shadow-xs group-hover:bg-blue-100">
@@ -297,7 +308,7 @@ export default function AlaInvestasiSyariahPage() {
 
             <button
               type="button"
-              onClick={() => triggerReaction('success', 'Seluruh produk diawasi DSN-MUI.')}
+              onClick={() => setShowFatwaModal(true)}
               className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
             >
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center shadow-xs group-hover:bg-blue-100">
@@ -732,6 +743,443 @@ export default function AlaInvestasiSyariahPage() {
               Konfirmasi Investasi Syariah
             </button>
           </div>
+        </div>
+      )}
+
+      {/* MODAL 1: PORTOFOLIO BREAKDOWN MODAL */}
+      {showPortofolioModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center">
+                  <PieChart className="w-4.5 h-4.5 stroke-[2.2]" />
+                </div>
+                <div>
+                  <h3 className="text-[15px] font-black text-[#1A1D26]">Rincian Portofolio</h3>
+                  <span className="text-[10.5px] font-bold text-[#059669]">100% Diawasi DSN-MUI</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPortofolioModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-800 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Total Balance Card */}
+            <div className="bg-gradient-to-br from-[#1037A6] to-[#0A236E] rounded-2xl p-4 text-white">
+              <span className="text-[11px] font-bold text-blue-200 uppercase tracking-wider block">
+                Total Nilai Investasi Aktif
+              </span>
+              <div className="flex items-baseline justify-between mt-1">
+                <span className="text-[24px] font-black tracking-tight font-mono">
+                  Rp{totalPortfolioValue.toLocaleString('id-ID')}
+                </span>
+                <span className="text-[11px] font-extrabold bg-[#00F0A0] text-[#0A236E] px-2.5 py-0.5 rounded-full">
+                  +Rp{totalGain.toLocaleString('id-ID')} YTD
+                </span>
+              </div>
+              <div className="mt-3 pt-3 border-t border-white/15 flex items-center justify-between text-[11px] text-blue-100">
+                <span>Modal Pokok: Rp{totalInvested.toLocaleString('id-ID')}</span>
+                <span>Imbal Hasil: +{((totalGain / totalInvested) * 100).toFixed(2)}%</span>
+              </div>
+            </div>
+
+            {/* Allocation Breakdown */}
+            <div className="space-y-2.5">
+              <span className="text-[11.5px] font-extrabold text-gray-500 uppercase tracking-wide block">
+                Alokasi Aset &amp; Akad Syariah
+              </span>
+              {portfolios.map((p) => (
+                <div key={p.id} className="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between">
+                  <div>
+                    <h4 className="text-[13px] font-black text-gray-900">{p.name}</h4>
+                    <span className="text-[10.5px] text-gray-500 font-medium">
+                      {p.category === 'reksadana' && 'Akad Wakalah bil Ujrah'}
+                      {p.category === 'deposito' && 'Akad Mudharabah Muthlaqah'}
+                      {p.category === 'emas' && 'Murabahah Emas Fisik 24K'}
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[13px] font-black text-[#1037A6] font-mono block">
+                      Rp{(p.invested + p.gain).toLocaleString('id-ID')}
+                    </span>
+                    <span className="text-[10px] font-extrabold text-[#059669]">
+                      +{p.gainPercent}% ({p.productsCount} Produk)
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="pt-2 space-y-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setDownloadSuccessToast('e-Statement Portofolio Q4-2026 berhasil diunduh (PDF)!')
+                  setTimeout(() => setDownloadSuccessToast(null), 4000)
+                }}
+                className="w-full py-3 bg-[#1037A6] hover:bg-[#0D2D88] text-white font-extrabold text-[13px] rounded-xl active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+              >
+                <span>Unduh e-Statement Portofolio (PDF)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  triggerReaction('success', 'Permintaan pencairan dana ke Ala Dompet sedang diproses.')
+                  setShowPortofolioModal(false)
+                }}
+                className="w-full py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-[12.5px] rounded-xl active:scale-98 transition-all cursor-pointer"
+              >
+                Tarik Saldo ke Ala Dompet
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 2: NABUNG RUTIN AUTODEBIT MODAL */}
+      {showNabungRutinModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center">
+                  <Calendar className="w-4.5 h-4.5 stroke-[2.2]" />
+                </div>
+                <div>
+                  <h3 className="text-[15px] font-black text-[#1A1D26]">Nabung Rutin Syariah</h3>
+                  <span className="text-[10.5px] font-bold text-[#059669]">Autodebit Bebas Admin</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowNabungRutinModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-800 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {nabungSuccess ? (
+              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-2">
+                <div className="w-12 h-12 bg-[#059669] text-white rounded-full flex items-center justify-center mx-auto shadow-xs">
+                  <Check className="w-6 h-6 stroke-[3]" />
+                </div>
+                <h4 className="text-[15px] font-black text-emerald-900">
+                  Nabung Rutin Berhasil Diaktifkan!
+                </h4>
+                <p className="text-[12px] text-emerald-700 leading-relaxed">
+                  Autodebit <strong className="font-mono">Rp{nabungAmount}</strong> per bulan setiap <strong>Tanggal {nabungDate}</strong> telah aktif dari Ala Dompet. Bebas biaya admin &amp; bisa dihentikan kapan saja.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNabungSuccess(false)
+                    setShowNabungRutinModal(false)
+                  }}
+                  className="w-full mt-3 py-2.5 bg-[#059669] text-white font-black text-[12.5px] rounded-xl hover:bg-emerald-700 transition-all cursor-pointer"
+                >
+                  Selesai
+                </button>
+              </div>
+            ) : (
+              <>
+                <p className="text-[12px] text-gray-600 leading-relaxed">
+                  Bangun kebiasaan finansial berkah dengan investasi otomatis setiap bulan langsung dari saldo <strong className="text-[#1037A6]">Ala Dompet (Rp{alaDompet.toLocaleString('id-ID')})</strong>.
+                </p>
+
+                {/* Pilih Instrumen */}
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-extrabold text-gray-500 uppercase tracking-wide block">
+                    Pilih Instrumen Syariah
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: 'reksadana', label: 'Reksa Dana', sub: 'Sucorinvest' },
+                      { id: 'sukuk', label: 'Sukuk SBSN', sub: 'Majoris' },
+                      { id: 'emas', label: 'Emas Fisik', sub: 'Antam 24K' },
+                    ].map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => setNabungProduct(item.id as any)}
+                        className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+                          nabungProduct === item.id
+                            ? 'bg-blue-50 border-[#1037A6] ring-1 ring-[#1037A6]'
+                            : 'bg-white border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <span className="text-[12px] font-black block text-gray-900">{item.label}</span>
+                        <span className="text-[9.5px] text-gray-500 block">{item.sub}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Nominal Rutin */}
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-extrabold text-gray-500 uppercase tracking-wide block">
+                    Nominal Autodebit per Bulan
+                  </label>
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {['100.000', '250.000', '500.000', '1.000.000'].map((amt) => (
+                      <button
+                        key={amt}
+                        type="button"
+                        onClick={() => setNabungAmount(amt)}
+                        className={`py-2 rounded-xl text-[11px] font-bold border transition-all cursor-pointer ${
+                          nabungAmount === amt
+                            ? 'bg-[#1037A6] text-white border-[#1037A6]'
+                            : 'border-gray-200 text-gray-700 hover:border-gray-300'
+                        }`}
+                      >
+                        Rp{amt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Tanggal Autodebit */}
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-extrabold text-gray-500 uppercase tracking-wide block">
+                    Tanggal Debit Setiap Bulan
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { val: '1', label: 'Tgl 1 (Gajian)' },
+                      { val: '10', label: 'Tgl 10' },
+                      { val: '25', label: 'Tgl 25' },
+                    ].map((d) => (
+                      <button
+                        key={d.val}
+                        type="button"
+                        onClick={() => setNabungDate(d.val as any)}
+                        className={`py-2 rounded-xl text-[11px] font-bold border transition-all cursor-pointer ${
+                          nabungDate === d.val
+                            ? 'bg-[#1037A6] text-white border-[#1037A6]'
+                            : 'border-gray-200 text-gray-700'
+                        }`}
+                      >
+                        {d.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Akad Note */}
+                <div className="p-3 bg-blue-50/60 rounded-xl border border-blue-100 text-[11px] text-gray-700 space-y-1">
+                  <div className="flex items-center gap-1.5 font-bold text-[#1037A6]">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>Akad Wakalah bil Ujrah &amp; Mudharabah</span>
+                  </div>
+                  <p className="text-[10.5px] text-gray-600 leading-relaxed">
+                    Dana didebit secara aman tanpa denda pinalti bila saldo tidak mencukupi.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNabungSuccess(true)
+                    triggerReaction('success', 'Nabung Rutin autodebit syariah berhasil diaktifkan!')
+                  }}
+                  className="w-full py-3 bg-[#1037A6] hover:bg-[#0D2D88] text-white font-extrabold text-[13.5px] rounded-xl active:scale-98 transition-all cursor-pointer shadow-md shadow-[#1037A6]/20"
+                >
+                  Aktifkan Nabung Rutin (Rp{nabungAmount}/bln)
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 3: REFERRAL PROGRAM BERKAH */}
+      {showReferralModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center">
+                  <Gift className="w-4.5 h-4.5 stroke-[2.2]" />
+                </div>
+                <div>
+                  <h3 className="text-[15px] font-black text-[#1A1D26]">Program Referral Berkah</h3>
+                  <span className="text-[10.5px] font-bold text-[#059669]">Bonus Investasi Rp25.000</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowReferralModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-800 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Banner card */}
+            <div className="bg-gradient-to-br from-[#1037A6] to-[#0A236E] rounded-2xl p-4 text-white space-y-2">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[#00F0A0] text-[#0A236E] px-2 py-0.5 rounded-full inline-block">
+                Hadiah Berdua
+              </span>
+              <h4 className="text-[16px] font-black leading-snug">
+                Ajak Teman Investasi Syariah, Dapatkan Bonus Saldo Rp25.000!
+              </h4>
+              <p className="text-[11.5px] text-blue-100 leading-relaxed">
+                Temanmu dapat bonus saldo reksa dana Rp25.000 setelah investasi perdana min. Rp100.000, dan kamu otomatis mendapat bonus yang sama.
+              </p>
+            </div>
+
+            {/* Kode Promo Card */}
+            <div className="p-3.5 bg-gray-50 rounded-2xl border border-gray-200 flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block">
+                  Kode Referral Unik Kamu
+                </span>
+                <span className="text-[16px] font-black text-[#1037A6] font-mono tracking-wider">
+                  ALADINBERKAH2026
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard?.writeText('ALADINBERKAH2026')
+                  setReferralCopied(true)
+                  setTimeout(() => setReferralCopied(false), 3000)
+                }}
+                className={`px-3 py-1.5 rounded-xl text-[11.5px] font-black transition-all cursor-pointer ${
+                  referralCopied
+                    ? 'bg-[#059669] text-white'
+                    : 'bg-[#1037A6] text-white hover:bg-[#0D2D88]'
+                }`}
+              >
+                {referralCopied ? 'Tersalin ✓' : 'Salin Kode'}
+              </button>
+            </div>
+
+            {/* Referral Stats */}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="p-3 bg-blue-50/60 rounded-xl border border-blue-100 text-center">
+                <span className="text-[10px] font-bold text-gray-500 uppercase block">Teman Aktif</span>
+                <span className="text-[18px] font-black text-[#1037A6] font-mono">4 Orang</span>
+              </div>
+              <div className="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100 text-center">
+                <span className="text-[10px] font-bold text-gray-500 uppercase block">Bonus Terkumpul</span>
+                <span className="text-[18px] font-black text-[#059669] font-mono">Rp100.000</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                triggerReaction('success', 'Link referral Aladin Berkah berhasil disiapkan untuk dibagikan!')
+                setShowReferralModal(false)
+              }}
+              className="w-full py-3 bg-[#059669] hover:bg-emerald-700 text-white font-extrabold text-[13.5px] rounded-xl active:scale-98 transition-all cursor-pointer shadow-md shadow-emerald-600/20"
+            >
+              Bagikan via WhatsApp &amp; Sosial Media
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL 4: FATWA MUI & KEPATUHAN SYARIAH MODAL */}
+      {showFatwaModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center">
+                  <Scale className="w-4.5 h-4.5 stroke-[2.2]" />
+                </div>
+                <div>
+                  <h3 className="text-[15px] font-black text-[#1A1D26]">Fatwa DSN-MUI &amp; Akad Syariah</h3>
+                  <span className="text-[10.5px] font-bold text-[#059669]">Dewan Syariah Nasional</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowFatwaModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:text-gray-800 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center gap-2.5">
+              <ShieldCheck className="w-5 h-5 text-[#059669] shrink-0" />
+              <p className="text-[11.5px] text-emerald-900 leading-snug">
+                Seluruh produk investasi di Bank Aladin Syariah bebas dari unsur <strong>Riba (Bunga)</strong>, <strong>Gharar (Ketidakpastian)</strong>, dan <strong>Maisir (Spekulasi/Perjudian)</strong>.
+              </p>
+            </div>
+
+            {/* Fatwa List */}
+            <div className="space-y-2">
+              <span className="text-[11px] font-extrabold text-gray-500 uppercase tracking-wide block">
+                Daftar Fatwa Resmi Dewan Syariah Nasional
+              </span>
+
+              {[
+                {
+                  no: 'Fatwa No. 20/DSN-MUI/IV/2001',
+                  title: 'Pedoman Pelaksanaan Investasi Reksa Dana Syariah',
+                  desc: 'Mengatur akad Wakalah bil Ujrah dan batas rasio utang berbasis bunga emiten maks. 45%.',
+                },
+                {
+                  no: 'Fatwa No. 77/DSN-MUI/V/2010',
+                  title: 'Jual Beli Emas Secara Murabahah Non-Tunai',
+                  desc: 'Menetapkan keabsahan transaksi jual beli emas fisik digital dengan kepemilikan riil 24K.',
+                },
+                {
+                  no: 'Fatwa No. 03/DSN-MUI/IV/2000',
+                  title: 'Deposito Berjangka Syariah',
+                  desc: 'Nisbah bagi hasil berkeadilan menggunakan Akad Mudharabah Muthlaqah bebas bunga.',
+                },
+                {
+                  no: 'Fatwa No. 135/DSN-MUI/V/2020',
+                  title: 'Saham Syariah & Efek Syariah (DES)',
+                  desc: 'Seleksi ketat Daftar Efek Syariah oleh OJK dan DSN-MUI untuk perdagangan saham halal.',
+                },
+              ].map((f, i) => (
+                <div key={i} className="p-3 bg-gray-50 rounded-xl border border-gray-100 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10.5px] font-mono font-bold text-[#1037A6]">{f.no}</span>
+                    <span className="text-[9.5px] font-extrabold text-[#059669] bg-emerald-100/60 px-1.5 py-0.5 rounded">Sah Halal</span>
+                  </div>
+                  <h4 className="text-[12.5px] font-black text-gray-900 leading-tight">{f.title}</h4>
+                  <p className="text-[11px] text-gray-600 leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Dewan Pengawas Syariah Info */}
+            <div className="p-3 bg-blue-50/60 rounded-xl border border-blue-100 text-[11px] text-gray-700 space-y-1">
+              <span className="font-extrabold text-[#1037A6] block">Dewan Pengawas Syariah (DPS) Bank Aladin Syariah</span>
+              <p className="text-[10.5px] text-gray-600">
+                Diawasi langsung oleh para pakar fiqih muamalah bersertifikasi DSN-MUI untuk menjaga integritas transaksi setiap hari.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowFatwaModal(false)}
+              className="w-full py-3 bg-[#1037A6] hover:bg-[#0D2D88] text-white font-extrabold text-[13px] rounded-xl active:scale-98 transition-all cursor-pointer"
+            >
+              Saya Mengerti &amp; Patuh Syariah
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* SUCCESS TOAST DOWNLOAD */}
+      {downloadSuccessToast && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-[#1A1D26] text-white px-4 py-2.5 rounded-full shadow-lg text-[12px] font-bold flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2">
+          <Check className="w-4 h-4 text-[#00F0A0]" />
+          <span>{downloadSuccessToast}</span>
         </div>
       )}
     </div>

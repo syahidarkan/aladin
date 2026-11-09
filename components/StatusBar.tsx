@@ -8,14 +8,23 @@ interface StatusBarProps {
 }
 
 /**
- * Clean Top Safe-Area Spacer (Transparent, NO fake battery, wifi, or clock icons)
+ * Clean Top Safe-Area Spacer & Notch Adapter
+ * Guarantees that the top safe area seamlessly matches the navbar color:
+ * - Pure solid white (`#FFFFFF`) on light headers to eliminate any gap / off-color band.
+ * - Deep Royal Blue (`#1037A6` / `#07194D`) on dark headers.
  */
 export default function StatusBar({
   className = '',
+  dark = false,
 }: StatusBarProps) {
+  const hasCustomBg = /bg-/.test(className)
+  const defaultBg = dark ? 'bg-[#1037A6]' : 'bg-white'
+
   return (
     <div
-      className={`w-full h-11 shrink-0 select-none pointer-events-none z-30 ${className}`}
+      className={`w-full h-9 shrink-0 select-none pointer-events-none z-30 transition-colors ${
+        hasCustomBg ? '' : defaultBg
+      } ${className}`}
       aria-hidden="true"
     />
   )

@@ -97,50 +97,50 @@ export default function AlaImpianLandingPage() {
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
       }}
     >
-      {/* 1. Safe Area Spacer */}
-      <StatusBar />
-
-      {/* 2. Top Header Bar (Authentic Aladin Back Button + Title) */}
-      <div
-        className="w-full bg-white border-b border-[#ECEEF2] flex items-center justify-between shrink-0"
-        style={{ height: '46px', paddingLeft: '20px', paddingRight: '20px' }}
-      >
-        <Link
-          href="/beranda"
-          className="flex items-center justify-center p-1 -ml-1 active:opacity-60 transition-opacity"
+      {/* 1. Top Header Bar with Seamless White Background */}
+      <header className="sticky top-0 z-30 w-full bg-white border-b border-[#ECEEF2] shrink-0">
+        <StatusBar className="bg-white" />
+        <div
+          className="w-full bg-white flex items-center justify-between"
+          style={{ height: '46px', paddingLeft: '20px', paddingRight: '20px' }}
         >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={16}
-            height={16}
-            style={{ width: '15.5px', height: '15.5px' }}
-            priority
-          />
-        </Link>
+          <Link
+            href="/beranda"
+            className="flex items-center justify-center p-1 -ml-1 active:opacity-60 transition-opacity cursor-pointer"
+          >
+            <Image
+              src="/assets/icons/header_back_clean.png"
+              alt="Kembali"
+              width={16}
+              height={16}
+              style={{ width: '15.5px', height: '15.5px' }}
+              priority
+            />
+          </Link>
 
-        <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
-          Ala Impian
-        </h1>
+          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+            Ala Impian
+          </h1>
 
-        <button
-          onClick={() =>
-            alert(
-              'Ala Impian adalah tabungan berjangka syariah dengan akad Mudharabah Muthlaqah, bagi hasil optimal, dan perlindungan LPS.'
-            )
-          }
-          className="flex items-center justify-center p-1 active:opacity-60 transition-opacity cursor-pointer"
-        >
-          <Image
-            src="/assets/icons/impian_info_clean.png"
-            alt="Info"
-            width={18}
-            height={18}
-            style={{ width: '18px', height: '18px' }}
-            priority
-          />
-        </button>
-      </div>
+          <button
+            onClick={() =>
+              alert(
+                'Ala Impian adalah tabungan berjangka syariah dengan akad Mudharabah Muthlaqah, bagi hasil optimal, dan perlindungan LPS.'
+              )
+            }
+            className="flex items-center justify-center p-1 active:opacity-60 transition-opacity cursor-pointer"
+          >
+            <Image
+              src="/assets/icons/impian_info_clean.png"
+              alt="Info"
+              width={18}
+              height={18}
+              style={{ width: '18px', height: '18px' }}
+              priority
+            />
+          </button>
+        </div>
+      </header>
 
       {/* 3. Main Scrollable Container (Generous 20px Margins, Block Flow) */}
       <div

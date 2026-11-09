@@ -237,12 +237,12 @@ export default function BerandaPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-[24px] font-black text-[#1A1D26] tracking-tight">
-                  {showBalance ? 'Rp69.000' : 'Rp•••••••'}
+                <span className="text-[24px] font-black text-[#1A1D26] tracking-tight font-mono">
+                  {showBalance ? `Rp${alaDompet.toLocaleString('id-ID')}` : 'Rp••••••••'}
                 </span>
                 {showBalance && (
-                  <span className="text-[14px] font-medium text-[#9CA3AF] -ml-1 mt-1">
-                    ,37
+                  <span className="text-[14px] font-medium text-[#9CA3AF] -ml-1 mt-1 font-mono">
+                    ,00
                   </span>
                 )}
 
@@ -425,8 +425,8 @@ export default function BerandaPage() {
               </div>
 
               <div className="mt-3">
-                <span className="text-[18px] font-black text-[#1A1D26] tracking-tight block">
-                  Rp69.000,37
+                <span className="text-[18px] font-black text-[#1A1D26] tracking-tight block font-mono">
+                  Rp{alaDompet.toLocaleString('id-ID')},00
                 </span>
                 <span className="text-[10px] text-gray-500 mt-0.5 block">
                   Bebas biaya admin &amp; transfer

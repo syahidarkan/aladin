@@ -82,46 +82,46 @@ export default function PocketsPage() {
   const [newPocketType, setNewPocketType] = useState<'spending' | 'savings' | 'emergency'>('spending')
   const [newInitialDeposit, setNewInitialDeposit] = useState('100.000')
 
-  // Default initial pockets matching Bank Jago File 3 1:1
+  // Default initial pockets synchronized with bank state
   const [pocketList, setPocketList] = useState<JagoPocketItem[]>([
     {
       id: 'main-pocket',
       name: 'Main Pocket',
-      balance: alaDompet > 0 ? alaDompet : 5000000,
+      balance: alaDompet > 0 ? alaDompet : 7400000,
       type: 'main',
       badge: 'Main Pocket',
       iconName: 'main',
     },
     {
       id: 'food-pocket',
-      name: 'Food',
-      balance: 80000,
+      name: 'Makan & Kopi',
+      balance: 1250000,
       type: 'spending',
       badge: 'Spending Pocket',
       iconName: 'food',
     },
     {
       id: 'renovation-pocket',
-      name: 'Renovation',
-      balance: 50000000,
-      targetAmount: 100000000,
+      name: 'Renovasi Rumah',
+      balance: 3500000,
+      targetAmount: 10000000,
       type: 'savings',
       badge: 'Savings Pocket',
       iconName: 'renovation',
     },
     {
       id: 'vacation-pocket',
-      name: 'Vacation',
-      balance: 25000000,
-      sharedCount: 5,
+      name: 'Liburan & Umrah',
+      balance: 2500000,
+      sharedCount: 3,
       type: 'savings',
       badge: 'Savings Pocket',
       iconName: 'vacation',
     },
     {
       id: 'emergency-pocket',
-      name: 'Emergency',
-      balance: 8000000,
+      name: 'Dana Darurat',
+      balance: 5000000,
       type: 'emergency',
       badge: 'Saving Pocket',
       iconName: 'emergency',
@@ -275,44 +275,44 @@ export default function PocketsPage() {
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* 0. Top Status Bar (Prevents notch clipping) */}
-      <StatusBar time="22.25" batteryLevel={33} dark={false} />
-
       {/* ========================================================================= */}
       {/* VIEW 1: MAIN POCKETS 2-COLUMN VIEW                                        */}
       {/* ========================================================================= */}
       {activeView === 'list' && (
         <div className="flex flex-col flex-1">
-          {/* 1. TOP HEADER with proper breathing room */}
-          <header className="sticky top-0 z-30 w-full bg-[#FBFBFA]/95 backdrop-blur-md flex items-center justify-between px-5 pt-2 pb-3 border-b border-slate-100">
-            <div className="flex items-center gap-3">
-              <Link
-                href="/beranda"
-                className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-200/60 active:scale-95 transition-all cursor-pointer"
-                aria-label="Kembali ke Beranda"
-              >
-                <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
-              </Link>
-              <h1 className="text-[24px] font-black text-[#1037A6] tracking-tight">
-                Ala Pocket
-              </h1>
-            </div>
+          {/* Unified Seamless White Header (No Notch Gap) */}
+          <header className="sticky top-0 z-30 w-full bg-white border-b border-gray-100 shrink-0">
+            <StatusBar />
+            <div className="h-14 px-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/beranda"
+                  className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+                  aria-label="Kembali ke Beranda"
+                >
+                  <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+                </Link>
+                <h1 className="text-[17px] font-bold text-[#1037A6] tracking-tight">
+                  Ala Pocket
+                </h1>
+              </div>
 
-            <div className="flex items-center gap-1">
-              <button
-                type="button"
-                onClick={() => alert('Opsi Ala Pocket: Atur urutan kantong, ekspor mutasi, atau hubungkan kartu visa.')}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-200/60 transition-colors cursor-pointer"
-              >
-                <MoreHorizontal className="w-5 h-5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => triggerReaction('success', 'Membuka e-Statement mutasi kantong...')}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-200/60 transition-colors cursor-pointer"
-              >
-                <FileText className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => alert('Opsi Ala Pocket: Atur urutan kantong, ekspor mutasi, atau hubungkan kartu visa.')}
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+                >
+                  <MoreHorizontal className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => triggerReaction('success', 'Membuka e-Statement mutasi kantong...')}
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+                >
+                  <FileText className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </header>
 
@@ -426,42 +426,45 @@ export default function PocketsPage() {
       {/* ========================================================================= */}
       {activeView === 'detail' && selectedPocket && (
         <div className="flex flex-col flex-1 animate-in fade-in duration-200">
-          {/* Top Header: ← Back, Rincian Kantong, Undang button, ••• */}
-          <header className="sticky top-0 z-30 w-full bg-[#FBFBFA]/95 backdrop-blur-md flex items-center justify-between px-4 h-14 border-b border-gray-100">
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setActiveView('list')}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
-              >
-                <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
-              </button>
-              <h1 className="text-[16.5px] font-bold text-[#1A1D26]">
-                Rincian Kantong
-              </h1>
-            </div>
+          {/* Unified Seamless White Header */}
+          <header className="sticky top-0 z-30 w-full bg-white border-b border-gray-100 shrink-0">
+            <StatusBar />
+            <div className="h-14 px-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setActiveView('list')}
+                  className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+                >
+                  <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+                </button>
+                <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+                  Rincian Kantong
+                </h1>
+              </div>
 
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => triggerReaction('success', `Tautan undangan Pocket "${selectedPocket.name}" disalin!`)}
-                className="py-1.5 px-4 rounded-full bg-[#1037A6] hover:bg-[#0D2D88] text-white text-[12px] font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
-              >
-                Undang
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  if (confirm(`Tutup Pocket "${selectedPocket.name}"? Saldo akan dikembalikan ke Rekening Utama.`)) {
-                    setPocketList((prev) => prev.filter((p) => p.id !== selectedPocket.id))
-                    setActiveView('list')
-                    triggerReaction('success', 'Pocket berhasil ditutup.')
-                  }
-                }}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-100 cursor-pointer"
-              >
-                <MoreHorizontal className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => triggerReaction('success', `Tautan undangan Pocket "${selectedPocket.name}" disalin!`)}
+                  className="py-1.5 px-4 rounded-full bg-[#1037A6] hover:bg-[#0D2D88] text-white text-[12px] font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
+                >
+                  Undang
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (confirm(`Tutup Pocket "${selectedPocket.name}"? Saldo akan dikembalikan ke Rekening Utama.`)) {
+                      setPocketList((prev) => prev.filter((p) => p.id !== selectedPocket.id))
+                      setActiveView('list')
+                      triggerReaction('success', 'Pocket berhasil ditutup.')
+                    }
+                  }}
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-100 cursor-pointer"
+                >
+                  <MoreHorizontal className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </header>
 
