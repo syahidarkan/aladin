@@ -168,6 +168,7 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
 interface CarpetModelProps {
   pose?: CarpetPose
   interactive?: boolean
+  followCursor?: boolean
   onClick?: () => void
   scale?: number
 }
@@ -577,6 +578,7 @@ export function createRiggedCarpet(
 export default function CarpetModel({
   pose = 'idle',
   interactive = true,
+  followCursor = true,
   onClick,
   scale = 1,
 }: CarpetModelProps) {
@@ -584,8 +586,55 @@ export default function CarpetModel({
   const bonesRef = useRef<THREE.Bone[]>([])
   const isSpinningRef = useRef(false)
   const isBlinkingRef = useRef(false)
+  const mouseCoordsRef = useRef<{ x: number; y: number; active: boolean }>({ x: 0, y: 0, active: false })
 
-  const { pointer } = useThree()
+  const { pointer, gl } = useThree()
+
+  // Global Pointer & Touch Tracking across entire screen
+  useEffect(() => {
+    if (!followCursor && !interactive) return
+
+    let idleTimeout: NodeJS.Timeout
+    const handlePointer = (e: MouseEvent | TouchEvent) => {
+      let clientX = 0
+      let clientY = 0
+      if ('touches' in e && e.touches.length > 0) {
+        clientX = e.touches[0].clientX
+        clientY = e.touches[0].clientY
+      } else if ('clientX' in e) {
+        clientX = e.clientX
+        clientY = e.clientY
+      } else {
+        return
+      }
+
+      if (gl.domElement) {
+        const rect = gl.domElement.getBoundingClientRect()
+        const centerX = rect.left + rect.width / 2
+        const centerY = rect.top + rect.height / 2
+
+        // Normalized offset from canvas center to cursor ([-1, 1])
+        const dx = Math.max(-1, Math.min(1, (clientX - centerX) / 360))
+        const dy = Math.max(-1, Math.min(1, (clientY - centerY) / 360))
+
+        mouseCoordsRef.current = { x: dx, y: dy, active: true }
+
+        clearTimeout(idleTimeout)
+        idleTimeout = setTimeout(() => {
+          mouseCoordsRef.current.active = false
+        }, 2500)
+      }
+    }
+
+    window.addEventListener('pointermove', handlePointer, { passive: true })
+    window.addEventListener('touchmove', handlePointer, { passive: true })
+
+    return () => {
+      clearTimeout(idleTimeout)
+      window.removeEventListener('pointermove', handlePointer)
+      window.removeEventListener('touchmove', handlePointer)
+    }
+  }, [followCursor, interactive, gl])
 
   // Generate Canvases & CanvasTextures
   const { normalTexture, blinkTexture } = useMemo(() => {
@@ -700,16 +749,36 @@ export default function CarpetModel({
 
         if (isSpinningRef.current) {
           groupRef.current.rotation.y += delta * 12
+        } else if (followCursor && mouseCoordsRef.current.active) {
+          // Dynamic Cursor Tracking: mascot actively looks toward pointer anywhere on screen!
+          const { x, y } = mouseCoordsRef.current
+          // x > 0 (cursor right) -> positive yaw rotation (look right)
+          // x < 0 (cursor left) -> negative yaw rotation (look left)
+          const targetRotY = x * 0.42
+          // y < 0 (cursor above) -> negative pitch rotation (look up)
+          // y > 0 (cursor below) -> positive pitch rotation (look down)
+          const targetRotX = y * 0.28
+          const targetRotZ = -x * 0.10
+
+          groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, targetRotY, 5.0, delta)
+          groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, targetRotX, 5.0, delta)
+          groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, targetRotZ, 5.0, delta)
+
+          // Extra cuteness: head bone (Spine_0) tilts slightly towards the cursor
+          if (bonesRef.current[0]) {
+            bonesRef.current[0].rotation.y = THREE.MathUtils.damp(bonesRef.current[0].rotation.y, targetRotY * 0.35, 6.0, delta)
+            bonesRef.current[0].rotation.x = THREE.MathUtils.damp(bonesRef.current[0].rotation.x, targetRotX * 0.3, 6.0, delta)
+          }
         } else if (interactive) {
-          const targetRotY = pointer.x * 0.15
-          const targetRotX = -pointer.y * 0.1
-          groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, targetRotY, 4, delta)
-          groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, targetRotX, 4, delta)
-          groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, 0, 4, delta)
+          const targetRotY = pointer.x * 0.25
+          const targetRotX = -pointer.y * 0.15
+          groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, targetRotY, 4.0, delta)
+          groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, targetRotX, 4.0, delta)
+          groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, 0, 4.0, delta)
         } else {
-          groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, 0, 4, delta)
-          groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, 0, 4, delta)
-          groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, 0, 4, delta)
+          groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, 0, 4.0, delta)
+          groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, 0, 4.0, delta)
+          groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, 0, 4.0, delta)
         }
       } else if (pose === 'loading') {
         const tFlight = t * 1.5

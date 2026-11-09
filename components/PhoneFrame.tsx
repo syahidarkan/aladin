@@ -37,6 +37,38 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
         const cleanPath = pathname.split('?')[0].replace(/\/$/, '') || '/'
         if (cleanHref === cleanPath || isTransitioning) return
 
+        // Detect if this click is a "Back" button navigation:
+        // 1. Explicit data attributes: data-back or data-no-transition
+        const hasBackAttr = anchor.hasAttribute('data-back') || anchor.hasAttribute('data-no-transition')
+
+        // 2. Aria-label, title, or text containing "kembali", "back", "batal", "tutup", "close"
+        const ariaLabel = anchor.getAttribute('aria-label') || ''
+        const title = anchor.getAttribute('title') || ''
+        const text = anchor.textContent?.trim() || ''
+        const isBackText =
+          /kembali|back|batal|tutup|close|←/i.test(ariaLabel) ||
+          /kembali|back|batal|tutup|close/i.test(title) ||
+          /^(kembali|back|tutup|batal|←)/i.test(text)
+
+        // 3. Child img with alt="Kembali" or alt="Back"
+        const hasBackImg = anchor.querySelector('[alt*="kembali" i], [alt*="back" i], [title*="kembali" i]') !== null
+
+        // 4. Lucide ArrowLeft or ChevronLeft icons
+        const hasBackIcon = anchor.querySelector('.lucide-arrow-left, .lucide-chevron-left') !== null
+
+        // 5. Header back navigation: inside header / top bar going to /beranda or parent path
+        const inTopBar = anchor.closest('header, nav, [class*="top-0"]') !== null
+        const isParentRoute =
+          cleanHref === '/beranda' ||
+          (cleanPath.startsWith(cleanHref) && cleanPath !== cleanHref && cleanHref !== '/')
+
+        const isBackButton = hasBackAttr || isBackText || hasBackImg || hasBackIcon || (inTopBar && isParentRoute)
+
+        // If it is a back navigation, do NOT trigger the mascot transition animation!
+        if (isBackButton) {
+          return // Let Next.js Link navigate immediately without transition animation
+        }
+
         e.preventDefault()
         startTransition(href)
       }

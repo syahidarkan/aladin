@@ -112,7 +112,7 @@ export default function CarpetFloatingBuddy() {
     <>
       {/* 1. FLOATING 3D MASCOT BUTTON (Replaces CS Button at Bottom-Right, Above BottomNav) */}
       <div
-        className="absolute bottom-[78px] right-3 z-50 flex flex-col items-end select-none"
+        className="absolute bottom-[78px] right-6 z-50 flex flex-col items-end select-none"
         style={{ pointerEvents: 'auto' }}
       >
         {/* Floating Speech Bubble Hint */}
@@ -165,7 +165,7 @@ export default function CarpetFloatingBuddy() {
               <pointLight position={[0, 0.3, 2.5]} intensity={3.2} color="#FFFFFF" />
               <pointLight position={[-1.2, -0.2, 2.0]} intensity={2.0} color="#00F0A0" />
               <pointLight position={[1.2, -0.2, 2.0]} intensity={1.6} color="#60A5FA" />
-              <CarpetModel pose="idle" interactive={false} scale={0.88} />
+              <CarpetModel pose="idle" interactive={true} followCursor={true} scale={0.88} />
             </Canvas>
           </div>
 
