@@ -112,20 +112,20 @@ export default function CarpetFloatingBuddy() {
     <>
       {/* 1. FLOATING 3D MASCOT BUTTON (Replaces CS Button at Bottom-Right, Above BottomNav) */}
       <div
-        className="absolute bottom-[80px] right-3 z-50 flex flex-col items-end select-none"
+        className="absolute bottom-[78px] right-3 z-50 flex flex-col items-end select-none"
         style={{ pointerEvents: 'auto' }}
       >
         {/* Floating Speech Bubble Hint */}
         {!isOpen && (
           <div
             onClick={handleBuddyClick}
-            className="mb-1 bg-white/95 text-[#1037A6] text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md border border-[#00F0A0] flex items-center gap-1 cursor-pointer"
+            className="mb-1 mr-2 bg-white/95 text-[#1037A6] text-[10.5px] font-extrabold px-3 py-1 rounded-full shadow-md border border-[#00F0A0] flex items-center gap-1.5 cursor-pointer active:scale-95 transition-transform"
             style={{
-              boxShadow: '0 4px 12px rgba(0, 240, 160, 0.25)',
+              boxShadow: '0 4px 14px rgba(0, 240, 160, 0.3)',
             }}
           >
             <span>Butuh bantuan?</span>
-            <Sparkles className="w-3 h-3 text-[#00F0A0]" />
+            <Sparkles className="w-3.5 h-3.5 text-[#00F0A0]" />
           </div>
         )}
 
@@ -139,8 +139,8 @@ export default function CarpetFloatingBuddy() {
             isSpinning ? 'animate-mascot-spin' : isBouncing ? '-translate-y-2' : ''
           }`}
           style={{
-            width: '76px',
-            height: '66px',
+            width: '98px',
+            height: '84px',
             background: 'transparent',
             border: 'none',
             padding: 0,
@@ -151,32 +151,33 @@ export default function CarpetFloatingBuddy() {
           <div
             className="w-full h-full pointer-events-none transition-all duration-300 group-hover:scale-105"
             style={{
-              filter: 'drop-shadow(0 8px 16px rgba(0, 240, 160, 0.45)) drop-shadow(0 2px 6px rgba(16, 55, 166, 0.4))',
+              filter: 'drop-shadow(0 10px 20px rgba(0, 240, 160, 0.55)) drop-shadow(0 3px 8px rgba(16, 55, 166, 0.45))',
             }}
           >
             <Canvas
-              camera={{ position: [0, 0.12, 3.8], fov: 40 }}
+              camera={{ position: [0, 0.08, 3.2], fov: 38 }}
               gl={{ antialias: true, alpha: true }}
               style={{ width: '100%', height: '100%' }}
             >
-              <ambientLight intensity={1.6} />
-              <directionalLight position={[3, 4, 3]} intensity={2.2} />
-              <pointLight position={[-2, -1, 2]} intensity={1.5} color="#00F0A0" />
-              <CarpetModel pose="idle" interactive={false} scale={0.72} />
+              <ambientLight intensity={2.2} />
+              <directionalLight position={[2, 4, 3]} intensity={2.6} />
+              {/* Direct Spotlight & Keylight on Face for Maximum Clarity */}
+              <pointLight position={[0, 0.3, 2.5]} intensity={3.2} color="#FFFFFF" />
+              <pointLight position={[-1.2, -0.2, 2.0]} intensity={2.0} color="#00F0A0" />
+              <pointLight position={[1.2, -0.2, 2.0]} intensity={1.6} color="#60A5FA" />
+              <CarpetModel pose="idle" interactive={false} scale={0.88} />
             </Canvas>
           </div>
 
           {/* Online Active Status Dot */}
-          <span className="absolute top-1 right-2 flex h-3 w-3">
+          <span className="absolute top-1 right-2 flex h-3.5 w-3.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00F0A0] opacity-80" />
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-[#00F0A0] border-2 border-white shadow-xs" />
+            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#00F0A0] border-2 border-white shadow-xs" />
           </span>
 
           {/* Twinkling Magical Star */}
-          <span
-            className="absolute top-0 left-2 text-[#00F0A0] pointer-events-none"
-          >
-            <Sparkles className="w-2.5 h-2.5 text-[#00F0A0]" />
+          <span className="absolute top-1 left-2 text-[#00F0A0] pointer-events-none">
+            <Sparkles className="w-3.5 h-3.5 text-[#00F0A0]" />
           </span>
         </button>
       </div>

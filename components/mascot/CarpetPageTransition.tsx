@@ -78,38 +78,57 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
 
         if (progress < 0.78) {
           // SUB-PHASE 1 (0.0s to 1.21s):
-          // Deep 3D distance flight towards camera with Lemniscate Figure-8 Slalom & Banking
+          // Deep 3D distance flight towards camera with natural flight heading and banking tangent
           const approachProg = progress / 0.78
-          // Smooth progressive easing
           const easeApproach = approachProg * approachProg * (3 - 2 * approachProg)
 
-          // Distance flight starting from deep 3D space (-32.0) towards camera (-0.6)
-          const curZ = THREE.MathUtils.lerp(-32.0, -0.6, easeApproach)
+          // Analytical flight path function:
+          // X and Y weave gracefully in the distance and smoothly converge to (0, 0) at p = 1.0!
+          const samplePos = (p: number) => {
+            const easeZ = 0.3 * p + 0.7 * (p * p * (3 - 2 * p))
+            const z = THREE.MathUtils.lerp(-30.0, -0.5, easeZ)
 
-          // Lemniscate Figure-8 Slalom Trajectory:
-          // t = elapsed * 1.5
-          // flightX = sin(t) * 1.2
-          // flightY = sin(t * 2.0) * 0.4
-          const t = elapsed * 1.5
-          const dampener = 1.0 - approachProg * 0.25
-          const flightX = Math.sin(t) * 1.2 * dampener
-          const flightY = Math.sin(t * 2.0) * 0.4 * dampener
+            // Slalom lateral weave with envelope that damps to 0 at p = 1.0
+            const env = Math.pow(1 - p, 1.4)
+            const phase = p * Math.PI * 2.5
+            const x = Math.sin(phase) * 1.8 * env
+            const y = Math.sin(phase * 1.2) * 0.4 * env
 
-          groupRef.current.position.set(flightX, flightY, curZ)
+            return new THREE.Vector3(x, y, z)
+          }
 
-          // Banking roll, pitch & yaw:
-          // Dynamic aerobatic flight with figure-8 slalom and banking turns
-          const pitchAngle = Math.sin(t * 2.0) * 0.12
-          const yawTurn = Math.sin(t) * 0.22
-          const bankingRoll = -Math.cos(t) * 0.28
+          const curPos = samplePos(approachProg)
+          groupRef.current.position.copy(curPos)
 
-          groupRef.current.rotation.set(pitchAngle, yawTurn, bankingRoll)
+          // Analytical tangent direction: sample small delta ahead and behind
+          const deltaP = 0.008
+          const pNext = Math.min(1.0, approachProg + deltaP)
+          const pPrev = Math.max(0.0, approachProg - deltaP)
+          const posNext = samplePos(pNext)
+          const posPrev = samplePos(pPrev)
+
+          const dx = posNext.x - posPrev.x
+          const dy = posNext.y - posPrev.y
+          const dz = posNext.z - posPrev.z // positive towards camera
+
+          // Head points in direction of flight:
+          // 1. Yaw turns into flight heading
+          const targetYaw = -Math.atan2(dx, dz)
+          // 2. Pitch nods along climb / dive
+          const targetPitch = Math.atan2(dy, dz)
+          // 3. Roll banks into lateral turn (smoothly straightens to 0 at approachProg = 1.0)
+          const targetRoll = -Math.atan2(dx, dz) * 0.75
+
+          groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, targetPitch, 8.0, delta)
+          groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, targetYaw, 8.0, delta)
+          groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, targetRoll, 8.0, delta)
 
           // Scale grows smoothly from distant small silhouette to full size
           const curScale = THREE.MathUtils.lerp(0.35, 1.15, easeApproach)
           groupRef.current.scale.set(curScale, curScale, curScale)
 
           // Subtle natural silk flutter along the curved spine
+          const t = elapsed * 1.5
           const flutter1 = Math.sin(t * 5.0) * 0.06
           const targetRotations = [
             flutter1 * 0.4,
@@ -127,15 +146,12 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
           })
         } else {
           // SUB-PHASE 2 (1.21s to 1.55s):
-          // Swoop close to blanket 100% of camera viewport
+          // Swoop straight forward to blanket 100% of camera viewport
           const swoopProg = (progress - 0.78) / 0.22
           const ease = swoopProg * swoopProg * (3 - 2 * swoopProg) // smoothstep
 
-          const curX = THREE.MathUtils.lerp(groupRef.current.position.x, 0.0, ease)
-          const curY = THREE.MathUtils.lerp(groupRef.current.position.y, 0.0, ease)
-          const curZ = THREE.MathUtils.lerp(-0.6, 3.2, ease)
-
-          groupRef.current.position.set(curX, curY, curZ)
+          const curZ = THREE.MathUtils.lerp(-0.5, 3.2, ease)
+          groupRef.current.position.set(0.0, 0.0, curZ)
 
           // Smoothly align to face lens directly to blanket screen
           groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, 0.0, ease)
@@ -143,7 +159,7 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
           groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, 0.0, ease)
 
           // Scale expands to blanket entire viewport
-          const curScale = THREE.MathUtils.lerp(1.12, 2.7, ease)
+          const curScale = THREE.MathUtils.lerp(1.15, 2.8, ease)
           groupRef.current.scale.set(curScale, curScale, curScale)
 
           // Unfurl bones flat to form seamless viewport blanket
@@ -237,17 +253,6 @@ export default function CarpetPageTransition() {
         </Canvas>
       </div>
 
-      {/* Vector Sparkle Indicator during close-up */}
-      {isCovering && (
-        <div className="absolute bottom-16 z-20 flex flex-col items-center animate-in fade-in duration-200 pointer-events-none">
-          <div className="flex items-center gap-1.5 bg-[#051937]/80 backdrop-blur-md px-3.5 py-1 rounded-full border border-[#00F0A0]/40 shadow-lg">
-            <Sparkles className="w-3.5 h-3.5 text-[#00F0A0] animate-spin" />
-            <span className="text-[11.5px] font-black uppercase tracking-wider text-white">
-              #PakaiAladin
-            </span>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
