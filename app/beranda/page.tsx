@@ -29,11 +29,12 @@ export default function BerandaPage() {
   const banners = [
     {
       id: 'alfagift',
-      tag: 'PROMO ALADIN x ALFAGIFT',
-      title: 'Belanja Hemat di Alfagift, Cashback s.d. Rp25.000',
+      tag: 'PROMO ALADIN x ALFAMART',
+      title: 'Belanja Hemat di Alfamart, Cashback s.d. Rp25.000',
       desc: 'Tarik & setor tunai bebas biaya admin di Alfamart seluruh Indonesia.',
       cta: 'Klaim Cashback',
       href: '/rewards/alfa',
+      imageBg: '/assets/banners/banner_alfa_daily.png',
       bg: 'linear-gradient(135deg, #0A256B 0%, #1037A6 60%, #1D4ED8 100%)',
       badgeColor: '#EF4444',
       Icon: Gift,
@@ -41,11 +42,12 @@ export default function BerandaPage() {
     },
     {
       id: 'jumat-berkah',
-      tag: 'JUMAT BERKAH',
-      title: 'Jumat Bermakna Dimulai dari Berbagi',
-      desc: 'Salurkan donasi & sedekah tanpa biaya admin melalui Ala Berbagi.',
-      cta: 'Salurkan Donasi',
-      href: '/donasi',
+      tag: 'KAJIAN & INFAQ BERKAH',
+      title: 'Kajian Akbar Ustadz Adi Hidayat & Mental Health',
+      desc: 'Dapatkan tiket presale hemat eksklusif nasabah Bank Aladin.',
+      cta: 'Daftar Kajian',
+      href: '/hijrah',
+      imageBg: '/assets/banners/banner_kajian_akbar.png',
       bg: 'linear-gradient(135deg, #064E3B 0%, #047857 60%, #00F0A0 120%)',
       badgeColor: '#00F0A0',
       Icon: HeartHandshake,
@@ -53,11 +55,12 @@ export default function BerandaPage() {
     },
     {
       id: 'ala-investasi-promo',
-      tag: 'INVESTASI SYARIAH OJK',
+      tag: 'INVESTASI EMAS & SUKUK',
       title: 'Tumbuhkan Berkah Lewat 4 Instrumen Syariah',
       desc: 'Reksa dana syariah, emas fisik 24K, deposito mudharabah, & saham ISSI.',
       cta: 'Mulai Investasi',
       href: '/investasi',
+      imageBg: '/assets/banners/banner_investasi_halal.png',
       bg: 'linear-gradient(135deg, #07194D 0%, #1037A6 60%, #1C20C4 100%)',
       badgeColor: '#00F0A0',
       Icon: Landmark,
@@ -65,11 +68,12 @@ export default function BerandaPage() {
     },
     {
       id: 'deposito-promo',
-      tag: 'NISBAH 85:15',
-      title: 'Bagi Hasil Ala Deposito Hingga 8,5% p.a.',
-      desc: 'Simpanan berjangka syariah aman, fleksibel, berkah dan menguntungkan.',
-      cta: 'Buka Deposito',
-      href: '/simulasi-bagi-hasil',
+      tag: 'KULINER HALAL & CASHBACK',
+      title: 'Voucher Kuliner Halal Hemat 25% Terverifikasi BPJPH',
+      desc: 'Solaria, Kopi Kenangan, Bebek Kaleyo, & ratusan resto halal lainnya.',
+      cta: 'Jelajah Kuliner',
+      href: '/hijrah',
+      imageBg: '/assets/banners/banner_kuliner_halal.png',
       bg: 'linear-gradient(135deg, #0F172A 0%, #1E293B 60%, #0D3396 100%)',
       badgeColor: '#F59E0B',
       Icon: TrendingUp,
@@ -120,6 +124,13 @@ export default function BerandaPage() {
       label: 'Ala Haramain',
       href: '/ala-haramain',
       iconSrc: '/assets/icons/shortcut_haramain_v2.png',
+      badge: 'Baru',
+    },
+    {
+      id: 'alfa-loop',
+      label: 'Alfa Daily',
+      href: '/rewards/alfa',
+      iconSrc: '/assets/icons/shortcut_alfa_daily.png',
       badge: 'Baru',
     },
     {
@@ -307,7 +318,7 @@ export default function BerandaPage() {
               </Link>
 
               <Link
-                href="/rewards/alfa"
+                href="/tarik"
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
               >
                 <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
@@ -325,7 +336,7 @@ export default function BerandaPage() {
               </Link>
 
               <Link
-                href="/rewards/alfa"
+                href="/setor"
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-transform"
               >
                 <div className="relative w-[50px] h-[50px] rounded-2xl overflow-hidden mb-1.5 shadow-sm">
@@ -602,8 +613,22 @@ export default function BerandaPage() {
                     background: b.bg,
                   }}
                 >
+                  {/* Photo / Illustrated Card Background */}
+                  {b.imageBg && (
+                    <div className="absolute inset-0 z-0 pointer-events-none">
+                      <Image
+                        src={b.imageBg}
+                        alt={b.title}
+                        fill
+                        className="object-cover opacity-60"
+                        priority
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+                    </div>
+                  )}
+
                   {/* Top Badge & Vector Icon */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between relative z-10">
                     <span
                       className="text-[9.5px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full inline-block backdrop-blur-xs"
                       style={{
@@ -620,7 +645,7 @@ export default function BerandaPage() {
                   </div>
 
                   {/* Title & Desc */}
-                  <div className="my-auto pr-2">
+                  <div className="my-auto pr-2 relative z-10">
                     <h3 className="text-[15px] font-black leading-snug line-clamp-2">
                       {b.title}
                     </h3>
@@ -630,7 +655,7 @@ export default function BerandaPage() {
                   </div>
 
                   {/* CTA Action Pill */}
-                  <div className="flex items-center justify-between pt-1">
+                  <div className="flex items-center justify-between pt-1 relative z-10">
                     <span className="text-[11px] font-extrabold text-[#00F0A0] flex items-center gap-1">
                       {b.cta} →
                     </span>

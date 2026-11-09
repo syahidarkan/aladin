@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import { useBankState, depositAlaImpian } from '@/lib/bankState'
+import { ArrowLeft, Info } from 'lucide-react'
 
 export default function AlaImpianLandingPage() {
   const { alaDompet, alaImpianUmroh } = useBankState()
@@ -102,20 +103,14 @@ export default function AlaImpianLandingPage() {
         <StatusBar className="bg-white" />
         <div
           className="w-full bg-white flex items-center justify-between"
-          style={{ height: '46px', paddingLeft: '20px', paddingRight: '20px' }}
+          style={{ height: '48px', paddingLeft: '16px', paddingRight: '16px' }}
         >
           <Link
             href="/beranda"
-            className="flex items-center justify-center p-1 -ml-1 active:opacity-60 transition-opacity cursor-pointer"
+            className="w-9 h-9 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+            aria-label="Kembali ke Beranda"
           >
-            <Image
-              src="/assets/icons/header_back_clean.png"
-              alt="Kembali"
-              width={16}
-              height={16}
-              style={{ width: '15.5px', height: '15.5px' }}
-              priority
-            />
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
           </Link>
 
           <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
@@ -128,16 +123,10 @@ export default function AlaImpianLandingPage() {
                 'Ala Impian adalah tabungan berjangka syariah dengan akad Mudharabah Muthlaqah, bagi hasil optimal, dan perlindungan LPS.'
               )
             }
-            className="flex items-center justify-center p-1 active:opacity-60 transition-opacity cursor-pointer"
+            className="w-9 h-9 rounded-full flex items-center justify-center text-gray-700 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+            aria-label="Info"
           >
-            <Image
-              src="/assets/icons/impian_info_clean.png"
-              alt="Info"
-              width={18}
-              height={18}
-              style={{ width: '18px', height: '18px' }}
-              priority
-            />
+            <Info className="w-5 h-5 text-gray-600" />
           </button>
         </div>
       </header>

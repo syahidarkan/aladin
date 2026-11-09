@@ -205,7 +205,7 @@ export default function VirtualCardPage() {
             cardNickname="Ala Dompet Utama"
             isLocked={isFrozen}
             cardNumberMasked={isRevealed ? '4111 2233 4455 7890' : '•••• 7890'}
-            cardHolderName="SYAHID ARKAN"
+            cardHolderName="DEWAN JURI IMOTION"
             expiryDate="11/29"
             notchBg="#FFFFFF"
             onClick={handleToggleFreeze}

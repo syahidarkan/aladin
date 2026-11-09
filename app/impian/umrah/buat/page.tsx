@@ -6,6 +6,7 @@ import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import MilestoneOverlay, { MilestoneData, MILESTONES } from '@/components/MilestoneOverlay'
 import { useMascot } from '@/context/MascotContext'
+import { ArrowLeft } from 'lucide-react'
 
 export default function BuatImpianUmrahPage() {
   const { triggerReaction } = useMascot()
@@ -57,17 +58,11 @@ export default function BuatImpianUmrahPage() {
         style={{ height: '48px', paddingLeft: '20px', paddingRight: '20px' }}
       >
         <Link
-          href="/impian/umrah/intro/2"
-          className="flex items-center justify-center p-1 -ml-1 active:opacity-60 transition-opacity"
+          href="/impian"
+          className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
+          aria-label="Kembali"
         >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={16}
-            height={16}
-            style={{ width: '15.5px', height: '15.5px' }}
-            priority
-          />
+          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
         </Link>
 
         <h1 className="text-[17px] font-extrabold text-[#1A1D26]">Buat Impian Umrah</h1>

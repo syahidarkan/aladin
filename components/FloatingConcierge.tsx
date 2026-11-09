@@ -22,7 +22,7 @@ export default function FloatingConcierge() {
     {
       id: '1',
       sender: 'cs',
-      text: 'Assalamu’alaikum Kak Syahid! Saya Nadia dari Aladin Concierge. Ada yang bisa kami bantu seputar transaksi, tabungan, atau layanan syariah Anda hari ini?',
+      text: 'Assalamu’alaikum Kak Dewan Juri! Saya Nadia dari Aladin Concierge. Ada yang bisa kami bantu seputar transaksi, tabungan, atau layanan syariah Anda hari ini?',
       time: 'Baru saja',
     },
   ])

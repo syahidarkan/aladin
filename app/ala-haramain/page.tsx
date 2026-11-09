@@ -50,7 +50,7 @@ export default function AlaHaramainHubPage() {
   const [onboardingStep, setOnboardingStep] = useState<1 | 2 | 3>(1)
   const [passportNum, setPassportNum] = useState('C9821402')
   const [visaNum, setVisaNum] = useState('2026-SA-88192')
-  const [userName, setUserName] = useState('Ahmad Syahid Al-Fatih')
+  const [userName, setUserName] = useState('Dewan Juri IMOTION 2026')
 
   // Gated Status from LocalStorage
   const [phoneActive, setPhoneActive] = useState(true)

@@ -3,192 +3,91 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
+import { ArrowLeft, CheckCircle2 } from 'lucide-react'
 
 export default function ImpianHajiIntro3() {
   return (
     <div
-      className="relative w-[414px] h-[896px] bg-white overflow-hidden select-none"
+      className="flex flex-col h-full bg-white select-none text-[#1A1D26] overflow-hidden"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
       }}
     >
-      {/* 1. iOS Status Bar */}
-      <StatusBar time="22.25" batteryLevel={3} dark={false} />
-
-      {/* 2. Top Header Title with Back Button */}
-      <div className="absolute left-[20px] top-[60px] flex items-center gap-3">
-        <Link
-          href="/impian/haji/intro/2"
-          className="w-8 h-8 rounded-full flex items-center justify-center p-1 active:opacity-60 transition-opacity"
-        >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={16}
-            height={16}
-            style={{ width: '15.5px', height: '15.5px' }}
-            priority
-          />
-        </Link>
-        <h1
-          className="font-extrabold text-[#313131]"
-          style={{
-            fontSize: '17px',
-            lineHeight: '21px',
-            letterSpacing: '-0.3px',
-          }}
-        >
-          Perkenalan dengan Impian Haji
-        </h1>
-      </div>
-
-      {/* 3-Step Progress Bar at y=105pt (native y=210, all 3 active) */}
-      <div className="absolute left-[24px] top-[105px] w-[365.5px] flex items-center justify-between">
-        <div className="w-[116.5px] h-[4.5px] rounded-full bg-[#7DAEFB]" />
-        <div className="w-[117px] h-[4.5px] rounded-full bg-[#7DAEFB]" />
-        <div className="w-[116.5px] h-[4.5px] rounded-full bg-[#7DAEFB]" />
-      </div>
-
-      {/* 3. Illustration at y=189.5pt (native y=379..829, w=597, h=450) */}
-      <div
-        className="absolute left-[57.5px] pointer-events-none"
-        style={{
-          top: '189.5px',
-          width: '298.5px',
-          height: '225px',
-        }}
-      >
-        <Image
-          src="/assets/illustrations/haji_intro_3_native.png"
-          alt="Haji Intro 3"
-          width={299}
-          height={225}
-          style={{ width: '298.5px', height: '225px' }}
-          priority
-        />
-      </div>
-
-      {/* 4. Headline at y=462.5pt (native y=925) */}
-      <h2
-        className="absolute left-[24px] font-extrabold text-[#313131]"
-        style={{
-          top: '462.5px',
-          fontSize: '23px',
-          lineHeight: '30px',
-          letterSpacing: '-0.3px',
-          maxWidth: '366px',
-        }}
-      >
-        Mulai tabungan haji sekarang!
-      </h2>
-
-      {/* 5. Lavender Card at y=525pt (native y=1050..1531), h=240.5pt */}
-      <div
-        className="absolute left-[24px] w-[365.5px] rounded-[16px] bg-[#EFF0FC] p-[16px] overflow-hidden"
-        style={{
-          top: '525px',
-          height: '240.5px',
-        }}
-      >
-        {/* Bullet Item 1 */}
-        <div className="absolute left-[16px] top-[20px] flex items-start gap-[10px]">
-          <Image
-            src="/assets/icons/umrah_bullet_check.png"
-            alt="Check"
-            width={16}
-            height={25}
-            style={{ width: '16px', height: '24.5px', marginTop: '-3px' }}
-            priority
-          />
-          <p
-            className="text-[#1A1D26] font-medium"
-            style={{
-              fontSize: '13.5px',
-              lineHeight: '18px',
-              letterSpacing: '-0.1px',
-            }}
+      {/* 1. Seamless White Header with ArrowLeft Back Button */}
+      <header className="sticky top-0 z-30 w-full bg-white border-b border-gray-100 shrink-0">
+        <StatusBar className="bg-white" />
+        <div className="w-full h-14 bg-white flex items-center gap-3 px-4">
+          <Link
+            href="/impian/haji/intro/2"
+            className="w-9 h-9 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+            aria-label="Kembali ke Langkah 2"
           >
-            Target saldo sebesar Rp25.012.000 untuk
-            <br />
-            mendapatkan porsi haji reguler
-          </p>
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+          </Link>
+          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+            Keunggulan Impian Haji
+          </h1>
+        </div>
+      </header>
+
+      {/* 2. Scrollable Body Content */}
+      <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-4 pb-28 flex flex-col justify-between">
+        <div className="space-y-4">
+          {/* Progress Indicators */}
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-1.5 rounded-full bg-[#1B21CC]" />
+            <div className="flex-1 h-1.5 rounded-full bg-[#1B21CC]" />
+            <div className="flex-1 h-1.5 rounded-full bg-[#1B21CC]" />
+          </div>
+
+          {/* Illustration */}
+          <div className="relative w-full h-[180px] pointer-events-none flex items-center justify-center">
+            <Image
+              src="/assets/illustrations/haji_intro_3_native.png"
+              alt="Haji Intro 3"
+              width={280}
+              height={180}
+              className="object-contain"
+              priority
+            />
+          </div>
+
+          {/* Headline */}
+          <h2 className="text-[20px] font-black text-[#1A1D26] leading-tight">
+            Kemudahan Menabung Porsi Haji Bersama Aladin
+          </h2>
+
+          {/* Benefits Card */}
+          <div className="rounded-2xl bg-[#EFF0FC] p-4.5 space-y-3 border border-blue-100">
+            {[
+              'Langsung terhubung dengan sistem SISKOHAT Kemenag RI.',
+              'Kumpulkan target setoran awal porsi haji Rp25 juta secara fleksibel.',
+              'Bagi hasil kompetitif akad Mudharabah bebas riba dan biaya admin bulanan.',
+            ].map((text, idx) => (
+              <div key={idx} className="flex items-start gap-2.5">
+                <CheckCircle2 className="w-4.5 h-4.5 text-[#1B21CC] shrink-0 mt-0.5" />
+                <p className="text-[13px] text-gray-800 leading-snug">{text}</p>
+              </div>
+            ))}
+            <p className="text-[11px] text-gray-500 pt-1">*Terdaftar dan diawasi OJK &amp; LPS</p>
+          </div>
         </div>
 
-        {/* Bullet Item 2 */}
-        <div className="absolute left-[16px] top-[80px] flex items-start gap-[10px]">
-          <Image
-            src="/assets/icons/umrah_bullet_check.png"
-            alt="Check"
-            width={16}
-            height={25}
-            style={{ width: '16px', height: '24.5px', marginTop: '-3px' }}
-            priority
-          />
-          <p
-            className="text-[#1A1D26] font-medium"
-            style={{
-              fontSize: '13.5px',
-              lineHeight: '18px',
-              letterSpacing: '-0.1px',
+        {/* Action Button */}
+        <div className="pt-6">
+          <Link
+            href="/impian/haji/buat"
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                localStorage.setItem('aladin_has_opened_haji', 'true')
+              }
             }}
+            className="w-full h-12 rounded-full bg-[#1B21CC] hover:bg-[#151AA8] flex items-center justify-center font-bold text-white text-[15px] shadow-md active:scale-98 transition-all cursor-pointer"
           >
-            Bagi hasil kompetitif hingga 8% p.a.*
-            <br />
-            sesuai tiering saldo tabungan
-          </p>
+            Buka Tabungan Haji Sekarang →
+          </Link>
         </div>
-
-        {/* Bullet Item 3 */}
-        <div className="absolute left-[16px] top-[140px] flex items-start gap-[10px]">
-          <Image
-            src="/assets/icons/umrah_bullet_check.png"
-            alt="Check"
-            width={16}
-            height={25}
-            style={{ width: '16px', height: '24.5px', marginTop: '-3px' }}
-            priority
-          />
-          <p
-            className="text-[#1A1D26] font-medium"
-            style={{
-              fontSize: '13.5px',
-              lineHeight: '18px',
-              letterSpacing: '-0.1px',
-            }}
-          >
-            Daftar haji resmi terhubung dengan SISKOHAT
-            <br />
-            Kemenag RI
-          </p>
-        </div>
-
-        {/* Disclaimer */}
-        <p
-          className="absolute left-[16px] bottom-[14px] text-[#6C737E] font-normal"
-          style={{
-            fontSize: '11px',
-            lineHeight: '15px',
-            letterSpacing: '-0.1px',
-          }}
-        >
-          *Syarat & ketentuan berlaku
-        </p>
-      </div>
-
-      {/* 6. High-Visibility Bottom Button */}
-      <div className="absolute left-[24px] right-[24px] bottom-[75px] z-30">
-        <Link
-          href="/impian/haji/buat"
-          onClick={() => {
-            if (typeof window !== 'undefined') {
-              localStorage.setItem('aladin_has_opened_haji', 'true')
-            }
-          }}
-          className="w-full h-[48px] rounded-full bg-[#1B21CC] hover:bg-[#151AA8] flex items-center justify-center font-bold text-white text-[15px] shadow-lg active:scale-98 transition-all cursor-pointer"
-        >
-          Mulai Menabung Haji Sekarang →
-        </Link>
       </div>
     </div>
   )

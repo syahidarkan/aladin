@@ -5,6 +5,21 @@ import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import { useBankState, buyHijrahItem } from '@/lib/bankState'
+import {
+  ArrowLeft,
+  Utensils,
+  Shirt,
+  HeartPulse,
+  GraduationCap,
+  Sparkles,
+  Check,
+  CheckCircle2,
+  Calendar,
+  MapPin,
+  Clock,
+  ShieldCheck,
+  Ticket,
+} from 'lucide-react'
 
 type CategoryId =
   | 'hub'
@@ -172,46 +187,294 @@ export default function AlaHijrahPage() {
     },
   ]
 
-  // Event Kajian Data
+  // Event Kajian Data Lengkap & Beragam Ustadz
   const kajianEvents = [
     {
       id: 1,
-      title: 'Hijrah & Mental Health: Menemukan Ketenangan Jiwa',
-      category: 'Kajian Gen Z Akbar',
-      speaker: 'Ustadz Populer Gen Z & Psikolog Muslim',
+      title: 'Kunci Ketenangan Hati & Rezeki Berkah',
+      category: 'Kajian Akbar Spesial',
+      speaker: 'Ustadz Adi Hidayat, Lc., M.A.',
       date: 'Sabtu, 21 Nov 2026',
-      time: '09:00 - 12:00 WIB',
-      location: 'Grand Ballroom Jakarta & Live Streaming',
-      normalPrice: 125000,
-      discountPrice: 85000,
-      badge: 'Presale Aladin -32%',
-      partner: 'Komunitas Pemuda Hijrah',
+      time: '08:30 - 11:30 WIB',
+      location: 'Masjid Istiqlal Jakarta & Live YouTube',
+      normalPrice: 100000,
+      discountPrice: 65000,
+      badge: 'Presale Aladin -35%',
+      partner: 'Quantum Akhyar Institute',
     },
     {
       id: 2,
-      title: 'Parenting Nabawiyah: Mendidik Generasi Berkarakter',
-      category: 'Seminar Keluarga',
-      speaker: 'Pakar Parenting Islami Nasional',
+      title: 'Fiqih Muamalah & Bisnis Syariah Kontemporer',
+      category: 'Seminar Fiqih Muamalah',
+      speaker: 'Ustadz Abdul Somad, Lc., D.E.S.A.',
       date: 'Ahad, 29 Nov 2026',
-      time: '13:30 - 16:30 WIB',
-      location: 'Auditorium Syariah Bandung',
+      time: '13:00 - 16:30 WIB',
+      location: 'Jakarta Convention Center (JCC) & Zoom',
       normalPrice: 150000,
-      discountPrice: 105000,
-      badge: 'Diskon 30%',
-      partner: 'Sahabat Parenting Indonesia',
+      discountPrice: 95000,
+      badge: 'Presale Aladin -36%',
+      partner: 'Tafaqquh Fiddin Foundation',
     },
     {
       id: 3,
-      title: 'Kelas Intensif Tahsin Bersanad Online (4 Sesi)',
-      category: 'Kelas Sertifikasi',
-      speaker: 'Lembaga Tahfidz Bersanad Internasional',
-      date: 'Mulai 05 Des 2026',
-      time: 'Setiap Sabtu & Ahad',
-      location: 'Interactive Video Room',
-      normalPrice: 350000,
-      discountPrice: 280000,
-      badge: 'E-Certificate',
+      title: 'Shift: Youth Hijrah & Mengatasi Overthinking',
+      category: 'Kajian Gen Z Akbar',
+      speaker: 'Ustadz Hanan Attaki, Lc.',
+      date: 'Sabtu, 05 Des 2026',
+      time: '19:30 - 22:00 WIB',
+      location: 'Tennis Indoor Senayan, Jakarta',
+      normalPrice: 125000,
+      discountPrice: 75000,
+      badge: 'Gen Z Special -40%',
+      partner: 'Pemuda Hijrah (Shift)',
+    },
+    {
+      id: 4,
+      title: 'Tuntunan Ibadah & Tazkiyatun Nafs',
+      category: 'Kajian Tematik',
+      speaker: 'Ustadz Dr. Khalid Basalamah, M.A.',
+      date: 'Ahad, 13 Des 2026',
+      time: '09:00 - 12:00 WIB',
+      location: 'Masjid Al-Barkah Cileungsi & Live Al-Sofwa',
+      normalPrice: 90000,
+      discountPrice: 50000,
+      badge: 'Bebas Admin',
+      partner: 'Gazwah Islamic Center',
+    },
+    {
+      id: 5,
+      title: 'Merajut Sakinah: Adab Berkeluarga & Parenting Qurani',
+      category: 'Kajian Keluarga',
+      speaker: 'Buya Yahya (Pengasuh LPD Al-Bahjah)',
+      date: 'Sabtu, 19 Des 2026',
+      time: '08:30 - 11:45 WIB',
+      location: 'Ballroom Hotel Bidakara Jakarta',
+      normalPrice: 175000,
+      discountPrice: 110000,
+      badge: 'Paket Suami Istri',
+      partner: 'LPD Al-Bahjah Cirebon',
+    },
+    {
+      id: 6,
+      title: 'Muslimah Berdaya: Mendidik Generasi Penghafal Al-Quran',
+      category: 'Kajian Khusus Muslimah',
+      speaker: 'Ustadzah Dr. Oki Setiana Dewi, M.Pd.',
+      date: 'Ahad, 27 Des 2026',
+      time: '10:00 - 13:00 WIB',
+      location: 'Auditorium Menara 165 Jakarta Selatan',
+      normalPrice: 130000,
+      discountPrice: 80000,
+      badge: 'Khusus Muslimah',
+      partner: 'Maskanul Huffadz Indonesia',
+    },
+    {
+      id: 7,
+      title: 'Lapis-Lapis Keberkahan dalam Ukhuwah & Muamalah',
+      category: 'Bedah Buku & Kajian',
+      speaker: 'Ustadz Salim A. Fillah',
+      date: 'Sabtu, 02 Jan 2027',
+      time: '15:30 - 18:00 WIB',
+      location: 'Masjid Jogokariyan Yogyakarta & Live Stream',
+      normalPrice: 85000,
+      discountPrice: 55000,
+      badge: 'Bonus E-Book',
+      partner: 'Pro-U Media & Jogokariyan',
+    },
+  ]
+
+  // Modest Wear Items
+  const fashionItems = [
+    {
+      id: 101,
+      title: 'Buttonscarves Exclusive Silk Scarf - Aladin Series',
+      category: 'Hijab Premium',
+      partner: 'Buttonscarves Official',
+      normalPrice: 395000,
+      discountPrice: 315000,
+      badge: 'Diskon 20%',
+      desc: 'Bahan voal premium dengan laser cut presisi dan motif islami elegan.',
+    },
+    {
+      id: 102,
+      title: 'Vanilla Hijab Daily Voal Premium Anti-Lepek',
+      category: 'Daily Wear',
+      partner: 'Vanilla Hijab Official',
+      normalPrice: 120000,
+      discountPrice: 85000,
+      badge: 'Best Seller',
+      desc: 'Bahan adem, nyaman dipakai harian, dan tegak sempurna di dahi.',
+    },
+    {
+      id: 103,
+      title: 'Baju Koko Modern Atlas Jacquard Classic',
+      category: 'Koko Pria',
+      partner: 'Atlas Signature',
+      normalPrice: 285000,
+      discountPrice: 199000,
+      badge: 'Hemat Rp86rb',
+      desc: 'Tenun jacquard premium motif islami minimalis untuk ibadah & formal.',
+    },
+    {
+      id: 104,
+      title: 'Sarung BHS Signature Gold Masterpiece',
+      category: 'Sarung Tenun',
+      partner: 'Behaestex BHS',
+      normalPrice: 650000,
+      discountPrice: 490000,
+      badge: 'Koleksi Spesial',
+      desc: 'Tenun sutra perpaduan mesres kualitas mahakarya nusantara.',
+    },
+    {
+      id: 105,
+      title: 'Khimar Syar’i Rabbani Polos Soft Pad',
+      category: 'Khimar Syar’i',
+      partner: 'Rabbani Asli',
+      normalPrice: 165000,
+      discountPrice: 115000,
+      badge: 'Diskon 30%',
+      desc: 'Khimar syar’i menutup dada dengan bahan kaos spandek adem.',
+    },
+  ]
+
+  // Kuliner Halal Items
+  const kulinerItems = [
+    {
+      id: 201,
+      title: 'Voucher Solaria Halal Express Rp100.000',
+      category: 'Restoran Halal',
+      partner: 'Solaria Halal Indonesia',
+      normalPrice: 100000,
+      discountPrice: 75000,
+      badge: 'Hemat 25%',
+      desc: 'Bersertifikat Halal MUI & BPJPH. Berlaku di seluruh outlet Solaria.',
+    },
+    {
+      id: 202,
+      title: 'Paket Puas Bebek Kaleyo Halal BPJPH',
+      category: 'Kuliner Nusantara',
+      partner: 'Bebek Kaleyo Official',
+      normalPrice: 85000,
+      discountPrice: 59000,
+      badge: 'Diskon 30%',
+      desc: 'Bebek goreng kremes renyah + nasi uduk + sambal rica pedas mantap.',
+    },
+    {
+      id: 203,
+      title: 'Kopi Kenangan Halal 2 Cups Signature Drink',
+      category: 'Minuman Halal',
+      partner: 'Kopi Kenangan Halal',
+      normalPrice: 48000,
+      discountPrice: 29000,
+      badge: 'Beli 1 Dapat 2',
+      desc: 'Kopi Kenangan Mantan + Cokelat Klasik bersertifikat halal resmi.',
+    },
+    {
+      id: 204,
+      title: 'Waroeng Steak & Shake Dobel Beef Halal',
+      category: 'Steak Halal',
+      partner: 'Waroeng Steak Indonesia',
+      normalPrice: 62000,
+      discountPrice: 42000,
+      badge: 'Cashback 32%',
+      desc: 'Pelopor steak halal Indonesia dengan saus khas nusantara gurih.',
+    },
+    {
+      id: 205,
+      title: 'Dapur Cokelat Halal Regular Cake Signature',
+      category: 'Pastry & Bakery',
+      partner: 'Dapur Cokelat Halal',
+      normalPrice: 180000,
+      discountPrice: 135000,
+      badge: 'Diskon 25%',
+      desc: 'Cake cokelat lezat berlisensi halal resmi BPJPH untuk momen spesial.',
+    },
+  ]
+
+  // Kesehatan Syariah Items
+  const kesehatanItems = [
+    {
+      id: 301,
+      title: 'Paket Medical Check-Up Dasar RS Islam',
+      category: 'Layanan Rumah Sakit',
+      partner: 'RS Islam Jakarta',
+      normalPrice: 450000,
+      discountPrice: 315000,
+      badge: 'Diskon 30%',
+      desc: 'Pemeriksaan hematologi lengkap, gula darah puasa, kolesterol, & tensi.',
+    },
+    {
+      id: 302,
+      title: 'Paket Vaksin Meningitis Umrah Halal MUI',
+      category: 'Vaksinasi Ibadah',
+      partner: 'Klinik Bio Farma & Kemenkes',
+      normalPrice: 380000,
+      discountPrice: 290000,
+      badge: 'Wajib Umrah',
+      desc: 'Sertifikat vaksin internasional (ICV) resmi Kemenkes untuk syarat Umrah.',
+    },
+    {
+      id: 303,
+      title: 'Terapi Bekam Medis Steril Thibbun Nabawi',
+      category: 'Thibbun Nabawi',
+      partner: 'Rumah Sehat Syariah Indonesia',
+      normalPrice: 150000,
+      discountPrice: 99000,
+      badge: 'Steril & Higienis',
+      desc: 'Terapis profesional bersertifikat ABI (Asosiasi Bekam Indonesia).',
+    },
+    {
+      id: 304,
+      title: 'Paket Madu Habbatussauda Herbal Alami (3 Botol)',
+      category: 'Suplemen Alami',
+      partner: 'Apotek K-24 Halal',
+      normalPrice: 125000,
+      discountPrice: 85000,
+      badge: 'Imun Booster',
+      desc: 'Madu murni trigona kaya antioksidan dan minyak jinten hitam murni.',
+    },
+  ]
+
+  // Pendidikan Anak Items
+  const pendidikanItems = [
+    {
+      id: 401,
+      title: 'Kelas Intensif Tahsin & Tahfidz Bersanad Online',
+      category: 'Tahfidz Al-Qur’an',
       partner: 'Markaz Al-Qur’an Syariah',
+      normalPrice: 350000,
+      discountPrice: 245000,
+      badge: 'E-Certificate',
+      desc: '4 sesi intensif bersama ustadz bersanad riwayat Hafsh ‘an ‘Ashim.',
+    },
+    {
+      id: 402,
+      title: 'Workshop Islamic Parenting Anak Zaman Now',
+      category: 'Parenting Nabawiyah',
+      partner: 'Sahabat Parenting Indonesia',
+      normalPrice: 150000,
+      discountPrice: 95000,
+      badge: 'Bimbingan Ahli',
+      desc: 'Kiat mendidik anak mencintai Al-Qur’an di era gempuran gadget & AI.',
+    },
+    {
+      id: 403,
+      title: 'Formulir Pendaftaran Sekolah Islam Terpadu JSIT',
+      category: 'Pendaftaran Sekolah',
+      partner: 'Jaringan Sekolah Islam Terpadu',
+      normalPrice: 250000,
+      discountPrice: 125000,
+      badge: 'Potongan 50%',
+      desc: 'Voucher diskon formulir pendaftaran SDIT/SMPIT/SMAIT se-Indonesia.',
+    },
+    {
+      id: 404,
+      title: 'Kursus Kilat Bahasa Arab & Fiqih Muamalah Dasar',
+      category: 'Edukasi Syariah',
+      partner: 'Aladin Academy',
+      normalPrice: 200000,
+      discountPrice: 140000,
+      badge: 'Akses Selamanya',
+      desc: 'Kuasai kosakata Al-Qur’an dan aturan jual beli syariah bebas riba.',
     },
   ]
 
@@ -223,48 +486,44 @@ export default function AlaHijrahPage() {
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
       }}
     >
-      {/* 1. Safe Area Spacer */}
-      <StatusBar />
-
-      {/* 2. Top Header Bar */}
-      <div
-        className="w-full bg-white border-b border-[#ECEEF2] flex items-center justify-between shrink-0"
-        style={{ height: '52px', paddingLeft: '16px', paddingRight: '16px' }}
-      >
-        <button
-          onClick={() => {
-            if (activeCategory !== 'hub') {
-              setActiveCategory('hub')
-            } else {
-              window.location.href = '/beranda'
-            }
-          }}
-          className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
+      {/* 1. Top Header Bar (Seamless White Header) */}
+      <header className="sticky top-0 z-30 w-full bg-white border-b border-[#ECEEF2] shrink-0">
+        <StatusBar className="bg-white" />
+        <div
+          className="w-full bg-white flex items-center justify-between"
+          style={{ height: '52px', paddingLeft: '16px', paddingRight: '16px' }}
         >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={16}
-            height={16}
-            style={{ width: '15.5px', height: '15.5px' }}
-            priority
-          />
-        </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (activeCategory !== 'hub') {
+                setActiveCategory('hub')
+              } else {
+                window.location.href = '/beranda'
+              }
+            }}
+            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
+            aria-label="Kembali"
+          >
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+          </button>
 
-        <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
-          {getHeaderTitle()}
-        </h1>
+          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+            {getHeaderTitle()}
+          </h1>
 
-        <Link
-          href="/beranda"
-          className="w-9 h-9 rounded-full flex items-center justify-center text-[#1C20C4] hover:bg-blue-50 active:scale-95 transition-all"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-            <polyline points="9 22 9 12 15 12 15 22" />
-          </svg>
-        </Link>
-      </div>
+          <Link
+            href="/beranda"
+            className="w-9 h-9 rounded-full flex items-center justify-center text-[#1C20C4] hover:bg-blue-50 active:scale-95 transition-all"
+            aria-label="Beranda"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+          </Link>
+        </div>
+      </header>
 
       {/* 3. SCROLLABLE MAIN BODY */}
       <div className="flex-1 overflow-y-auto no-scrollbar">
@@ -1014,77 +1273,477 @@ export default function AlaHijrahPage() {
         )}
 
         {/* ========================================================================= */}
-        {/* VIEW 3: OTHER CATEGORIES (KEMITRAAN BERTAHAP)                             */}
+        {/* VIEW 3: DEDICATED MODEST WEAR (FASHION) SUB-PAGE                          */}
         {/* ========================================================================= */}
-        {activeCategory !== 'hub' && activeCategory !== 'kajian' && activeCategory !== 'ormas' && (
-          <div style={{ padding: '28px 20px', textAlign: 'center' }}>
+        {activeCategory === 'fashion' && (
+          <div style={{ padding: '16px 20px 40px 20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
             <div
               style={{
                 backgroundColor: '#FFFFFF',
-                borderRadius: '24px',
-                padding: '36px 24px',
+                borderRadius: '20px',
+                padding: '18px 20px',
                 border: '1px solid #ECEEF2',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
               }}
             >
-              <div
+              <span
                 style={{
-                  width: '64px',
-                  height: '64px',
-                  borderRadius: '22px',
-                  backgroundColor: '#F1F5F9',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '16px',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  color: '#9333EA',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginBottom: '4px',
                 }}
               >
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#64748B" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
-                </svg>
-              </div>
-
-              <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#1A1D26', margin: '0 0 6px 0' }}>
-                Katalog Kemitraan Bertahap
+                MODEST WEAR &amp; BUSANA MUSLIM
+              </span>
+              <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#1A1D26', margin: 0 }}>
+                Koleksi Syar’i &amp; Halal Lifestyle
               </h3>
-              <p
-                style={{
-                  fontSize: '12px',
-                  color: '#64748B',
-                  margin: '0 auto 24px auto',
-                  maxWidth: '260px',
-                  lineHeight: 1.5,
-                }}
-              >
-                Kategori ini sedang dibuka secara bertahap bersama mitra resmi ekosistem syariah Indonesia.
+              <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px', lineHeight: 1.4, margin: 0 }}>
+                Dapatkan voucher cashback dan diskon eksklusif dari brand muslim ternama.
               </p>
+            </div>
 
-              {/* Generous, perfectly padded button (zero text touching border) */}
-              <button
-                onClick={() => setActiveCategory('hub')}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {fashionItems.map((item) => (
+                <div
+                  key={item.id}
+                  style={{
+                    backgroundColor: '#FFFFFF',
+                    borderRadius: '20px',
+                    padding: '18px 20px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                    border: '1px solid #ECEEF2',
+                  }}
+                >
+                  <div className="flex justify-between items-center mb-1">
+                    <span
+                      style={{
+                        backgroundColor: '#FAF5FF',
+                        color: '#9333EA',
+                        border: '1px solid #F3E8FF',
+                        fontSize: '9.5px',
+                        fontWeight: 800,
+                        padding: '2px 8px',
+                        borderRadius: '999px',
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                    <span className="text-[10.5px] text-[#64748B] font-medium">{item.category}</span>
+                  </div>
+
+                  <h4 className="text-[14.5px] font-extrabold text-[#1A1D26] mt-1 leading-snug">
+                    {item.title}
+                  </h4>
+                  <p className="text-[11.5px] text-gray-500 mt-1 leading-relaxed">
+                    {item.desc}
+                  </p>
+                  <span className="text-[10.5px] text-purple-700 font-bold block mt-1">
+                    Official Partner: {item.partner}
+                  </span>
+
+                  <div
+                    style={{
+                      borderTop: '1px solid #F0F2F5',
+                      paddingTop: '12px',
+                      marginTop: '12px',
+                    }}
+                    className="flex items-center justify-between"
+                  >
+                    <div>
+                      <span className="text-[10px] text-gray-400 block">Harga Nasabah Aladin:</span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-[16px] font-extrabold text-[#1037A6]">
+                          Rp{item.discountPrice.toLocaleString('id-ID')}
+                        </span>
+                        <span className="text-[11px] line-through text-gray-400">
+                          Rp{item.normalPrice.toLocaleString('id-ID')}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedEvent({
+                          title: item.title,
+                          category: item.category,
+                          price: item.normalPrice,
+                          discountPrice: item.discountPrice,
+                          location: 'Pengiriman Kurir Cepat (Free Ongkir)',
+                          date: 'Pesanan Diproses Hari Ini',
+                          time: 'Estimasi 1-2 Hari Kerja',
+                          organizer: item.partner,
+                        })
+                        setShowCheckout(true)
+                      }}
+                      className="px-4 py-2 bg-[#9333EA] hover:bg-purple-700 text-white font-extrabold text-[12px] rounded-full active:scale-95 transition-all cursor-pointer shadow-xs"
+                    >
+                      Beli Sekarang →
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================================= */}
+        {/* VIEW 4: DEDICATED KULINER HALAL SUB-PAGE                                  */}
+        {/* ========================================================================= */}
+        {activeCategory === 'kuliner' && (
+          <div style={{ padding: '16px 20px 40px 20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <div
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: '20px',
+                padding: '18px 20px',
+                border: '1px solid #ECEEF2',
+              }}
+            >
+              <span
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: '42px',
-                  padding: '0 28px',
-                  backgroundColor: '#1C20C4',
-                  color: '#FFFFFF',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  borderRadius: '999px',
-                  cursor: 'pointer',
-                  border: 'none',
-                  boxShadow: '0 4px 12px rgba(28, 32, 196, 0.25)',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  color: '#EA580C',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginBottom: '4px',
                 }}
-                className="active:scale-95 transition-all"
               >
-                Kembali ke Menu Utama
-              </button>
+                KULINER HALAL TERVERIFIKASI
+              </span>
+              <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#1A1D26', margin: 0 }}>
+                Resto &amp; Kafe Halal Resmi BPJPH
+              </h3>
+              <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px', lineHeight: 1.4, margin: 0 }}>
+                Makan nikmat, tenang, dan halal dengan diskon instan via pembayaran Ala Dompet.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {kulinerItems.map((item) => (
+                <div
+                  key={item.id}
+                  style={{
+                    backgroundColor: '#FFFFFF',
+                    borderRadius: '20px',
+                    padding: '18px 20px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                    border: '1px solid #ECEEF2',
+                  }}
+                >
+                  <div className="flex justify-between items-center mb-1">
+                    <span
+                      style={{
+                        backgroundColor: '#FFEDD5',
+                        color: '#C2410C',
+                        border: '1px solid #FED7AA',
+                        fontSize: '9.5px',
+                        fontWeight: 800,
+                        padding: '2px 8px',
+                        borderRadius: '999px',
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                    <span className="text-[10.5px] text-[#64748B] font-medium">{item.category}</span>
+                  </div>
+
+                  <h4 className="text-[14.5px] font-extrabold text-[#1A1D26] mt-1 leading-snug">
+                    {item.title}
+                  </h4>
+                  <p className="text-[11.5px] text-gray-500 mt-1 leading-relaxed">
+                    {item.desc}
+                  </p>
+                  <span className="text-[10.5px] text-orange-700 font-bold block mt-1">
+                    Sertifikat Halal: {item.partner}
+                  </span>
+
+                  <div
+                    style={{
+                      borderTop: '1px solid #F0F2F5',
+                      paddingTop: '12px',
+                      marginTop: '12px',
+                    }}
+                    className="flex items-center justify-between"
+                  >
+                    <div>
+                      <span className="text-[10px] text-gray-400 block">Harga Spesial Voucher:</span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-[16px] font-extrabold text-[#EA580C]">
+                          Rp{item.discountPrice.toLocaleString('id-ID')}
+                        </span>
+                        <span className="text-[11px] line-through text-gray-400">
+                          Rp{item.normalPrice.toLocaleString('id-ID')}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedEvent({
+                          title: item.title,
+                          category: item.category,
+                          price: item.normalPrice,
+                          discountPrice: item.discountPrice,
+                          location: 'Semua Outlet Resmi Se-Indonesia',
+                          date: 'Masa Berlaku 30 Hari',
+                          time: 'Bisa Ditukar Langsung di Kasir',
+                          organizer: item.partner,
+                        })
+                        setShowCheckout(true)
+                      }}
+                      className="px-4 py-2 bg-[#EA580C] hover:bg-orange-700 text-white font-extrabold text-[12px] rounded-full active:scale-95 transition-all cursor-pointer shadow-xs"
+                    >
+                      Klaim Voucher →
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================================= */}
+        {/* VIEW 5: DEDICATED KESEHATAN SYARIAH SUB-PAGE                               */}
+        {/* ========================================================================= */}
+        {activeCategory === 'kesehatan' && (
+          <div style={{ padding: '16px 20px 40px 20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <div
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: '20px',
+                padding: '18px 20px',
+                border: '1px solid #ECEEF2',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  color: '#15803D',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginBottom: '4px',
+                }}
+              >
+                KESEHATAN SYARIAH &amp; THIBBUN NABAWI
+              </span>
+              <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#1A1D26', margin: 0 }}>
+                Layanan Medis Islami Terpercaya
+              </h3>
+              <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px', lineHeight: 1.4, margin: 0 }}>
+                Pemeriksaan kesehatan, vaksin ibadah, dan pengobatan sunnah steril.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {kesehatanItems.map((item) => (
+                <div
+                  key={item.id}
+                  style={{
+                    backgroundColor: '#FFFFFF',
+                    borderRadius: '20px',
+                    padding: '18px 20px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                    border: '1px solid #ECEEF2',
+                  }}
+                >
+                  <div className="flex justify-between items-center mb-1">
+                    <span
+                      style={{
+                        backgroundColor: '#F0FDF4',
+                        color: '#15803D',
+                        border: '1px solid #DCFCE7',
+                        fontSize: '9.5px',
+                        fontWeight: 800,
+                        padding: '2px 8px',
+                        borderRadius: '999px',
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                    <span className="text-[10.5px] text-[#64748B] font-medium">{item.category}</span>
+                  </div>
+
+                  <h4 className="text-[14.5px] font-extrabold text-[#1A1D26] mt-1 leading-snug">
+                    {item.title}
+                  </h4>
+                  <p className="text-[11.5px] text-gray-500 mt-1 leading-relaxed">
+                    {item.desc}
+                  </p>
+                  <span className="text-[10.5px] text-emerald-700 font-bold block mt-1">
+                    Mitra Medis: {item.partner}
+                  </span>
+
+                  <div
+                    style={{
+                      borderTop: '1px solid #F0F2F5',
+                      paddingTop: '12px',
+                      marginTop: '12px',
+                    }}
+                    className="flex items-center justify-between"
+                  >
+                    <div>
+                      <span className="text-[10px] text-gray-400 block">Biaya Paket Nasabah:</span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-[16px] font-extrabold text-[#15803D]">
+                          Rp{item.discountPrice.toLocaleString('id-ID')}
+                        </span>
+                        <span className="text-[11px] line-through text-gray-400">
+                          Rp{item.normalPrice.toLocaleString('id-ID')}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedEvent({
+                          title: item.title,
+                          category: item.category,
+                          price: item.normalPrice,
+                          discountPrice: item.discountPrice,
+                          location: 'Klinik / RS Mitra Terpilih',
+                          date: 'Reservasi Jadwal Fleksibel',
+                          time: '08:00 - 17:00 WIB',
+                          organizer: item.partner,
+                        })
+                        setShowCheckout(true)
+                      }}
+                      className="px-4 py-2 bg-[#15803D] hover:bg-emerald-800 text-white font-extrabold text-[12px] rounded-full active:scale-95 transition-all cursor-pointer shadow-xs"
+                    >
+                      Pesan Layanan →
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================================= */}
+        {/* VIEW 6: DEDICATED PENDIDIKAN ANAK SUB-PAGE                                 */}
+        {/* ========================================================================= */}
+        {activeCategory === 'pendidikan' && (
+          <div style={{ padding: '16px 20px 40px 20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <div
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: '20px',
+                padding: '18px 20px',
+                border: '1px solid #ECEEF2',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  color: '#6D28D9',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginBottom: '4px',
+                }}
+              >
+                PENDIDIKAN ISLAM &amp; PARENTING
+              </span>
+              <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#1A1D26', margin: 0 }}>
+                Sekolah, Tahfidz &amp; Generasi Qur’ani
+              </h3>
+              <p style={{ fontSize: '12px', color: '#64748B', marginTop: '4px', lineHeight: 1.4, margin: 0 }}>
+                Wujudkan impian masa depan buah hati dengan pendidikan syariah terpadu.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {pendidikanItems.map((item) => (
+                <div
+                  key={item.id}
+                  style={{
+                    backgroundColor: '#FFFFFF',
+                    borderRadius: '20px',
+                    padding: '18px 20px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                    border: '1px solid #ECEEF2',
+                  }}
+                >
+                  <div className="flex justify-between items-center mb-1">
+                    <span
+                      style={{
+                        backgroundColor: '#F5F3FF',
+                        color: '#6D28D9',
+                        border: '1px solid #DDD6FE',
+                        fontSize: '9.5px',
+                        fontWeight: 800,
+                        padding: '2px 8px',
+                        borderRadius: '999px',
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                    <span className="text-[10.5px] text-[#64748B] font-medium">{item.category}</span>
+                  </div>
+
+                  <h4 className="text-[14.5px] font-extrabold text-[#1A1D26] mt-1 leading-snug">
+                    {item.title}
+                  </h4>
+                  <p className="text-[11.5px] text-gray-500 mt-1 leading-relaxed">
+                    {item.desc}
+                  </p>
+                  <span className="text-[10.5px] text-purple-700 font-bold block mt-1">
+                    Lembaga Pendidikan: {item.partner}
+                  </span>
+
+                  <div
+                    style={{
+                      borderTop: '1px solid #F0F2F5',
+                      paddingTop: '12px',
+                      marginTop: '12px',
+                    }}
+                    className="flex items-center justify-between"
+                  >
+                    <div>
+                      <span className="text-[10px] text-gray-400 block">Biaya Formulir / Program:</span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-[16px] font-extrabold text-[#6D28D9]">
+                          Rp{item.discountPrice.toLocaleString('id-ID')}
+                        </span>
+                        <span className="text-[11px] line-through text-gray-400">
+                          Rp{item.normalPrice.toLocaleString('id-ID')}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedEvent({
+                          title: item.title,
+                          category: item.category,
+                          price: item.normalPrice,
+                          discountPrice: item.discountPrice,
+                          location: 'Kelas Online / Sekolah Mitra',
+                          date: 'Akses Langsung Pasca Pembayaran',
+                          time: 'Jadwal Fleksibel',
+                          organizer: item.partner,
+                        })
+                        setShowCheckout(true)
+                      }}
+                      className="px-4 py-2 bg-[#6D28D9] hover:bg-purple-900 text-white font-extrabold text-[12px] rounded-full active:scale-95 transition-all cursor-pointer shadow-xs"
+                    >
+                      Daftar Program →
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}

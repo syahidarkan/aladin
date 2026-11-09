@@ -585,7 +585,7 @@ export default function QrisScanPage() {
 
               <div className="mt-3.5">
                 <span className="font-extrabold text-[15px] text-[#1A1D26] block">
-                  Syahid Arkan Fashihurrohman
+                  Dewan Juri IMOTION 2026
                 </span>
                 <span className="text-[11.5px] text-gray-500 font-medium block mt-0.5">
                   NMID: ID1020039201948 • Bank Aladin Syariah

@@ -3,187 +3,90 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
+import { ArrowLeft, CheckCircle2 } from 'lucide-react'
 
 export default function ImpianUmrahIntro2() {
   return (
     <div
-      className="relative w-[414px] h-[896px] bg-white overflow-hidden select-none"
+      className="flex flex-col h-full bg-white select-none text-[#1A1D26] overflow-hidden"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
       }}
     >
-      {/* 1. iOS Status Bar */}
-      <StatusBar time="22.25" batteryLevel={3} dark={false} />
-
-      {/* 2. Top Header Title with Back Button */}
-      <div className="absolute left-[20px] top-[60px] flex items-center gap-3">
-        <Link
-          href="/impian/umrah/intro/1"
-          className="w-8 h-8 rounded-full flex items-center justify-center p-1 active:opacity-60 transition-opacity"
-        >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={16}
-            height={16}
-            style={{ width: '15.5px', height: '15.5px' }}
-            priority
-          />
-        </Link>
-        <h1
-          className="font-extrabold text-[#313131]"
-          style={{
-            fontSize: '17px',
-            lineHeight: '21px',
-            letterSpacing: '-0.3px',
-          }}
-        >
-          Perkenalan dengan Partner Aladin
-        </h1>
-      </div>
-
-      {/* 2-Step Progress Bar at y=105pt (native y=210) */}
-      <div className="absolute left-[24px] top-[105px] w-[365.5px] flex items-center justify-between">
-        <div className="w-[178.5px] h-[4.5px] rounded-full bg-[#7DAEFB]" />
-        <div className="w-[178.5px] h-[4.5px] rounded-full bg-[#E7E8F7]" />
-      </div>
-
-      {/* 3. Illustration */}
-      <div
-        className="absolute left-[72px] pointer-events-none"
-        style={{
-          top: '165px',
-          width: '260px',
-          height: '190px',
-        }}
-      >
-        <Image
-          src="/assets/illustrations/umrah_intro_2_native.png"
-          alt="Umrah Partner Mitra"
-          width={260}
-          height={190}
-          style={{ width: '260px', height: '190px', objectFit: 'contain' }}
-          priority
-        />
-      </div>
-
-      {/* 4. Headline */}
-      <h2
-        className="absolute left-[24px] font-extrabold text-[#313131]"
-        style={{
-          top: '375px',
-          fontSize: '21px',
-          lineHeight: '27px',
-          letterSpacing: '-0.3px',
-          maxWidth: '366px',
-        }}
-      >
-        Yuk, kenalan lebih dekat dengan
-        <br />
-        mitra pilihan kami!
-      </h2>
-
-      {/* 5. Lavender Card */}
-      <div
-        className="absolute left-[24px] w-[365.5px] rounded-[16px] bg-[#EFF0FC] p-[16px] overflow-hidden"
-        style={{
-          top: '438px',
-          height: '210px',
-        }}
-      >
-        {/* Bullet Item 1 */}
-        <div className="flex items-start gap-[10px] mb-3">
-          <Image
-            src="/assets/icons/umrah_bullet_check.png"
-            alt="Check"
-            width={16}
-            height={20}
-            style={{ width: '16px', height: '20px', marginTop: '1px' }}
-            priority
-          />
-          <p
-            className="text-[#1A1D26] font-medium"
-            style={{
-              fontSize: '13px',
-              lineHeight: '17px',
-              letterSpacing: '-0.1px',
-            }}
+      {/* 1. Seamless White Header with ArrowLeft Back Button */}
+      <header className="sticky top-0 z-30 w-full bg-white border-b border-gray-100 shrink-0">
+        <StatusBar className="bg-white" />
+        <div className="w-full h-14 bg-white flex items-center gap-3 px-4">
+          <Link
+            href="/impian/umrah/intro/1"
+            className="w-9 h-9 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+            aria-label="Kembali ke Langkah 1"
           >
-            Target tabungan realistis dengan nominal Rp30 juta
-          </p>
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+          </Link>
+          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+            Kenalan dengan Mitra Pilihan
+          </h1>
+        </div>
+      </header>
+
+      {/* 2. Scrollable Body Content */}
+      <div className="flex-1 overflow-y-auto no-scrollbar px-6 pt-4 pb-28 flex flex-col justify-between">
+        <div className="space-y-4">
+          {/* Progress Indicators */}
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-1.5 rounded-full bg-[#1B21CC]" />
+            <div className="flex-1 h-1.5 rounded-full bg-[#1B21CC]" />
+          </div>
+
+          {/* Illustration */}
+          <div className="relative w-full h-[180px] pointer-events-none flex items-center justify-center">
+            <Image
+              src="/assets/illustrations/umrah_intro_2_native.png"
+              alt="Umrah Partner Mitra"
+              width={260}
+              height={180}
+              className="object-contain"
+              priority
+            />
+          </div>
+
+          {/* Headline */}
+          <h2 className="text-[20px] font-black text-[#1A1D26] leading-tight">
+            Yuk, kenalan lebih dekat dengan mitra pilihan kami!
+          </h2>
+
+          {/* Benefits Card */}
+          <div className="rounded-2xl bg-[#EFF0FC] p-4.5 space-y-3 border border-blue-100">
+            {[
+              'Target tabungan realistis dengan paket mulai Rp30 jutaan.',
+              'Pilih paket yang sesuai kebutuhan dan durasi keberangkatanmu.',
+              'Tabungan aman terproteksi LPS & diawasi Dewan Pengawas Syariah MUI.',
+            ].map((text, idx) => (
+              <div key={idx} className="flex items-start gap-2.5">
+                <CheckCircle2 className="w-4.5 h-4.5 text-[#1B21CC] shrink-0 mt-0.5" />
+                <p className="text-[13px] text-gray-800 leading-snug">{text}</p>
+              </div>
+            ))}
+            <p className="text-[11px] text-gray-500 pt-1">*Syarat &amp; ketentuan syariah berlaku</p>
+          </div>
         </div>
 
-        {/* Bullet Item 2 */}
-        <div className="flex items-start gap-[10px] mb-3">
-          <Image
-            src="/assets/icons/umrah_bullet_check.png"
-            alt="Check"
-            width={16}
-            height={20}
-            style={{ width: '16px', height: '20px', marginTop: '1px' }}
-            priority
-          />
-          <p
-            className="text-[#1A1D26] font-medium"
-            style={{
-              fontSize: '13px',
-              lineHeight: '17px',
-              letterSpacing: '-0.1px',
+        {/* Action Button */}
+        <div className="pt-6">
+          <Link
+            href="/impian/umrah/buat"
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                localStorage.setItem('aladin_has_opened_umrah', 'true')
+              }
             }}
+            className="w-full h-12 rounded-full bg-[#1B21CC] hover:bg-[#151AA8] flex items-center justify-center font-bold text-white text-[15px] shadow-md active:scale-98 transition-all cursor-pointer"
           >
-            Pilih paket yang sesuai kebutuhan dan keinginanmu
-          </p>
+            Mulai Menabung Umrah Sekarang →
+          </Link>
         </div>
-
-        {/* Bullet Item 3 */}
-        <div className="flex items-start gap-[10px] mb-3">
-          <Image
-            src="/assets/icons/umrah_bullet_check.png"
-            alt="Check"
-            width={16}
-            height={20}
-            style={{ width: '16px', height: '20px', marginTop: '1px' }}
-            priority
-          />
-          <p
-            className="text-[#1A1D26] font-medium"
-            style={{
-              fontSize: '13px',
-              lineHeight: '17px',
-              letterSpacing: '-0.1px',
-            }}
-          >
-            Tabungan aman dan terpercaya di Aladin
-          </p>
-        </div>
-
-        {/* Disclaimer */}
-        <p
-          className="text-[#6C737E] font-normal mt-2"
-          style={{
-            fontSize: '11px',
-            lineHeight: '15px',
-            letterSpacing: '-0.1px',
-          }}
-        >
-          *Syarat &amp; ketentuan berlaku
-        </p>
-      </div>
-
-      {/* 6. High-Visibility Bottom Button */}
-      <div className="absolute left-[24px] right-[24px] bottom-[75px] z-30">
-        <Link
-          href="/impian/umrah/buat"
-          onClick={() => {
-            if (typeof window !== 'undefined') {
-              localStorage.setItem('aladin_has_opened_umrah', 'true')
-            }
-          }}
-          className="w-full h-[48px] rounded-full bg-[#1B21CC] hover:bg-[#151AA8] flex items-center justify-center font-bold text-white text-[15px] shadow-lg active:scale-98 transition-all cursor-pointer"
-        >
-          Mulai Menabung Umrah Sekarang →
-        </Link>
       </div>
     </div>
   )

@@ -57,6 +57,10 @@ export interface BankPocket {
 }
 
 export interface BankState {
+  // User Profile Identity
+  fullName: string
+  shortName: string
+
   // Balances
   alaDompet: number // IDR
   alaImpianUmroh: number // IDR
@@ -86,6 +90,8 @@ const STORAGE_KEY = 'aladin_bank_state_v1'
 const EVENT_NAME = 'aladin_bank_state_updated'
 
 export const DEFAULT_INITIAL_STATE: BankState = {
+  fullName: 'Dewan Juri IMOTION 2026',
+  shortName: 'Dewan Juri',
   alaDompet: 24500000, // Rp24.500.000 (Rekening Utama)
   alaImpianUmroh: 14500000, // Rp14.500.000 (Umrah & Haji)
   alaDeposito: 25000000, // Rp25.000.000 (Ala Deposito Mudharabah)

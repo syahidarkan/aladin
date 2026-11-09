@@ -5,7 +5,7 @@ import StatusBar from '@/components/StatusBar'
 
 export default function UmrahReferralPage() {
   const [copied, setCopied] = useState(false)
-  const referralCode = 'ALADIN-UMRAH-SYAHID'
+  const referralCode = 'ALADIN-UMRAH-JURI'
 
   const handleCopy = () => {
     navigator.clipboard?.writeText?.(referralCode)

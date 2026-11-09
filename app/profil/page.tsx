@@ -166,14 +166,14 @@ export default function ProfilPage() {
                   fontSize: '17px',
                 }}
               >
-                SA
+                DJ
               </div>
             </div>
 
             <div style={{ minWidth: 0, flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <h2 style={{ fontSize: '15px', fontWeight: 800, color: '#1A1D26', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  Syahid Arkan F.
+                  Dewan Juri
                 </h2>
                 <span
                   style={{
@@ -849,7 +849,8 @@ export default function ProfilPage() {
 
             <div className="space-y-3 mb-6">
               {[
-                { label: 'Nama Lengkap Sesuai KTP', value: 'Syahid Arkan Fashihurrohman' },
+                { label: 'Nama Lengkap Sesuai KTP', value: 'Dewan Juri IMOTION 2026' },
+                { label: 'Nama Panggilan', value: 'Dewan Juri' },
                 { label: 'Nomor Induk Kependudukan (NIK)', value: '317102********0004' },
                 { label: 'Nomor Rekening Utama (Ala Dompet)', value: '0812-3456-7890', canCopy: true },
                 { label: 'Email Terdaftar', value: 'syahid.arkan@gmail.com' },
