@@ -6,6 +6,7 @@ import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import { useBankState, convertIdrToSar, paySaudiMerchant, depositAlaDompet } from '@/lib/bankState'
 import { useMascot } from '@/context/MascotContext'
+import DigitalVerticalCard from '@/components/card/DigitalVerticalCard'
 import {
   CreditCard,
   ShoppingBag,
@@ -27,6 +28,14 @@ import {
   Clock,
   Compass,
   Radio,
+  Lock,
+  Unlock,
+  Settings,
+  Copy,
+  MoreHorizontal,
+  Wallet,
+  Coins,
+  Calendar,
 } from 'lucide-react'
 
 export default function AlaHaramainHubPage() {
@@ -56,6 +65,14 @@ export default function AlaHaramainHubPage() {
   const [touchEndX, setTouchEndX] = useState<number | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [dragStartX, setDragStartX] = useState<number | null>(null)
+
+  // Digital Card Security & Modals
+  const [isCardLocked, setIsCardLocked] = useState(false)
+  const [copiedCard, setCopiedCard] = useState(false)
+  const [copiedIban, setCopiedIban] = useState(false)
+  const [showSarHistoryModal, setShowSarHistoryModal] = useState(false)
+  const [showSarSettingsModal, setShowSarSettingsModal] = useState(false)
+  const [sarDailyLimit, setSarDailyLimit] = useState(3000)
 
   // Modals for Wallet
   const [showConvertModal, setShowConvertModal] = useState(false)
@@ -107,11 +124,6 @@ export default function AlaHaramainHubPage() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const onboarded = localStorage.getItem('aladin_haramain_onboarded')
-      if (!onboarded) {
-        setShowOnboarding(true)
-      }
-
       const storedPhone = localStorage.getItem('aladin_haramain_phone_active')
       const storedPhoneNum = localStorage.getItem('aladin_haramain_phone_number')
       const storedWallet = localStorage.getItem('aladin_haramain_wallet_active')
@@ -386,15 +398,17 @@ export default function AlaHaramainHubPage() {
         {/* ========================================================================= */}
         {activeSubFeature === 'wallet' && (
           <div className="space-y-4 animate-in fade-in duration-200">
-            {/* 1 PHYSICAL DUAL-SIDED HYBRID CARD (FRONT = IDR, BACK = SAR) */}
-            <div>
-              {/* Card Side Indicator & Flip Button */}
-              <div className="flex items-center justify-between mb-2.5 px-1">
-                <div className="flex items-center gap-1.5 p-1 bg-gray-200/80 rounded-xl">
+            {/* ========================================================================= */}
+            {/* DIGITAL VERTICAL DUAL CARD SYSTEM (BANK JAGO 1:1 REDESIGN)               */}
+            {/* ========================================================================= */}
+            <div className="bg-white rounded-3xl p-5 border border-[#ECEEF2] shadow-xs">
+              {/* Card Switcher Pills */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-1.5 p-1 bg-gray-100 rounded-xl">
                   <button
                     type="button"
                     onClick={() => setIsFlipped(false)}
-                    className={`py-1 px-3 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer ${
+                    className={`py-1.5 px-3.5 rounded-lg text-[11.5px] font-extrabold transition-all cursor-pointer ${
                       !isFlipped
                         ? 'bg-[#1C20C4] text-white shadow-xs'
                         : 'text-gray-600 hover:text-gray-900'
@@ -405,7 +419,7 @@ export default function AlaHaramainHubPage() {
                   <button
                     type="button"
                     onClick={() => setIsFlipped(true)}
-                    className={`py-1 px-3 rounded-lg text-[11px] font-extrabold transition-all cursor-pointer ${
+                    className={`py-1.5 px-3.5 rounded-lg text-[11.5px] font-extrabold transition-all cursor-pointer ${
                       isFlipped
                         ? 'bg-[#064E3B] text-white shadow-xs'
                         : 'text-gray-600 hover:text-gray-900'
@@ -418,318 +432,319 @@ export default function AlaHaramainHubPage() {
                 <button
                   type="button"
                   onClick={() => setIsFlipped((prev) => !prev)}
-                  className="flex items-center gap-1.5 py-1 px-2.5 bg-white border border-gray-200 hover:border-gray-300 rounded-xl text-[11px] font-extrabold text-[#1A1D26] shadow-xs active:scale-95 transition-all cursor-pointer"
+                  className="flex items-center gap-1.5 py-1.5 px-3 bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl text-[11px] font-extrabold text-[#1A1D26] shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
                   <ArrowRightLeft className="w-3.5 h-3.5 text-[#1037A6]" />
-                  <span>{isFlipped ? 'Balik ke Kartu Indo' : 'Balik ke Kartu Saudi'}</span>
+                  <span>{isFlipped ? 'Sisi Indo' : 'Sisi Saudi'}</span>
                 </button>
               </div>
 
-              {/* 3D Card Viewport with Touch/Mouse Swipe Listeners & Tap to Flip */}
-              <div
-                onClick={() => setIsFlipped((prev) => !prev)}
-                onTouchStart={(e) => {
-                  setTouchStartX(e.targetTouches[0].clientX)
-                  setTouchEndX(null)
-                }}
-                onTouchMove={(e) => {
-                  setTouchEndX(e.targetTouches[0].clientX)
-                }}
-                onTouchEnd={() => {
-                  if (touchStartX !== null && touchEndX !== null) {
-                    const diff = touchStartX - touchEndX
-                    if (Math.abs(diff) > 35) {
-                      setIsFlipped((prev) => !prev)
+              {/* Hero Vertical Card */}
+              <div className="flex flex-col items-center justify-center py-2">
+                <DigitalVerticalCard
+                  cardType={isFlipped ? 'd360-sar' : 'aladin-idr'}
+                  cardNickname={isFlipped ? 'D360 Saudi Riyal Card (Mada)' : 'Ala Dompet Indo'}
+                  isLocked={isCardLocked}
+                  cardNumberMasked={
+                    showCardNumber
+                      ? isFlipped
+                        ? '9660 5481 9284 2841'
+                        : '4000 1234 5678 9010'
+                      : isFlipped
+                      ? '•••• 2841'
+                      : '•••• 9010'
+                  }
+                  cardHolderName={userName}
+                  expiryDate={isFlipped ? '11/30' : '11/29'}
+                  notchBg="#FFFFFF"
+                  onClick={() => setIsFlipped((prev) => !prev)}
+                />
+              </div>
+
+              {/* 3 Circular Action Buttons (Bank Jago File 1 & 2 Exact Match) */}
+              <div className="grid grid-cols-3 gap-3 my-5 max-w-[300px] mx-auto">
+                {/* 1. Kunci Kartu */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = !isCardLocked
+                    setIsCardLocked(next)
+                    if (next) {
+                      triggerReaction('lock-action', 'Kartu berhasil dikunci demi keamanan.')
+                    } else {
+                      triggerReaction('success', 'Kunci kartu berhasil dibuka!')
                     }
-                  }
-                  setTouchStartX(null)
-                  setTouchEndX(null)
-                }}
-                onMouseDown={(e) => {
-                  setIsDragging(true)
-                  setDragStartX(e.clientX)
-                }}
-                onMouseMove={(e) => {
-                  if (!isDragging || dragStartX === null) return
-                  const diff = dragStartX - e.clientX
-                  if (Math.abs(diff) > 40) {
-                    setIsFlipped((prev) => !prev)
-                    setIsDragging(false)
-                    setDragStartX(null)
-                  }
-                }}
-                onMouseUp={() => {
-                  setIsDragging(false)
-                  setDragStartX(null)
-                }}
-                onMouseLeave={() => {
-                  setIsDragging(false)
-                  setDragStartX(null)
-                }}
-                style={{
-                  perspective: '1200px',
-                  width: '100%',
-                  height: '215px',
-                  cursor: 'pointer',
-                  userSelect: 'none',
-                  touchAction: 'pan-y',
-                }}
-              >
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    position: 'relative',
-                    transformStyle: 'preserve-3d',
-                    transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-                    transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
                   }}
+                  className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
                 >
-                  {/* SISI DEPAN: KARTU WALLET INDO (BANK ALADIN SYARIAH - IDR) */}
                   <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
-                      transform: 'rotateY(0deg) translateZ(1px)',
-                      opacity: isFlipped ? 0 : 1,
-                      transition: 'opacity 0.2s ease',
-                      borderRadius: '20px',
-                      background: 'linear-gradient(135deg, #081D48 0%, #162477 50%, #1C20C4 100%)',
-                      boxShadow: '0 12px 28px rgba(28, 32, 196, 0.35)',
-                      padding: '20px',
-                      color: 'white',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      boxSizing: 'border-box',
-                      overflow: 'hidden',
-                      pointerEvents: isFlipped ? 'none' : 'auto',
-                    }}
+                    className={`w-[50px] h-[50px] rounded-full flex items-center justify-center transition-all shadow-xs ${
+                      isCardLocked
+                        ? 'bg-red-500 text-white'
+                        : isFlipped
+                        ? 'bg-emerald-100 text-[#064E3B] group-hover:bg-emerald-200'
+                        : 'bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25'
+                    }`}
                   >
-                    {/* Top Row */}
-                    <div className="flex items-center justify-between relative z-10">
-                      <div className="flex items-center gap-2">
-                        <span className="font-extrabold text-[15px] tracking-tight text-white">
-                          BANK ALADIN
-                        </span>
-                        <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-white/20 text-[#00F3AD] uppercase tracking-wider">
-                          Platinum GPN
-                        </span>
+                    {isCardLocked ? (
+                      <Unlock className="w-5 h-5 stroke-[2.2]" />
+                    ) : (
+                      <Lock className="w-5 h-5 stroke-[2.2]" />
+                    )}
+                  </div>
+                  <span className="text-[12px] font-bold text-[#1A1D26] mt-2 text-center leading-tight">
+                    {isCardLocked ? 'Buka Kunci' : 'Kunci Kartu'}
+                  </span>
+                </button>
+
+                {/* 2. Riwayat */}
+                <button
+                  type="button"
+                  onClick={() => setShowSarHistoryModal(true)}
+                  className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+                >
+                  <div
+                    className={`w-[50px] h-[50px] rounded-full flex items-center justify-center transition-all shadow-xs ${
+                      isFlipped
+                        ? 'bg-emerald-100 text-[#064E3B] group-hover:bg-emerald-200'
+                        : 'bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25'
+                    }`}
+                  >
+                    <Clock className="w-5 h-5 stroke-[2.2]" />
+                  </div>
+                  <span className="text-[12px] font-bold text-[#1A1D26] mt-2 text-center leading-tight">
+                    Riwayat
+                  </span>
+                </button>
+
+                {/* 3. Pengaturan */}
+                <button
+                  type="button"
+                  onClick={() => setShowSarSettingsModal(true)}
+                  className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+                >
+                  <div
+                    className={`w-[50px] h-[50px] rounded-full flex items-center justify-center transition-all shadow-xs ${
+                      isFlipped
+                        ? 'bg-emerald-100 text-[#064E3B] group-hover:bg-emerald-200'
+                        : 'bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25'
+                    }`}
+                  >
+                    <Settings className="w-5 h-5 stroke-[2.2]" />
+                  </div>
+                  <span className="text-[12px] font-bold text-[#1A1D26] mt-2 text-center leading-tight">
+                    Pengaturan
+                  </span>
+                </button>
+              </div>
+
+              {/* SECTION: INFORMASI KARTU (CARD INFORMATION) */}
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <div className="flex items-center justify-between pb-2">
+                  <h3 className="text-[14.5px] font-bold text-[#1A1D26]">
+                    Informasi Kartu {isFlipped ? '(Saudi SAR)' : '(Aladin IDR)'}
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = !showCardNumber
+                      setShowCardNumber(next)
+                      if (next) triggerReaction('success', 'Nomor kartu & CVV berhasil ditampilkan!')
+                    }}
+                    className="text-[12.5px] font-bold text-[#1037A6] hover:underline cursor-pointer"
+                  >
+                    {showCardNumber ? 'Tutup Info' : 'Lihat Info'}
+                  </button>
+                </div>
+
+                <div className="divide-y divide-gray-100">
+                  {/* Card No */}
+                  <div className="flex items-center justify-between py-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center">
+                        <CreditCard className="w-4 h-4" />
                       </div>
-                      <span className="text-[10px] font-bold text-white/80 tracking-wider">
-                        DEBIT SYARIAH
+                      <span className="text-[13px] font-medium text-gray-700">
+                        Card No
                       </span>
                     </div>
-
-                    {/* EMV Chip & Contactless Wave */}
-                    <div className="flex items-center gap-3 relative z-10 mt-1">
-                      <div className="w-11 h-8 rounded-md bg-gradient-to-tr from-[#D4AF37] via-[#F3E5AB] to-[#AA771C] p-0.5 shadow-sm border border-amber-300/60 relative overflow-hidden flex items-center justify-center">
-                        <div className="w-full h-full border border-amber-800/30 rounded-xs flex flex-col justify-between p-0.5">
-                          <div className="h-[1px] bg-amber-900/40 w-full" />
-                          <div className="flex justify-between w-full">
-                            <div className="w-[1px] h-3 bg-amber-900/40" />
-                            <div className="w-2 h-2 rounded-full border border-amber-900/40" />
-                            <div className="w-[1px] h-3 bg-amber-900/40" />
-                          </div>
-                          <div className="h-[1px] bg-amber-900/40 w-full" />
-                        </div>
-                      </div>
-                      <Radio className="w-5 h-5 text-white/80" />
-                    </div>
-
-                    {/* Card Number */}
-                    <div className="relative z-10 my-1">
-                      <span
-                        style={{
-                          fontFamily: 'monospace',
-                          fontSize: '18px',
-                          fontWeight: 800,
-                          letterSpacing: '2.5px',
-                          textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-                        }}
-                      >
-                        {showCardNumber ? '4000 1234 5678 9010' : '4000 •••• •••• 9010'}
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[13px] font-bold text-gray-900">
+                        {showCardNumber
+                          ? isFlipped
+                            ? '9660 5481 9284 2841'
+                            : '4000 1234 5678 9010'
+                          : isFlipped
+                          ? '•••• •••• •••• 2841'
+                          : '•••• •••• •••• 9010'}
                       </span>
-                    </div>
-
-                    {/* Bottom Row */}
-                    <div className="flex items-end justify-between relative z-10">
-                      <div>
-                        <span className="text-[8.5px] uppercase tracking-wider text-white/60 block">
-                          Card Holder
-                        </span>
-                        <span className="font-extrabold text-[12px] uppercase text-white tracking-wide">
-                          {userName}
-                        </span>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-[8.5px] uppercase tracking-wider text-white/60 block">
-                          Valid Thru
-                        </span>
-                        <span className="font-mono text-[12px] font-bold text-white">
-                          11/29
-                        </span>
-                      </div>
+                      {showCardNumber && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard?.writeText?.(
+                              isFlipped ? '9660548192842841' : '4000123456789010'
+                            )
+                            setCopiedCard(true)
+                            triggerReaction('copy-success', 'Nomor kartu disalin!')
+                            setTimeout(() => setCopiedCard(false), 2000)
+                          }}
+                          className="p-1 rounded text-gray-500 hover:text-gray-900 cursor-pointer"
+                        >
+                          {copiedCard ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                        </button>
+                      )}
                     </div>
                   </div>
 
-                  {/* SISI BELAKANG: KARTU SAUDI MADA (D360 BANK SAUDI - SAR) */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
-                      transform: 'rotateY(180deg) translateZ(1px)',
-                      opacity: !isFlipped ? 0 : 1,
-                      transition: 'opacity 0.2s ease',
-                      borderRadius: '20px',
-                      background: 'linear-gradient(135deg, #03362A 0%, #064E3B 50%, #0D6852 100%)',
-                      boxShadow: '0 12px 28px rgba(6, 78, 59, 0.45)',
-                      padding: '20px',
-                      color: 'white',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      boxSizing: 'border-box',
-                      overflow: 'hidden',
-                      pointerEvents: !isFlipped ? 'none' : 'auto',
-                    }}
-                  >
-                    {/* Top Row */}
-                    <div className="flex items-center justify-between relative z-10">
-                      <div className="flex items-center gap-2">
-                        <span className="font-black text-[15px] tracking-tight text-[#00F0A0]">
-                          D360 BANK
-                        </span>
-                        <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-emerald-400/20 text-[#00F0A0] border border-[#00F0A0]/30 uppercase">
-                          MADA • SAUDI
-                        </span>
+                  {/* Expiry Date */}
+                  <div className="flex items-center justify-between py-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center">
+                        <Calendar className="w-4 h-4" />
                       </div>
-                      <span className="text-[10px] font-bold text-emerald-200/80 tracking-wider">
-                        SAR MULTI-WALLET
+                      <span className="text-[13px] font-medium text-gray-700">
+                        Expiry date
                       </span>
                     </div>
+                    <span className="font-mono text-[13px] font-bold text-gray-900">
+                      {isFlipped ? '11/30' : '11/29'}
+                    </span>
+                  </div>
 
-                    {/* Chip & NFC */}
-                    <div className="flex items-center gap-3 relative z-10 mt-1">
-                      <div className="w-11 h-8 rounded-md bg-gradient-to-tr from-[#E6C665] via-[#FFF1BD] to-[#B08928] p-0.5 shadow-sm border border-amber-200/70 relative overflow-hidden flex items-center justify-center">
-                        <div className="w-full h-full border border-amber-900/40 rounded-xs flex flex-col justify-between p-0.5">
-                          <div className="h-[1px] bg-amber-900/40 w-full" />
-                          <div className="flex justify-between w-full">
-                            <div className="w-[1px] h-3 bg-amber-900/40" />
-                            <div className="w-2 h-2 rounded-full border border-amber-900/40" />
-                            <div className="w-[1px] h-3 bg-amber-900/40" />
-                          </div>
-                          <div className="h-[1px] bg-amber-900/40 w-full" />
+                  {/* CVV */}
+                  <div className="flex items-center justify-between py-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center">
+                        <ShieldCheck className="w-4 h-4" />
+                      </div>
+                      <span className="text-[13px] font-medium text-gray-700">
+                        CVV (3-digit security code)
+                      </span>
+                    </div>
+                    <span className="font-mono text-[13px] font-bold text-gray-900">
+                      {showCardNumber ? '832' : '•••'}
+                    </span>
+                  </div>
+
+                  {/* Saudi Virtual IBAN (when Saudi card is viewed) */}
+                  {isFlipped && (
+                    <div className="flex items-center justify-between py-3">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                          <Coins className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <span className="text-[13px] font-medium text-gray-700 block">
+                            Virtual IBAN Saudi (D360)
+                          </span>
+                          <span className="text-[10px] text-emerald-600 font-bold block">
+                            Untuk transfer lokal di Arab Saudi
+                          </span>
                         </div>
                       </div>
-                      <Radio className="w-5 h-5 text-emerald-200" />
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-mono text-[12px] font-bold text-gray-800">
+                          SA03 •••• 1234
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard?.writeText?.('SA0380000000608010101234')
+                            setCopiedIban(true)
+                            triggerReaction('copy-success', 'Virtual IBAN disalin!')
+                            setTimeout(() => setCopiedIban(false), 2000)
+                          }}
+                          className="p-1 rounded text-gray-500 hover:text-emerald-700 cursor-pointer"
+                        >
+                          {copiedIban ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
                     </div>
+                  )}
+                </div>
+              </div>
 
-                    {/* Card Number */}
-                    <div className="relative z-10 my-1">
-                      <span
-                        style={{
-                          fontFamily: 'monospace',
-                          fontSize: '18px',
-                          fontWeight: 800,
-                          letterSpacing: '2.5px',
-                          textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-                        }}
-                      >
-                        {showCardNumber ? '9660 5481 9284 2841' : '9660 •••• •••• 2841'}
-                      </span>
-                    </div>
+              {/* SECTION: LINKED POCKETS (KANTONG TERHUBUNG) */}
+              <div className="mt-5 pt-4 border-t border-gray-100">
+                <h3 className="text-[14.5px] font-bold text-[#1A1D26] mb-3">
+                  Linked Pockets
+                </h3>
 
-                    {/* Bottom Row */}
-                    <div className="flex items-end justify-between relative z-10">
+                <div className="space-y-3">
+                  {/* Rupiah Pocket Box */}
+                  <div className="p-3.5 rounded-2xl border border-gray-200 bg-gray-50/50 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1C20C4] flex items-center justify-center">
+                        <Wallet className="w-5 h-5 stroke-[2.2]" />
+                      </div>
                       <div>
-                        <span className="text-[8.5px] uppercase tracking-wider text-emerald-200/70 block">
-                          Card Holder (Saudi Mada)
+                        <span className="text-[10px] font-bold uppercase text-gray-500 tracking-wider block">
+                          Rupiah Pocket
                         </span>
-                        <span className="font-extrabold text-[12px] uppercase text-white tracking-wide">
-                          {userName}
-                        </span>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-[8.5px] uppercase tracking-wider text-emerald-200/70 block">
-                          Valid Thru
-                        </span>
-                        <span className="font-mono text-[12px] font-bold text-white">
-                          11/30
-                        </span>
+                        <h4 className="text-[13.5px] font-bold text-[#1A1D26]">
+                          Ala Dompet Utama
+                        </h4>
+                        <p className="text-[12px] font-semibold text-gray-600">
+                          Rp{alaDompet.toLocaleString('id-ID')}
+                        </p>
                       </div>
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setShowConvertModal(true)}
+                      className="py-1.5 px-3 bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[11.5px] font-bold rounded-xl active:scale-95 transition-all cursor-pointer shadow-xs"
+                    >
+                      Convert ke SAR
+                    </button>
                   </div>
-                </div>
-              </div>
 
-              {/* Swipe Hint */}
-              <div className="flex items-center justify-center gap-1.5 mt-2 text-gray-500">
-                <Info className="w-3.5 h-3.5 text-[#1037A6]" />
-                <span className="text-[10.5px] font-medium">
-                  Usap kartu atau klik tombol di atas untuk membalikkan sisi kartu
-                </span>
-              </div>
+                  {/* Foreign Currencies Box (Saudi Riyal) */}
+                  <div className="p-3.5 rounded-2xl border border-emerald-200 bg-emerald-50/40 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-100 text-[#064E3B] flex items-center justify-center">
+                        <Coins className="w-5 h-5 stroke-[2.2]" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] font-bold uppercase text-emerald-800 tracking-wider">
+                            Foreign Currencies
+                          </span>
+                          <span className="text-[9px] font-black px-1 bg-emerald-200 text-[#064E3B] rounded">
+                            0% Fee
+                          </span>
+                        </div>
+                        <h4 className="text-[13.5px] font-bold text-[#1A1D26]">
+                          Haramain Wallet (SAR)
+                        </h4>
+                        <p className="text-[12px] font-semibold text-gray-600">
+                          SAR {dompetSar.toFixed(2)}{' '}
+                          <span className="text-gray-400 text-[10.5px]">
+                            (≈ Rp{Math.round(dompetSar * sarExchangeRate).toLocaleString('id-ID')})
+                          </span>
+                        </p>
+                      </div>
+                    </div>
 
-              {/* Quick Balance Details of the Currently Visible Face */}
-              <div className="mt-3 bg-white rounded-2xl p-4 border border-[#ECEEF2] shadow-xs flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block">
-                    {isFlipped ? 'Saldo Sisi Belakang: Dompet Saudi (SAR)' : 'Saldo Sisi Depan: Dompet Aladin (IDR)'}
-                  </span>
-                  <span className="text-[22px] font-black text-[#1A1D26] tracking-tight block">
-                    {isFlipped ? `SAR ${dompetSar.toFixed(2)}` : `Rp${alaDompet.toLocaleString('id-ID')}`}
-                  </span>
-                  <span className="text-[10.5px] text-gray-500 font-medium">
-                    {isFlipped
-                      ? `≈ Rp${Math.round(dompetSar * sarExchangeRate).toLocaleString('id-ID')} (Kurs 0% Markup)`
-                      : 'Sumber Rekening Utama Aladin'}
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  {isFlipped ? (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => setShowConvertModal(true)}
-                        className="py-2 px-3.5 bg-[#064E3B] hover:bg-[#047857] text-white text-[12px] font-extrabold rounded-xl shadow-xs active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
-                      >
-                        <ArrowRightLeft className="w-3.5 h-3.5" />
-                        <span>Convert SAR</span>
-                      </button>
+                    <div className="flex items-center gap-1.5">
                       <button
                         type="button"
                         onClick={() => setShowNfcModal(true)}
-                        className="py-1.5 px-3.5 bg-emerald-50 text-[#064E3B] border border-emerald-200 text-[11px] font-bold rounded-xl active:scale-95 transition-all cursor-pointer flex items-center gap-1"
+                        className="py-1.5 px-2.5 bg-white border border-emerald-300 text-[#064E3B] hover:bg-emerald-50 text-[11px] font-bold rounded-xl active:scale-95 transition-all cursor-pointer shadow-xs flex items-center gap-1"
                       >
                         <Radio className="w-3 h-3" />
                         <span>Tap NFC</span>
                       </button>
-                    </>
-                  ) : (
-                    <>
                       <button
                         type="button"
                         onClick={() => setShowTopUpModal(true)}
-                        className="py-2 px-3.5 bg-[#1C20C4] hover:bg-[#151AA8] text-white text-[12px] font-extrabold rounded-xl shadow-xs active:scale-95 transition-all cursor-pointer"
+                        className="py-1.5 px-2.5 bg-[#064E3B] hover:bg-[#047857] text-white text-[11px] font-bold rounded-xl active:scale-95 transition-all cursor-pointer shadow-xs"
                       >
-                        + Isi Saldo IDR
+                        + Top Up
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => setIsFlipped(true)}
-                        className="py-1.5 px-3.5 bg-[#EEF2FF] text-[#1C20C4] border border-[#C7D2FE] text-[11px] font-bold rounded-xl active:scale-95 transition-all cursor-pointer flex items-center gap-1"
-                      >
-                        <span>Sisi Saudi</span>
-                        <ChevronRight className="w-3 h-3" />
-                      </button>
-                    </>
-                  )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1764,6 +1779,136 @@ export default function AlaHaramainHubPage() {
                 Tutup Panduan
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL: RIWAYAT TRANSAKSI KARTU HARAMAIN & IDR (JAGO STYLE)               */}
+      {/* ========================================================================= */}
+      {showSarHistoryModal && (
+        <div className="fixed inset-0 z-[120] bg-black/60 backdrop-blur-xs flex flex-col justify-end animate-in fade-in duration-200">
+          <div className="w-full max-w-[430px] mx-auto bg-white rounded-t-3xl p-5 max-h-[85vh] flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div>
+                <h3 className="text-[16px] font-extrabold text-[#1A1D26]">
+                  Riwayat Transaksi Kartu
+                </h3>
+                <p className="text-[11px] text-gray-500">
+                  Transaksi belanja Makkah, Madinah &amp; Online
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowSarHistoryModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto divide-y divide-gray-100 py-2">
+              {[
+                { name: 'Al Baik Restaurant Makkah', date: '06 Nov 2026 • 21:14', sar: 'SAR 42.50', idr: 'Rp178.500', note: 'Geidea POS • 0% Markup' },
+                { name: 'Nahdi Pharmacy Clock Tower', date: '05 Nov 2026 • 16:40', sar: 'SAR 45.50', idr: 'Rp191.100', note: 'Mada Contactless' },
+                { name: 'Bin Dawood Supermarket Misfalah', date: '04 Nov 2026 • 11:20', sar: 'SAR 68.00', idr: 'Rp285.600', note: 'Oleh-Oleh Haji' },
+                { name: 'Saudia Airlines Extra Baggage', date: '28 Okt 2026 • 14:05', sar: 'SAR 120.00', idr: 'Rp504.000', note: 'Online Saudi Rail' },
+              ].map((tx) => (
+                <div key={tx.name} className="py-3 flex items-center justify-between">
+                  <div>
+                    <h4 className="text-[13px] font-bold text-[#1A1D26]">{tx.name}</h4>
+                    <p className="text-[11px] text-gray-500">{tx.date}</p>
+                    <span className="text-[10px] text-emerald-600 font-semibold">{tx.note}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[13.5px] font-extrabold text-[#064E3B] block">{tx.sar}</span>
+                    <span className="text-[11px] text-gray-500 block">{tx.idr}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowSarHistoryModal(false)}
+              className="w-full mt-3 py-2.5 rounded-xl bg-gray-100 text-gray-800 font-bold text-[12.5px] cursor-pointer"
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL: PENGATURAN KARTU HARAMAIN WALLET (JAGO STYLE)                      */}
+      {/* ========================================================================= */}
+      {showSarSettingsModal && (
+        <div className="fixed inset-0 z-[120] bg-black/60 backdrop-blur-xs flex flex-col justify-end animate-in fade-in duration-200">
+          <div className="w-full max-w-[430px] mx-auto bg-white rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div>
+                <h3 className="text-[16px] font-extrabold text-[#1A1D26]">
+                  Pengaturan Kartu Haramain
+                </h3>
+                <p className="text-[11px] text-gray-500">
+                  Kontrol limit belanja dan mata uang SAR
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowSarSettingsModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Daily Limit Slider in SAR */}
+            <div className="mt-4 p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[12px] font-bold text-emerald-900 uppercase tracking-wider">
+                  Batas Belanja Harian (SAR)
+                </span>
+                <span className="text-[15px] font-black text-[#064E3B]">
+                  SAR {sarDailyLimit.toLocaleString('id-ID')}
+                </span>
+              </div>
+              <input
+                type="range"
+                min={500}
+                max={10000}
+                step={250}
+                value={sarDailyLimit}
+                onChange={(e) => setSarDailyLimit(Number(e.target.value))}
+                className="w-full accent-[#064E3B] cursor-pointer"
+              />
+              <div className="flex justify-between text-[10px] font-semibold text-emerald-800 mt-1">
+                <span>Min SAR 500</span>
+                <span>Maks SAR 10.000</span>
+              </div>
+            </div>
+
+            {/* Currency Lock info */}
+            <div className="mt-4 p-3.5 rounded-xl border border-gray-200 bg-gray-50 text-[12px] text-gray-600 space-y-1.5">
+              <div className="flex items-center justify-between font-bold text-[#1A1D26]">
+                <span>Kurs Terkunci:</span>
+                <span className="text-[#064E3B]">1 SAR = Rp4.220</span>
+              </div>
+              <p className="text-[11px] text-gray-500">
+                Nilai tukar langsung tanpa konversi ganda USD. Berlaku di seluruh merchant Arab Saudi.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setShowSarSettingsModal(false)
+                triggerReaction('success', 'Pengaturan kartu Haramain berhasil disimpan!')
+              }}
+              className="w-full mt-5 py-3 rounded-xl bg-[#064E3B] hover:bg-[#047857] text-white font-extrabold text-[13px] active:scale-98 transition-all cursor-pointer shadow-md shadow-[#064E3B]/20"
+            >
+              Simpan Pengaturan
+            </button>
           </div>
         </div>
       )}

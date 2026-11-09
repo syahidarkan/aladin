@@ -2,46 +2,90 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
-import StatusBar from '@/components/StatusBar'
+import { useRouter } from 'next/navigation'
+import DigitalVerticalCard from '@/components/card/DigitalVerticalCard'
+import { useBankState } from '@/lib/bankState'
 import { useMascot } from '@/context/MascotContext'
-import { Lock } from 'lucide-react'
+import {
+  ArrowLeft,
+  HelpCircle,
+  Lock,
+  Unlock,
+  Clock,
+  Settings,
+  CreditCard,
+  Calendar,
+  ShieldCheck,
+  Copy,
+  Check,
+  Plus,
+  MoreHorizontal,
+  Fingerprint,
+  X,
+  ChevronRight,
+  Sliders,
+  Globe,
+  Coins,
+  ShieldAlert,
+  Wallet,
+  Sparkles,
+} from 'lucide-react'
 
 export default function VirtualCardPage() {
-  const { triggerReaction } = useMascot()
+  const router = useRouter()
+  const { alaDompet, dompetSar } = useBankState()
+  const { triggerReaction, startTransition } = useMascot()
+
+  // Card Appearance & State
+  const [selectedTheme, setSelectedTheme] = useState<'aladin-idr' | 'aladin-gold' | 'aladin-purple'>('aladin-idr')
+  const [isFrozen, setIsFrozen] = useState(false)
   const [isRevealed, setIsRevealed] = useState(false)
   const [showBiometricModal, setShowBiometricModal] = useState(false)
-  const [cvvRevealed, setCvvRevealed] = useState(false)
   const [cvvTimer, setCvvTimer] = useState(30)
-  const [isFrozen, setIsFrozen] = useState(false)
   const [copied, setCopied] = useState(false)
-  const [activeFilter, setActiveFilter] = useState<'semua' | 'online' | 'saudi'>('semua')
+
+  // Modals & Bottom Sheets
+  const [showHistoryModal, setShowHistoryModal] = useState(false)
+  const [showSettingsModal, setShowSettingsModal] = useState(false)
+  const [showHelpModal, setShowHelpModal] = useState(false)
+  const [showPocketMenu, setShowPocketMenu] = useState(false)
+
+  // Settings Controls
   const [dailyLimit, setDailyLimit] = useState(5000000)
+  const [onlineEnabled, setOnlineEnabled] = useState(true)
+  const [overseasEnabled, setOverseasEnabled] = useState(true)
+  const [contactlessEnabled, setContactlessEnabled] = useState(true)
+
+  // Filter for Transaction History
+  const [activeFilter, setActiveFilter] = useState<'semua' | 'online' | 'saudi'>('semua')
 
   // CVV Countdown timer
   useEffect(() => {
     let interval: NodeJS.Timeout
-    if (cvvRevealed && cvvTimer > 0) {
+    if (isRevealed && cvvTimer > 0) {
       interval = setInterval(() => {
         setCvvTimer((t) => t - 1)
       }, 1000)
     } else if (cvvTimer === 0) {
-      setCvvRevealed(false)
+      setIsRevealed(false)
       setCvvTimer(30)
     }
     return () => clearInterval(interval)
-  }, [cvvRevealed, cvvTimer])
+  }, [isRevealed, cvvTimer])
 
+  // Copy card number to clipboard
   const handleCopyCard = () => {
     navigator.clipboard?.writeText?.('4111223344557890')
     setCopied(true)
-    triggerReaction('copy-success', 'Nomor kartu virtual berhasil disalin!')
+    triggerReaction('copy-success', 'Nomor kartu Visa Aladin berhasil disalin!')
     setTimeout(() => setCopied(false), 2000)
   }
 
+  // Toggle reveal info via Biometric check
   const handleRevealClick = () => {
     if (isRevealed) {
       setIsRevealed(false)
+      setCvvTimer(30)
     } else {
       setShowBiometricModal(true)
     }
@@ -50,8 +94,22 @@ export default function VirtualCardPage() {
   const handleBiometricConfirm = () => {
     setShowBiometricModal(false)
     setIsRevealed(true)
+    setCvvTimer(30)
+    triggerReaction('success', 'Informasi kartu berhasil dibuka!')
   }
 
+  // Toggle Card Freeze / Lock
+  const handleToggleFreeze = () => {
+    const nextState = !isFrozen
+    setIsFrozen(nextState)
+    if (nextState) {
+      triggerReaction('lock-action', 'Kartu Visa Aladin berhasil dikunci demi keamanan.')
+    } else {
+      triggerReaction('success', 'Kunci kartu Visa Aladin berhasil dibuka!')
+    }
+  }
+
+  // Sample transactions
   const transactions = [
     {
       id: 1,
@@ -61,7 +119,6 @@ export default function VirtualCardPage() {
       amount: 'SAR 42.50',
       idr: 'Rp178.500',
       status: 'Berhasil',
-      iconType: 'food',
       note: 'Geidea POS • Bebas Markup SAR',
     },
     {
@@ -72,7 +129,6 @@ export default function VirtualCardPage() {
       amount: 'Rp54.990',
       idr: 'Rp54.990',
       status: 'Berhasil',
-      iconType: 'music',
       note: 'Langganan Otomatis',
     },
     {
@@ -83,7 +139,6 @@ export default function VirtualCardPage() {
       amount: 'SAR 120.00',
       idr: 'Rp504.000',
       status: 'Berhasil',
-      iconType: 'flight',
       note: 'Tiket & Bagasi Tambahan',
     },
     {
@@ -94,7 +149,6 @@ export default function VirtualCardPage() {
       amount: 'USD 14.20',
       idr: 'Rp227.200',
       status: 'Berhasil',
-      iconType: 'cloud',
       note: 'Cloud Hosting Syariah',
     },
   ]
@@ -106,722 +160,656 @@ export default function VirtualCardPage() {
 
   return (
     <div
-      className="flex flex-col h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
+      className="flex flex-col min-h-screen bg-white select-none text-[#1A1D26] overflow-x-hidden relative"
       style={{
         fontFamily:
-          '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+          '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* 1. iOS Status Bar */}
-      <StatusBar time="22.25" batteryLevel={33} dark={false} />
-
-      {/* 2. Top Header Bar (Clean Native Header) */}
-      <div
-        className="w-full bg-white border-b border-[#ECEEF2] flex items-center justify-between shrink-0"
-        style={{ height: '52px', paddingLeft: '16px', paddingRight: '16px' }}
-      >
+      {/* 1. TOP NATIVE HEADER BAR (Bank Jago File 1 & 2 Style) */}
+      <header className="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 flex items-center justify-between px-4 h-14">
+        {/* Back Button */}
         <Link
           href="/beranda"
-          className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
+          className="w-10 h-10 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+          aria-label="Kembali ke Beranda"
         >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={18}
-            height={18}
-            priority
-          />
+          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
         </Link>
 
+        {/* Title */}
         <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight text-center">
-          Kartu Visa Virtual
+          Rincian Kartu
         </h1>
 
-        <Link
-          href="/ala-haramain"
-          className="text-[12.5px] font-extrabold text-[#1C20C4] hover:underline"
+        {/* Help Circle Button */}
+        <button
+          type="button"
+          onClick={() => setShowHelpModal(true)}
+          className="w-10 h-10 -mr-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+          aria-label="Pusat Bantuan Kartu"
         >
-          Haramain →
-        </Link>
-      </div>
+          <HelpCircle className="w-5 h-5 text-gray-700" />
+        </button>
+      </header>
 
-      {/* 3. Scrollable Main Content */}
-      <div
-        className="flex-1 overflow-y-auto no-scrollbar"
-        style={{
-          paddingLeft: '20px',
-          paddingRight: '20px',
-          paddingTop: '16px',
-          paddingBottom: '40px',
-        }}
-      >
-        {/* CARD 1: VIRTUAL CARD GRAPHIC (3D DEEP NAVY / EMERALD) */}
-        <div
-          style={{
-            position: 'relative',
-            borderRadius: '24px',
-            padding: '22px',
-            color: 'white',
-            background: isFrozen
-              ? 'linear-gradient(135deg, #334155 0%, #0F172A 100%)'
-              : 'linear-gradient(135deg, #071739 0%, #102A72 55%, #1C20C4 100%)',
-            boxShadow: '0 10px 28px rgba(7, 23, 57, 0.28)',
-            overflow: 'hidden',
-            minHeight: '220px',
-            height: '220px',
-            marginBottom: '16px',
-          }}
-        >
-          {/* Subtle silk glow background wave */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '-50px',
-              right: '-50px',
-              width: '200px',
-              height: '200px',
-              borderRadius: '999px',
-              background: 'radial-gradient(circle, rgba(0, 243, 173, 0.22) 0%, transparent 70%)',
-              pointerEvents: 'none',
-            }}
+      {/* 2. SCROLLABLE BODY CONTENT */}
+      <main className="flex-1 overflow-y-auto px-5 pt-4 pb-32">
+        {/* HERO SECTION: DIGITAL VERTICAL CARD */}
+        <div className="flex flex-col items-center justify-center pt-2 pb-4">
+          <DigitalVerticalCard
+            cardType={selectedTheme}
+            cardNickname="Ala Dompet Utama"
+            isLocked={isFrozen}
+            cardNumberMasked={isRevealed ? '4111 2233 4455 7890' : '•••• 7890'}
+            cardHolderName="SYAHID ARKAN"
+            expiryDate="11/29"
+            notchBg="#FFFFFF"
+            onClick={handleToggleFreeze}
           />
 
-          {/* Frozen State Overlay */}
-          {isFrozen && (
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                backgroundColor: 'rgba(15, 23, 42, 0.85)',
-                backdropFilter: 'blur(4px)',
-                zIndex: 20,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '20px',
-                textAlign: 'center',
-              }}
-            >
-              <div
-                style={{
-                  height: '32px',
-                  padding: '0 16px',
-                  borderRadius: '999px',
-                  backgroundColor: '#EF4444',
-                  color: 'white',
-                  fontSize: '11.5px',
-                  fontWeight: 800,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  marginBottom: '8px',
-                }}
-              >
-                <Lock className="w-3.5 h-3.5 text-white" />
-                <span>KARTU DIBEKUKAN SEMENTARA</span>
-              </div>
-              <p style={{ fontSize: '12px', color: '#CBD5E1', maxWidth: '260px', margin: 0 }}>
-                Transaksi dinonaktifkan untuk keamanan. Buka kembali kapan pun melalui tombol di bawah.
-              </p>
-            </div>
-          )}
-
-          {/* Card Top: Aladin Brand & Contactless */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', zIndex: 10 }}>
-            <div>
-              <div style={{ fontSize: '20px', fontWeight: 900, letterSpacing: '-0.5px', lineHeight: 1 }}>
-                Aladin
-              </div>
-              <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#00F3AD', letterSpacing: '1px', textTransform: 'uppercase', display: 'block', marginTop: '4px' }}>
-                SYARIAH VIRTUAL CARD
-              </span>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span
-                style={{
-                  fontSize: '9.5px',
-                  fontWeight: 800,
-                  backgroundColor: 'rgba(255, 255, 255, 0.16)',
-                  color: '#FFFFFF',
-                  padding: '4px 10px',
-                  borderRadius: '999px',
-                  backdropFilter: 'blur(6px)',
-                }}
-              >
-                0% Foreign Markup
-              </span>
-
-              {/* Contactless waves icon */}
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" style={{ opacity: 0.9 }}>
-                <path d="M8.5 16.5C9.5 15.5 10 14 10 12C10 10 9.5 8.5 8.5 7.5" />
-                <path d="M12 19C14 17 15 14.5 15 12C15 9.5 14 7 12 5" />
-                <path d="M15.5 21.5C18.5 19 20 15.5 20 12C20 8.5 18.5 5 15.5 2.5" />
-              </svg>
-            </div>
-          </div>
-
-          {/* EMV Chip & Saudi Rail info */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '16px', marginBottom: '14px', position: 'relative', zIndex: 10 }}>
-            {/* Metallic Gold Chip */}
-            <div
-              style={{
-                width: '40px',
-                height: '30px',
-                borderRadius: '6px',
-                background: 'linear-gradient(135deg, #FDE68A 0%, #F59E0B 100%)',
-                boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.4), 0 2px 4px rgba(0,0,0,0.2)',
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <div
-                style={{
-                  width: '26px',
-                  height: '18px',
-                  borderRadius: '3px',
-                  border: '1px solid rgba(180, 83, 9, 0.45)',
-                  position: 'relative',
-                }}
-              >
-                <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', backgroundColor: 'rgba(180, 83, 9, 0.45)' }} />
-                <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: '1px', backgroundColor: 'rgba(180, 83, 9, 0.45)' }} />
-              </div>
-            </div>
-
-            <span style={{ fontSize: '10.5px', color: '#A5B4FC', fontWeight: 600 }}>
-              Jaringan Visa Syariah Internasional
-            </span>
-          </div>
-
-          {/* Card Number Row */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', position: 'relative', zIndex: 10 }}>
-            <span style={{ fontFamily: 'monospace', fontSize: '17px', fontWeight: 800, letterSpacing: '0.12em', textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>
-              {isRevealed ? '4111  2233  4455  7890' : '••••  ••••  ••••  7890'}
-            </span>
-
-            <button
-              onClick={handleCopyCard}
-              style={{
-                height: '28px',
-                padding: '0 12px',
-                borderRadius: '999px',
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                color: '#FFFFFF',
-                fontSize: '11px',
-                fontWeight: 700,
-                border: 'none',
-                cursor: 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-              }}
-              className="active:opacity-75 transition-opacity"
-            >
-              {copied ? 'Tersalin ' : 'Salin'}
-            </button>
-          </div>
-
-          {/* Card Bottom: Holder, Expiry, CVV & Visa Wordmark */}
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', position: 'relative', zIndex: 10 }}>
-            <div>
-              <span style={{ fontSize: '9px', textTransform: 'uppercase', color: '#94A3B8', letterSpacing: '0.5px', display: 'block' }}>
-                Pemegang Kartu
-              </span>
-              <span style={{ fontSize: '12px', fontWeight: 800, letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-                Syahid Arkan F.
-              </span>
-            </div>
-
-            <div>
-              <span style={{ fontSize: '9px', textTransform: 'uppercase', color: '#94A3B8', letterSpacing: '0.5px', display: 'block' }}>
-                Berlaku s.d.
-              </span>
-              <span style={{ fontSize: '12px', fontWeight: 800, fontFamily: 'monospace' }}>
-                11/29
-              </span>
-            </div>
-
-            <div>
-              <span style={{ fontSize: '9px', textTransform: 'uppercase', color: '#94A3B8', letterSpacing: '0.5px', display: 'block' }}>
-                CVV
-              </span>
-              <span style={{ fontSize: '12px', fontWeight: 800, fontFamily: 'monospace', color: '#00F3AD' }}>
-                {cvvRevealed ? '832' : '•••'}
-              </span>
-            </div>
-
-            {/* Visa Wordmark */}
-            <div style={{ fontSize: '22px', fontWeight: 900, fontStyle: 'italic', letterSpacing: '2px', color: '#FFFFFF', lineHeight: 1 }}>
-              VISA
-            </div>
-          </div>
-        </div>
-
-        {/* CARD 2: QUICK ACTION SQUIRCLES (Livin' Sukha Style) */}
-        <div
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '22px',
-            padding: '16px 14px',
-            border: '1px solid #ECEEF2',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '8px',
-            marginBottom: '16px',
-          }}
-        >
-          {/* Action 1: Lihat Nomor */}
-          <button
-            onClick={handleRevealClick}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '6px',
-            }}
-            className="active:opacity-60 transition-opacity"
-          >
-            <div
-              style={{
-                width: '46px',
-                height: '46px',
-                borderRadius: '16px',
-                backgroundColor: isRevealed ? '#1C20C4' : '#EEF2FF',
-                color: isRevealed ? '#FFFFFF' : '#1C20C4',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '6px',
-                transition: 'all 0.2s',
-              }}
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
-            </div>
-            <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#1A1D26', textAlign: 'center' }}>
-              {isRevealed ? 'Tutup No' : 'Lihat No'}
-            </span>
-          </button>
-
-          {/* Action 2: Lihat CVV */}
-          <button
-            onClick={() => setCvvRevealed(!cvvRevealed)}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '6px',
-            }}
-            className="active:opacity-60 transition-opacity"
-          >
-            <div
-              style={{
-                width: '46px',
-                height: '46px',
-                borderRadius: '16px',
-                backgroundColor: cvvRevealed ? '#059669' : '#EEF2FF',
-                color: cvvRevealed ? '#FFFFFF' : '#1C20C4',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '6px',
-                position: 'relative',
-                transition: 'all 0.2s',
-              }}
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-              {cvvRevealed && (
-                <span
-                  style={{
-                    position: 'absolute',
-                    top: '-4px',
-                    right: '-4px',
-                    width: '18px',
-                    height: '18px',
-                    borderRadius: '999px',
-                    backgroundColor: '#EF4444',
-                    color: 'white',
-                    fontSize: '9px',
-                    fontWeight: 800,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {cvvTimer}
-                </span>
-              )}
-            </div>
-            <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#1A1D26', textAlign: 'center' }}>
-              {cvvRevealed ? `CVV (${cvvTimer}s)` : 'Lihat CVV'}
-            </span>
-          </button>
-
-          {/* Action 3: Bekukan Kartu */}
-          <button
-            onClick={() => setIsFrozen(!isFrozen)}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '6px',
-            }}
-            className="active:opacity-60 transition-opacity"
-          >
-            <div
-              style={{
-                width: '46px',
-                height: '46px',
-                borderRadius: '16px',
-                backgroundColor: isFrozen ? '#EF4444' : '#EEF2FF',
-                color: isFrozen ? '#FFFFFF' : '#1C20C4',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '6px',
-                transition: 'all 0.2s',
-              }}
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-              </svg>
-            </div>
-            <span style={{ fontSize: '11.5px', fontWeight: 700, color: isFrozen ? '#EF4444' : '#1A1D26', textAlign: 'center' }}>
-              {isFrozen ? 'Buka Beku' : 'Bekukan'}
-            </span>
-          </button>
-        </div>
-
-        {/* CARD 3: BATAS HARIAN TRANSAKSI CARD */}
-        <div
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '22px',
-            padding: '20px',
-            border: '1px solid #ECEEF2',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px' }}>
-            <div>
-              <span style={{ fontSize: '10px', fontWeight: 800, color: '#6C737E', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                KONTROL LIMIT
-              </span>
-              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#1A1D26', margin: 0 }}>
-                Batas Harian Transaksi
-              </h3>
-            </div>
-            <span style={{ fontSize: '16px', fontWeight: 900, color: '#1C20C4' }}>
-              Rp{dailyLimit.toLocaleString('id-ID')}
-            </span>
-          </div>
-
-          <p style={{ fontSize: '11.5px', color: '#6C737E', margin: '4px 0 14px 0', lineHeight: 1.4 }}>
-            Membatasi belanja harian di merchant online internasional & POS Saudi Arabia.
-          </p>
-
-          <input
-            type="range"
-            min={1000000}
-            max={25000000}
-            step={1000000}
-            value={dailyLimit}
-            onChange={(e) => setDailyLimit(Number(e.target.value))}
-            style={{ width: '100%', accentColor: '#1C20C4', cursor: 'pointer', height: '6px' }}
-          />
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10.5px', fontWeight: 600, color: '#9CA3AF', marginTop: '6px' }}>
-            <span>Min Rp1.000.000</span>
-            <span>Maks Rp25.000.000</span>
-          </div>
-        </div>
-
-        {/* CARD 4: RIWAYAT TRANSAKSI KARTU (CLEAN LIST WITH GENEROUS SPACING) */}
-        <div
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '22px',
-            padding: '20px',
-            border: '1px solid #ECEEF2',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-            marginBottom: '16px',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-            <div>
-              <span style={{ fontSize: '10px', fontWeight: 800, color: '#6C737E', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                AKTIVITAS KARTU
-              </span>
-              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#1A1D26', margin: 0 }}>
-                Riwayat Transaksi
-              </h3>
-            </div>
-
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#059669', backgroundColor: '#ECFDF5', padding: '3px 10px', borderRadius: '999px' }}>
-              0% Foreign Fee
-            </span>
-          </div>
-
-          {/* Clean Segmented Filter Tabs */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '6px',
-              backgroundColor: '#F4F5F9',
-              padding: '4px',
-              borderRadius: '999px',
-              marginBottom: '16px',
-            }}
-          >
+          {/* Theme Color Switcher Pills (Sleek Micro-Picker) */}
+          <div className="flex items-center gap-2 mt-2">
             {[
-              { id: 'semua', label: 'Semua' },
-              { id: 'online', label: 'Online' },
-              { id: 'saudi', label: 'Saudi SAR' },
-            ].map((f) => {
-              const isSelected = activeFilter === f.id
-              return (
-                <button
-                  key={f.id}
-                  onClick={() => setActiveFilter(f.id as any)}
-                  style={{
-                    flex: 1,
-                    height: '32px',
-                    borderRadius: '999px',
-                    fontSize: '11.5px',
-                    fontWeight: 700,
-                    border: 'none',
-                    cursor: 'pointer',
-                    backgroundColor: isSelected ? '#FFFFFF' : 'transparent',
-                    color: isSelected ? '#1C20C4' : '#6C737E',
-                    boxShadow: isSelected ? '0 2px 6px rgba(0,0,0,0.06)' : 'none',
-                    transition: 'all 0.2s',
-                  }}
-                >
-                  {f.label}
-                </button>
-              )
-            })}
-          </div>
-
-          {/* Clean List Items */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {filteredTransactions.map((tx) => (
-              <div
-                key={tx.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '12px 0',
-                  borderBottom: '1px solid #F4F5F9',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  {/* Clean SVG Icon by Category */}
-                  <div
-                    style={{
-                      width: '42px',
-                      height: '42px',
-                      borderRadius: '14px',
-                      backgroundColor: tx.category === 'saudi' ? '#ECFDF5' : '#EEF2FF',
-                      color: tx.category === 'saudi' ? '#059669' : '#1C20C4',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {tx.iconType === 'food' && (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3" />
-                      </svg>
-                    )}
-                    {tx.iconType === 'music' && (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="5.5" cy="17.5" r="3.5" />
-                        <circle cx="17.5" cy="15.5" r="3.5" />
-                        <path d="M9 17.5V5l12-2v12.5" />
-                      </svg>
-                    )}
-                    {tx.iconType === 'flight' && (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-                      </svg>
-                    )}
-                    {tx.iconType === 'cloud' && (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
-                      </svg>
-                    )}
-                  </div>
-
-                  <div>
-                    <h4 style={{ fontSize: '13.5px', fontWeight: 800, color: '#1A1D26', margin: 0 }}>
-                      {tx.merchant}
-                    </h4>
-                    <p style={{ fontSize: '11px', color: '#6C737E', margin: '2px 0 0 0' }}>
-                      {tx.date}
-                    </p>
-                    <span style={{ fontSize: '10px', color: '#9CA3AF' }}>
-                      {tx.note}
-                    </span>
-                  </div>
-                </div>
-
-                <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  <span style={{ fontSize: '14px', fontWeight: 800, color: '#1A1D26', display: 'block' }}>
-                    {tx.idr}
-                  </span>
-                  {tx.category === 'saudi' && (
-                    <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#059669', display: 'block', marginTop: '2px' }}>
-                      Direct {tx.amount}
-                    </span>
-                  )}
-                  {tx.status === 'Berhasil' && (
-                    <span style={{ fontSize: '9.5px', fontWeight: 700, color: '#6C737E', display: 'block' }}>
-                      Sukses 
-                    </span>
-                  )}
-                </div>
-              </div>
+              { id: 'aladin-idr', label: 'Aladin Blue', color: 'bg-[#1C20C4]' },
+              { id: 'aladin-gold', label: 'Jago Amber', color: 'bg-[#F59E0B]' },
+              { id: 'aladin-purple', label: 'Syariah Purple', color: 'bg-[#7C3AED]' },
+            ].map((th) => (
+              <button
+                key={th.id}
+                type="button"
+                onClick={() => setSelectedTheme(th.id as any)}
+                className={`w-4 h-4 rounded-full ${th.color} transition-transform ${
+                  selectedTheme === th.id
+                    ? 'ring-2 ring-offset-2 ring-gray-400 scale-125'
+                    : 'opacity-60 hover:opacity-100'
+                }`}
+                title={th.label}
+              />
             ))}
           </div>
         </div>
 
-        {/* CARD 5: REGULATORY COMPLIANCE FOOTER */}
-        <div
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '18px',
-            padding: '16px 18px',
-            border: '1px solid #ECEEF2',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div>
-            <h4 style={{ fontSize: '12px', fontWeight: 800, color: '#1A1D26', margin: 0 }}>
-              Keamanan Terjamin Visa & OJK
-            </h4>
-            <p style={{ fontSize: '10.5px', color: '#6C737E', margin: '2px 0 0 0' }}>
-              Bank Aladin Syariah berizin dan diawasi oleh OJK & BI.
-            </p>
-          </div>
-
-          <span style={{ fontSize: '11px', fontWeight: 900, color: '#1C20C4', flexShrink: 0 }}>
-            OJK • LPS
-          </span>
-        </div>
-      </div>
-
-      {/* Biometric Face ID Confirmation Modal */}
-      {showBiometricModal && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 50,
-            backgroundColor: 'rgba(0,0,0,0.6)',
-            backdropFilter: 'blur(4px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '24px',
-          }}
-        >
-          <div
-            style={{
-              width: '100%',
-              maxWidth: '320px',
-              backgroundColor: '#FFFFFF',
-              borderRadius: '24px',
-              padding: '24px',
-              textAlign: 'center',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
-            }}
+        {/* 3 CIRCULAR ACTION BUTTONS (Bank Jago File 1 & 2 Exact Layout) */}
+        <div className="grid grid-cols-3 gap-3 my-5 max-w-[320px] mx-auto">
+          {/* Button 1: Kunci Kartu / Buka Kunci */}
+          <button
+            type="button"
+            onClick={handleToggleFreeze}
+            className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
           >
             <div
-              style={{
-                width: '56px',
-                height: '56px',
-                borderRadius: '999px',
-                backgroundColor: '#EEF2FF',
-                color: '#1C20C4',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 12px auto',
-              }}
+              className={`w-[52px] h-[52px] rounded-full flex items-center justify-center transition-all shadow-xs ${
+                isFrozen
+                  ? 'bg-red-500 text-white shadow-red-200'
+                  : 'bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25'
+              }`}
             >
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M7 3H5a2 2 0 0 0-2 2v2M17 3h2a2 2 0 0 1 2 2v2M7 21H5a2 2 0 0 1-2-2v-2M17 21h2a2 2 0 0 0 2-2v-2" />
-                <circle cx="12" cy="12" r="3" />
-              </svg>
+              {isFrozen ? (
+                <Unlock className="w-5 h-5 text-white stroke-[2.2]" />
+              ) : (
+                <Lock className="w-5 h-5 text-[#E66A00] stroke-[2.2]" />
+              )}
+            </div>
+            <span className="text-[12px] font-bold text-[#1A1D26] mt-2 text-center leading-tight">
+              {isFrozen ? 'Buka Kunci' : 'Kunci Kartu'}
+            </span>
+          </button>
+
+          {/* Button 2: Riwayat */}
+          <button
+            type="button"
+            onClick={() => setShowHistoryModal(true)}
+            className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+          >
+            <div className="w-[52px] h-[52px] rounded-full bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25 flex items-center justify-center transition-all shadow-xs">
+              <Clock className="w-5 h-5 text-[#E66A00] stroke-[2.2]" />
+            </div>
+            <span className="text-[12px] font-bold text-[#1A1D26] mt-2 text-center leading-tight">
+              Riwayat
+            </span>
+          </button>
+
+          {/* Button 3: Pengaturan */}
+          <button
+            type="button"
+            onClick={() => setShowSettingsModal(true)}
+            className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+          >
+            <div className="w-[52px] h-[52px] rounded-full bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25 flex items-center justify-center transition-all shadow-xs">
+              <Settings className="w-5 h-5 text-[#E66A00] stroke-[2.2]" />
+            </div>
+            <span className="text-[12px] font-bold text-[#1A1D26] mt-2 text-center leading-tight">
+              Pengaturan
+            </span>
+          </button>
+        </div>
+
+        {/* SECTION: INFORMASI KARTU (CARD INFORMATION) */}
+        <section className="mt-7">
+          <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+            <h2 className="text-[15.5px] font-bold text-[#1A1D26] tracking-tight">
+              Informasi Kartu
+            </h2>
+            <button
+              type="button"
+              onClick={handleRevealClick}
+              className="text-[13px] font-bold text-[#1C20C4] hover:underline underline-offset-2 cursor-pointer flex items-center gap-1 active:opacity-70"
+            >
+              {isRevealed ? 'Tutup Info' : 'Lihat Info'}
+            </button>
+          </div>
+
+          <div className="divide-y divide-gray-100">
+            {/* Row 1: Card No */}
+            <div className="flex items-center justify-between py-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-amber-50 text-[#D97706] flex items-center justify-center">
+                  <CreditCard className="w-4 h-4 stroke-[2.2]" />
+                </div>
+                <span className="text-[13.5px] font-medium text-[#1A1D26]">
+                  Card No
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[13.5px] font-semibold text-gray-800 tracking-wider">
+                  {isRevealed ? '4111 2233 4455 7890' : '•••• •••• •••• 7890'}
+                </span>
+                {isRevealed && (
+                  <button
+                    type="button"
+                    onClick={handleCopyCard}
+                    className="p-1 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-[#1C20C4] transition-all cursor-pointer active:scale-90"
+                    title="Salin Nomor Kartu"
+                  >
+                    {copied ? (
+                      <Check className="w-4 h-4 text-emerald-600" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
 
-            <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#1A1D26', margin: 0 }}>
-              Konfirmasi Biometrik
+            {/* Row 2: Expiry date */}
+            <div className="flex items-center justify-between py-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-amber-50 text-[#D97706] flex items-center justify-center">
+                  <Calendar className="w-4 h-4 stroke-[2.2]" />
+                </div>
+                <span className="text-[13.5px] font-medium text-[#1A1D26]">
+                  Expiry date
+                </span>
+              </div>
+              <span className="font-mono text-[13.5px] font-semibold text-gray-800">
+                11/29
+              </span>
+            </div>
+
+            {/* Row 3: CVV (3-digit security code) */}
+            <div className="flex items-center justify-between py-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-amber-50 text-[#D97706] flex items-center justify-center">
+                  <ShieldCheck className="w-4 h-4 stroke-[2.2]" />
+                </div>
+                <div>
+                  <span className="text-[13.5px] font-medium text-[#1A1D26] block">
+                    CVV (3-digit security code)
+                  </span>
+                  {isRevealed && (
+                    <span className="text-[10px] text-emerald-600 font-bold block">
+                      Kode dinamis berganti dalam {cvvTimer}s
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span
+                  className={`font-mono text-[13.5px] font-bold ${
+                    isRevealed ? 'text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md' : 'text-gray-800'
+                  }`}
+                >
+                  {isRevealed ? '832' : '•••'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION: LINKED POCKETS (KANTONG TERHUBUNG) - Bank Jago File 2 Style */}
+        <section className="mt-8">
+          <h2 className="text-[15.5px] font-bold text-[#1A1D26] tracking-tight mb-3">
+            Linked Pockets
+          </h2>
+
+          <div className="space-y-3">
+            {/* 1. Rupiah Pocket Box */}
+            <div className="p-4 rounded-2xl border border-gray-100 bg-white shadow-xs">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600">
+                  Rupiah Pocket
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700">
+                    <Wallet className="w-5 h-5 stroke-[2.2]" />
+                  </div>
+                  <div>
+                    <h3 className="text-[13.5px] font-bold text-[#1A1D26] leading-snug">
+                      Ala Dompet Utama
+                    </h3>
+                    <p className="text-[12.5px] font-medium text-gray-500">
+                      Rp{alaDompet.toLocaleString('id-ID')}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowPocketMenu((prev) => !prev)}
+                  className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition-all cursor-pointer"
+                  aria-label="Opsi Kantong"
+                >
+                  <MoreHorizontal className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Pocket Quick Menu Popup */}
+              {showPocketMenu && (
+                <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-[11.5px] font-bold text-[#1C20C4]">
+                  <Link href="/pocket" className="hover:underline">
+                    Ganti Kantong Terhubung →
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setShowPocketMenu(false)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    Tutup
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* 2. Foreign Currencies Box */}
+            <div className="p-4 rounded-2xl border border-gray-100 bg-white shadow-xs">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-600">
+                  Foreign Currencies
+                </span>
+                <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  0% FX Markup
+                </span>
+              </div>
+
+              {/* Active SAR Pocket Item */}
+              <div className="flex items-center justify-between py-2 mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-[#064E3B]">
+                    <Coins className="w-5 h-5 stroke-[2.2]" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="text-[13.5px] font-bold text-[#1A1D26] leading-snug">
+                        Haramain Wallet (SAR)
+                      </h3>
+                      <span className="text-[9px] font-black px-1.5 py-0.2 bg-[#064E3B] text-white rounded">
+                        MADA
+                      </span>
+                    </div>
+                    <p className="text-[12.5px] font-medium text-gray-500">
+                      SAR {dompetSar.toFixed(2)}
+                      <span className="text-gray-400 text-[11px] ml-1">
+                        (≈ Rp{Math.round(dompetSar * 4200).toLocaleString('id-ID')})
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    startTransition('/ala-haramain')
+                  }}
+                  className="text-[11.5px] font-bold text-[#064E3B] bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl border border-emerald-200 transition-all cursor-pointer active:scale-95"
+                >
+                  Kelola
+                </button>
+              </div>
+
+              {/* Bank Jago Style: Add Another Currency Pockets Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  startTransition('/ala-haramain')
+                }}
+                className="w-full py-3 px-4 rounded-xl border border-dashed border-purple-300 bg-purple-50/60 hover:bg-purple-50 text-[#6D28D9] font-bold text-[13px] flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98"
+              >
+                <Plus className="w-4 h-4 stroke-[2.5]" />
+                <span>Tambah Kantong Mata Uang Asing (SAR)</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* ========================================================================= */}
+      {/* MODAL 1: BIOMETRIC CONFIRMATION MODAL                                    */}
+      {/* ========================================================================= */}
+      {showBiometricModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-6 animate-in fade-in duration-200">
+          <div className="w-full max-w-[320px] bg-white rounded-3xl p-6 text-center shadow-2xl">
+            <div className="w-16 h-16 rounded-full bg-[#1C20C4]/10 text-[#1C20C4] flex items-center justify-center mx-auto mb-4">
+              <Fingerprint className="w-8 h-8 stroke-[2.2]" />
+            </div>
+
+            <h3 className="text-[17px] font-extrabold text-[#1A1D26] tracking-tight">
+              Autentikasi Biometrik
             </h3>
-            <p style={{ fontSize: '12px', color: '#6C737E', margin: '6px 0 18px 0', lineHeight: 1.4 }}>
-              Gunakan Face ID atau sidik jari untuk melihat nomor kartu lengkap Anda.
+            <p className="text-[12.5px] text-gray-500 mt-1 mb-6 leading-relaxed">
+              Gunakan Face ID atau Sidik Jari untuk membuka nomor kartu lengkap dan kode CVV rahasia.
             </p>
 
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <div className="flex gap-2.5">
               <button
+                type="button"
                 onClick={() => setShowBiometricModal(false)}
-                style={{
-                  flex: 1,
-                  height: '42px',
-                  borderRadius: '999px',
-                  border: '1px solid #ECEEF2',
-                  backgroundColor: '#FFFFFF',
-                  color: '#6C737E',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                }}
+                className="flex-1 h-11 rounded-xl border border-gray-200 font-bold text-[13px] text-gray-600 hover:bg-gray-50 active:scale-95 transition-all cursor-pointer"
               >
                 Batal
               </button>
-
               <button
+                type="button"
                 onClick={handleBiometricConfirm}
-                style={{
-                  flex: 1,
-                  height: '42px',
-                  borderRadius: '999px',
-                  border: 'none',
-                  backgroundColor: '#1C20C4',
-                  color: '#FFFFFF',
-                  fontSize: '13px',
-                  fontWeight: 800,
-                  cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(28, 32, 196, 0.25)',
-                }}
+                className="flex-1 h-11 rounded-xl bg-[#1C20C4] hover:bg-[#151AA8] text-white font-extrabold text-[13px] shadow-md shadow-[#1C20C4]/30 active:scale-95 transition-all cursor-pointer"
               >
-                Autentikasi
+                Konfirmasi
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL 2: RIWAYAT TRANSAKSI BOTTOM SHEET                                  */}
+      {/* ========================================================================= */}
+      {showHistoryModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex flex-col justify-end animate-in fade-in duration-200">
+          <div className="w-full max-w-[430px] mx-auto bg-white rounded-t-3xl p-5 max-h-[85vh] flex flex-col shadow-2xl">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div>
+                <h3 className="text-[16px] font-extrabold text-[#1A1D26]">
+                  Riwayat Transaksi Kartu
+                </h3>
+                <p className="text-[11px] text-gray-500">
+                  Transaksi belanja kartu Visa Aladin
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowHistoryModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Filter Tabs */}
+            <div className="flex gap-1.5 p-1 bg-gray-100 rounded-xl my-3">
+              {[
+                { id: 'semua', label: 'Semua' },
+                { id: 'online', label: 'Online' },
+                { id: 'saudi', label: 'Saudi SAR' },
+              ].map((f) => (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => setActiveFilter(f.id as any)}
+                  className={`flex-1 py-1.5 rounded-lg text-[12px] font-bold transition-all cursor-pointer ${
+                    activeFilter === f.id
+                      ? 'bg-white text-[#1C20C4] shadow-xs'
+                      : 'text-gray-500 hover:text-gray-900'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Transaction List */}
+            <div className="flex-1 overflow-y-auto divide-y divide-gray-100 pr-1">
+              {filteredTransactions.map((tx) => (
+                <div key={tx.id} className="py-3 flex items-center justify-between">
+                  <div>
+                    <h4 className="text-[13px] font-bold text-[#1A1D26]">
+                      {tx.merchant}
+                    </h4>
+                    <p className="text-[11px] text-gray-500 mt-0.5">{tx.date}</p>
+                    <span className="text-[10px] text-gray-400">{tx.note}</span>
+                  </div>
+
+                  <div className="text-right">
+                    <span className="text-[13.5px] font-extrabold text-[#1A1D26] block">
+                      {tx.idr}
+                    </span>
+                    {tx.category === 'saudi' && (
+                      <span className="text-[10.5px] font-bold text-emerald-600 block">
+                        {tx.amount}
+                      </span>
+                    )}
+                    <span className="text-[9.5px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded inline-block mt-0.5">
+                      {tx.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL 3: PENGATURAN KARTU BOTTOM SHEET                                   */}
+      {/* ========================================================================= */}
+      {showSettingsModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex flex-col justify-end animate-in fade-in duration-200">
+          <div className="w-full max-w-[430px] mx-auto bg-white rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto shadow-2xl">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div>
+                <h3 className="text-[16px] font-extrabold text-[#1A1D26]">
+                  Pengaturan Kartu
+                </h3>
+                <p className="text-[11px] text-gray-500">
+                  Kontrol keamanan dan batas transaksi
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowSettingsModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Daily Limit Slider */}
+            <div className="mt-4 p-4 rounded-2xl bg-gray-50 border border-gray-100">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[12px] font-bold text-gray-600 uppercase tracking-wider">
+                  Batas Harian Transaksi
+                </span>
+                <span className="text-[14px] font-black text-[#1C20C4]">
+                  Rp{dailyLimit.toLocaleString('id-ID')}
+                </span>
+              </div>
+              <input
+                type="range"
+                min={1000000}
+                max={25000000}
+                step={1000000}
+                value={dailyLimit}
+                onChange={(e) => setDailyLimit(Number(e.target.value))}
+                className="w-full accent-[#1C20C4] cursor-pointer"
+              />
+              <div className="flex justify-between text-[10px] font-semibold text-gray-400 mt-1">
+                <span>Min Rp1.000.000</span>
+                <span>Maks Rp25.000.000</span>
+              </div>
+            </div>
+
+            {/* Feature Toggles */}
+            <div className="mt-4 divide-y divide-gray-100">
+              {/* Toggle 1: Online */}
+              <div className="py-3 flex items-center justify-between">
+                <div>
+                  <h4 className="text-[13px] font-bold text-[#1A1D26]">
+                    Transaksi Online & E-Commerce
+                  </h4>
+                  <p className="text-[11px] text-gray-500">
+                    Belanja merchant digital (Spotify, Netflix, Marketplace)
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setOnlineEnabled(!onlineEnabled)}
+                  className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
+                    onlineEnabled ? 'bg-[#1C20C4]' : 'bg-gray-300'
+                  }`}
+                >
+                  <span
+                    className={`block w-5 h-5 rounded-full bg-white shadow-xs transform transition-transform ${
+                      onlineEnabled ? 'translate-x-5' : 'translate-x-0.5'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Toggle 2: Overseas */}
+              <div className="py-3 flex items-center justify-between">
+                <div>
+                  <h4 className="text-[13px] font-bold text-[#1A1D26]">
+                    Transaksi Luar Negeri (SAR & Global)
+                  </h4>
+                  <p className="text-[11px] text-gray-500">
+                    Bebas markup di mesin POS Makkah, Madinah & Internasional
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setOverseasEnabled(!overseasEnabled)}
+                  className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
+                    overseasEnabled ? 'bg-[#1C20C4]' : 'bg-gray-300'
+                  }`}
+                >
+                  <span
+                    className={`block w-5 h-5 rounded-full bg-white shadow-xs transform transition-transform ${
+                      overseasEnabled ? 'translate-x-5' : 'translate-x-0.5'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Toggle 3: Contactless */}
+              <div className="py-3 flex items-center justify-between">
+                <div>
+                  <h4 className="text-[13px] font-bold text-[#1A1D26]">
+                    Pembayaran Tap Contactless
+                  </h4>
+                  <p className="text-[11px] text-gray-500">
+                    NFC tap tanpa memasukkan kartu ke mesin EDC
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setContactlessEnabled(!contactlessEnabled)}
+                  className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
+                    contactlessEnabled ? 'bg-[#1C20C4]' : 'bg-gray-300'
+                  }`}
+                >
+                  <span
+                    className={`block w-5 h-5 rounded-full bg-white shadow-xs transform transition-transform ${
+                      contactlessEnabled ? 'translate-x-5' : 'translate-x-0.5'
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
+
+            {/* Save Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setShowSettingsModal(false)
+                triggerReaction('success', 'Pengaturan kartu berhasil disimpan!')
+              }}
+              className="w-full mt-5 py-3 rounded-xl bg-[#1C20C4] hover:bg-[#151AA8] text-white font-extrabold text-[13px] active:scale-98 transition-all cursor-pointer shadow-md shadow-[#1C20C4]/20"
+            >
+              Simpan Pengaturan
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL 4: HELP / FAQ MODAL                                                */}
+      {/* ========================================================================= */}
+      {showHelpModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-6 animate-in fade-in duration-200">
+          <div className="w-full max-w-[340px] bg-white rounded-3xl p-6 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <h3 className="text-[16px] font-extrabold text-[#1A1D26]">
+                Bantuan Kartu Visa Aladin
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowHelpModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="space-y-3.5 my-4 text-[12px] text-gray-600 leading-relaxed">
+              <div>
+                <h4 className="font-bold text-[#1A1D26] mb-0.5">
+                  Apa itu CVV Dinamis?
+                </h4>
+                <p>
+                  Untuk keamanan transaksi online, kode CVV 3-digit diperbarui berkala sehingga aman dari pencurian data online.
+                </p>
+              </div>
+              <div>
+                <h4 className="font-bold text-[#1A1D26] mb-0.5">
+                  Bebas Markup Luar Negeri
+                </h4>
+                <p>
+                  Belanja di Arab Saudi menggunakan kurs resmi BI tanpa biaya tersembunyi (0% foreign exchange markup).
+                </p>
+              </div>
+              <div>
+                <h4 className="font-bold text-[#1A1D26] mb-0.5">
+                  Bagaimana jika kartu hilang?
+                </h4>
+                <p>
+                  Segera tekan tombol &ldquo;Kunci Kartu&rdquo; di halaman ini untuk membekukan kartu seketika.
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowHelpModal(false)}
+              className="w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-[12.5px] cursor-pointer"
+            >
+              Mengerti
+            </button>
           </div>
         </div>
       )}
