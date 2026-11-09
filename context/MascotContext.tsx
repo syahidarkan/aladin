@@ -60,9 +60,9 @@ export function MascotProvider({ children }: { children: React.ReactNode }) {
     setTransitionPhase('covering')
     setIsTransitioning(true)
 
-    // Phase 1: Mascot starts far away in 3D, executes figure-8 acrobatics looping forward, then blankets camera
+    // Phase 1: Mascot starts far away in 3D (z: -32.0), majestically flies closer with head scooped up & body flat, then blankets camera
     setTimeout(() => {
-      // Phase 2: Route swaps while camera lens is covered by carpet body!
+      // Phase 2: Route swaps while camera lens is 100% blanketed by carpet body!
       router.push(url)
       setTransitionPhase('revealing')
 
@@ -70,8 +70,8 @@ export function MascotProvider({ children }: { children: React.ReactNode }) {
       setTimeout(() => {
         setIsTransitioning(false)
         setTransitionTarget(null)
-      }, 420)
-    }, 580)
+      }, 450)
+    }, 1550)
   }, [router])
 
   // Loader triggers

@@ -7,15 +7,15 @@
       "description": "Exact 1:1 isometric S-curve matching official Aladin brand mascot render",
       "meshTransform": {
         "position": [0, 0, 0],
-        "rotation": [43, 0, -37],
+        "rotation": [48, 12, -32],
         "scale": [1, 1, 1]
       },
       "bonesRotation": {
-        "Spine_0": [71.6, 0, 0],
-        "Spine_1": [-37.2, 0, 0],
-        "Spine_2": [-25.8, 0, 0],
-        "Spine_3": [43.0, 0, 0],
-        "Spine_4": [25.8, 0, 0]
+        "Spine_0": [62.0, 0, 0],
+        "Spine_1": [-36.0, 0, 0],
+        "Spine_2": [0.0, 0, 0],
+        "Spine_3": [0.0, 0, 0],
+        "Spine_4": [20.0, 0, 0]
       }
     },
     "stand": {
@@ -212,63 +212,63 @@
           "id": "trans-0",
           "timestamp": 0.0,
           "meshTransform": {
-            "position": [0, 0, -8.0],
-            "rotation": [10, 30, -10],
+            "position": [0, 0, -32.0],
+            "rotation": [48, 12, -32],
             "scale": [0.35, 0.35, 0.35]
           },
           "bonesRotation": {
-            "Spine_0": [50, 0, 0],
-            "Spine_1": [-20, 0, 0],
-            "Spine_2": [20, 0, 0],
-            "Spine_3": [-30, 0, 0],
-            "Spine_4": [-30, 0, 0]
+            "Spine_0": [62, 0, 0],
+            "Spine_1": [-36, 0, 0],
+            "Spine_2": [0, 0, 0],
+            "Spine_3": [0, 0, 0],
+            "Spine_4": [20, 0, 0]
           }
         },
         {
           "id": "trans-1",
           "timestamp": 0.8,
           "meshTransform": {
-            "position": [1.2, 0.4, -3.0],
-            "rotation": [20, -25, 30],
-            "scale": [0.7, 0.7, 0.7]
+            "position": [1.8, 0.6, -14.0],
+            "rotation": [48, 25, -45],
+            "scale": [0.65, 0.65, 0.65]
           },
           "bonesRotation": {
-            "Spine_0": [65, -15, 10],
-            "Spine_1": [-30, 10, -5],
-            "Spine_2": [30, 0, 0],
-            "Spine_3": [-25, 0, 0],
-            "Spine_4": [-20, 0, 0]
+            "Spine_0": [62, 0, 0],
+            "Spine_1": [-36, 0, 0],
+            "Spine_2": [0, 0, 0],
+            "Spine_3": [0, 0, 0],
+            "Spine_4": [20, 0, 0]
           }
         },
         {
           "id": "trans-2",
           "timestamp": 1.4,
           "meshTransform": {
-            "position": [-0.6, -0.3, -0.8],
-            "rotation": [15, 20, -20],
+            "position": [-0.8, -0.2, -1.2],
+            "rotation": [35, -15, 10],
             "scale": [1.1, 1.1, 1.1]
           },
           "bonesRotation": {
-            "Spine_0": [55, 10, -10],
-            "Spine_1": [-25, -5, 5],
-            "Spine_2": [25, 0, 0],
-            "Spine_3": [-30, 0, 0],
-            "Spine_4": [-25, 0, 0]
+            "Spine_0": [62, 0, 0],
+            "Spine_1": [-36, 0, 0],
+            "Spine_2": [0, 0, 0],
+            "Spine_3": [0, 0, 0],
+            "Spine_4": [20, 0, 0]
           }
         },
         {
           "id": "trans-3",
           "timestamp": 2.0,
           "meshTransform": {
-            "position": [0, 0, 2.4],
+            "position": [0, 0, 2.8],
             "rotation": [0, 0, 0],
             "scale": [2.4, 2.4, 2.4]
           },
           "bonesRotation": {
-            "Spine_0": [10, 0, 0],
-            "Spine_1": [5, 0, 0],
+            "Spine_0": [0, 0, 0],
+            "Spine_1": [0, 0, 0],
             "Spine_2": [0, 0, 0],
-            "Spine_3": [-5, 0, 0],
+            "Spine_3": [0, 0, 0],
             "Spine_4": [0, 0, 0]
           }
         }
@@ -276,3 +276,4 @@
     }
   }
 }
+

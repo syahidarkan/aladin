@@ -120,29 +120,6 @@ export default function ControlledCarpetMesh({
         </group>
       )}
 
-      {/* 2 Rear Tail Tassels (exact 1:1 matching Bank Aladin mascot render) */}
-      <group position={[-0.78, 1.2, 0]} rotation={[0, 0, 0.25]}>
-        <mesh>
-          <torusGeometry args={[0.045, 0.016, 8, 16]} />
-          <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.8} />
-        </mesh>
-        <mesh position={[0, 0.1, 0]}>
-          <coneGeometry args={[0.045, 0.14, 12]} />
-          <meshStandardMaterial color="#1037A6" roughness={0.35} />
-        </mesh>
-      </group>
-
-      <group position={[0.78, 1.2, 0]} rotation={[0, 0, -0.25]}>
-        <mesh>
-          <torusGeometry args={[0.045, 0.016, 8, 16]} />
-          <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.8} />
-        </mesh>
-        <mesh position={[0, 0.1, 0]}>
-          <coneGeometry args={[0.045, 0.14, 12]} />
-          <meshStandardMaterial color="#1037A6" roughness={0.35} />
-        </mesh>
-      </group>
-
       {/* 3D Sparkle Star Particles */}
       {showParticles && (
         <group>
@@ -173,3 +150,4 @@ export default function ControlledCarpetMesh({
     </group>
   )
 }
+

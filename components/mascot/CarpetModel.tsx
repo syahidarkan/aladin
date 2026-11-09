@@ -23,14 +23,14 @@ interface BoneRotations {
  * Spine_0 (Root) -> Spine_1 -> Spine_2 -> Spine_3 -> Spine_4 (Head / Front Lip)
  */
 export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
-  // 1. Idle: Exact 1:1 S-curve wave matching reference render (media_fa94c464.jpg)
-  // Front-left scoop with chibi face facing camera, deep trough belly, elevated back-right tail
+  // 1. Idle: Exact 1:1 matching official Aladin brand mascot render (media_1794188384447_112d8ee2.jpg)
+  // Head/front lip scooped up facing camera, body lying down flat/horizontal in flight plane, rear tail lifted
   idle: {
-    Spine_0: { x: 1.25, y: 0.0, z: 0.0 },
-    Spine_1: { x: -0.65, y: 0.0, z: 0.0 },
-    Spine_2: { x: -0.45, y: 0.0, z: 0.0 },
-    Spine_3: { x: 0.75, y: 0.0, z: 0.0 },
-    Spine_4: { x: 0.45, y: 0.0, z: 0.0 },
+    Spine_0: { x: 1.08, y: 0.0, z: 0.0 }, // 62° (Bibir depan/kepala dongak ke atas melihat ke kamera)
+    Spine_1: { x: -0.63, y: 0.0, z: 0.0 }, // -36° (Meratakan badan karpet agar tiduran mendatar)
+    Spine_2: { x: 0.0, y: 0.0, z: 0.0 },  // 0° (Badan tengah terbang datar normal)
+    Spine_3: { x: 0.0, y: 0.0, z: 0.0 },  // 0° (Badan belakang terbang datar normal)
+    Spine_4: { x: 0.35, y: 0.0, z: 0.0 }, // 20° (Ekor belakang terangkat sedikit dengan rumbai)
   },
 
   // 2. Stand: Standing upright 90°, chest proudly forward, greeting friendly
@@ -69,13 +69,13 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
     Spine_4: { x: 0.4, y: 0, z: 0 },
   },
 
-  // 6. Loading: High-energy flight pose ready for ripple oscillation
+  // 6. Loading: High-energy flight pose with head scooped up & aerodynamic flight body
   loading: {
-    Spine_0: { x: 0.8, y: -0.1, z: 0.1 },
-    Spine_1: { x: -0.3, y: 0.05, z: -0.05 },
-    Spine_2: { x: 0.4, y: 0.0, z: 0.0 },
-    Spine_3: { x: -0.5, y: 0.0, z: 0.0 },
-    Spine_4: { x: -0.85, y: 0.1, z: -0.05 },
+    Spine_0: { x: 1.05, y: -0.05, z: 0.05 },
+    Spine_1: { x: -0.55, y: 0.05, z: -0.05 },
+    Spine_2: { x: 0.0, y: 0.0, z: 0.0 },
+    Spine_3: { x: 0.0, y: 0.0, z: 0.0 },
+    Spine_4: { x: 0.35, y: 0.05, z: -0.05 },
   },
 
   // 7. Transition-Sweep: Dynamic wide swoop covering camera viewport
@@ -287,6 +287,42 @@ export function createRiggedCarpet(material: THREE.Material) {
   skinnedMesh.add(bones[0]) // add root bone
   skinnedMesh.bind(skeleton)
 
+  // 5. Attach 2 Rear Tail Tassels directly to Tail Bone (bones[4])
+  // This guarantees tassels remain 100% physically attached to the tail corners across all poses and transitions
+  const tasselMatMint = new THREE.MeshStandardMaterial({
+    color: '#00F0A0',
+    emissive: '#00F0A0',
+    emissiveIntensity: 0.8,
+  })
+  const tasselMatBlue = new THREE.MeshStandardMaterial({
+    color: '#1037A6',
+    roughness: 0.35,
+  })
+
+  // Left Rear Tassel
+  const tasselLeft = new THREE.Group()
+  tasselLeft.position.set(-0.76, 0, 0)
+  tasselLeft.rotation.set(0, 0, 0.25)
+
+  const torusL = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.016, 8, 16), tasselMatMint)
+  const coneL = new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.14, 12), tasselMatBlue)
+  coneL.position.set(0, 0.1, 0)
+  tasselLeft.add(torusL)
+  tasselLeft.add(coneL)
+  bones[4].add(tasselLeft)
+
+  // Right Rear Tassel
+  const tasselRight = new THREE.Group()
+  tasselRight.position.set(0.76, 0, 0)
+  tasselRight.rotation.set(0, 0, -0.25)
+
+  const torusR = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.016, 8, 16), tasselMatMint)
+  const coneR = new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.14, 12), tasselMatBlue)
+  coneR.position.set(0, 0.1, 0)
+  tasselRight.add(torusR)
+  tasselRight.add(coneR)
+  bones[4].add(tasselRight)
+
   return { skinnedMesh, bones, skeleton }
 }
 
@@ -413,10 +449,10 @@ export default function CarpetModel({
     // Group floating levitation & orientation
     if (groupRef.current) {
       if (pose === 'idle') {
-        // Isometric 3/4 Perspective: front-left head scoop facing camera, rear-right tail elevated
-        const baseX = 0.75
-        const baseY = 0.0
-        const baseZ = -0.65
+        // Isometric 3/4 Perspective: front-left head scoop facing camera, flat horizontal body, rear tail lifted
+        const baseX = 0.84 // 48 deg
+        const baseY = 0.21 // 12 deg
+        const baseZ = -0.56 // -32 deg
 
         // Vertical levitation bobbing
         const levitateY = Math.sin(t * 1.8) * 0.1
@@ -465,29 +501,6 @@ export default function CarpetModel({
   return (
     <group ref={groupRef} onClick={handleClick} scale={[scale, scale, scale]}>
       <primitive object={skinnedMesh} />
-
-      {/* 2 Rear Tail Tassels (exact 1:1 to reference render media_fa94c464.jpg) */}
-      <group position={[-0.78, 1.2, 0]} rotation={[0, 0, 0.25]}>
-        <mesh>
-          <torusGeometry args={[0.045, 0.016, 8, 16]} />
-          <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.8} />
-        </mesh>
-        <mesh position={[0, 0.1, 0]}>
-          <coneGeometry args={[0.045, 0.14, 12]} />
-          <meshStandardMaterial color="#1037A6" roughness={0.35} />
-        </mesh>
-      </group>
-
-      <group position={[0.78, 1.2, 0]} rotation={[0, 0, -0.25]}>
-        <mesh>
-          <torusGeometry args={[0.045, 0.016, 8, 16]} />
-          <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.8} />
-        </mesh>
-        <mesh position={[0, 0.1, 0]}>
-          <coneGeometry args={[0.045, 0.14, 12]} />
-          <meshStandardMaterial color="#1037A6" roughness={0.35} />
-        </mesh>
-      </group>
 
       {/* Magical Floating 3D Sparkle Star Particles (exact 1:1 to reference media_fa94c464.jpg) */}
       <group>
