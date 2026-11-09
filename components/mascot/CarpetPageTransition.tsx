@@ -98,33 +98,31 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
           groupRef.current.position.set(flightX, flightY, curZ)
 
           // Banking roll, pitch & yaw:
-          // banking roll = -cos(t) * 0.45
-          // pitch = cos(t * 2.0) * 0.25 + 0.42 (base pitch ensures top & face look directly at camera)
-          // yaw = -cos(t) * 0.3
-          const bankingRoll = -Math.cos(t) * 0.45
-          const pitchAngle = 0.42 + Math.cos(t * 2.0) * 0.25
-          const yawTurn = -Math.cos(t) * 0.3
+          // Aerodinamis HORIZONTAL FLIGHT (TIDURAN - lying flat horizontal along flight plane!):
+          const basePitch = -0.84 // -48 deg (tiduran mendatar horizontal, BUKAN berdiri tegak!)
+          const pitchAngle = basePitch + Math.sin(t * 2.0) * 0.12
+          const yawTurn = 0.21 + Math.sin(t) * 0.2
+          const bankingRoll = -0.25 - Math.cos(t) * 0.35
 
           groupRef.current.rotation.set(pitchAngle, yawTurn, bankingRoll)
 
           // Scale grows smoothly from distant small silhouette to full size
-          const curScale = THREE.MathUtils.lerp(0.32, 1.12, easeApproach)
+          const curScale = THREE.MathUtils.lerp(0.32, 1.15, easeApproach)
           groupRef.current.scale.set(curScale, curScale, curScale)
 
-          // ICONIC SKELETAL RIG POSE:
-          // Spine_0: 0.28 (tail lifted slightly trailing behind with 2 attached tassels)
-          // Spine_1: -0.15 + dynamic flutter/flapping when curving
-          // Spine_2: -0.10 + dynamic flutter/flapping when curving
-          // Spine_3: 0.30 (mulai melengkung naik)
-          // Spine_4: 0.85 (kepala depan tempat wajah: melipat tegak ke atas menghadap kamera)
-          const flutter1 = Math.sin(t * 4.0) * 0.1
-          const flutter2 = Math.cos(t * 4.0) * 0.1
+          // SKELETAL RIG POSE (Kepala dongak melengkung NAIK ke atas, badan mendatar):
+          // Spine_0: melengkung NAIK ke atas (kepala dongak melipat ke atas menghadap kamera)
+          // Spine_1: meratakan badan karpet agar tiduran mendatar horizontal
+          // Spine_2: aerodinamis S-wave
+          // Spine_3: badan horizontal
+          // Spine_4: ekor belakang terangkat dengan 2 rumbai terpasang
+          const flutter1 = Math.sin(t * 5.0) * 0.08
           const targetRotations = [
-            0.28 + Math.sin(t * 3.0) * 0.05,
-            -0.15 + flutter1,
-            -0.1 + flutter2,
-            0.3,
-            0.85,
+            -0.65,
+            0.35 + flutter1,
+            0.1 + flutter1 * 0.5,
+            -0.1,
+            -0.3,
           ]
 
           bonesRef.current.forEach((bone, idx) => {

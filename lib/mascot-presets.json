@@ -6,16 +6,16 @@
       "name": "Idle Floating S-Curve",
       "description": "Exact 1:1 isometric S-curve matching official Aladin brand mascot render",
       "meshTransform": {
-        "position": [0, -0.3, 0],
-        "rotation": [-22, 28, -12],
+        "position": [0, 0, 0],
+        "rotation": [-48, 12, -14],
         "scale": [1, 1, 1]
       },
       "bonesRotation": {
-        "Spine_0": [16.0, 0, 0],
-        "Spine_1": [-8.6, 0, 0],
-        "Spine_2": [-5.7, 0, 0],
-        "Spine_3": [17.2, 0, 0],
-        "Spine_4": [48.7, 0, 0]
+        "Spine_0": [-37.2, 0, 0],
+        "Spine_1": [20.1, 0, 0],
+        "Spine_2": [5.7, 0, 0],
+        "Spine_3": [-5.7, 0, 0],
+        "Spine_4": [-17.2, 0, 0]
       }
     },
     "stand": {

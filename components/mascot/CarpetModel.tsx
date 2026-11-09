@@ -24,67 +24,67 @@ interface BoneRotations {
  */
 export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
   // 1. Idle: Exact 1:1 matching official Aladin brand mascot render (media_1794188384447_112d8ee2.jpg)
-  // Head/front lip scooped UP facing camera (Spine_3: 0.3, Spine_4: 0.85), body horizontal aerodynamic S-curve, tail slightly lifted
+  // Head/front lip scooped UP facing camera, body lying down flat/horizontal in flight plane, rear tail lifted
   idle: {
-    Spine_0: { x: 0.28, y: 0.0, z: 0.0 },  // Tail (belakang) terangkat sedikit dengan 2 rumbai terpasang
-    Spine_1: { x: -0.15, y: 0.0, z: 0.0 }, // Meratakan badan horizontal ke arah bidang terbang
-    Spine_2: { x: -0.1, y: 0.0, z: 0.0 },  // Lengkungan aerodinamis S-wave
-    Spine_3: { x: 0.3, y: 0.0, z: 0.0 },   // Mulai melengkung naik
-    Spine_4: { x: 0.85, y: 0.0, z: 0.0 },  // Kepala depan tempat wajah: lipatan melipat tegak ke atas menghadap kamera
+    Spine_0: { x: -0.65, y: 0.0, z: 0.0 }, // Bibir depan/kepala dongak ke atas melengkung NAIK menghadap kamera
+    Spine_1: { x: 0.35, y: 0.0, z: 0.0 },  // Meratakan badan karpet agar tiduran mendatar horizontal
+    Spine_2: { x: 0.1, y: 0.0, z: 0.0 },   // Lengkungan aerodinamis S-curve halus
+    Spine_3: { x: -0.1, y: 0.0, z: 0.0 },  // Badan tengah-belakang datar horizontal
+    Spine_4: { x: -0.3, y: 0.0, z: 0.0 },  // Ekor belakang terangkat dengan 2 rumbai terpasang
   },
 
-  // 2. Stand: Standing upright
+  // 2. Stand: Standing upright 90°, chest proudly forward, greeting friendly
   stand: {
-    Spine_0: { x: -0.2, y: 0, z: 0 },
-    Spine_1: { x: 0.1, y: 0, z: 0 },
-    Spine_2: { x: 0.0, y: 0, z: 0 },
-    Spine_3: { x: 0.15, y: 0, z: 0 },
+    Spine_0: { x: 0.1, y: 0, z: 0 },
+    Spine_1: { x: 0.2, y: 0, z: 0 },
+    Spine_2: { x: -0.15, y: 0, z: 0 },
+    Spine_3: { x: -0.2, y: 0, z: 0 },
     Spine_4: { x: 0.25, y: 0, z: 0 },
   },
 
   // 3. Lay-Flat: Relaxed horizontal flight
   'lay-flat': {
-    Spine_0: { x: 0.1, y: 0, z: 0 },
-    Spine_1: { x: 0.0, y: 0, z: 0 },
-    Spine_2: { x: 0.0, y: 0, z: 0 },
-    Spine_3: { x: 0.1, y: 0, z: 0 },
-    Spine_4: { x: 0.3, y: 0, z: 0 },
+    Spine_0: { x: -0.1, y: 0, z: 0 },
+    Spine_1: { x: 0.05, y: 0, z: 0 },
+    Spine_2: { x: 0, y: 0, z: 0 },
+    Spine_3: { x: 0, y: 0, z: 0 },
+    Spine_4: { x: -0.2, y: 0, z: 0 },
   },
 
   // 4. Curious-Bow: Polite greeting bow (Sharia Salam)
   'curious-bow': {
-    Spine_0: { x: 0.1, y: 0, z: 0 },
-    Spine_1: { x: -0.2, y: 0, z: 0 },
-    Spine_2: { x: -0.2, y: 0, z: 0 },
-    Spine_3: { x: 0.4, y: 0, z: 0 },
-    Spine_4: { x: 0.9, y: 0, z: 0 },
+    Spine_0: { x: -0.3, y: 0, z: 0 },
+    Spine_1: { x: 0.4, y: 0, z: 0 },
+    Spine_2: { x: 0.3, y: 0, z: 0 },
+    Spine_3: { x: -0.2, y: 0, z: 0 },
+    Spine_4: { x: -0.4, y: 0, z: 0 },
   },
 
   // 5. Fold-Arms: Confident hero pose
   'fold-arms': {
-    Spine_0: { x: 0.2, y: 0, z: 0 },
-    Spine_1: { x: -0.1, y: 0, z: 0 },
-    Spine_2: { x: 0.0, y: 0, z: 0 },
-    Spine_3: { x: 0.35, y: 0, z: 0 },
-    Spine_4: { x: 0.9, y: 0, z: 0 },
+    Spine_0: { x: -0.2, y: 0, z: 0 },
+    Spine_1: { x: 0.25, y: 0, z: 0 },
+    Spine_2: { x: -0.1, y: 0, z: 0 },
+    Spine_3: { x: -0.3, y: 0, z: 0 },
+    Spine_4: { x: 0.4, y: 0, z: 0 },
   },
 
-  // 6. Loading: High-energy flight pose with head scooped up & aerodynamic wave flutter
+  // 6. Loading: High-energy flight pose with head scooped up & aerodynamic flight body (TIDURAN!)
   loading: {
-    Spine_0: { x: 0.35, y: 0.0, z: 0.0 },
-    Spine_1: { x: -0.2, y: 0.0, z: 0.0 },
-    Spine_2: { x: -0.1, y: 0.0, z: 0.0 },
-    Spine_3: { x: 0.3, y: 0.0, z: 0.0 },
-    Spine_4: { x: 0.85, y: 0.0, z: 0.0 },
+    Spine_0: { x: -0.65, y: -0.05, z: 0.05 },
+    Spine_1: { x: 0.35, y: 0.05, z: -0.05 },
+    Spine_2: { x: 0.1, y: 0.0, z: 0.0 },
+    Spine_3: { x: -0.1, y: 0.0, z: 0.0 },
+    Spine_4: { x: -0.3, y: 0.05, z: -0.05 },
   },
 
   // 7. Transition-Sweep: Dynamic wide swoop covering camera viewport
   'transition-sweep': {
-    Spine_0: { x: 0.1, y: 0.0, z: 0.0 },
+    Spine_0: { x: 0.0, y: 0.0, z: 0.0 },
     Spine_1: { x: 0.0, y: 0.0, z: 0.0 },
     Spine_2: { x: 0.0, y: 0.0, z: 0.0 },
-    Spine_3: { x: 0.1, y: 0.0, z: 0.0 },
-    Spine_4: { x: 0.2, y: 0.0, z: 0.0 },
+    Spine_3: { x: 0.0, y: 0.0, z: 0.0 },
+    Spine_4: { x: 0.0, y: 0.0, z: 0.0 },
   },
 }
 
@@ -155,7 +155,7 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
 
   // 4. Center Stylized Geometric Diamond / Rectangle Motif
   const midX = 512
-  const midY = 960
+  const midY = 680
   const boxW = 270
   const boxH = 340
 
@@ -165,55 +165,54 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
   ctx.roundRect(midX - boxW / 2, midY - boxH / 2, boxW, boxH, 40)
   ctx.stroke()
 
-  // 5. Draw Cute Chibi Face Directly on the Front Lip (Top of canvas, near Spine_4, facing camera)
+  // 5. Draw Cute Chibi Face Directly on the Front Lip (Bottom of canvas, near Spine_0, facing camera)
   const faceCenterX = 512
-  const faceCenterY = 320
+  const faceCenterY = 1360
 
   // 5a. Glowing Vibrant Turquoise Blush Cheeks (#00F0A0)
   ctx.fillStyle = '#00F0A0'
   ctx.beginPath()
-  ctx.ellipse(faceCenterX - 180, faceCenterY + 15, 58, 44, 0, 0, Math.PI * 2)
-  ctx.ellipse(faceCenterX + 180, faceCenterY + 15, 58, 44, 0, 0, Math.PI * 2)
+  ctx.ellipse(faceCenterX - 180, faceCenterY + 10, 58, 44, 0, 0, Math.PI * 2)
+  ctx.ellipse(faceCenterX + 180, faceCenterY + 10, 58, 44, 0, 0, Math.PI * 2)
   ctx.fill()
 
   if (blink) {
-    // Blinking eye arcs (smiling squinting arcs ^ ^)
+    // Blinking eye arcs
     ctx.strokeStyle = '#0A0A14'
     ctx.lineWidth = 16
     ctx.lineCap = 'round'
     ctx.beginPath()
-    ctx.arc(faceCenterX - 110, faceCenterY - 20, 38, 1.15 * Math.PI, 1.85 * Math.PI, false)
+    ctx.arc(faceCenterX - 110, faceCenterY + 40, 42, 0.15 * Math.PI, 0.85 * Math.PI, false)
     ctx.stroke()
     ctx.beginPath()
-    ctx.arc(faceCenterX + 110, faceCenterY - 20, 38, 1.15 * Math.PI, 1.85 * Math.PI, false)
+    ctx.arc(faceCenterX + 110, faceCenterY + 40, 42, 0.15 * Math.PI, 0.85 * Math.PI, false)
     ctx.stroke()
   } else {
     // 5b. Chibi Glossy Black Eyes (#0A0A14)
     ctx.fillStyle = '#0A0A14'
     ctx.beginPath()
-    ctx.arc(faceCenterX - 110, faceCenterY - 25, 54, 0, Math.PI * 2)
-    ctx.arc(faceCenterX + 110, faceCenterY - 25, 54, 0, Math.PI * 2)
+    ctx.arc(faceCenterX - 110, faceCenterY + 40, 54, 0, Math.PI * 2)
+    ctx.arc(faceCenterX + 110, faceCenterY + 40, 54, 0, Math.PI * 2)
     ctx.fill()
 
     // 5c. Dual White Specular Highlights in Each Eye (Large top-left, small bottom-right)
     ctx.fillStyle = '#FFFFFF'
     // Left eye
     ctx.beginPath()
-    ctx.arc(faceCenterX - 124, faceCenterY - 40, 21, 0, Math.PI * 2)
-    ctx.arc(faceCenterX - 93, faceCenterY - 10, 10, 0, Math.PI * 2)
+    ctx.arc(faceCenterX - 124, faceCenterY + 25, 21, 0, Math.PI * 2)
+    ctx.arc(faceCenterX - 93, faceCenterY + 55, 10, 0, Math.PI * 2)
     ctx.fill()
     // Right eye
     ctx.beginPath()
-    ctx.arc(faceCenterX + 96, faceCenterY - 40, 21, 0, Math.PI * 2)
-    ctx.arc(faceCenterX + 127, faceCenterY - 10, 10, 0, Math.PI * 2)
+    ctx.arc(faceCenterX + 96, faceCenterY + 25, 21, 0, Math.PI * 2)
+    ctx.arc(faceCenterX + 127, faceCenterY + 55, 10, 0, Math.PI * 2)
     ctx.fill()
   }
 
-  // 5d. Cheerful Open D-Shape Smile with Pink Tongue (below eyes)
-  const mouthY = faceCenterY + 45
+  // 5d. Cheerful Open D-Shape Smile with Pink Tongue
   ctx.fillStyle = '#0A0A14'
   ctx.beginPath()
-  ctx.arc(faceCenterX, mouthY, 48, 0.05 * Math.PI, 0.95 * Math.PI, false)
+  ctx.arc(faceCenterX, faceCenterY - 15, 48, 0.05 * Math.PI, 0.95 * Math.PI, false)
   ctx.closePath()
   ctx.fill()
 
@@ -222,7 +221,7 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
   ctx.clip()
   ctx.fillStyle = '#FF4D82'
   ctx.beginPath()
-  ctx.arc(faceCenterX, mouthY + 36, 38, 0, Math.PI * 2)
+  ctx.arc(faceCenterX, faceCenterY + 25, 38, 0, Math.PI * 2)
   ctx.fill()
   ctx.restore()
 
@@ -327,7 +326,7 @@ export function createRiggedCarpet(
   carpetRig.add(frontMesh)
   carpetRig.add(backMesh)
 
-  // 7. Attach 2 Rear Tail Tassels directly to Tail Bone (bones[0] - Spine_0)
+  // 7. Attach 2 Rear Tail Tassels directly to Tail Bone (bones[4] - Spine_4)
   const tasselMatMint = new THREE.MeshStandardMaterial({
     color: '#00F0A0',
     emissive: '#00F0A0',
@@ -340,27 +339,25 @@ export function createRiggedCarpet(
 
   // Left Rear Tassel
   const tasselLeft = new THREE.Group()
-  tasselLeft.position.set(-0.76, -0.06, 0)
+  tasselLeft.position.set(-0.76, 0, 0)
   tasselLeft.rotation.set(0, 0, 0.25)
   const torusL = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.016, 8, 16), tasselMatMint)
   const coneL = new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.14, 12), tasselMatBlue)
-  coneL.position.set(0, -0.09, 0)
-  coneL.rotation.set(Math.PI, 0, 0)
+  coneL.position.set(0, 0.1, 0)
   tasselLeft.add(torusL)
   tasselLeft.add(coneL)
-  bones[0].add(tasselLeft)
+  bones[4].add(tasselLeft)
 
   // Right Rear Tassel
   const tasselRight = new THREE.Group()
-  tasselRight.position.set(0.76, -0.06, 0)
+  tasselRight.position.set(0.76, 0, 0)
   tasselRight.rotation.set(0, 0, -0.25)
   const torusR = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.016, 8, 16), tasselMatMint)
   const coneR = new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.14, 12), tasselMatBlue)
-  coneR.position.set(0, -0.09, 0)
-  coneR.rotation.set(Math.PI, 0, 0)
+  coneR.position.set(0, 0.1, 0)
   tasselRight.add(torusR)
   tasselRight.add(coneR)
-  bones[0].add(tasselRight)
+  bones[4].add(tasselRight)
 
   return { carpetRig, skinnedMesh: carpetRig, frontMesh, backMesh, bones, skeleton }
 }
@@ -489,9 +486,9 @@ export default function CarpetModel({
     if (groupRef.current) {
       if (pose === 'idle') {
         // Isometric 3/4 Perspective: front-left head scoop facing camera, flat horizontal body, rear tail lifted
-        const baseX = -0.38 // ~-22 deg tilt towards camera
-        const baseY = 0.49 // ~28 deg 3/4 isometric perspective
-        const baseZ = -0.21 // ~-12 deg aerodynamic banking roll
+        const baseX = -0.84 // -48 deg (tiduran / lying flat horizontal in 3D flight plane)
+        const baseY = 0.21  // 12 deg (isometric yaw)
+        const baseZ = -0.25 // -14 deg (aerodynamic banking roll)
 
         // Vertical levitation bobbing
         const levitateY = Math.sin(t * 1.8) * 0.1
@@ -511,16 +508,16 @@ export default function CarpetModel({
           groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, baseZ, 4, delta)
         }
       } else if (pose === 'loading') {
-        // Continuous 3D Acrobatic Lemniscate Figure-8 Loop with Banking
+        // Continuous 3D Acrobatic Lemniscate Figure-8 Loop with Banking (TIDURAN / Horizontal flight!)
         const tFlight = t * 1.5
-        groupRef.current.position.x = Math.sin(tFlight) * 1.2
-        groupRef.current.position.y = Math.sin(tFlight * 2.0) * 0.4
-        groupRef.current.position.z = Math.cos(tFlight) * 0.5
+        groupRef.current.position.x = Math.sin(tFlight) * 0.8
+        groupRef.current.position.y = Math.sin(tFlight * 2.0) * 0.35
+        groupRef.current.position.z = Math.cos(tFlight) * 0.25
 
-        // Banking roll, pitch & yaw
-        groupRef.current.rotation.z = -Math.cos(tFlight) * 0.45
-        groupRef.current.rotation.x = 0.45 + Math.cos(tFlight * 2.0) * 0.25
-        groupRef.current.rotation.y = -Math.cos(tFlight) * 0.3
+        // Banking roll, pitch & yaw (maintained in horizontal lying down flight plane - TIDURAN!)
+        groupRef.current.rotation.x = -0.84 + Math.sin(tFlight * 2.0) * 0.12
+        groupRef.current.rotation.y = 0.21 + Math.sin(tFlight) * 0.2
+        groupRef.current.rotation.z = -0.25 - Math.cos(tFlight) * 0.35
       } else {
         // Stand or other poses
         const levitateY = Math.sin(t * 1.8) * 0.08
