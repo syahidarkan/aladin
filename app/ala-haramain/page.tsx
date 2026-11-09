@@ -12,7 +12,6 @@ import {
   ShoppingBag,
   Wifi,
   Smartphone,
-  Sparkles,
   ShieldCheck,
   CheckCircle2,
   X,
@@ -402,15 +401,15 @@ export default function AlaHaramainHubPage() {
             {/* DIGITAL VERTICAL DUAL CARD SYSTEM (BANK JAGO 1:1 REDESIGN)               */}
             {/* ========================================================================= */}
             <div className="bg-white rounded-3xl p-5 border border-[#ECEEF2] shadow-xs">
-              {/* Card Switcher Pills */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-1.5 p-1 bg-gray-100 rounded-xl">
+              {/* Card Switcher Pills (Centered without Sisi Indo/Saudi flip button) */}
+              <div className="flex items-center justify-center mb-4">
+                <div className="flex items-center gap-1.5 p-1 bg-gray-100 rounded-xl shadow-inner">
                   <button
                     type="button"
                     onClick={() => setIsFlipped(false)}
-                    className={`py-1.5 px-3.5 rounded-lg text-[11.5px] font-extrabold transition-all cursor-pointer ${
+                    className={`py-1.5 px-4 rounded-lg text-[12px] font-extrabold transition-all cursor-pointer ${
                       !isFlipped
-                        ? 'bg-[#1C20C4] text-white shadow-xs'
+                        ? 'bg-[#1037A6] text-white shadow-xs'
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
@@ -419,7 +418,7 @@ export default function AlaHaramainHubPage() {
                   <button
                     type="button"
                     onClick={() => setIsFlipped(true)}
-                    className={`py-1.5 px-3.5 rounded-lg text-[11.5px] font-extrabold transition-all cursor-pointer ${
+                    className={`py-1.5 px-4 rounded-lg text-[12px] font-extrabold transition-all cursor-pointer ${
                       isFlipped
                         ? 'bg-[#064E3B] text-white shadow-xs'
                         : 'text-gray-600 hover:text-gray-900'
@@ -428,15 +427,6 @@ export default function AlaHaramainHubPage() {
                     Kartu Saudi (SAR)
                   </button>
                 </div>
-
-                <button
-                  type="button"
-                  onClick={() => setIsFlipped((prev) => !prev)}
-                  className="flex items-center gap-1.5 py-1.5 px-3 bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl text-[11px] font-extrabold text-[#1A1D26] shadow-xs active:scale-95 transition-all cursor-pointer"
-                >
-                  <ArrowRightLeft className="w-3.5 h-3.5 text-[#1037A6]" />
-                  <span>{isFlipped ? 'Sisi Indo' : 'Sisi Saudi'}</span>
-                </button>
               </div>
 
               {/* Hero Vertical Card */}
@@ -483,7 +473,7 @@ export default function AlaHaramainHubPage() {
                         ? 'bg-red-500 text-white'
                         : isFlipped
                         ? 'bg-emerald-100 text-[#064E3B] group-hover:bg-emerald-200'
-                        : 'bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25'
+                        : 'bg-blue-50 text-[#1037A6] group-hover:bg-blue-100'
                     }`}
                   >
                     {isCardLocked ? (
@@ -507,7 +497,7 @@ export default function AlaHaramainHubPage() {
                     className={`w-[50px] h-[50px] rounded-full flex items-center justify-center transition-all shadow-xs ${
                       isFlipped
                         ? 'bg-emerald-100 text-[#064E3B] group-hover:bg-emerald-200'
-                        : 'bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25'
+                        : 'bg-blue-50 text-[#1037A6] group-hover:bg-blue-100'
                     }`}
                   >
                     <Clock className="w-5 h-5 stroke-[2.2]" />
@@ -527,7 +517,7 @@ export default function AlaHaramainHubPage() {
                     className={`w-[50px] h-[50px] rounded-full flex items-center justify-center transition-all shadow-xs ${
                       isFlipped
                         ? 'bg-emerald-100 text-[#064E3B] group-hover:bg-emerald-200'
-                        : 'bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25'
+                        : 'bg-blue-50 text-[#1037A6] group-hover:bg-blue-100'
                     }`}
                   >
                     <Settings className="w-5 h-5 stroke-[2.2]" />
@@ -700,48 +690,88 @@ export default function AlaHaramainHubPage() {
                     </button>
                   </div>
 
-                  {/* Foreign Currencies Box (Saudi Riyal) */}
-                  <div className="p-3.5 rounded-2xl border border-emerald-200 bg-emerald-50/40 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-100 text-[#064E3B] flex items-center justify-center">
-                        <Coins className="w-5 h-5 stroke-[2.2]" />
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[10px] font-bold uppercase text-emerald-800 tracking-wider">
-                            Foreign Currencies
-                          </span>
-                          <span className="text-[9px] font-black px-1 bg-emerald-200 text-[#064E3B] rounded">
-                            0% Fee
+                  {/* Redesigned Multi-Currency Card: Foreign Currencies (Saudi Riyal) */}
+                  <div className="p-4 rounded-2xl border border-emerald-300 bg-gradient-to-br from-emerald-50/80 via-white to-emerald-50/40 shadow-xs relative overflow-hidden">
+                    {/* Header Row: Flags, Tag & 0% Fee Badge */}
+                    <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-emerald-100">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-lg bg-[#064E3B] text-white flex items-center justify-center font-extrabold text-[12px] shadow-xs">
+                          SAR
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[12px] font-black text-[#064E3B]">
+                              Saudi Riyal (SAR)
+                            </span>
+                            <span className="text-[9px] font-extrabold px-1.5 py-0.5 bg-emerald-100 text-[#064E3B] rounded-full border border-emerald-200">
+                              0% Markup
+                            </span>
+                          </div>
+                          <span className="text-[10px] text-gray-500 font-medium">
+                            Kurs Real-Time: 1 SAR ≈ Rp{sarExchangeRate.toLocaleString('id-ID')}
                           </span>
                         </div>
-                        <h4 className="text-[13.5px] font-bold text-[#1A1D26]">
-                          Haramain Wallet (SAR)
-                        </h4>
-                        <p className="text-[12px] font-semibold text-gray-600">
-                          SAR {dompetSar.toFixed(2)}{' '}
-                          <span className="text-gray-400 text-[10.5px]">
-                            (≈ Rp{Math.round(dompetSar * sarExchangeRate).toLocaleString('id-ID')})
-                          </span>
-                        </p>
+                      </div>
+
+                      <div className="text-right">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 block">
+                          Status Dompet
+                        </span>
+                        <span className="text-[11px] font-extrabold text-[#059669]">
+                          Aktif (Mada POS)
+                        </span>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1.5">
+                    {/* Middle Row: Big SAR Balance & IDR Equivalent */}
+                    <div className="flex items-end justify-between py-1">
+                      <div>
+                        <span className="text-[10.5px] font-bold text-gray-500 block uppercase tracking-wider">
+                          Saldo Tersedia
+                        </span>
+                        <div className="flex items-baseline gap-1 mt-0.5">
+                          <span className="text-[14px] font-black text-[#064E3B]">SAR</span>
+                          <span className="text-[24px] font-black text-[#1A1D26] font-mono tracking-tight">
+                            {dompetSar.toFixed(2)}
+                          </span>
+                        </div>
+                        <span className="text-[11.5px] font-bold text-gray-400">
+                          ≈ Rp{Math.round(dompetSar * sarExchangeRate).toLocaleString('id-ID')}
+                        </span>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => setShowConvertModal(true)}
+                          className="py-2 px-3 bg-white border border-emerald-300 hover:bg-emerald-50 text-[#064E3B] text-[11px] font-extrabold rounded-xl active:scale-95 transition-all cursor-pointer shadow-xs flex items-center gap-1"
+                        >
+                          <Coins className="w-3.5 h-3.5" />
+                          <span>Tukar IDR</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowTopUpModal(true)}
+                          className="py-2 px-3.5 bg-[#064E3B] hover:bg-[#047857] text-white text-[11px] font-extrabold rounded-xl active:scale-95 transition-all cursor-pointer shadow-xs"
+                        >
+                          + Top Up SAR
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Bottom Micro Footer: Tap NFC Support */}
+                    <div className="mt-2.5 pt-2 border-t border-emerald-100/70 flex items-center justify-between text-[10.5px] text-gray-500 font-semibold">
+                      <span className="flex items-center gap-1 text-emerald-800">
+                        <Radio className="w-3 h-3 text-[#059669]" />
+                        Mendukung Pembayaran Tap NFC Mada &amp; Al Baik
+                      </span>
                       <button
                         type="button"
                         onClick={() => setShowNfcModal(true)}
-                        className="py-1.5 px-2.5 bg-white border border-emerald-300 text-[#064E3B] hover:bg-emerald-50 text-[11px] font-bold rounded-xl active:scale-95 transition-all cursor-pointer shadow-xs flex items-center gap-1"
+                        className="text-[#064E3B] font-extrabold hover:underline cursor-pointer"
                       >
-                        <Radio className="w-3 h-3" />
-                        <span>Tap NFC</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setShowTopUpModal(true)}
-                        className="py-1.5 px-2.5 bg-[#064E3B] hover:bg-[#047857] text-white text-[11px] font-bold rounded-xl active:scale-95 transition-all cursor-pointer shadow-xs"
-                      >
-                        + Top Up
+                        Buka NFC →
                       </button>
                     </div>
                   </div>

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import StatusBar from '@/components/StatusBar'
-import { Sparkles, Video, HelpCircle, ArrowRight, ShieldCheck, CheckCircle2, SlidersHorizontal } from 'lucide-react'
+import { Compass, Video, HelpCircle, ArrowRight, ShieldCheck, CheckCircle2, SlidersHorizontal } from 'lucide-react'
 
 export default function TujuanFinansialPage() {
   const router = useRouter()
@@ -212,7 +212,7 @@ export default function TujuanFinansialPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded-full bg-[#EFF2FE] text-[#1037A6] flex items-center justify-center">
-                <Sparkles className="w-3.5 h-3.5 text-[#1037A6]" />
+                <Compass className="w-3.5 h-3.5 text-[#1037A6]" />
               </div>
               <span className="text-[11.5px] font-black text-[#1037A6] uppercase tracking-wide">
                 Rekomendasi Aksi Berikutnya

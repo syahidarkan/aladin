@@ -5,7 +5,6 @@ import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useMascot } from '@/context/MascotContext'
 import { createFullCarpetCanvas, createRiggedCarpet } from './CarpetModel'
-import { Sparkles } from 'lucide-react'
 
 /**
  * 3D WebGL Rigged SkinnedMesh Carpet Transition Actor

@@ -9,7 +9,6 @@ import { useBankState } from '@/lib/bankState'
 import {
   Gift,
   HeartHandshake,
-  Sparkles,
   TrendingUp,
   Wallet,
   Target,
@@ -18,6 +17,7 @@ import {
   ShieldCheck,
   ArrowUpRight,
   Lock,
+  Compass,
 } from 'lucide-react'
 
 export default function BerandaPage() {
@@ -52,16 +52,16 @@ export default function BerandaPage() {
       iconBg: 'bg-emerald-500/20 text-emerald-300',
     },
     {
-      id: 'mascot-3d',
-      tag: 'MASKOT 3D INTERAKTIF',
-      title: 'Kenalan dengan Karpet Terbang Aladin',
-      desc: 'Sahabat finansial ceria dengan atraksi 3D yang siap membimbingmu!',
-      cta: 'Buka Studio 3D',
-      href: '/mascot',
-      bg: 'linear-gradient(135deg, #1E1B4B 0%, #312E81 60%, #4338CA 100%)',
-      badgeColor: '#818CF8',
-      Icon: Sparkles,
-      iconBg: 'bg-indigo-500/20 text-indigo-300',
+      id: 'ala-investasi-promo',
+      tag: 'INVESTASI SYARIAH OJK',
+      title: 'Tumbuhkan Berkah Lewat 4 Instrumen Syariah',
+      desc: 'Reksa dana syariah, emas fisik 24K, deposito mudharabah, & saham ISSI.',
+      cta: 'Mulai Investasi',
+      href: '/investasi',
+      bg: 'linear-gradient(135deg, #07194D 0%, #1037A6 60%, #1C20C4 100%)',
+      badgeColor: '#00F0A0',
+      Icon: Landmark,
+      iconBg: 'bg-blue-500/20 text-blue-200',
     },
     {
       id: 'deposito-promo',
@@ -545,7 +545,7 @@ export default function BerandaPage() {
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
-                <Sparkles className="w-5 h-5 text-[#00F0A0]" />
+                <Compass className="w-5 h-5 text-[#00F0A0]" />
               </div>
               <div>
                 <div className="flex items-center gap-2">

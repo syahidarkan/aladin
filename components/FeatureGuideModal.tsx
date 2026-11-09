@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Sparkles, Wallet, Landmark, Wifi, Gem, Headphones, X, ChevronRight, Target } from 'lucide-react'
+import { Compass, Wallet, Landmark, Wifi, Gem, Headphones, X, ChevronRight, Target } from 'lucide-react'
 
 interface FeatureGuideModalProps {
   forceOpen?: boolean
@@ -52,7 +52,7 @@ export default function FeatureGuideModal({ forceOpen = false, onClose }: Featur
       featureHref: '/onboarding/tujuan-finansial',
       featureBtnText: 'Atur Fokus Finansial (Sobat Aladin) →',
       badge: 'Inovasi Digital',
-      icon: <Sparkles className="w-6 h-6 text-[#1037A6]" />,
+      icon: <Compass className="w-6 h-6 text-[#1037A6]" />,
       iconBg: 'bg-[#EFF2FE] border-[#C7D2FE]',
     },
     {

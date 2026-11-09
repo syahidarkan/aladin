@@ -2,1137 +2,1060 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
+import { useBankState } from '@/lib/bankState'
+import { useMascot } from '@/context/MascotContext'
+import {
+  ArrowLeft,
+  Globe,
+  Phone,
+  Mail,
+  QrCode,
+  Share2,
+  Users,
+  ShoppingBag,
+  ChevronRight,
+  ShieldCheck,
+  Check,
+  X,
+  CreditCard,
+  Wifi,
+  Award,
+  Zap,
+  HelpCircle,
+  Plus,
+  Coins,
+  MapPin,
+  AlertTriangle,
+} from 'lucide-react'
 
-export default function TemanIbadahSaudiPage() {
-  const [sarRate, setSarRate] = useState(4220)
-  const [sarCalcInput, setSarCalcInput] = useState('50')
-  const [activeTab, setActiveTab] = useState<'roaming' | 'esim' | 'merchant' | 'darurat'>('roaming')
-  const [cityFilter, setCityFilter] = useState<'makkah' | 'madinah'>('makkah')
+interface TelecomPackage {
+  id: string
+  name: string
+  localQuotaPill: string
+  quotaTotal: string
+  duration: string
+  points: number
+  price: number
+  originalPrice: number
+  promoTag?: string
+  operator: string
+  partnerNetwork: string
+  description: string
+  category: 'umrah' | 'haji' | 'esim' | 'keluarga'
+}
 
-  // Modals
-  const [showClaimModal, setShowClaimModal] = useState(false)
-  const [travelName, setTravelName] = useState('Maktour Travel')
-  const [passportNumber, setPassportNumber] = useState('')
-  const [claimSuccess, setClaimSuccess] = useState(false)
+export default function PilgrimBundleTelecomPage() {
+  const { alaDompet, dompetSar } = useBankState()
+  const { triggerReaction, startTransition } = useMascot()
 
-  const [selectedPackage, setSelectedPackage] = useState<string | null>(null)
-  const [packagePrice, setPackagePrice] = useState<number>(0)
-  const [showBuyModal, setShowBuyModal] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [successMessage, setSuccessMessage] = useState('')
-  const [isMitraRegistered, setIsMitraRegistered] = useState(false)
-
-  // Live ticking SAR rate simulation
+  // Exchange rate simulation
+  const [sarRate, setSarRate] = useState(4200)
   useEffect(() => {
     const interval = setInterval(() => {
       setSarRate((r) => r + (Math.random() > 0.5 ? 1 : -1))
-    }, 4000)
+    }, 5000)
     return () => clearInterval(interval)
   }, [])
 
-  const sarInputNumber = parseFloat(sarCalcInput) || 0
-  const idrEquivalent = Math.round(sarInputNumber * sarRate)
+  // Active View / Tab
+  const [activeTab, setActiveTab] = useState<'store' | 'merchants' | 'emergency'>('store')
+  const [categoryFilter, setCategoryFilter] = useState<'all' | 'umrah' | 'haji' | 'esim' | 'keluarga'>('all')
 
-  const roamingPackages = [
+  // Telecom Balance & Quota State
+  const [userBalanceSar, setUserBalanceSar] = useState(120.0)
+  const [activeInternetGb, setActiveInternetGb] = useState(18.5)
+  const [activeVoiceMins, setActiveVoiceMins] = useState(80)
+  const [activeDaysLeft, setActiveDaysLeft] = useState(25)
+
+  // Modals state
+  const [selectedPkg, setSelectedPkg] = useState<TelecomPackage | null>(null)
+  const [showBuyModal, setShowBuyModal] = useState(false)
+  const [showTopUpModal, setShowTopUpModal] = useState(false)
+  const [topUpAmountSar, setTopUpAmountSar] = useState('50')
+  const [showQrModal, setShowQrModal] = useState(false)
+  const [showShareModal, setShowShareModal] = useState(false)
+  const [showDetailPackageModal, setShowDetailPackageModal] = useState(false)
+  const [paymentSource, setPaymentSource] = useState<'dompet' | 'sar'>('sar')
+  const [cityFilter, setCityFilter] = useState<'makkah' | 'madinah'>('makkah')
+
+  // Telecom Packages (Styled 1:1 like myXL & myIM3 per user screenshot attempt 4)
+  const telecomPackages: TelecomPackage[] = [
     {
-      id: 'tsel-15',
-      provider: 'Telkomsel RoaMAX Umrah',
-      operator: 'Telkomsel',
-      quota: '15 GB',
+      id: 'umrah-extra-15',
+      name: 'Xtra Combo Roaming Umrah 15GB',
+      localQuotaPill: 'Include Local Saudi Quota 5GB (STC/Mobily 5G)',
+      quotaTotal: '15 GB',
       duration: '14 Hari',
+      points: 74,
       price: 275000,
-      partner: 'STC / Mobily Saudi 5G',
-      features: 'Tetap pakai no WA Indonesia • Nelpon 30 Menit',
+      originalPrice: 350000,
+      promoTag: 'Paling Laku',
+      operator: 'Telkomsel RoaMAX / XL Pass',
+      partnerNetwork: 'STC / Mobily Saudi 5G',
+      description: 'Tetap pakai no WA Indonesia • Nelpon 45 Menit • Bebas roaming aktif otomatis di Bandara Jeddah.',
+      category: 'umrah',
     },
     {
-      id: 'indosat-20',
-      provider: 'Indosat Umrah & Haji Plus',
-      operator: 'Indosat Ooredoo',
-      quota: '20 GB',
-      duration: '20 Hari',
-      price: 310000,
-      partner: 'Zain / STC Saudi 5G',
-      features: 'Bebas Roaming Tanpa Ganti SIM • SMS Gratis',
+      id: 'haji-akrab-40',
+      name: 'Paket Haji Akbar 40GB Long Stay',
+      localQuotaPill: 'Include Local Quota Saudi 15GB (Zain / STC)',
+      quotaTotal: '40 GB',
+      duration: '45 Hari',
+      points: 120,
+      price: 580000,
+      originalPrice: 750000,
+      promoTag: 'Hot Promo',
+      operator: 'Indosat Ooredoo / Aladin Connect',
+      partnerNetwork: 'STC, Mobily & Zain High Speed',
+      description: 'Masa aktif penuh musim haji 45 hari • Nelpon 120 Menit ke Tanah Air • Akses gratis aplikasi Nusuk & Kemenag.',
+      category: 'haji',
     },
     {
-      id: 'xl-pass',
-      provider: 'XL Pass Ibadah Saudi',
-      operator: 'XL Axiata',
-      quota: '12 GB',
-      duration: '12 Hari',
-      price: 240000,
-      partner: 'Mobily Saudi 5G',
-      features: 'Aktif Otomatis di Bandara Jeddah • Kuota Utama',
-    },
-  ]
-
-  const esimPackages = [
-    {
-      id: 'airalo-5',
-      name: 'Airalo Saudi Hajj & Umrah eSIM',
-      quota: '5 GB',
+      id: 'esim-instant-10',
+      name: 'eSIM Baitullah 5G Instant QR',
+      localQuotaPill: 'Instant Scan QR Profile • Tanpa FUP',
+      quotaTotal: '10 GB',
       duration: '15 Hari',
-      price: 185000,
-      type: 'eSIM QR Profile',
-      features: 'Instan scan QR • Langsung aktif di pesawat mendarat',
+      points: 61,
+      price: 195000,
+      originalPrice: 245000,
+      promoTag: 'Best Deal',
+      operator: 'Baitullah eSIM Global',
+      partnerNetwork: 'Saudi Telecom Co (STC 5G)',
+      description: 'Scan QR langsung konek begitu mendarat di King Abdulaziz Airport Jeddah • No physical SIM swap.',
+      category: 'esim',
     },
     {
-      id: 'holafly-unli',
-      name: 'Holafly Saudi Unlimited 5G',
-      quota: 'Unlimited Data',
-      duration: '10 Hari',
-      price: 340000,
-      type: 'eSIM Tanpa FUP',
-      features: 'Internet tanpa batas • Kecepatan maksimal 5G',
+      id: 'umrah-hemat-7',
+      name: 'Paket Singkat Umrah 6.5GB',
+      localQuotaPill: 'Include Local Saudi Quota 2GB',
+      quotaTotal: '6.5 GB',
+      duration: '7 Hari',
+      points: 49,
+      price: 145000,
+      originalPrice: 185000,
+      operator: 'XL Axiata Roam',
+      partnerNetwork: 'Mobily 5G Network',
+      description: 'Ideal untuk umrah transit atau rombongan singkat • Unlimited WhatsApp chat & call.',
+      category: 'umrah',
     },
     {
-      id: 'baitullah-10',
-      name: 'Baitullah Connect Long Stay',
-      quota: '10 GB',
+      id: 'haji-keluarga-80',
+      name: 'Paket Akrab Rombongan 4 Jamaah',
+      localQuotaPill: 'Sharing Kuota 80GB untuk 4 Nomor',
+      quotaTotal: '80 GB',
+      duration: '35 Hari',
+      points: 210,
+      price: 890000,
+      originalPrice: 1200000,
+      promoTag: 'Super Promo',
+      operator: 'Aladin Pilgrim Family Group',
+      partnerNetwork: 'Dual STC + Mobily Multi-Carrier',
+      description: 'Satu paket dibagi ke 4 anggota keluarga atau teman satu kloter haji • Kuota terkontrol dari aplikasi Aladin.',
+      category: 'keluarga',
+    },
+    {
+      id: 'esim-unlimited-30',
+      name: 'eSIM Unlimited Data Saudi 5G',
+      localQuotaPill: 'True Unlimited Kuota Tanpa Batas Harian',
+      quotaTotal: 'UNLIMITED',
       duration: '30 Hari',
-      price: 260000,
-      type: 'eSIM Jamaah Haji',
-      features: 'Masa aktif panjang 30 hari • Kompatibel iPhone/Android',
+      points: 150,
+      price: 490000,
+      originalPrice: 620000,
+      promoTag: 'Best Deal',
+      operator: 'Holafly / Airalo Saudi Pro',
+      partnerNetwork: 'Mobily & STC 5G Standalone',
+      description: 'Internet sepuasnya untuk video call keluarga, streaming kajian Masjidil Haram & live ibadah.',
+      category: 'esim',
     },
   ]
 
+  const filteredPackages =
+    categoryFilter === 'all'
+      ? telecomPackages
+      : telecomPackages.filter((p) => p.category === categoryFilter)
+
+  // Merchants & Emergency Data
   const merchantsMakkah = [
-    {
-      id: 1,
-      name: 'Al Baik Restaurant Ajyad',
-      type: 'Kuliner Halal',
-      location: '150m dari Masjidil Haram',
-      terminal: 'Geidea POS #GD-9842',
-    },
-    {
-      id: 2,
-      name: 'Nahdi Pharmacy Clock Tower',
-      type: 'Farmasi & Kesehatan',
-      location: 'Abraj Al Bait Lt. 2 Zamzam',
-      terminal: 'Geidea POS #GD-1024',
-    },
-    {
-      id: 3,
-      name: 'Bin Dawood Supermarket',
-      type: 'Supermarket & Oleh-Oleh',
-      location: 'Lantai Dasar Abraj Al Bait',
-      terminal: 'Geidea POS #GD-5519',
-    },
-    {
-      id: 4,
-      name: 'Al Tazaj BBQ Chicken',
-      type: 'Kuliner Cepat Saji',
-      location: 'Misfalah (Dekat Hotel Jemaah)',
-      terminal: 'Geidea POS #GD-3312',
-    },
+    { id: 1, name: 'Al Baik Restaurant Ajyad', type: 'Kuliner Halal', location: '150m dari Masjidil Haram', terminal: 'Geidea POS #GD-9842' },
+    { id: 2, name: 'Nahdi Pharmacy Clock Tower', type: 'Farmasi & Kesehatan', location: 'Abraj Al Bait Lt. 2 Zamzam', terminal: 'Geidea POS #GD-1024' },
+    { id: 3, name: 'Bin Dawood Supermarket', type: 'Supermarket & Oleh-Oleh', location: 'Lantai Dasar Abraj Al Bait', terminal: 'Geidea POS #GD-5519' },
   ]
 
   const merchantsMadinah = [
-    {
-      id: 5,
-      name: 'Jarir Bookstore Madinah',
-      type: 'Kitab & Cinderamata',
-      location: '300m dari Pintu Utama Masjid Nabawi',
-      terminal: 'Geidea POS #GD-7731',
-    },
-    {
-      id: 6,
-      name: 'Nahdi Central Nabawi',
-      type: 'Apotek & Kebutuhan Medis',
-      location: 'Pusat Pertokoan Northern Central',
-      terminal: 'Geidea POS #GD-2241',
-    },
-    {
-      id: 7,
-      name: 'Bin Dawood Madinah Station',
-      type: 'Supermarket & Kurma',
-      location: 'Dekat Stasiun Haramain Madinah',
-      terminal: 'Geidea POS #GD-8812',
-    },
-    {
-      id: 8,
-      name: 'Taksi Resmi Bandara Madinah',
-      type: 'Transportasi Jemaah',
-      location: 'Prince Mohammad Bin Abdulaziz Airport',
-      terminal: 'Geidea Smart POS #GD-4421',
-    },
+    { id: 4, name: 'Nahdi Central Nabawi', type: 'Apotek & Kebutuhan Medis', location: 'Pusat Pertokoan Northern Central', terminal: 'Geidea POS #GD-2241' },
+    { id: 5, name: 'Bin Dawood Madinah Station', type: 'Supermarket & Kurma', location: 'Dekat Stasiun Haramain Madinah', terminal: 'Geidea POS #GD-8812' },
+    { id: 6, name: 'Al Tazaj Nabawi South', type: 'Kuliner Halal Cepat Saji', location: 'Southern Courtyard Gate 5', terminal: 'Geidea POS #GD-4120' },
   ]
 
   const emergencyContacts = [
-    {
-      name: 'Posko Haji & Umrah Kemenag RI',
-      role: 'Pelayanan Jemaah Indonesia di Saudi',
-      number: '+966 54 892 0111',
-      action: 'Hubungi',
-    },
-    {
-      name: 'Konsulat Jenderal RI (KJRI) Jeddah',
-      role: 'Perlindungan WNI & Paspor Hilang',
-      number: '+966 12 671 1271',
-      action: 'Hubungi',
-    },
-    {
-      name: 'Bantuan Medis Darurat Saudi (Red Crescent)',
-      role: 'Ambulans Cepat Tanggap 24 Jam',
-      number: '997',
-      action: 'Panggil 997',
-    },
-    {
-      name: 'Polisi & Keamanan Wilayah Haramain',
-      role: 'Keamanan Darurat Makkah & Madinah',
-      number: '999',
-      action: 'Panggil 999',
-    },
+    { name: 'Posko Haji & Umrah Kemenag RI', role: 'Pelayanan Jemaah Indonesia di Saudi', number: '+966 54 892 0111' },
+    { name: 'Konsulat Jenderal RI (KJRI) Jeddah', role: 'Perlindungan WNI & Paspor Hilang', number: '+966 12 671 1271' },
+    { name: 'Bantuan Medis Darurat Saudi (Red Crescent)', role: 'Ambulans Cepat Tanggap 24 Jam', number: '997' },
+    { name: 'Polisi Wilayah Haramain', role: 'Keamanan Darurat Makkah & Madinah', number: '999' },
   ]
 
-  const handleClaimSubmit = () => {
-    setShowClaimModal(false)
-    setClaimSuccess(true)
+  // Handlers
+  const handleOpenBuy = (pkg: TelecomPackage) => {
+    setSelectedPkg(pkg)
+    setShowBuyModal(true)
   }
 
-  const handlePackageBuy = () => {
+  const handleConfirmPurchase = () => {
+    if (!selectedPkg) return
+    const priceIdr = selectedPkg.price
+    const priceSar = Math.round(priceIdr / sarRate)
+
+    if (paymentSource === 'sar' && userBalanceSar < priceSar) {
+      alert(`Saldo SAR Anda (SAR ${userBalanceSar.toFixed(2)}) tidak mencukupi untuk SAR ${priceSar}. Silakan Top Up atau pilih bayar pakai Ala Dompet.`)
+      return
+    }
+
+    if (paymentSource === 'sar') {
+      setUserBalanceSar((prev) => Math.max(0, prev - priceSar))
+    }
+
+    // Add extra gigabytes
+    const addedGb = selectedPkg.quotaTotal === 'UNLIMITED' ? 50 : parseFloat(selectedPkg.quotaTotal) || 10
+    setActiveInternetGb((prev) => prev + addedGb)
     setShowBuyModal(false)
-    setSuccessMessage(`Paket ${selectedPackage} berhasil diaktifkan. Siap digunakan setibanya di Arab Saudi.`)
-    setIsSuccess(true)
+    triggerReaction('success', `Paket "${selectedPkg.name}" aktif! Kuota ${selectedPkg.quotaTotal} siap dipakai di Arab Saudi.`)
+  }
+
+  const handleTopUpSubmit = () => {
+    const rawSar = parseFloat(topUpAmountSar) || 0
+    if (rawSar <= 0) return
+    setUserBalanceSar((prev) => prev + rawSar)
+    setShowTopUpModal(false)
+    triggerReaction('success', `Berhasil isi ulang saldo SAR ${rawSar.toFixed(2)} ke Kartu Roaming!`)
   }
 
   return (
     <div
-      className="flex flex-col h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
+      className="flex flex-col min-h-screen bg-[#F4F6F9] select-none text-[#1A1D26] overflow-x-hidden relative"
       style={{
         fontFamily:
-          '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+          '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* 1. iOS Status Bar */}
-      <StatusBar time="22.25" batteryLevel={33} dark={false} />
+      {/* 0. Top Native Status Bar (Dark mode on Royal Blue Header) */}
+      <StatusBar time="22.25" batteryLevel={33} dark={true} />
 
-      {/* 2. Top Header Bar (Clean Native Mobile Header) */}
-      <div
-        className="w-full bg-white border-b border-[#ECEEF2] flex items-center justify-between shrink-0"
-        style={{ height: '52px', paddingLeft: '16px', paddingRight: '16px' }}
-      >
-        <Link
-          href="/beranda"
-          className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
-        >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={18}
-            height={18}
-            priority
-          />
-        </Link>
+      {/* ========================================================================= */}
+      {/* 1. TOP CARRIER HEADER & QUICK MENU (myXL & myIM3 Exact Match per image 4) */}
+      {/* ========================================================================= */}
+      <div className="bg-[#1037A6] text-white pt-2 pb-6 px-5 relative shadow-md">
+        {/* Navigation Bar */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Link
+              href="/beranda"
+              className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-white/90 hover:bg-white/10 active:scale-95 transition-all cursor-pointer"
+              aria-label="Kembali ke Beranda"
+            >
+              <ArrowLeft className="w-5 h-5 text-white" />
+            </Link>
+            <div>
+              <h1 className="text-[17px] font-black text-white tracking-tight leading-tight">
+                myPilgrim Roaming
+              </h1>
+              <div className="flex items-center gap-1.5 text-[10.5px] text-blue-200">
+                <span className="w-2 h-2 rounded-full bg-[#00F0A0] inline-block animate-pulse" />
+                <span>STC / Mobily 5G Live in Makkah</span>
+              </div>
+            </div>
+          </div>
 
-        <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight text-center">
-          Pilgrim Bundle
-        </h1>
+          <Link
+            href="/ala-haramain"
+            className="text-[11.5px] font-extrabold text-[#00F0A0] bg-white/10 border border-[#00F0A0]/40 px-3 py-1.5 rounded-full hover:bg-white/20 transition-all"
+          >
+            Haramain Wallet →
+          </Link>
+        </div>
 
-        <Link
-          href="/ala-haramain"
-          className="text-[12.5px] font-extrabold text-[#1C20C4] hover:underline"
-        >
-          Haramain →
-        </Link>
+        {/* Quick Menu Title */}
+        <div className="flex items-center justify-between mb-3 px-1">
+          <span className="text-[12.5px] font-black tracking-wide text-white uppercase">
+            Quick Menu
+          </span>
+          <button
+            type="button"
+            onClick={() => setActiveTab('store')}
+            className="text-[11px] font-extrabold text-[#00F0A0] hover:underline"
+          >
+            All Menu
+          </button>
+        </div>
+
+        {/* 4 Circular Action Icons (myXL Exact Match: Buy Package, Sharing, Scan Voucher, Akrab) */}
+        <div className="grid grid-cols-4 gap-2 text-center">
+          {/* 1. Buy Package */}
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('store')
+              const el = document.getElementById('package-store-section')
+              el?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+          >
+            <div className="w-[50px] h-[50px] rounded-full bg-white text-[#1037A6] flex items-center justify-center shadow-md group-hover:bg-blue-50 transition-colors">
+              <ShoppingBag className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <span className="text-[11px] font-bold text-white mt-1.5">
+              Buy Package
+            </span>
+          </button>
+
+          {/* 2. Sharing */}
+          <button
+            type="button"
+            onClick={() => setShowShareModal(true)}
+            className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+          >
+            <div className="w-[50px] h-[50px] rounded-full bg-white text-[#1037A6] flex items-center justify-center shadow-md group-hover:bg-blue-50 transition-colors">
+              <Share2 className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <span className="text-[11px] font-bold text-white mt-1.5">
+              Sharing
+            </span>
+          </button>
+
+          {/* 3. Scan Voucher */}
+          <button
+            type="button"
+            onClick={() => setShowQrModal(true)}
+            className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+          >
+            <div className="w-[50px] h-[50px] rounded-full bg-white text-[#1037A6] flex items-center justify-center shadow-md group-hover:bg-blue-50 transition-colors">
+              <QrCode className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <span className="text-[11px] font-bold text-white mt-1.5">
+              Scan Voucher
+            </span>
+          </button>
+
+          {/* 4. Akrab / Jamaah */}
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('store')
+              setCategoryFilter('keluarga')
+            }}
+            className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+          >
+            <div className="w-[50px] h-[50px] rounded-full bg-white text-[#1037A6] flex items-center justify-center shadow-md group-hover:bg-blue-50 transition-colors">
+              <Users className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <span className="text-[11px] font-bold text-white mt-1.5">
+              Akrab
+            </span>
+          </button>
+        </div>
       </div>
 
-      {/* 3. Scrollable Main Content */}
-      <div
-        className="flex-1 overflow-y-auto no-scrollbar"
-        style={{
-          padding: '16px 20px 40px 20px',
-        }}
-      >
-        {/* Authentic Membership Badge: Mitra HIMPUH & AMPHURI */}
-        <div
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '20px',
-            padding: '16px 18px',
-            border: '1px solid #ECEEF2',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-            marginBottom: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div
-              style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '12px',
-                backgroundColor: '#ECFDF5',
-                color: '#059669',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div>
-              <span style={{ fontSize: '10px', fontWeight: 800, color: '#059669', letterSpacing: '0.8px', textTransform: 'uppercase', display: 'block' }}>
-                STATUS KEANGGOTAAN RESMI
+      {/* ========================================================================= */}
+      {/* 2. BODY CONTENT: CARDS & STORE (Overlapping white containers per myXL)     */}
+      {/* ========================================================================= */}
+      <main className="flex-1 px-4 -mt-3 pb-32 space-y-3.5">
+        {/* CARD 1: REMAINING BALANCE (myXL Style) */}
+        <div className="bg-white rounded-2xl p-4.5 border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wide block">
+              Remaining Balance
+            </span>
+            <div className="flex items-baseline gap-1 mt-0.5">
+              <span className="text-[13px] font-bold text-[#1037A6]">SAR</span>
+              <span className="text-[22px] font-black text-[#1A1D26] font-mono tracking-tight">
+                {userBalanceSar.toFixed(2)}
               </span>
-              <span style={{ fontSize: '13px', fontWeight: 800, color: '#1A1D26', display: 'block', marginTop: '2px' }}>
-                Jamaah Mitra HIMPUH &amp; AMPHURI
-              </span>
-              <span style={{ fontSize: '11px', color: '#64748B' }}>
-                Bundling Roaming &amp; Perlengkapan Aktif
+              <span className="text-[11.5px] font-semibold text-gray-400 ml-1">
+                (≈ Rp{Math.round(userBalanceSar * sarRate).toLocaleString('id-ID')})
               </span>
             </div>
+            <span className="text-[10.5px] text-gray-400 font-semibold block mt-0.5">
+              Active Until: 28 Des 2026 • Bebas Masa Hangus
+            </span>
           </div>
 
-          <span
-            style={{
-              padding: '4px 10px',
-              borderRadius: '999px',
-              fontSize: '11px',
-              fontWeight: 800,
-              backgroundColor: '#ECFDF5',
-              color: '#059669',
-              border: '1px solid #A7F3D0',
-            }}
+          <button
+            type="button"
+            onClick={() => setShowTopUpModal(true)}
+            className="py-2 px-5 bg-[#1037A6] hover:bg-[#0D2D88] text-white text-[12.5px] font-black rounded-full shadow-sm active:scale-95 transition-all cursor-pointer"
           >
-            Gratis
-          </span>
+            Top Up
+          </button>
         </div>
-        {/* BANNER 1: KLAIM BENEFIT GRATIS JEMAAH HIMPUH / AMPHURI */}
-        <div
-          onClick={() => setShowClaimModal(true)}
-          className="cursor-pointer active:scale-98 transition-all"
-          style={{
-            background: 'linear-gradient(135deg, #064E3B 0%, #047857 55%, #059669 100%)',
-            borderRadius: '24px',
-            padding: '20px',
-            color: 'white',
-            boxShadow: '0 8px 24px rgba(6, 78, 59, 0.25)',
-            position: 'relative',
-            overflow: 'hidden',
-            minHeight: '145px',
-            flexShrink: 0,
-            marginBottom: '16px',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-            <span
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                padding: '3px 10px',
-                borderRadius: '999px',
-                fontSize: '9.5px',
-                fontWeight: 800,
-                letterSpacing: '0.5px',
-              }}
-            >
-              MITRA HIMPUH & AMPHURI
+
+        {/* CARD 2: VIEW MY PACKAGE (myXL 3-Column Indicator Style) */}
+        <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm">
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-100">
+            <span className="text-[12px] font-black text-[#1A1D26] tracking-wide">
+              View My Package
             </span>
-            <span style={{ fontSize: '11px', fontWeight: 800, color: '#A7F3D0' }}>
-              Klaim Sekarang →
+            <span className="text-[10px] font-extrabold text-[#059669] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+              Roaming Aktif
             </span>
           </div>
 
-          <h3 style={{ fontSize: '16px', fontWeight: 900, margin: '6px 0 2px 0' }}>
-            Gratis eSIM & Roaming untuk Jemaah
+          <div className="grid grid-cols-3 divide-x divide-gray-100 text-center">
+            {/* Column 1: Internet */}
+            <div className="px-2">
+              <div className="flex items-center justify-center text-gray-700 mb-1">
+                <Globe className="w-4 h-4 text-[#1037A6]" />
+              </div>
+              <span className="text-[15px] font-black text-[#1A1D26] block font-mono">
+                {activeInternetGb.toFixed(1)} GB
+              </span>
+              <span className="inline-block mt-1 py-0.5 px-2 bg-blue-100 text-[#1037A6] rounded-full text-[9px] font-extrabold">
+                + UNLIMITED
+              </span>
+            </div>
+
+            {/* Column 2: Voice */}
+            <div className="px-2">
+              <div className="flex items-center justify-center text-gray-700 mb-1">
+                <Phone className="w-4 h-4 text-[#059669]" />
+              </div>
+              <span className="text-[15px] font-black text-[#1A1D26] block font-mono">
+                {activeVoiceMins} Minutes
+              </span>
+              <span className="text-[10px] text-gray-400 font-semibold block mt-1">
+                Saudi &amp; Indo
+              </span>
+            </div>
+
+            {/* Column 3: Days Remaining */}
+            <div className="px-2">
+              <div className="flex items-center justify-center text-gray-700 mb-1">
+                <Mail className="w-4 h-4 text-purple-600" />
+              </div>
+              <span className="text-[15px] font-black text-[#1A1D26] block font-mono">
+                {activeDaysLeft} Hari
+              </span>
+              <span className="text-[10px] text-gray-400 font-semibold block mt-1">
+                Tersisa
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setShowDetailPackageModal(true)}
+            className="w-full mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between text-[11.5px] font-bold text-[#1037A6] hover:underline cursor-pointer"
+          >
+            <span>View My Package</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* CARD 3: MYREWARDS TIER & BENEFIT JAMAAH (myXL Style) */}
+        <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-[11px] font-bold text-gray-500">
+              Transaction <span className="font-black text-[#1037A6]">myRewards</span>
+            </span>
+            <span className="text-[10.5px] font-black text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200 flex items-center gap-1">
+              <Award className="w-3 h-3 text-amber-600" />
+              Platinum Pilgrim
+            </span>
+          </div>
+
+          <h3 className="text-[14.5px] font-black text-[#1A1D26]">
+            Platinum Member Aladin
           </h3>
-          <p style={{ fontSize: '11.5px', color: '#D1FAE5', margin: 0, lineHeight: 1.35, maxWidth: '270px' }}>
-            Berangkat lewat biro travel rekanan? Dapatkan paket internet gratis selama ibadah di Makkah & Madinah.
+
+          {/* Progress Bar */}
+          <div className="w-full h-2 rounded-full bg-gray-100 my-2 overflow-hidden">
+            <div className="w-[82%] h-full rounded-full bg-gradient-to-r from-[#1037A6] to-[#00F0A0]" />
+          </div>
+
+          <p className="text-[11px] text-gray-500 leading-tight">
+            Alhamdulillah! Kamu menikmati prioritas jaringan 5G STC Saudi, voucher diskon Al Baik, serta akses lounge bandara.
           </p>
+
+          <button
+            type="button"
+            onClick={() => triggerReaction('success', 'Status Keanggotaan Resmi: Jamaah Mitra HIMPUH & AMPHURI.')}
+            className="w-full mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between text-[11.5px] font-bold text-[#1037A6] hover:underline cursor-pointer"
+          >
+            <span>View Membership</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
 
-        {/* SECTION 2: LIVE KURS SAR & KALKULATOR BELANJA CEPAT */}
-        <div
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '24px',
-            padding: '20px',
-            border: '1px solid #ECEEF2',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-            minHeight: '160px',
-            flexShrink: 0,
-            marginBottom: '16px',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-            <span style={{ fontSize: '10px', fontWeight: 800, color: '#6C737E', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
-              KURS RIYAL SAUDI REAL-TIME
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '10px', fontWeight: 800, color: '#059669', backgroundColor: '#ECFDF5', padding: '3px 8px', borderRadius: '999px' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '999px', backgroundColor: '#10B981' }} />
-              Live Ticking
+        {/* SUB-TABS: STORE vs MERCHANTS & DARURAT */}
+        <div className="flex items-center gap-2 pt-1">
+          {[
+            { id: 'store', label: 'Paket Roaming & eSIM' },
+            { id: 'merchants', label: 'POS & Merchant Saudi' },
+            { id: 'emergency', label: 'Kontak Darurat' },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`py-1.5 px-3.5 rounded-full text-[12px] font-extrabold transition-all cursor-pointer ${
+                activeTab === tab.id
+                  ? 'bg-[#1037A6] text-white shadow-xs'
+                  : 'bg-white text-gray-600 hover:text-gray-900 border border-gray-200'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* ========================================================================= */}
+        {/* VIEW A: PACKAGE STORE ("Let's select Your package" - Xtra Combo Mini)    */}
+        {/* ========================================================================= */}
+        {activeTab === 'store' && (
+          <div id="package-store-section" className="space-y-3 animate-in fade-in duration-200">
+            {/* Store Header Banner */}
+            <div className="flex items-center justify-between pt-1">
+              <div>
+                <h2 className="text-[15.5px] font-black text-[#1A1D26] tracking-tight">
+                  Let&apos;s select Your package
+                </h2>
+                <span className="text-[11px] text-gray-500 font-semibold">
+                  Tersedia 6 pilihan paket haji &amp; umrah terverifikasi
+                </span>
+              </div>
+            </div>
+
+            {/* Filter Pills */}
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+              {[
+                { id: 'all', label: 'Semua' },
+                { id: 'umrah', label: 'Umrah 7-14 Hari' },
+                { id: 'haji', label: 'Haji 30-45 Hari' },
+                { id: 'esim', label: 'eSIM 5G Instan' },
+                { id: 'keluarga', label: 'Paket Akrab' },
+              ].map((pill) => (
+                <button
+                  key={pill.id}
+                  type="button"
+                  onClick={() => setCategoryFilter(pill.id as any)}
+                  className={`py-1 px-3 rounded-lg text-[11px] font-bold shrink-0 transition-all cursor-pointer ${
+                    categoryFilter === pill.id
+                      ? 'bg-blue-100 text-[#1037A6] border border-[#1037A6]/30'
+                      : 'bg-white text-gray-500 border border-gray-200'
+                  }`}
+                >
+                  {pill.label}
+                </button>
+              ))}
+            </div>
+
+            {/* PACKAGE CARDS LIST (Exact layout match to myXL & myIM3 tiles in image 4) */}
+            <div className="space-y-3">
+              {filteredPackages.map((pkg) => (
+                <div
+                  key={pkg.id}
+                  onClick={() => handleOpenBuy(pkg)}
+                  className="bg-white rounded-2xl border border-gray-200/90 shadow-xs hover:shadow-md transition-all cursor-pointer overflow-hidden group active:scale-[0.99]"
+                >
+                  {/* Top Pill / Badge Header (myXL Blue Header Bar) */}
+                  <div className="bg-[#1037A6] text-white px-4 py-1.5 flex items-center justify-between">
+                    <span className="text-[11px] font-black tracking-tight">
+                      {pkg.localQuotaPill}
+                    </span>
+                    {pkg.promoTag && (
+                      <span className="text-[9.5px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-500 text-white">
+                        {pkg.promoTag}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Body Content */}
+                  <div className="p-4">
+                    <div className="flex items-start justify-between">
+                      {/* Left: Quota & Duration */}
+                      <div>
+                        <div className="flex items-baseline gap-2">
+                          <div className="flex items-center gap-1 text-[#1037A6]">
+                            <Globe className="w-4 h-4 stroke-[2.5]" />
+                            <span className="text-[20px] font-black text-[#1A1D26] font-mono tracking-tight">
+                              {pkg.quotaTotal}
+                            </span>
+                          </div>
+                          <span className="text-[12px] font-bold text-gray-500">
+                            {pkg.duration}
+                          </span>
+                        </div>
+
+                        <h4 className="text-[13px] font-bold text-gray-800 mt-1">
+                          {pkg.name}
+                        </h4>
+
+                        {/* Reward Points Tag (myXL Style) */}
+                        <div className="flex items-center gap-1 mt-2 text-[10.5px] font-extrabold text-[#059669] bg-emerald-50 px-2 py-0.5 rounded-md inline-flex border border-emerald-100">
+                          <Coins className="w-3 h-3 text-[#059669]" />
+                          <span>+{pkg.points} Poin Berkah Aladin</span>
+                        </div>
+                      </div>
+
+                      {/* Right: Chevron Arrow */}
+                      <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:text-[#1037A6] group-hover:bg-blue-50 transition-colors">
+                        <ChevronRight className="w-4 h-4" />
+                      </div>
+                    </div>
+
+                    {/* Price & Strikethrough Row (myXL / myIM3 Style) */}
+                    <div className="flex items-baseline justify-between mt-3 pt-3 border-t border-gray-100">
+                      <div>
+                        <span className="text-[10px] font-bold text-gray-400 line-through mr-1.5 font-mono">
+                          IDR {pkg.originalPrice.toLocaleString('id-ID')}
+                        </span>
+                        <span className="text-[15px] font-black text-[#1037A6] font-mono tracking-tight">
+                          IDR {pkg.price.toLocaleString('id-ID')}
+                        </span>
+                      </div>
+
+                      <span className="text-[10.5px] font-semibold text-gray-400">
+                        {pkg.operator}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
+        )}
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '4px 0 12px 0' }}>
-            <span style={{ fontSize: '24px', fontWeight: 900, color: '#1A1D26', letterSpacing: '-0.5px' }}>
-              1 SAR = Rp{sarRate.toLocaleString('id-ID')}
-            </span>
-            <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#064E3B', backgroundColor: '#D1FAE5', padding: '2px 8px', borderRadius: '999px' }}>
-              0% Markup Kurs
-            </span>
+        {/* ========================================================================= */}
+        {/* VIEW B: VERIFIED MERCHANTS & GEIDEA POS IN SAUDI                          */}
+        {/* ========================================================================= */}
+        {activeTab === 'merchants' && (
+          <div className="space-y-3 animate-in fade-in duration-200">
+            <div className="bg-white rounded-2xl p-4 border border-gray-200">
+              <h3 className="text-[14px] font-black text-[#1A1D26]">
+                Mitra Resmi Geidea POS Saudi
+              </h3>
+              <p className="text-[11.5px] text-gray-500 mt-0.5">
+                Bebas markup konversi SAR saat bayar via QRIS Aladin / Kartu Debit Visa Aladin.
+              </p>
+
+              {/* City Switcher */}
+              <div className="flex gap-2 mt-3">
+                <button
+                  type="button"
+                  onClick={() => setCityFilter('makkah')}
+                  className={`py-1.5 px-3 rounded-xl text-[11.5px] font-extrabold ${
+                    cityFilter === 'makkah'
+                      ? 'bg-[#1037A6] text-white'
+                      : 'bg-gray-100 text-gray-600'
+                  }`}
+                >
+                  Makkah Al-Mukarramah
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCityFilter('madinah')}
+                  className={`py-1.5 px-3 rounded-xl text-[11.5px] font-extrabold ${
+                    cityFilter === 'madinah'
+                      ? 'bg-[#064E3B] text-white'
+                      : 'bg-gray-100 text-gray-600'
+                  }`}
+                >
+                  Madinah Al-Munawwarah
+                </button>
+              </div>
+            </div>
+
+            {/* List */}
+            <div className="space-y-2.5">
+              {(cityFilter === 'makkah' ? merchantsMakkah : merchantsMadinah).map((m) => (
+                <div
+                  key={m.id}
+                  className="bg-white rounded-2xl p-3.5 border border-gray-100 shadow-xs flex items-center justify-between"
+                >
+                  <div>
+                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full uppercase">
+                      {m.type}
+                    </span>
+                    <h4 className="text-[13.5px] font-bold text-[#1A1D26] mt-1">
+                      {m.name}
+                    </h4>
+                    <span className="text-[11px] text-gray-500 block">
+                      {m.location}
+                    </span>
+                    <span className="text-[10px] text-gray-400 font-mono block mt-0.5">
+                      {m.terminal} • 0% Fee
+                    </span>
+                  </div>
+
+                  <Link
+                    href="/bayar-saudi"
+                    className="py-1.5 px-3 bg-[#1037A6] hover:bg-[#0D2D88] text-white text-[11px] font-bold rounded-xl active:scale-95 transition-all"
+                  >
+                    Bayar
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
+        )}
 
-          {/* Quick Calculator */}
-          <div
-            style={{
-              backgroundColor: '#F8FAFC',
-              borderRadius: '16px',
-              padding: '12px 16px',
-              border: '1px solid #ECEEF2',
-            }}
-          >
-            <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#6C737E', display: 'block', marginBottom: '4px' }}>
-              Kalkulator Belanja di Toko Saudi:
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ fontSize: '15px', fontWeight: 900, color: '#064E3B' }}>SAR</span>
+        {/* ========================================================================= */}
+        {/* VIEW C: KONTAK DARURAT JAMAAH                                             */}
+        {/* ========================================================================= */}
+        {activeTab === 'emergency' && (
+          <div className="space-y-3 animate-in fade-in duration-200">
+            <div className="p-4 bg-rose-50 rounded-2xl border border-rose-200 flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-[13px] font-black text-rose-900">
+                  Layanan Bantuan 24 Jam di Tanah Suci
+                </h4>
+                <p className="text-[11px] text-rose-700 mt-0.5">
+                  Bebas pulsa saat dihubungi menggunakan nomor kartu roaming / eSIM Aladin.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-2.5">
+              {emergencyContacts.map((c, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-2xl p-3.5 border border-gray-100 shadow-xs flex items-center justify-between"
+                >
+                  <div>
+                    <h5 className="text-[13px] font-bold text-[#1A1D26]">{c.name}</h5>
+                    <span className="text-[10.5px] text-gray-500 block">{c.role}</span>
+                    <span className="text-[12px] font-mono font-extrabold text-[#1037A6] block mt-0.5">
+                      {c.number}
+                    </span>
+                  </div>
+
+                  <a
+                    href={`tel:${c.number.replace(/\s/g, '')}`}
+                    className="py-2 px-3.5 bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-black rounded-xl active:scale-95 transition-all flex items-center gap-1"
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>Panggil</span>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* ========================================================================= */}
+      {/* MODAL 1: BUY PACKAGE CONFIRMATION SHEET                                   */}
+      {/* ========================================================================= */}
+      {showBuyModal && selectedPkg && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end justify-center p-0 animate-in fade-in duration-200">
+          <div className="w-full max-w-[420px] bg-white rounded-t-[30px] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <h3 className="text-[16px] font-black text-[#1A1D26]">
+                Konfirmasi Beli Paket
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowBuyModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="my-4 space-y-3">
+              <div className="p-3.5 bg-blue-50/70 rounded-2xl border border-blue-100">
+                <span className="text-[10px] font-bold uppercase text-[#1037A6] tracking-wide block">
+                  {selectedPkg.localQuotaPill}
+                </span>
+                <h4 className="text-[15px] font-black text-[#1A1D26] mt-0.5">
+                  {selectedPkg.name}
+                </h4>
+                <p className="text-[11.5px] text-gray-600 mt-1 leading-snug">
+                  {selectedPkg.description}
+                </p>
+              </div>
+
+              {/* Payment Source Selection */}
+              <div>
+                <label className="text-[11px] font-bold text-gray-500 uppercase block mb-1.5">
+                  Metode Pembayaran
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPaymentSource('sar')}
+                    className={`p-3 rounded-xl border text-left transition-all ${
+                      paymentSource === 'sar'
+                        ? 'border-[#064E3B] bg-emerald-50 text-[#064E3B]'
+                        : 'border-gray-200 text-gray-600'
+                    }`}
+                  >
+                    <span className="text-[11px] font-extrabold block">Haramain Wallet (SAR)</span>
+                    <span className="text-[10px] block opacity-80">Saldo: SAR {userBalanceSar.toFixed(2)}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setPaymentSource('dompet')}
+                    className={`p-3 rounded-xl border text-left transition-all ${
+                      paymentSource === 'dompet'
+                        ? 'border-[#1037A6] bg-blue-50 text-[#1037A6]'
+                        : 'border-gray-200 text-gray-600'
+                    }`}
+                  >
+                    <span className="text-[11px] font-extrabold block">Ala Dompet (IDR)</span>
+                    <span className="text-[10px] block opacity-80">Saldo: Rp{alaDompet.toLocaleString('id-ID')}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Price Details */}
+              <div className="p-3 bg-gray-50 rounded-xl space-y-1 text-[12px]">
+                <div className="flex justify-between text-gray-500">
+                  <span>Harga Normal:</span>
+                  <span className="line-through font-mono">Rp{selectedPkg.originalPrice.toLocaleString('id-ID')}</span>
+                </div>
+                <div className="flex justify-between font-extrabold text-[#1A1D26] text-[13.5px]">
+                  <span>Total Bayar:</span>
+                  <span className="text-[#1037A6] font-mono">
+                    Rp{selectedPkg.price.toLocaleString('id-ID')}{' '}
+                    <span className="text-[11px] font-normal text-gray-500">
+                      (≈ SAR {Math.round(selectedPkg.price / sarRate)})
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleConfirmPurchase}
+              className="w-full py-3.5 rounded-xl bg-[#1037A6] hover:bg-[#0D2D88] text-white font-black text-[13.5px] active:scale-98 transition-all cursor-pointer shadow-md shadow-[#1037A6]/25"
+            >
+              Aktifkan Sekarang
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL 2: TOP UP BALANCE SAR                                               */}
+      {/* ========================================================================= */}
+      {showTopUpModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-6 animate-in fade-in duration-200">
+          <div className="w-full max-w-[340px] bg-white rounded-3xl p-6 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <h3 className="text-[16px] font-black text-[#1A1D26]">
+                Top Up Pulsa SAR Roaming
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowTopUpModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="my-4 space-y-3">
+              <div>
+                <label className="text-[11px] font-bold text-gray-500 uppercase block mb-1">
+                  Nominal Top Up (SAR)
+                </label>
                 <input
                   type="number"
-                  value={sarCalcInput}
-                  onChange={(e) => setSarCalcInput(e.target.value)}
-                  style={{ width: '80px', fontSize: '18px', fontWeight: 900, border: 'none', outline: 'none', background: 'transparent', color: '#1A1D26' }}
+                  value={topUpAmountSar}
+                  onChange={(e) => setTopUpAmountSar(e.target.value)}
+                  className="w-full h-11 px-3.5 rounded-xl border border-gray-200 font-black text-[16px] text-[#1A1D26] focus:border-[#1037A6] outline-none font-mono"
+                />
+                <span className="text-[11px] text-gray-500 mt-1 block">
+                  ≈ Rp{Math.round((parseFloat(topUpAmountSar) || 0) * sarRate).toLocaleString('id-ID')} (Kurs 1 SAR = Rp{sarRate})
+                </span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                {['20', '50', '100'].map((amt) => (
+                  <button
+                    key={amt}
+                    type="button"
+                    onClick={() => setTopUpAmountSar(amt)}
+                    className="py-1.5 rounded-lg border border-gray-200 hover:border-[#1037A6] text-[12px] font-bold text-gray-700 active:scale-95 transition-all"
+                  >
+                    SAR {amt}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleTopUpSubmit}
+              className="w-full py-3 rounded-xl bg-[#1037A6] hover:bg-[#0D2D88] text-white font-black text-[13px] active:scale-98 transition-all cursor-pointer shadow-md shadow-[#1037A6]/25"
+            >
+              Konfirmasi Top Up
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL 3: SCAN QR PROFILE ESIM                                             */}
+      {/* ========================================================================= */}
+      {showQrModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-6 animate-in fade-in duration-200">
+          <div className="w-full max-w-[340px] bg-white rounded-3xl p-6 shadow-2xl text-center">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <h3 className="text-[15.5px] font-black text-[#1A1D26]">
+                QR Profile eSIM Saudi
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowQrModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="my-5 flex flex-col items-center">
+              <div className="w-44 h-44 bg-gray-100 rounded-2xl border-2 border-dashed border-[#1037A6]/40 flex items-center justify-center p-3 mb-3">
+                <QrCode className="w-32 h-32 text-[#1037A6]" />
+              </div>
+              <span className="text-[11px] font-mono text-gray-500">
+                LPA:1$smdp.aladin.sa$994821038
+              </span>
+              <p className="text-[11.5px] text-gray-600 mt-2 px-2">
+                Buka Pengaturan HP &gt; Seluler &gt; Tambah eSIM &gt; Scan QR di atas untuk aktivasi langsung tanpa ganti kartu SIM.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setShowQrModal(false)
+                triggerReaction('success', 'Kode aktivasi SM-DP+ disalin ke clipboard.')
+              }}
+              className="w-full py-2.5 rounded-xl bg-blue-50 text-[#1037A6] font-bold text-[12px] active:scale-95 transition-all"
+            >
+              Salin Kode Aktivasi Manual
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL 4: SHARING KUOTA (BAGI KUOTA)                                       */}
+      {/* ========================================================================= */}
+      {showShareModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-6 animate-in fade-in duration-200">
+          <div className="w-full max-w-[340px] bg-white rounded-3xl p-6 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <h3 className="text-[15.5px] font-black text-[#1A1D26]">
+                Bagi Kuota ke Jamaah Lain
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowShareModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="my-4 space-y-3">
+              <div>
+                <label className="text-[11px] font-bold text-gray-500 uppercase block mb-1">
+                  Nomor HP Penerima (WA / Saudi)
+                </label>
+                <input
+                  type="text"
+                  placeholder="Contoh: 08123456789 atau +966..."
+                  className="w-full h-11 px-3.5 rounded-xl border border-gray-200 font-bold text-[13.5px] text-[#1A1D26] focus:border-[#1037A6] outline-none"
                 />
               </div>
 
-              <span style={{ fontSize: '13px', fontWeight: 700, color: '#94A3B8' }}>≈</span>
-
-              <span style={{ fontSize: '18px', fontWeight: 900, color: '#1C20C4' }}>
-                Rp{idrEquivalent.toLocaleString('id-ID')}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* SECTION 3: SQUIRCLE QUICK ACCESS MENU (Livin' Sukha Style) */}
-        <div
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '24px',
-            padding: '20px 14px',
-            border: '1px solid #ECEEF2',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-            marginBottom: '16px',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', paddingLeft: '6px', paddingRight: '6px' }}>
-            <span style={{ fontSize: '10px', fontWeight: 800, color: '#6C737E', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              FASILITAS DI TANAH SUCI
-            </span>
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#064E3B' }}>
-              Makkah & Madinah
-            </span>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
-            {/* 1. Roaming */}
-            <button
-              onClick={() => setActiveTab('roaming')}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '4px',
-              }}
-              className="active:opacity-60 transition-opacity"
-            >
-              <div
-                style={{
-                  width: '50px',
-                  height: '50px',
-                  borderRadius: '16px',
-                  backgroundColor: activeTab === 'roaming' ? '#1C20C4' : '#EEF2FF',
-                  color: activeTab === 'roaming' ? '#FFFFFF' : '#1C20C4',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '6px',
-                  transition: 'all 0.2s',
-                }}
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01" />
-                </svg>
-              </div>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#1A1D26', textAlign: 'center' }}>
-                Roaming
-              </span>
-            </button>
-
-            {/* 2. eSIM */}
-            <button
-              onClick={() => setActiveTab('esim')}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '4px',
-              }}
-              className="active:opacity-60 transition-opacity"
-            >
-              <div
-                style={{
-                  width: '50px',
-                  height: '50px',
-                  borderRadius: '16px',
-                  backgroundColor: activeTab === 'esim' ? '#064E3B' : '#ECFDF5',
-                  color: activeTab === 'esim' ? '#FFFFFF' : '#064E3B',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '6px',
-                  transition: 'all 0.2s',
-                }}
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-                  <line x1="12" y1="18" x2="12.01" y2="18" />
-                </svg>
-              </div>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#1A1D26', textAlign: 'center' }}>
-                eSIM Instan
-              </span>
-            </button>
-
-            {/* 3. Peta Toko */}
-            <button
-              onClick={() => setActiveTab('merchant')}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '4px',
-              }}
-              className="active:opacity-60 transition-opacity"
-            >
-              <div
-                style={{
-                  width: '50px',
-                  height: '50px',
-                  borderRadius: '16px',
-                  backgroundColor: activeTab === 'merchant' ? '#D97706' : '#FEF3C7',
-                  color: activeTab === 'merchant' ? '#FFFFFF' : '#D97706',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '6px',
-                  transition: 'all 0.2s',
-                }}
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
-              </div>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#1A1D26', textAlign: 'center' }}>
-                Peta Toko
-              </span>
-            </button>
-
-            {/* 4. Bantuan */}
-            <button
-              onClick={() => setActiveTab('darurat')}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '4px',
-              }}
-              className="active:opacity-60 transition-opacity"
-            >
-              <div
-                style={{
-                  width: '50px',
-                  height: '50px',
-                  borderRadius: '16px',
-                  backgroundColor: activeTab === 'darurat' ? '#EF4444' : '#FEE2E2',
-                  color: activeTab === 'darurat' ? '#FFFFFF' : '#EF4444',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '6px',
-                  transition: 'all 0.2s',
-                }}
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-              </div>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#1A1D26', textAlign: 'center' }}>
-                Bantuan
-              </span>
-            </button>
-          </div>
-        </div>
-
-        {/* ===================================================================== */}
-        {/* TAB 1: PAKET ROAMING                                                  */}
-        {/* ===================================================================== */}
-        {activeTab === 'roaming' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            {roamingPackages.map((pkg) => (
-              <div
-                key={pkg.id}
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '22px',
-                  padding: '20px',
-                  border: '1px solid #ECEEF2',
-                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                  <span
-                    style={{
-                      fontSize: '10px',
-                      fontWeight: 800,
-                      color: '#1C20C4',
-                      backgroundColor: '#EEF2FF',
-                      padding: '2px 8px',
-                      borderRadius: '999px',
-                    }}
-                  >
-                    {pkg.operator}
-                  </span>
-                  <span style={{ fontSize: '15px', fontWeight: 900, color: '#1C20C4' }}>
-                    Rp{pkg.price.toLocaleString('id-ID')}
-                  </span>
-                </div>
-
-                <h4 style={{ fontSize: '15px', fontWeight: 900, color: '#1A1D26', margin: '0 0 2px 0' }}>
-                  {pkg.provider}
-                </h4>
-                <p style={{ fontSize: '11.5px', color: '#6C737E', margin: '0 0 10px 0' }}>
-                  Kuota {pkg.quota} • Masa Aktif {pkg.duration}
-                </p>
-                <span style={{ fontSize: '10.5px', color: '#059669', fontWeight: 700, display: 'block', marginBottom: '14px' }}>
-                  Jaringan Mitra: {pkg.partner}
-                </span>
-
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #F4F5F9' }}>
-                  <span style={{ fontSize: '10.5px', color: '#6C737E' }}>
-                    {pkg.features}
-                  </span>
-
-                  <button
-                    onClick={() => {
-                      setSelectedPackage(pkg.provider)
-                      setPackagePrice(pkg.price)
-                      setShowBuyModal(true)
-                    }}
-                    style={{
-                      height: '38px',
-                      padding: '0 22px',
-                      borderRadius: '999px',
-                      backgroundColor: '#1C20C4',
-                      color: '#FFFFFF',
-                      fontSize: '12.5px',
-                      fontWeight: 800,
-                      border: 'none',
-                      cursor: 'pointer',
-                      boxShadow: '0 2px 8px rgba(28, 32, 196, 0.25)',
-                      flexShrink: 0,
-                    }}
-                    className="active:opacity-80 transition-opacity"
-                  >
-                    Beli Paket →
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* ===================================================================== */}
-        {/* TAB 2: ESIM BAITULLAH                                                 */}
-        {/* ===================================================================== */}
-        {activeTab === 'esim' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            {esimPackages.map((pkg) => (
-              <div
-                key={pkg.id}
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '22px',
-                  padding: '20px',
-                  border: '1px solid #ECEEF2',
-                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                  <span
-                    style={{
-                      fontSize: '10px',
-                      fontWeight: 800,
-                      color: '#064E3B',
-                      backgroundColor: '#D1FAE5',
-                      padding: '2px 8px',
-                      borderRadius: '999px',
-                    }}
-                  >
-                    {pkg.type}
-                  </span>
-                  <span style={{ fontSize: '15px', fontWeight: 900, color: '#064E3B' }}>
-                    Rp{pkg.price.toLocaleString('id-ID')}
-                  </span>
-                </div>
-
-                <h4 style={{ fontSize: '15px', fontWeight: 900, color: '#1A1D26', margin: '0 0 2px 0' }}>
-                  {pkg.name}
-                </h4>
-                <p style={{ fontSize: '11.5px', color: '#6C737E', margin: '0 0 10px 0' }}>
-                  Kuota {pkg.quota} • Masa Aktif {pkg.duration}
-                </p>
-
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid #F4F5F9' }}>
-                  <span style={{ fontSize: '10.5px', color: '#6C737E' }}>
-                    {pkg.features}
-                  </span>
-
-                  <button
-                    onClick={() => {
-                      setSelectedPackage(pkg.name)
-                      setPackagePrice(pkg.price)
-                      setShowBuyModal(true)
-                    }}
-                    style={{
-                      height: '38px',
-                      padding: '0 22px',
-                      borderRadius: '999px',
-                      backgroundColor: '#064E3B',
-                      color: '#FFFFFF',
-                      fontSize: '12.5px',
-                      fontWeight: 800,
-                      border: 'none',
-                      cursor: 'pointer',
-                      boxShadow: '0 2px 8px rgba(6, 78, 59, 0.25)',
-                      flexShrink: 0,
-                    }}
-                    className="active:opacity-80 transition-opacity"
-                  >
-                    Klaim eSIM →
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* ===================================================================== */}
-        {/* TAB 3: PETA TOKO GEIDEA                                               */}
-        {/* ===================================================================== */}
-        {activeTab === 'merchant' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button
-                onClick={() => setCityFilter('makkah')}
-                style={{
-                  flex: 1,
-                  height: '36px',
-                  borderRadius: '999px',
-                  fontSize: '12px',
-                  fontWeight: 800,
-                  border: 'none',
-                  backgroundColor: cityFilter === 'makkah' ? '#1C20C4' : '#FFFFFF',
-                  color: cityFilter === 'makkah' ? '#FFFFFF' : '#6C737E',
-                  cursor: 'pointer',
-                  boxShadow: cityFilter === 'makkah' ? '0 2px 6px rgba(28, 32, 196, 0.2)' : 'none',
-                }}
-              >
-                Makkah Al-Mukarramah
-              </button>
-              <button
-                onClick={() => setCityFilter('madinah')}
-                style={{
-                  flex: 1,
-                  height: '36px',
-                  borderRadius: '999px',
-                  fontSize: '12px',
-                  fontWeight: 800,
-                  border: 'none',
-                  backgroundColor: cityFilter === 'madinah' ? '#1C20C4' : '#FFFFFF',
-                  color: cityFilter === 'madinah' ? '#FFFFFF' : '#6C737E',
-                  cursor: 'pointer',
-                  boxShadow: cityFilter === 'madinah' ? '0 2px 6px rgba(28, 32, 196, 0.2)' : 'none',
-                }}
-              >
-                Madinah Al-Munawwarah
-              </button>
-            </div>
-
-            {(cityFilter === 'makkah' ? merchantsMakkah : merchantsMadinah).map((m) => (
-              <div
-                key={m.id}
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '22px',
-                  padding: '18px 20px',
-                  border: '1px solid #ECEEF2',
-                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                  <span style={{ fontSize: '10px', fontWeight: 800, color: '#D97706', backgroundColor: '#FEF3C7', padding: '2px 8px', borderRadius: '999px' }}>
-                    {m.type}
-                  </span>
-                  <span style={{ fontSize: '10px', fontWeight: 800, color: '#064E3B' }}>
-                    {m.terminal}
-                  </span>
-                </div>
-
-                <h4 style={{ fontSize: '14.5px', fontWeight: 900, color: '#1A1D26', margin: '0 0 2px 0' }}>
-                  {m.name}
-                </h4>
-                <p style={{ fontSize: '11px', color: '#6C737E', margin: '0 0 12px 0' }}>
-                  {m.location}
-                </p>
-
-                <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '10px', borderTop: '1px solid #F4F5F9' }}>
-                  <Link
-                    href="/bayar-saudi"
-                    style={{
-                      height: '34px',
-                      padding: '0 20px',
-                      borderRadius: '999px',
-                      backgroundColor: '#064E3B',
-                      color: '#FFFFFF',
-                      fontSize: '11.5px',
-                      fontWeight: 800,
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      textDecoration: 'none',
-                      boxShadow: '0 2px 6px rgba(6, 78, 59, 0.25)',
-                    }}
-                  >
-                    Bayar di Kasir →
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* ===================================================================== */}
-        {/* TAB 4: BANTUAN DARURAT                                                */}
-        {/* ===================================================================== */}
-        {activeTab === 'darurat' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            {emergencyContacts.map((c, i) => (
-              <div
-                key={i}
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '22px',
-                  padding: '18px 20px',
-                  border: '1px solid #ECEEF2',
-                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <div>
-                  <h4 style={{ fontSize: '14px', fontWeight: 900, color: '#1A1D26', margin: '0 0 2px 0' }}>
-                    {c.name}
-                  </h4>
-                  <p style={{ fontSize: '11px', color: '#6C737E', margin: '0 0 4px 0' }}>
-                    {c.role}
-                  </p>
-                  <span style={{ fontSize: '12px', fontWeight: 800, color: '#EF4444' }}>
-                    {c.number}
-                  </span>
-                </div>
-
-                <a
-                  href={`tel:${c.number.replace(/\s+/g, '')}`}
-                  style={{
-                    height: '36px',
-                    padding: '0 18px',
-                    borderRadius: '999px',
-                    backgroundColor: '#EF4444',
-                    color: '#FFFFFF',
-                    fontSize: '11.5px',
-                    fontWeight: 800,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    textDecoration: 'none',
-                    boxShadow: '0 2px 8px rgba(239, 68, 68, 0.25)',
-                  }}
-                >
-                  {c.action}
-                </a>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Co-branding Footer */}
-        <div className="pt-6 pb-4 text-center">
-          <p className="text-[10.5px] text-gray-400 font-extrabold tracking-wider uppercase">
-            Powered by Bank Aladin Syariah
-          </p>
-        </div>
-      </div>
-
-      {/* MODAL 1: KLAIM HIMPUH / AMPHURI */}
-      {showClaimModal && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 50,
-            backgroundColor: 'rgba(0,0,0,0.6)',
-            backdropFilter: 'blur(4px)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-          }}
-        >
-          <div
-            style={{
-              width: '100%',
-              backgroundColor: '#FFFFFF',
-              borderTopLeftRadius: '32px',
-              borderTopRightRadius: '32px',
-              padding: '24px',
-              paddingBottom: '36px',
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
               <div>
-                <span style={{ fontSize: '10px', fontWeight: 800, color: '#064E3B', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
-                  KEMITRAAN RESMI
-                </span>
-                <h3 style={{ fontSize: '16px', fontWeight: 900, color: '#1A1D26', margin: 0 }}>
-                  Klaim Benefit Jemaah Umroh
-                </h3>
-              </div>
-              <button
-                onClick={() => setShowClaimModal(false)}
-                style={{ width: '32px', height: '32px', borderRadius: '999px', backgroundColor: '#F4F5F9', border: 'none', cursor: 'pointer' }}
-              >
-                ×
-              </button>
-            </div>
-
-            <p style={{ fontSize: '12px', color: '#6C737E', margin: '0 0 16px 0', lineHeight: 1.4 }}>
-              Masukkan nomor paspor dan pilih biro travel umroh tempat Anda terdaftar.
-            </p>
-
-            <div style={{ marginBottom: '14px' }}>
-              <label style={{ fontSize: '11px', fontWeight: 700, color: '#6C737E', display: 'block', marginBottom: '4px' }}>
-                Nama Biro Travel:
-              </label>
-              <select
-                value={travelName}
-                onChange={(e) => setTravelName(e.target.value)}
-                style={{ width: '100%', height: '42px', borderRadius: '14px', border: '1px solid #ECEEF2', padding: '0 12px', fontSize: '13px', fontWeight: 700, backgroundColor: '#F8FAFC' }}
-              >
-                <option value="Maktour Travel">Maktour Travel (HIMPUH)</option>
-                <option value="Arminareka Perdana">Arminareka Perdana (AMPHURI)</option>
-                <option value="Khalifa Tour">Khalifa Tour Syariah</option>
-                <option value="Patuna Tour & Travel">Patuna Umroh & Haji</option>
-              </select>
-            </div>
-
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ fontSize: '11px', fontWeight: 700, color: '#6C737E', display: 'block', marginBottom: '4px' }}>
-                Nomor Paspor Jemaah:
-              </label>
-              <input
-                type="text"
-                placeholder="Contoh: C8192841"
-                value={passportNumber}
-                onChange={(e) => setPassportNumber(e.target.value.toUpperCase())}
-                style={{ width: '100%', height: '42px', borderRadius: '14px', border: '1px solid #ECEEF2', padding: '0 12px', fontSize: '14px', fontWeight: 800, backgroundColor: '#F8FAFC' }}
-              />
-            </div>
-
-            <button
-              onClick={handleClaimSubmit}
-              style={{
-                width: '100%',
-                height: '48px',
-                borderRadius: '999px',
-                backgroundColor: '#064E3B',
-                color: '#FFFFFF',
-                fontSize: '14px',
-                fontWeight: 800,
-                border: 'none',
-                cursor: 'pointer',
-                boxShadow: '0 4px 14px rgba(6, 78, 59, 0.25)',
-              }}
-            >
-              Verifikasi & Dapatkan Kuota Gratis
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL 2: BUY PACKAGE CONFIRMATION */}
-      {showBuyModal && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 50,
-            backgroundColor: 'rgba(0,0,0,0.6)',
-            backdropFilter: 'blur(4px)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-          }}
-        >
-          <div
-            style={{
-              width: '100%',
-              backgroundColor: '#FFFFFF',
-              borderTopLeftRadius: '32px',
-              borderTopRightRadius: '32px',
-              padding: '24px',
-              paddingBottom: '36px',
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-              <div>
-                <span style={{ fontSize: '10px', fontWeight: 800, color: '#1C20C4', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
-                  PEMBELIAN PAKET DATA
-                </span>
-                <h3 style={{ fontSize: '16px', fontWeight: 900, color: '#1A1D26', margin: 0 }}>
-                  {selectedPackage}
-                </h3>
-              </div>
-              <button
-                onClick={() => setShowBuyModal(false)}
-                style={{ width: '32px', height: '32px', borderRadius: '999px', backgroundColor: '#F4F5F9', border: 'none', cursor: 'pointer' }}
-              >
-                ×
-              </button>
-            </div>
-
-            <div style={{ padding: '14px', borderRadius: '16px', backgroundColor: '#F8FAFC', border: '1px solid #ECEEF2', marginBottom: '18px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#6C737E', marginBottom: '4px' }}>
-                <span>Sumber Dana:</span>
-                <span style={{ fontWeight: 800, color: '#1A1D26' }}>Ala Dompet IDR</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', paddingTop: '6px', borderTop: '1px solid #ECEEF2' }}>
-                <span style={{ fontWeight: 700, color: '#1A1D26' }}>Total Harga:</span>
-                <span style={{ fontSize: '16px', fontWeight: 900, color: '#1C20C4' }}>
-                  Rp{packagePrice.toLocaleString('id-ID')}
+                <label className="text-[11px] font-bold text-gray-500 uppercase block mb-1">
+                  Jumlah Kuota Ditransfer (GB)
+                </label>
+                <input
+                  type="number"
+                  defaultValue="2"
+                  className="w-full h-11 px-3.5 rounded-xl border border-gray-200 font-bold text-[14px] text-[#1A1D26] focus:border-[#1037A6] outline-none"
+                />
+                <span className="text-[10.5px] text-gray-400 mt-1 block">
+                  Sisa kuota internet Anda: {activeInternetGb.toFixed(1)} GB
                 </span>
               </div>
             </div>
 
             <button
-              onClick={handlePackageBuy}
-              style={{
-                width: '100%',
-                height: '48px',
-                borderRadius: '999px',
-                backgroundColor: '#1C20C4',
-                color: '#FFFFFF',
-                fontSize: '14px',
-                fontWeight: 800,
-                border: 'none',
-                cursor: 'pointer',
-                boxShadow: '0 4px 14px rgba(28, 32, 196, 0.25)',
-              }}
-            >
-              Konfirmasi & Bayar
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL 3: GLOBAL SUCCESS FEEDBACK */}
-      {(isSuccess || claimSuccess) && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 50,
-            backgroundColor: 'rgba(0,0,0,0.6)',
-            backdropFilter: 'blur(4px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '24px',
-          }}
-        >
-          <div
-            style={{
-              width: '100%',
-              maxWidth: '320px',
-              backgroundColor: '#FFFFFF',
-              borderRadius: '24px',
-              padding: '24px',
-              textAlign: 'center',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
-            }}
-          >
-            <div
-              style={{
-                width: '56px',
-                height: '56px',
-                borderRadius: '999px',
-                backgroundColor: '#ECFDF5',
-                color: '#059669',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 12px auto',
-              }}
-            >
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            </div>
-            <h4 style={{ fontSize: '17px', fontWeight: 900, color: '#1A1D26', margin: '0 0 6px 0' }}>
-              {claimSuccess ? 'Klaim Berhasil Diverifikasi!' : 'Aktivasi Berhasil!'}
-            </h4>
-            <p style={{ fontSize: '12px', color: '#6C737E', margin: '0 0 18px 0', lineHeight: 1.4 }}>
-              {claimSuccess
-                ? `Paspor terverifikasi di ${travelName}. Paket 10 GB eSIM aktif dan siap digunakan di Arab Saudi.`
-                : successMessage}
-            </p>
-            <button
+              type="button"
               onClick={() => {
-                setIsSuccess(false)
-                setClaimSuccess(false)
+                setShowShareModal(false)
+                setActiveInternetGb((prev) => Math.max(0, prev - 2))
+                triggerReaction('success', 'Berhasil transfer 2 GB ke nomor tujuan!')
               }}
-              style={{
-                width: '100%',
-                height: '44px',
-                borderRadius: '999px',
-                backgroundColor: '#064E3B',
-                color: '#FFFFFF',
-                fontSize: '13.5px',
-                fontWeight: 800,
-                border: 'none',
-                cursor: 'pointer',
-              }}
+              className="w-full py-3 rounded-xl bg-[#1037A6] hover:bg-[#0D2D88] text-white font-black text-[13px] active:scale-98 transition-all cursor-pointer shadow-md shadow-[#1037A6]/25"
             >
-              Selesai
+              Kirim Kuota Sekarang
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL 5: DETAIL PEMAKAIAN KUOTA (VIEW MY PACKAGE)                         */}
+      {/* ========================================================================= */}
+      {showDetailPackageModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-6 animate-in fade-in duration-200">
+          <div className="w-full max-w-[340px] bg-white rounded-3xl p-6 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <h3 className="text-[15.5px] font-black text-[#1A1D26]">
+                Rincian Pemakaian Kuota
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowDetailPackageModal(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="my-4 space-y-3 text-[12.5px]">
+              <div className="p-3 bg-gray-50 rounded-xl space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Kuota Utama Saudi:</span>
+                  <span className="font-mono font-bold text-gray-900">{activeInternetGb.toFixed(1)} GB</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">WhatsApp &amp; Maps:</span>
+                  <span className="font-bold text-[#059669]">UNLIMITED</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Panggilan Telepon:</span>
+                  <span className="font-mono font-bold text-gray-900">{activeVoiceMins} Menit</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Operator Rekanan:</span>
+                  <span className="font-bold text-[#1037A6]">STC / Mobily Saudi 5G</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Masa Aktif:</span>
+                  <span className="font-mono font-bold text-gray-900">{activeDaysLeft} Hari</span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowDetailPackageModal(false)}
+              className="w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-[12px] active:scale-95 transition-all"
+            >
+              Tutup
             </button>
           </div>
         </div>

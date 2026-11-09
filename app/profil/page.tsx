@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import StatusBar from '@/components/StatusBar'
-import { Sparkles, Delete } from 'lucide-react'
+import { ShieldCheck, Delete } from 'lucide-react'
 
 export default function ProfilPage() {
   const router = useRouter()
@@ -588,7 +588,7 @@ export default function ProfilPage() {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '14px', backgroundColor: '#ECFDF5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#00F0A0' }}>
-                  <Sparkles className="w-5 h-5 text-[#059669]" />
+                  <ShieldCheck className="w-5 h-5 text-[#059669]" />
                 </div>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>

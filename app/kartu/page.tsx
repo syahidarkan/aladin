@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import DigitalVerticalCard from '@/components/card/DigitalVerticalCard'
+import StatusBar from '@/components/StatusBar'
 import { useBankState } from '@/lib/bankState'
 import { useMascot } from '@/context/MascotContext'
 import {
@@ -28,7 +29,6 @@ import {
   Coins,
   ShieldAlert,
   Wallet,
-  Sparkles,
 } from 'lucide-react'
 
 export default function VirtualCardPage() {
@@ -166,7 +166,10 @@ export default function VirtualCardPage() {
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* 1. TOP NATIVE HEADER BAR (Bank Jago File 1 & 2 Style) */}
+      {/* 0. Top Native Status Bar (Safe Area Offset) */}
+      <StatusBar time="22.25" batteryLevel={33} dark={false} />
+
+      {/* 1. TOP NATIVE HEADER BAR with proper safe spacing */}
       <header className="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 flex items-center justify-between px-4 h-14">
         {/* Back Button */}
         <Link
@@ -212,8 +215,8 @@ export default function VirtualCardPage() {
           <div className="flex items-center gap-2 mt-2">
             {[
               { id: 'aladin-idr', label: 'Aladin Blue', color: 'bg-[#1C20C4]' },
-              { id: 'aladin-gold', label: 'Jago Amber', color: 'bg-[#F59E0B]' },
-              { id: 'aladin-purple', label: 'Syariah Purple', color: 'bg-[#7C3AED]' },
+              { id: 'aladin-gold', label: 'Aladin Gold', color: 'bg-[#F59E0B]' },
+              { id: 'aladin-purple', label: 'Aladin Emerald', color: 'bg-[#059669]' },
             ].map((th) => (
               <button
                 key={th.id}
@@ -242,13 +245,13 @@ export default function VirtualCardPage() {
               className={`w-[52px] h-[52px] rounded-full flex items-center justify-center transition-all shadow-xs ${
                 isFrozen
                   ? 'bg-red-500 text-white shadow-red-200'
-                  : 'bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25'
+                  : 'bg-blue-50 text-[#1037A6] group-hover:bg-blue-100'
               }`}
             >
               {isFrozen ? (
                 <Unlock className="w-5 h-5 text-white stroke-[2.2]" />
               ) : (
-                <Lock className="w-5 h-5 text-[#E66A00] stroke-[2.2]" />
+                <Lock className="w-5 h-5 text-[#1037A6] stroke-[2.2]" />
               )}
             </div>
             <span className="text-[12px] font-bold text-[#1A1D26] mt-2 text-center leading-tight">
@@ -262,8 +265,8 @@ export default function VirtualCardPage() {
             onClick={() => setShowHistoryModal(true)}
             className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
           >
-            <div className="w-[52px] h-[52px] rounded-full bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25 flex items-center justify-center transition-all shadow-xs">
-              <Clock className="w-5 h-5 text-[#E66A00] stroke-[2.2]" />
+            <div className="w-[52px] h-[52px] rounded-full bg-blue-50 text-[#1037A6] group-hover:bg-blue-100 flex items-center justify-center transition-all shadow-xs">
+              <Clock className="w-5 h-5 text-[#1037A6] stroke-[2.2]" />
             </div>
             <span className="text-[12px] font-bold text-[#1A1D26] mt-2 text-center leading-tight">
               Riwayat
@@ -276,8 +279,8 @@ export default function VirtualCardPage() {
             onClick={() => setShowSettingsModal(true)}
             className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
           >
-            <div className="w-[52px] h-[52px] rounded-full bg-[#F38020]/15 text-[#E66A00] group-hover:bg-[#F38020]/25 flex items-center justify-center transition-all shadow-xs">
-              <Settings className="w-5 h-5 text-[#E66A00] stroke-[2.2]" />
+            <div className="w-[52px] h-[52px] rounded-full bg-blue-50 text-[#1037A6] group-hover:bg-blue-100 flex items-center justify-center transition-all shadow-xs">
+              <Settings className="w-5 h-5 text-[#1037A6] stroke-[2.2]" />
             </div>
             <span className="text-[12px] font-bold text-[#1A1D26] mt-2 text-center leading-tight">
               Pengaturan

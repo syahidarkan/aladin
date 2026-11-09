@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 import { Canvas } from '@react-three/fiber'
 import { useMascot } from '@/context/MascotContext'
 import CarpetModel from './CarpetModel'
-import { Sparkles, Video, MessageCircle, Send, X } from 'lucide-react'
+import { HelpCircle, Headphones, Video, MessageCircle, Send, X } from 'lucide-react'
 
 interface ChatMessage {
   id: string
@@ -125,7 +125,7 @@ export default function CarpetFloatingBuddy() {
             }}
           >
             <span>Butuh bantuan?</span>
-            <Sparkles className="w-3.5 h-3.5 text-[#00F0A0]" />
+            <HelpCircle className="w-3.5 h-3.5 text-[#1037A6]" />
           </div>
         )}
 
@@ -147,17 +147,17 @@ export default function CarpetFloatingBuddy() {
             outline: 'none',
           }}
         >
-          {/* 3D WebGL Rigged Mascot Floating - Generous 128x112 canvas eliminates ANY frame boundary clipping while keeping compact size */}
+          {/* 3D WebGL Rigged Mascot Floating - Wide 220x180 canvas gives massive padding margin so corners never hit canvas edge */}
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-300 group-hover:scale-105"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 group-hover:scale-105"
             style={{
-              width: '128px',
-              height: '112px',
-              filter: 'drop-shadow(0 8px 18px rgba(0, 240, 160, 0.5)) drop-shadow(0 2px 6px rgba(16, 55, 166, 0.4))',
+              width: '220px',
+              height: '180px',
+              filter: 'drop-shadow(0 6px 16px rgba(0, 240, 160, 0.45)) drop-shadow(0 2px 6px rgba(16, 55, 166, 0.35))',
             }}
           >
             <Canvas
-              camera={{ position: [0, 0.06, 4.2], fov: 38 }}
+              camera={{ position: [0, 0.05, 5.6], fov: 32 }}
               gl={{ antialias: true, alpha: true }}
               style={{ width: '100%', height: '100%' }}
             >
@@ -167,7 +167,7 @@ export default function CarpetFloatingBuddy() {
               <pointLight position={[0, 0.3, 2.8]} intensity={3.2} color="#FFFFFF" />
               <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
               <pointLight position={[1.2, -0.2, 2.2]} intensity={1.6} color="#60A5FA" />
-              <CarpetModel pose="idle" interactive={true} followCursor={true} scale={0.88} />
+              <CarpetModel pose="idle" interactive={true} followCursor={true} scale={0.68} />
             </Canvas>
           </div>
 
@@ -175,11 +175,6 @@ export default function CarpetFloatingBuddy() {
           <span className="absolute top-0 right-1 flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00F0A0] opacity-80" />
             <span className="relative inline-flex rounded-full h-3 w-3 bg-[#00F0A0] border-2 border-white shadow-xs" />
-          </span>
-
-          {/* Twinkling Magical Star */}
-          <span className="absolute top-0 left-1 text-[#00F0A0] pointer-events-none">
-            <Sparkles className="w-3 h-3 text-[#00F0A0]" />
           </span>
         </button>
       </div>
@@ -202,7 +197,7 @@ export default function CarpetFloatingBuddy() {
             <div className="px-5 py-3 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-gray-50 to-white">
               <div className="flex items-center gap-3">
                 <div className="relative w-11 h-11 rounded-full bg-[#1037A6] flex items-center justify-center text-white font-extrabold text-sm shrink-0 shadow-sm border border-white">
-                  <Sparkles className="w-5 h-5 text-[#00F0A0]" />
+                  <Headphones className="w-5 h-5 text-[#00F0A0]" />
                   <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-[#00F0A0] border-2 border-white" />
                 </div>
                 <div>
