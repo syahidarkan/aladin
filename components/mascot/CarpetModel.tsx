@@ -754,11 +754,11 @@ export default function CarpetModel({
           const { x, y } = mouseCoordsRef.current
           // x > 0 (cursor right) -> positive yaw rotation (look right)
           // x < 0 (cursor left) -> negative yaw rotation (look left)
-          const targetRotY = x * 0.42
+          const targetRotY = x * 0.36
           // y < 0 (cursor above) -> negative pitch rotation (look up)
           // y > 0 (cursor below) -> positive pitch rotation (look down)
-          const targetRotX = y * 0.28
-          const targetRotZ = -x * 0.10
+          const targetRotX = y * 0.22
+          const targetRotZ = -x * 0.08
 
           groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, targetRotY, 5.0, delta)
           groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, targetRotX, 5.0, delta)
@@ -766,8 +766,8 @@ export default function CarpetModel({
 
           // Extra cuteness: head bone (Spine_0) tilts slightly towards the cursor
           if (bonesRef.current[0]) {
-            bonesRef.current[0].rotation.y = THREE.MathUtils.damp(bonesRef.current[0].rotation.y, targetRotY * 0.35, 6.0, delta)
-            bonesRef.current[0].rotation.x = THREE.MathUtils.damp(bonesRef.current[0].rotation.x, targetRotX * 0.3, 6.0, delta)
+            bonesRef.current[0].rotation.y = THREE.MathUtils.damp(bonesRef.current[0].rotation.y, targetRotY * 0.28, 6.0, delta)
+            bonesRef.current[0].rotation.x = THREE.MathUtils.damp(bonesRef.current[0].rotation.x, targetRotX * 0.25, 6.0, delta)
           }
         } else if (interactive) {
           const targetRotY = pointer.x * 0.25

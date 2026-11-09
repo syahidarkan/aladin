@@ -139,47 +139,47 @@ export default function CarpetFloatingBuddy() {
             isSpinning ? 'animate-mascot-spin' : isBouncing ? '-translate-y-2' : ''
           }`}
           style={{
-            width: '98px',
-            height: '84px',
+            width: '84px',
+            height: '72px',
             background: 'transparent',
             border: 'none',
             padding: 0,
             outline: 'none',
           }}
         >
-          {/* 3D WebGL Rigged Mascot Floating - Generous 180x150 canvas eliminates ANY frame boundary clipping */}
+          {/* 3D WebGL Rigged Mascot Floating - Generous 128x112 canvas eliminates ANY frame boundary clipping while keeping compact size */}
           <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-300 group-hover:scale-105"
             style={{
-              width: '180px',
-              height: '150px',
-              filter: 'drop-shadow(0 10px 22px rgba(0, 240, 160, 0.55)) drop-shadow(0 3px 8px rgba(16, 55, 166, 0.45))',
+              width: '128px',
+              height: '112px',
+              filter: 'drop-shadow(0 8px 18px rgba(0, 240, 160, 0.5)) drop-shadow(0 2px 6px rgba(16, 55, 166, 0.4))',
             }}
           >
             <Canvas
-              camera={{ position: [0, 0.08, 3.2], fov: 38 }}
+              camera={{ position: [0, 0.06, 4.2], fov: 38 }}
               gl={{ antialias: true, alpha: true }}
               style={{ width: '100%', height: '100%' }}
             >
               <ambientLight intensity={2.2} />
               <directionalLight position={[2, 4, 3]} intensity={2.6} />
               {/* Direct Spotlight & Keylight on Face for Maximum Clarity */}
-              <pointLight position={[0, 0.3, 2.5]} intensity={3.2} color="#FFFFFF" />
-              <pointLight position={[-1.2, -0.2, 2.0]} intensity={2.0} color="#00F0A0" />
-              <pointLight position={[1.2, -0.2, 2.0]} intensity={1.6} color="#60A5FA" />
+              <pointLight position={[0, 0.3, 2.8]} intensity={3.2} color="#FFFFFF" />
+              <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
+              <pointLight position={[1.2, -0.2, 2.2]} intensity={1.6} color="#60A5FA" />
               <CarpetModel pose="idle" interactive={true} followCursor={true} scale={0.88} />
             </Canvas>
           </div>
 
           {/* Online Active Status Dot */}
-          <span className="absolute top-1 right-2 flex h-3.5 w-3.5">
+          <span className="absolute top-0 right-1 flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00F0A0] opacity-80" />
-            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#00F0A0] border-2 border-white shadow-xs" />
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-[#00F0A0] border-2 border-white shadow-xs" />
           </span>
 
           {/* Twinkling Magical Star */}
-          <span className="absolute top-1 left-2 text-[#00F0A0] pointer-events-none">
-            <Sparkles className="w-3.5 h-3.5 text-[#00F0A0]" />
+          <span className="absolute top-0 left-1 text-[#00F0A0] pointer-events-none">
+            <Sparkles className="w-3 h-3 text-[#00F0A0]" />
           </span>
         </button>
       </div>
