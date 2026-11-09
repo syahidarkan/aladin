@@ -265,7 +265,7 @@ export default function AlaImpianLandingPage() {
         {/* SUB-FITUR 3: IMPIAN UMRAH                                                 */}
         {/* ========================================================================= */}
         <Link
-          href={hasOpenedUmrah ? "/impian/umrah/buat" : "/impian/umrah/intro/1"}
+          href="/impian/umrah/intro/1"
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '24px',
@@ -306,7 +306,7 @@ export default function AlaImpianLandingPage() {
         {/* SUB-FITUR 4: IMPIAN HAJI                                                  */}
         {/* ========================================================================= */}
         <Link
-          href={hasOpenedHaji ? "/impian/haji/buat" : "/impian/haji/intro/1"}
+          href="/impian/haji/intro/1"
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '24px',

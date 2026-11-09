@@ -7,13 +7,6 @@ import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 
 export default function ImpianUmrahIntro1() {
-  const router = useRouter()
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && localStorage.getItem('aladin_has_opened_umrah') === 'true') {
-      router.replace('/impian/umrah/buat')
-    }
-  }, [router])
   return (
     <div
       className="relative w-[414px] h-[896px] bg-white overflow-hidden select-none"

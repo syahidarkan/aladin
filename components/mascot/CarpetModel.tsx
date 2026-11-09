@@ -26,11 +26,11 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
   // 1. Idle: Exact 1:1 matching official Aladin brand mascot render (media_1794188384447_112d8ee2.jpg)
   // Head/front lip scooped up facing camera, body lying down flat/horizontal in flight plane, rear tail lifted
   idle: {
-    Spine_0: { x: 1.08, y: 0.0, z: 0.0 }, // 62° (Bibir depan/kepala dongak ke atas melihat ke kamera)
-    Spine_1: { x: -0.63, y: 0.0, z: 0.0 }, // -36° (Meratakan badan karpet agar tiduran mendatar)
-    Spine_2: { x: 0.0, y: 0.0, z: 0.0 },  // 0° (Badan tengah terbang datar normal)
-    Spine_3: { x: 0.0, y: 0.0, z: 0.0 },  // 0° (Badan belakang terbang datar normal)
-    Spine_4: { x: 0.35, y: 0.0, z: 0.0 }, // 20° (Ekor belakang terangkat sedikit dengan rumbai)
+    Spine_0: { x: 1.35, y: 0.0, z: 0.0 }, // 77° (Bibir depan/kepala dongak ke atas melengkung menghadap kamera)
+    Spine_1: { x: -0.85, y: 0.0, z: 0.0 }, // -48° (Meratakan badan karpet agar tiduran mendatar)
+    Spine_2: { x: -0.15, y: 0.0, z: 0.0 }, // Lengkungan aerodinamis S-curve halus
+    Spine_3: { x: 0.12, y: 0.0, z: 0.0 },  // Badan tengah-belakang datar horizontal
+    Spine_4: { x: 0.45, y: 0.0, z: 0.0 },  // 26° (Ekor belakang terangkat dengan 2 rumbai terpasang)
   },
 
   // 2. Stand: Standing upright 90°, chest proudly forward, greeting friendly

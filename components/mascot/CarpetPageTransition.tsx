@@ -76,69 +76,71 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
         const totalDuration = 1.55
         const progress = Math.min(1.0, elapsed / totalDuration)
 
-        if (progress < 0.76) {
-          // SUB-PHASE 1 (0.0s to 1.18s):
-          // Majestic flight from deep 3D distance (z: -32.0) towards camera (z: -1.2)
-          const approachProg = progress / 0.76
-          // Smoothstep progression
+        if (progress < 0.78) {
+          // SUB-PHASE 1 (0.0s to 1.20s):
+          // Majestic flight from deep 3D distance towards camera
+          const approachProg = progress / 0.78
+          // Smooth progressive easing
           const easeApproach = approachProg * approachProg * (3 - 2 * approachProg)
 
-          // Smooth distance flight
-          const curZ = THREE.MathUtils.lerp(-32.0, -1.2, easeApproach)
+          // Smooth distance flight from deep 3D space
+          const curZ = THREE.MathUtils.lerp(-28.0, -0.6, easeApproach)
 
-          // Graceful S-curve flight path across screen
-          const curveAngle = approachProg * Math.PI * 1.8
-          const curX = Math.sin(curveAngle) * 2.2 * (1 - approachProg * 0.4)
-          const curY = Math.cos(curveAngle * 1.4) * 0.85 * (1 - approachProg * 0.4)
+          // Centered gentle flight path (NO extreme diagonal deviation)
+          const curveAngle = approachProg * Math.PI * 1.5
+          const curX = Math.sin(curveAngle) * 0.35 * (1 - approachProg * 0.4)
+          const curY = -0.2 + Math.sin(curveAngle * 1.2) * 0.12
 
           groupRef.current.position.set(curX, curY, curZ)
 
-          // Dynamic banking roll & pitch into curves
-          const baseRotX = 0.84 // 48° pitch
-          const bankYaw = 0.21 + Math.sin(curveAngle) * 0.25
-          const bankRoll = -0.56 - Math.cos(curveAngle) * 0.35
+          // Upright & Level orientation - ZERO CROOKED / MIRING TILT:
+          // Pushed slightly forward (0.35 rad = 20°) so user looks at the flying carpet comfortably
+          // Roll and Yaw kept minimal/level
+          const pitchX = -0.12
+          const gentleYaw = Math.sin(curveAngle) * 0.05
+          const gentleRoll = -Math.cos(curveAngle) * 0.04
 
-          groupRef.current.rotation.set(baseRotX, bankYaw, bankRoll)
+          groupRef.current.rotation.set(pitchX, gentleYaw, gentleRoll)
 
-          // Scale grows smoothly from small distant silhouette to full size
-          const curScale = THREE.MathUtils.lerp(0.35, 1.0, easeApproach)
+          // Scale grows smoothly
+          const curScale = THREE.MathUtils.lerp(0.35, 1.05, easeApproach)
           groupRef.current.scale.set(curScale, curScale, curScale)
 
-          // ICONIC POSE DURING FLIGHT:
-          // Spine_0 (Head): scooped UP 62° facing camera ("dongak ke atas")
-          // Spine_1: -36° leveling body to horizontal
-          // Spine_2: 0° flat horizontal flight body ("badan sampai kaki tiduran normal")
-          // Spine_3: 0° flat horizontal flight body
-          // Spine_4: 20° tail lifted with tassels
-          const targetRotations = [1.08, -0.63, 0.0, 0.0, 0.35]
+          // ICONIC POSE: Front lip scooped UP so cute chibi face looks directly at camera
+          // Spine_0 (Head): scooped UP 77° (1.35 rad) - face smiling directly at camera
+          // Spine_1: -48° (-0.85 rad) - levels body to horizontal flight plane
+          // Spine_2: -0.15 rad - gentle aerodynamic curve
+          // Spine_3: 0.12 rad - horizontal flight body
+          // Spine_4: 0.45 rad - rear tail lifted with 2 attached tassels trailing
+          const targetRotations = [0.0, -1.35, 0.25, -0.2, 0.45]
 
           bonesRef.current.forEach((bone, idx) => {
             const baseRot = targetRotations[idx] || 0.0
             // Subtle aerodynamic flutter
-            const flutter = Math.sin(elapsed * 6.0 + idx * 0.8) * 0.04
+            const flutter = Math.sin(elapsed * 5.0 + idx * 0.8) * 0.03
             bone.rotation.x = THREE.MathUtils.damp(bone.rotation.x, baseRot + flutter, 8.0, delta)
             bone.rotation.y = 0.0
             bone.rotation.z = 0.0
           })
         } else {
-          // SUB-PHASE 2 (1.18s to 1.55s):
-          // Swoop up close to blanket 100% of camera viewport
-          const swoopProg = (progress - 0.76) / 0.24
+          // SUB-PHASE 2 (1.20s to 1.55s):
+          // Swoop close to blanket 100% of camera viewport
+          const swoopProg = (progress - 0.78) / 0.22
           const ease = swoopProg * swoopProg * (3 - 2 * swoopProg) // smoothstep
 
           const curX = THREE.MathUtils.lerp(groupRef.current.position.x, 0.0, ease)
           const curY = THREE.MathUtils.lerp(groupRef.current.position.y, 0.0, ease)
-          const curZ = THREE.MathUtils.lerp(-1.2, 2.8, ease)
+          const curZ = THREE.MathUtils.lerp(-0.6, 3.2, ease)
 
           groupRef.current.position.set(curX, curY, curZ)
 
-          // Flat orientation facing lens directly to blanket screen
-          groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, 0.0, ease)
+          // Smoothly align to face lens directly to blanket screen
+          groupRef.current.rotation.x = THREE.MathUtils.lerp(0.35, 0.0, ease)
           groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, 0.0, ease)
           groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, 0.0, ease)
 
-          // Scale expands to 2.4 so royal blue velvet blankets entire viewport
-          const curScale = THREE.MathUtils.lerp(1.0, 2.4, ease)
+          // Scale expands to blanket entire viewport
+          const curScale = THREE.MathUtils.lerp(1.05, 2.6, ease)
           groupRef.current.scale.set(curScale, curScale, curScale)
 
           // Unfurl bones flat to form seamless viewport blanket
