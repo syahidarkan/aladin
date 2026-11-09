@@ -42,7 +42,7 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
     return tex
   }, [])
 
-  // Material with velvet sheen
+  // Material with velvet sheen (Front side only - Back side handled by dual mesh in createRiggedCarpet)
   const material = useMemo(() => {
     return new THREE.MeshPhysicalMaterial({
       map: normalTexture || undefined,
@@ -52,11 +52,11 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
       sheen: 1.0,
       sheenColor: new THREE.Color('#2555E0'),
       sheenRoughness: 0.3,
-      side: THREE.DoubleSide,
+      side: THREE.FrontSide,
     })
   }, [normalTexture])
 
-  // Rigged SkinnedMesh (with 2 tail tassels attached to bones[4])
+  // Rigged SkinnedMesh with Dual-Mesh architecture (Zero backface bleed)
   const { skinnedMesh, bones } = useMemo(() => {
     return createRiggedCarpet(material)
   }, [material])
@@ -77,53 +77,64 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
         const progress = Math.min(1.0, elapsed / totalDuration)
 
         if (progress < 0.78) {
-          // SUB-PHASE 1 (0.0s to 1.20s):
-          // Majestic flight from deep 3D distance towards camera
+          // SUB-PHASE 1 (0.0s to 1.21s):
+          // Deep 3D distance flight towards camera with Lemniscate Figure-8 Slalom & Banking
           const approachProg = progress / 0.78
           // Smooth progressive easing
           const easeApproach = approachProg * approachProg * (3 - 2 * approachProg)
 
-          // Smooth distance flight from deep 3D space
-          const curZ = THREE.MathUtils.lerp(-28.0, -0.6, easeApproach)
+          // Distance flight starting from deep 3D space (-32.0) towards camera (-0.6)
+          const curZ = THREE.MathUtils.lerp(-32.0, -0.6, easeApproach)
 
-          // Centered gentle flight path (NO extreme diagonal deviation)
-          const curveAngle = approachProg * Math.PI * 1.5
-          const curX = Math.sin(curveAngle) * 0.35 * (1 - approachProg * 0.4)
-          const curY = -0.2 + Math.sin(curveAngle * 1.2) * 0.12
+          // Lemniscate Figure-8 Slalom Trajectory:
+          // t = elapsed * 1.5
+          // flightX = sin(t) * 1.2
+          // flightY = sin(t * 2.0) * 0.4
+          const t = elapsed * 1.5
+          const dampener = 1.0 - approachProg * 0.25
+          const flightX = Math.sin(t) * 1.2 * dampener
+          const flightY = Math.sin(t * 2.0) * 0.4 * dampener
 
-          groupRef.current.position.set(curX, curY, curZ)
+          groupRef.current.position.set(flightX, flightY, curZ)
 
-          // Upright & Level orientation - ZERO CROOKED / MIRING TILT:
-          // Pushed slightly forward (0.35 rad = 20°) so user looks at the flying carpet comfortably
-          // Roll and Yaw kept minimal/level
-          const pitchX = -0.12
-          const gentleYaw = Math.sin(curveAngle) * 0.05
-          const gentleRoll = -Math.cos(curveAngle) * 0.04
+          // Banking roll, pitch & yaw:
+          // banking roll = -cos(t) * 0.45
+          // pitch = cos(t * 2.0) * 0.25 + 0.42 (base pitch ensures top & face look directly at camera)
+          // yaw = -cos(t) * 0.3
+          const bankingRoll = -Math.cos(t) * 0.45
+          const pitchAngle = 0.42 + Math.cos(t * 2.0) * 0.25
+          const yawTurn = -Math.cos(t) * 0.3
 
-          groupRef.current.rotation.set(pitchX, gentleYaw, gentleRoll)
+          groupRef.current.rotation.set(pitchAngle, yawTurn, bankingRoll)
 
-          // Scale grows smoothly
-          const curScale = THREE.MathUtils.lerp(0.35, 1.05, easeApproach)
+          // Scale grows smoothly from distant small silhouette to full size
+          const curScale = THREE.MathUtils.lerp(0.32, 1.12, easeApproach)
           groupRef.current.scale.set(curScale, curScale, curScale)
 
-          // ICONIC POSE: Front lip scooped UP so cute chibi face looks directly at camera
-          // Spine_0 (Head): scooped UP 77° (1.35 rad) - face smiling directly at camera
-          // Spine_1: -48° (-0.85 rad) - levels body to horizontal flight plane
-          // Spine_2: -0.15 rad - gentle aerodynamic curve
-          // Spine_3: 0.12 rad - horizontal flight body
-          // Spine_4: 0.45 rad - rear tail lifted with 2 attached tassels trailing
-          const targetRotations = [0.0, -1.35, 0.25, -0.2, 0.45]
+          // ICONIC SKELETAL RIG POSE:
+          // Spine_0: 0.28 (tail lifted slightly trailing behind with 2 attached tassels)
+          // Spine_1: -0.15 + dynamic flutter/flapping when curving
+          // Spine_2: -0.10 + dynamic flutter/flapping when curving
+          // Spine_3: 0.30 (mulai melengkung naik)
+          // Spine_4: 0.85 (kepala depan tempat wajah: melipat tegak ke atas menghadap kamera)
+          const flutter1 = Math.sin(t * 4.0) * 0.1
+          const flutter2 = Math.cos(t * 4.0) * 0.1
+          const targetRotations = [
+            0.28 + Math.sin(t * 3.0) * 0.05,
+            -0.15 + flutter1,
+            -0.1 + flutter2,
+            0.3,
+            0.85,
+          ]
 
           bonesRef.current.forEach((bone, idx) => {
             const baseRot = targetRotations[idx] || 0.0
-            // Subtle aerodynamic flutter
-            const flutter = Math.sin(elapsed * 5.0 + idx * 0.8) * 0.03
-            bone.rotation.x = THREE.MathUtils.damp(bone.rotation.x, baseRot + flutter, 8.0, delta)
+            bone.rotation.x = THREE.MathUtils.damp(bone.rotation.x, baseRot, 8.0, delta)
             bone.rotation.y = 0.0
             bone.rotation.z = 0.0
           })
         } else {
-          // SUB-PHASE 2 (1.20s to 1.55s):
+          // SUB-PHASE 2 (1.21s to 1.55s):
           // Swoop close to blanket 100% of camera viewport
           const swoopProg = (progress - 0.78) / 0.22
           const ease = swoopProg * swoopProg * (3 - 2 * swoopProg) // smoothstep
@@ -135,12 +146,12 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
           groupRef.current.position.set(curX, curY, curZ)
 
           // Smoothly align to face lens directly to blanket screen
-          groupRef.current.rotation.x = THREE.MathUtils.lerp(0.35, 0.0, ease)
+          groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, 0.0, ease)
           groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, 0.0, ease)
           groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, 0.0, ease)
 
           // Scale expands to blanket entire viewport
-          const curScale = THREE.MathUtils.lerp(1.05, 2.6, ease)
+          const curScale = THREE.MathUtils.lerp(1.12, 2.7, ease)
           groupRef.current.scale.set(curScale, curScale, curScale)
 
           // Unfurl bones flat to form seamless viewport blanket

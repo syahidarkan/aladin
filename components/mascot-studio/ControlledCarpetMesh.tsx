@@ -62,7 +62,7 @@ export default function ControlledCarpetMesh({
       sheenRoughness: 0.3,
       clearcoat: 0.2,
       clearcoatRoughness: 0.2,
-      side: THREE.DoubleSide,
+      side: THREE.FrontSide,
       wireframe: showWireframe,
     })
   }, [normalTexture, blinkTexture, isBlinking, showWireframe])
