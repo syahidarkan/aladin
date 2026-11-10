@@ -17,10 +17,10 @@ export default function KeuanganPage() {
   const totalSimpanan = alaDompet + alaImpianUmroh + alaDeposito + totalInPockets
 
   return (
-    <div className="app-page-container flex flex-col h-full bg-[#FFFFFF] select-none text-[#1A1A2E] overflow-clip relative">
+    <div className="app-page-container flex flex-col h-full bg-[#FFFFFF] select-none text-[#1A1A2E] overflow-hidden relative">
       {/* Header with authentic soft lavender-gray gradient background (Exact Traced y=0 to y=106.5) */}
       <div
-        className="relative shrink-0 overflow-clip"
+        className="relative shrink-0 overflow-hidden"
         style={{
           background: 'linear-gradient(180deg, #EBECFB 0%, #E8EBFB 100%)',
           paddingLeft: '23px',
@@ -34,7 +34,7 @@ export default function KeuanganPage() {
         }}
       >
         {/* Safe Area Spacer */}
-        <StatusBar />
+        <StatusBar className="bg-transparent" />
 
         {/* Top Header Row: Title 'Keuangan' & E-Statement Document Icon */}
         <div

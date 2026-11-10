@@ -190,26 +190,13 @@ body {
     max-height: 100%;
     border-radius: 42px;
     background: #FFFFFF;
-    overflow: clip !important;
-    overflow-x: clip !important;
-    overflow-y: clip !important;
-    overscroll-behavior: none !important;
+    overflow: hidden;
     position: relative;
     display: flex;
     flex-direction: column;
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
-}
-
-/* Guaranteed Non-Scrollable App Containers (Prevents headers from ever being scrolled out of view) */
-.phone-screen,
-.phone-content-wrapper,
-.app-page-container {
-  overflow: clip !important;
-  overflow-x: clip !important;
-  overflow-y: clip !important;
-  overscroll-behavior: none !important;
 }
 
 /* Mobile Screen: 100% Native App Feel */
@@ -238,10 +225,7 @@ body {
     height: 100dvh;
     border-radius: 0;
     background: #FFFFFF;
-    overflow: clip !important;
-    overflow-x: clip !important;
-    overflow-y: clip !important;
-    overscroll-behavior: none !important;
+    overflow: hidden;
     position: relative;
     display: flex;
     flex-direction: column;

@@ -114,45 +114,15 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
     }, 200)
   }
 
-  // Comprehensive scroll guard: enforce scrollTop = 0 on non-scrollable containers across all pages
+  // Auto-reset all scroll on navigation to guarantee sticky headers stay visible
   useEffect(() => {
-    const lockNonScrollable = (e: Event) => {
-      const t = e.target as unknown
-      if (!t || t === document || t === window) return
-      const el = t as HTMLElement
-
-      const isScrollable =
-        el.tagName === 'MAIN' ||
-        el.classList?.contains('overflow-y-auto') ||
-        el.classList?.contains('overflow-auto') ||
-        el.getAttribute?.('data-scrollable') === 'true'
-
-      if (!isScrollable) {
-        if (el.scrollTop !== 0) el.scrollTop = 0
-        if (el.scrollLeft !== 0) el.scrollLeft = 0
-      }
-    }
-
-    const resetAllContainers = () => {
+    if (typeof window !== 'undefined') {
       window.scrollTo(0, 0)
-      const nonScrollables = document.querySelectorAll(
-        '.phone-wrapper, .phone-screen, .phone-content-wrapper, .app-page-container, header, nav'
-      )
-      nonScrollables.forEach((el) => {
-        if (el.scrollTop !== 0) el.scrollTop = 0
-        if (el.scrollLeft !== 0) el.scrollLeft = 0
-      })
-    }
-
-    resetAllContainers()
-    window.addEventListener('scroll', lockNonScrollable, { capture: true, passive: false })
-    const t1 = setTimeout(resetAllContainers, 50)
-    const t2 = setTimeout(resetAllContainers, 200)
-
-    return () => {
-      window.removeEventListener('scroll', lockNonScrollable, { capture: true })
-      clearTimeout(t1)
-      clearTimeout(t2)
+      const ps = document.querySelector('.phone-screen')
+      if (ps) {
+        ps.scrollTop = 0
+        ps.scrollLeft = 0
+      }
     }
   }, [pathname])
 
@@ -176,10 +146,6 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
         className={`phone-screen relative flex flex-col overflow-hidden ${
           isDarkTop ? 'bg-[#051937]' : 'bg-white'
         }`}
-        onScroll={(e) => {
-          if (e.currentTarget.scrollTop !== 0) e.currentTarget.scrollTop = 0
-          if (e.currentTarget.scrollLeft !== 0) e.currentTarget.scrollLeft = 0
-        }}
       >
         {/* Universal Splash Screen on Every Reload / Entry */}
         {showSplash && (
@@ -241,8 +207,8 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
           </div>
         )}
 
-        {/* Scrollable Active Screen Content (Guaranteed Zero-Shift Container) */}
-        <div className="phone-content-wrapper flex-1 flex flex-col min-h-0 relative overflow-clip">
+        {/* Scrollable Active Screen Content */}
+        <div className="phone-content-wrapper flex-1 flex flex-col min-h-0 relative overflow-hidden">
           {children}
         </div>
 

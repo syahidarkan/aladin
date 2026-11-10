@@ -59,46 +59,103 @@ function TransitionCarpetActor({ phase }: { phase: 'covering' | 'revealing' }) {
 
     if (groupRef.current) {
       if (phase === 'covering') {
-        // Fast, graceful sweep: 0.65s
-        const duration = 0.65
-        const p = Math.min(1.0, elapsed / duration)
-        const ease = p * p * (3 - 2 * p) // smoothstep
+        // Full majestic distance flight: 1.40s
+        const totalDuration = 1.40
+        const progress = Math.min(1.0, elapsed / totalDuration)
 
-        // Starts diagonal (bottom-right cutting towards camera center)
-        const curX = THREE.MathUtils.lerp(1.2, 0.0, ease)
-        const curY = THREE.MathUtils.lerp(-0.8, 0.0, ease)
-        const curZ = THREE.MathUtils.lerp(-5.0, 2.9, ease)
+        if (progress < 0.75) {
+          // SUB-PHASE 1 (0.0s to 1.05s): Deep 3D distance flight from z = -28.0 towards camera
+          const approachProg = progress / 0.75
+          const easeApproach = approachProg * approachProg * (3 - 2 * approachProg)
 
-        groupRef.current.position.set(curX, curY, curZ)
+          // Analytical flight path function:
+          const samplePos = (p: number) => {
+            const easeZ = 0.3 * p + 0.7 * (p * p * (3 - 2 * p))
+            const z = THREE.MathUtils.lerp(-28.0, -0.6, easeZ)
 
-        // Diagonal dynamic roll that settles flat into full blanket
-        groupRef.current.rotation.x = THREE.MathUtils.lerp(0.35, 0.0, ease)
-        groupRef.current.rotation.y = THREE.MathUtils.lerp(-0.35, 0.0, ease)
-        groupRef.current.rotation.z = THREE.MathUtils.lerp(-0.45, 0.0, ease)
+            // Slalom lateral weave with envelope that damps to 0 at p = 1.0
+            const env = Math.pow(1 - p, 1.4)
+            const phaseAngle = p * Math.PI * 2.8
+            const x = Math.sin(phaseAngle) * 2.2 * env
+            const y = Math.sin(phaseAngle * 1.3) * 0.55 * env
 
-        // Expands wide to blanket entire viewport seamlessly
-        const curScale = THREE.MathUtils.lerp(0.85, 3.4, ease)
-        groupRef.current.scale.set(curScale, curScale, curScale)
+            return new THREE.Vector3(x, y, z)
+          }
 
-        // Bones flatten smoothly to form unbroken blanket
-        bonesRef.current.forEach((bone) => {
-          bone.rotation.x = THREE.MathUtils.damp(bone.rotation.x, 0.0, 14.0, delta)
-          bone.rotation.y = THREE.MathUtils.damp(bone.rotation.y, 0.0, 14.0, delta)
-          bone.rotation.z = THREE.MathUtils.damp(bone.rotation.z, 0.0, 14.0, delta)
-        })
+          const curPos = samplePos(approachProg)
+          groupRef.current.position.copy(curPos)
+
+          // Analytical tangent direction for pitch, yaw & roll banking
+          const deltaP = 0.01
+          const pNext = Math.min(1.0, approachProg + deltaP)
+          const pPrev = Math.max(0.0, approachProg - deltaP)
+          const posNext = samplePos(pNext)
+          const posPrev = samplePos(pPrev)
+
+          const dx = posNext.x - posPrev.x
+          const dy = posNext.y - posPrev.y
+          const dz = posNext.z - posPrev.z
+
+          const targetYaw = -Math.atan2(dx, dz)
+          const targetPitch = Math.atan2(dy, dz)
+          const targetRoll = -Math.atan2(dx, dz) * 0.75
+
+          groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, targetPitch, 8.0, delta)
+          groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, targetYaw, 8.0, delta)
+          groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, targetRoll, 8.0, delta)
+
+          // Scale grows smoothly from small distant silhouette to full size
+          const curScale = THREE.MathUtils.lerp(0.35, 1.25, easeApproach)
+          groupRef.current.scale.set(curScale, curScale, curScale)
+
+          // Natural silk fluttering along spine
+          const t = elapsed * 1.8
+          const flutter1 = Math.sin(t * 5.5) * 0.08
+          bonesRef.current.forEach((bone, idx) => {
+            bone.rotation.x = Math.sin(t * 6.0 + idx * 0.5) * 0.06
+            bone.rotation.y = Math.cos(t * 4.0 + idx * 0.4) * 0.04
+            bone.rotation.z = flutter1 * 0.5
+          })
+        } else {
+          // SUB-PHASE 2 (1.05s to 1.40s): Swoop forward to blanket 100% of camera viewport
+          const swoopProg = (progress - 0.75) / 0.25
+          const ease = swoopProg * swoopProg * (3 - 2 * swoopProg) // smoothstep
+
+          const curX = THREE.MathUtils.lerp(groupRef.current.position.x, 0.0, ease)
+          const curY = THREE.MathUtils.lerp(groupRef.current.position.y, 0.0, ease)
+          const curZ = THREE.MathUtils.lerp(-0.6, 3.2, ease)
+
+          groupRef.current.position.set(curX, curY, curZ)
+
+          // Smoothly align perpendicular to lens to blanket screen completely
+          groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, 0.0, ease)
+          groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, 0.0, ease)
+          groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, 0.0, ease)
+
+          // Scale expands wide to cover entire phone viewport
+          const curScale = THREE.MathUtils.lerp(1.25, 3.4, ease)
+          groupRef.current.scale.set(curScale, curScale, curScale)
+
+          // Unfurl bones flat
+          bonesRef.current.forEach((bone) => {
+            bone.rotation.x = THREE.MathUtils.damp(bone.rotation.x, 0.0, 16.0, delta)
+            bone.rotation.y = THREE.MathUtils.damp(bone.rotation.y, 0.0, 16.0, delta)
+            bone.rotation.z = THREE.MathUtils.damp(bone.rotation.z, 0.0, 16.0, delta)
+          })
+        }
       } else {
-        // Phase 'revealing': Darts out towards top-left / top-right corner (0.42s)
-        const duration = 0.42
+        // Phase 'revealing': Swoops away towards top-right corner with grand flourish (0.65s)
+        const duration = 0.65
         const p = Math.min(1.0, elapsed / duration)
         const ease = p * p // accelerating swoop out
 
-        const curX = THREE.MathUtils.lerp(0.0, -3.6, ease)
-        const curY = THREE.MathUtils.lerp(0.0, 3.4, ease)
-        const curZ = THREE.MathUtils.lerp(2.9, 5.0, ease)
+        const curX = THREE.MathUtils.lerp(0.0, -4.5, ease)
+        const curY = THREE.MathUtils.lerp(0.0, 4.2, ease)
+        const curZ = THREE.MathUtils.lerp(3.2, 6.8, ease)
 
         groupRef.current.position.set(curX, curY, curZ)
-        groupRef.current.rotation.z = THREE.MathUtils.lerp(0.0, 0.65, ease)
-        groupRef.current.rotation.y = THREE.MathUtils.lerp(0.0, -0.30, ease)
+        groupRef.current.rotation.z = THREE.MathUtils.lerp(0.0, 0.75, ease)
+        groupRef.current.rotation.y = THREE.MathUtils.lerp(0.0, -0.45, ease)
       }
     }
   })

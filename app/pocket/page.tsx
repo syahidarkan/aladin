@@ -269,7 +269,7 @@ export default function PocketsPage() {
 
   return (
     <div
-      className="app-page-container flex flex-col h-full min-h-0 max-h-full bg-[#FBFBFA] select-none text-[#1A1D26] overflow-clip relative"
+      className="app-page-container flex flex-col h-full min-h-0 max-h-full bg-[#FBFBFA] select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
@@ -279,7 +279,7 @@ export default function PocketsPage() {
       {/* VIEW 1: MAIN POCKETS 2-COLUMN VIEW                                        */}
       {/* ========================================================================= */}
       {activeView === 'list' && (
-        <div className="flex flex-col flex-1 min-h-0 overflow-clip">
+        <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
           {/* Unified Seamless White Header (No Notch Gap) */}
           <header className="shrink-0 w-full bg-white border-b border-gray-100 z-30">
             <StatusBar />
@@ -428,7 +428,7 @@ export default function PocketsPage() {
       {/* VIEW 2: POCKET DETAIL VIEW - "RINCIAN KANTONG"                            */}
       {/* ========================================================================= */}
       {activeView === 'detail' && selectedPocket && (
-        <div className="flex flex-col flex-1 min-h-0 overflow-clip animate-in fade-in duration-200">
+        <div className="flex flex-col flex-1 min-h-0 overflow-hidden animate-in fade-in duration-200">
           {/* Unified Seamless White Header */}
           <header className="shrink-0 w-full bg-white border-b border-gray-100 z-30">
             <StatusBar />

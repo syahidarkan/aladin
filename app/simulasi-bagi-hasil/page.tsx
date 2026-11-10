@@ -44,7 +44,7 @@ export default function SimulasiBagiHasilPage() {
   ]
 
   return (
-    <div className="app-page-container flex flex-col h-full min-h-0 max-h-full bg-[#F7F8FC] select-none text-[#1A1D26] overflow-clip relative">
+    <div className="app-page-container flex flex-col h-full min-h-0 max-h-full bg-[#F7F8FC] select-none text-[#1A1D26] overflow-hidden relative">
       {/* 1. Top Header Bar */}
       <header className="shrink-0 w-full bg-white border-b border-[#F0F1F5] z-30">
         <StatusBar />

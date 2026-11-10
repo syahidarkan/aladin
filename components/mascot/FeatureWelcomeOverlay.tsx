@@ -698,6 +698,8 @@ export default function FeatureWelcomeOverlay() {
     <div
       data-welcome-overlay="true"
       onClick={() => handleDismiss()}
+      onWheel={() => handleDismiss()}
+      onTouchMove={() => handleDismiss()}
       className={`absolute inset-0 z-[140] bg-black/85 backdrop-blur-md flex flex-col justify-between p-5 select-none cursor-pointer transition-opacity duration-350 ${
         isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
@@ -745,7 +747,7 @@ export default function FeatureWelcomeOverlay() {
         <Canvas
           camera={{ position: [0, -0.20, 6.2], fov: 27 }}
           gl={{ antialias: true, alpha: true }}
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
         >
           <ambientLight intensity={2.6} />
           <directionalLight position={[2, 4, 3]} intensity={3.2} />

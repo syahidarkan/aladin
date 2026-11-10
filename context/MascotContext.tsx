@@ -102,24 +102,24 @@ export function MascotProvider({ children }: { children: React.ReactNode }) {
   const [reactionMessage, setReactionMessage] = useState<string | null>(null)
   const reactionTimerRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Cinematic page transition execution (Cinematic Blanket Sweep per Animation Brief)
+  // Cinematic page transition execution (Majestic 3D Distance Magic Carpet Flight per Animation Brief)
   const startTransition = useCallback((url: string) => {
     setTransitionTarget(url)
     setTransitionPhase('covering')
     setIsTransitioning(true)
 
-    // Phase 1: Alan sweeps across camera diagonally and blankets the entire screen (650ms)
+    // Phase 1: Alan flies gracefully from deep 3D distance (-28m) weaving in slalom, blanketing the camera (1400ms)
     setTimeout(() => {
       // Phase 2: Route swaps smoothly while camera is 100% blanketed by rich royal blue cloth
       router.push(url)
       setTransitionPhase('revealing')
 
-      // Phase 3: Alan darts out towards top-right with star trail to reveal new page (420ms)
+      // Phase 3: Alan darts out towards top corner with shimmering star trail to reveal new page (650ms)
       setTimeout(() => {
         setIsTransitioning(false)
         setTransitionTarget(null)
-      }, 420)
-    }, 650)
+      }, 650)
+    }, 1400)
   }, [router])
 
   // Loader triggers
