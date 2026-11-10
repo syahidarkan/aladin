@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import AladinCarpetMascot from '@/components/mascot/AladinCarpetMascot'
 import { CarpetPose } from '@/components/mascot/CarpetModel'
-import { Sparkles } from 'lucide-react'
+import { Sparkles, ArrowLeft } from 'lucide-react'
 
 export default function MascotDemoPage() {
   const [currentPose, setCurrentPose] = useState<CarpetPose>('idle')
@@ -65,13 +65,7 @@ export default function MascotDemoPage() {
           href="/beranda"
           className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 active:scale-95 transition-all"
         >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={16}
-            height={16}
-            style={{ width: '15px', height: '15px', filter: 'brightness(0) invert(1)' }}
-          />
+          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
         </Link>
 
         <div className="text-center">

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import BottomNav from '@/components/BottomNav'
 import { useBankState } from '@/lib/bankState'
+import { ArrowLeft } from 'lucide-react'
 
 export default function KeuanganPage() {
   const { alaDompet, alaImpianUmroh, alaDeposito, pockets = [], transactions } = useBankState()
@@ -40,9 +41,18 @@ export default function KeuanganPage() {
           className="flex items-center justify-between"
           style={{ marginBottom: '2px' }}
         >
-          <h1 className="text-[20px] font-extrabold text-[#1A1D26] tracking-tight">
-            Keuangan Saya
-          </h1>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/beranda"
+              className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
+              aria-label="Kembali ke Beranda"
+            >
+              <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+            </Link>
+            <h1 className="text-[20px] font-extrabold text-[#1A1D26] tracking-tight">
+              Keuangan Saya
+            </h1>
+          </div>
 
           {/* E-Statement Document Action Button */}
           <button

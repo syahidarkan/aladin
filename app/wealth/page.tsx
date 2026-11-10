@@ -1,5 +1,6 @@
 'use client'
 
+import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -174,13 +175,7 @@ export default function WealthEnginePage() {
           }}
           className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
         >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={18}
-            height={18}
-            priority
-          />
+          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
         </button>
 
         <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight text-center">

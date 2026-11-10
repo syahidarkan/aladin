@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import StatusBar from '@/components/StatusBar'
+import { ArrowLeft, X } from 'lucide-react'
 
 export default function AladinWrappedPage() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -101,15 +102,25 @@ export default function AladinWrappedPage() {
         ))}
       </div>
 
-      {/* 3. Top Header Bar */}
-      <div className="flex items-center justify-between px-5 pt-3 z-20">
-        <span className="font-extrabold text-[15px] tracking-tight">#PakaiAladin Wrapped</span>
+      {/* 3. Top Header Bar with Prominent Back Button */}
+      <div className="flex items-center justify-between px-4 pt-3 z-20">
+        <div className="flex items-center gap-2">
+          <Link
+            href="/beranda"
+            className="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white active:scale-95 transition-all cursor-pointer shadow-sm"
+            aria-label="Kembali ke Beranda"
+          >
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </Link>
+          <span className="font-extrabold text-[15px] tracking-tight">#PakaiAladin Wrapped</span>
+        </div>
 
         <Link
           href="/beranda"
-          className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center font-bold text-white hover:bg-white/25 transition-colors"
+          className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-white hover:bg-white/30 transition-colors"
+          aria-label="Tutup"
         >
-          ×
+          <X className="w-4 h-4 text-white" />
         </Link>
       </div>
 

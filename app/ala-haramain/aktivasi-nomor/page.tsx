@@ -1,5 +1,6 @@
 'use client'
 
+import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -51,14 +52,7 @@ export default function AktivasiNomorSaudiPage() {
           href="/beranda"
           className="flex items-center justify-center p-1 -ml-1 active:opacity-60 transition-opacity"
         >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={16}
-            height={16}
-            style={{ width: '15.5px', height: '15.5px' }}
-            priority
-          />
+          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
         </Link>
 
         <div className="text-center">

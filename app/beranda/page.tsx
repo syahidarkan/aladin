@@ -154,13 +154,6 @@ export default function BerandaPage() {
       iconSrc: '/assets/icons/shortcut_kartu_v2.png',
       badge: 'Baru',
     },
-    {
-      id: 'lindung',
-      label: 'Ala Lindung',
-      href: '/ala-lindung',
-      iconSrc: '/assets/icons/ilu_gico_m_shield.svg',
-      badge: 'Proteksi',
-    },
   ]
 
   return (

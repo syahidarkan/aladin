@@ -1,5 +1,6 @@
 'use client'
 
+import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -37,14 +38,7 @@ export default function NotifikasiPage() {
           href="/beranda"
           className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
         >
-          <Image
-            src="/assets/icons/header_back_clean.png"
-            alt="Kembali"
-            width={16}
-            height={16}
-            style={{ width: '15.5px', height: '15.5px' }}
-            priority
-          />
+          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
         </Link>
 
         <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">

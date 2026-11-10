@@ -7,11 +7,10 @@ import { useRouter } from 'next/navigation'
 import StatusBar from '@/components/StatusBar'
 import { useBankState } from '@/lib/bankState'
 import { useMascot } from '@/context/MascotContext'
-import {
+import { 
   Compass,
   Video,
   ArrowRight,
-  ArrowLeft,
   ShieldCheck,
   CheckCircle2,
   SlidersHorizontal,
@@ -25,6 +24,7 @@ import {
   ChevronRight,
   HelpCircle,
   ExternalLink,
+  ArrowLeft,
 } from 'lucide-react'
 
 export default function TujuanFinansialPage() {
@@ -165,14 +165,7 @@ export default function TujuanFinansialPage() {
             className="flex items-center justify-center p-1 -ml-1 text-gray-700 active:opacity-60 transition-opacity cursor-pointer"
             aria-label="Kembali"
           >
-            <Image
-              src="/assets/icons/header_back_clean.png"
-              alt="Kembali"
-              width={16}
-              height={16}
-              style={{ width: '15.5px', height: '15.5px' }}
-              priority
-            />
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
           </button>
 
           <div className="flex items-center gap-1.5">
