@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import StatusBar from '@/components/StatusBar'
-import { User, Camera } from 'lucide-react'
+import { User, Camera, ArrowLeft } from 'lucide-react'
 
 export default function VideoCallDeskPage() {
   const router = useRouter()
@@ -225,11 +225,10 @@ export default function VideoCallDeskPage() {
         <div className="flex items-center gap-3">
           <Link
             href="/bantu"
-            className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center hover:bg-white/25 transition-colors"
+            className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center hover:bg-white/25 transition-colors cursor-pointer"
+            aria-label="Kembali ke Aladin Bantu"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <ArrowLeft className="w-4 h-4 text-white" />
           </Link>
           <div>
             <span className="text-[10px] font-extrabold text-[#00F3AD] uppercase tracking-wider block">

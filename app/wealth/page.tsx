@@ -151,53 +151,54 @@ export default function WealthEnginePage() {
 
   return (
     <div
-      className="flex flex-col h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
+      className="flex flex-col h-full min-h-0 bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
       }}
     >
-      {/* 1. iOS Status Bar */}
-      <StatusBar time="22.25" batteryLevel={33} dark={false} />
-
-      {/* 2. Top Header Bar (Clean Native Header) */}
-      <div
-        className="w-full bg-white border-b border-[#ECEEF2] flex items-center justify-between shrink-0"
-        style={{ height: '52px', paddingLeft: '16px', paddingRight: '16px' }}
-      >
-        <button
-          onClick={() => {
-            if (currentView !== 'hub') {
-              setCurrentView('hub')
-            } else {
-              window.location.href = '/beranda'
-            }
-          }}
-          className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
+      {/* 1. Header with Seamless White Background */}
+      <header className="sticky top-0 z-30 w-full bg-white border-b border-[#ECEEF2] shrink-0">
+        <StatusBar className="bg-white" />
+        <div
+          className="w-full bg-white flex items-center justify-between"
+          style={{ height: '52px', paddingLeft: '16px', paddingRight: '16px' }}
         >
-          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
-        </button>
+          <button
+            onClick={() => {
+              if (currentView !== 'hub') {
+                setCurrentView('hub')
+              } else {
+                window.location.href = '/beranda'
+              }
+            }}
+            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
+            aria-label="Kembali"
+          >
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+          </button>
 
-        <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight text-center">
-          {currentView === 'hub' && 'Wealth Hub'}
-          {currentView === 'reksadana' && 'Reksa Dana Syariah'}
-          {currentView === 'emas' && 'Emas Digital Syariah'}
-          {currentView === 'deposito' && 'Ala Deposito'}
-          {currentView === 'sukuk' && 'Sukuk Negara (SBSN)'}
-          {currentView === 'zakat' && 'Auto-Zakat Portofolio'}
-        </h1>
+          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight text-center">
+            {currentView === 'hub' && 'Wealth Hub'}
+            {currentView === 'reksadana' && 'Reksa Dana Syariah'}
+            {currentView === 'emas' && 'Emas Digital Syariah'}
+            {currentView === 'deposito' && 'Ala Deposito'}
+            {currentView === 'sukuk' && 'Sukuk Negara (SBSN)'}
+            {currentView === 'zakat' && 'Auto-Zakat Portofolio'}
+          </h1>
 
-        <button
-          onClick={() => setShowQardhInfo(true)}
-          className="text-[12.5px] font-extrabold text-[#1C20C4] hover:underline cursor-pointer"
-        >
-          Prinsip
-        </button>
-      </div>
+          <button
+            onClick={() => setShowQardhInfo(true)}
+            className="text-[12.5px] font-extrabold text-[#1C20C4] hover:underline cursor-pointer"
+          >
+            Prinsip
+          </button>
+        </div>
+      </header>
 
       {/* 3. SCROLLABLE BODY */}
       <div
-        className="flex-1 overflow-y-auto no-scrollbar"
+        className="flex-1 min-h-0 overflow-y-auto no-scrollbar"
         style={{
           paddingLeft: '20px',
           paddingRight: '20px',

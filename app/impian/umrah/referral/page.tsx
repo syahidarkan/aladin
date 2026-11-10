@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import StatusBar from '@/components/StatusBar'
+import { ArrowLeft } from 'lucide-react'
 
 export default function UmrahReferralPage() {
   const [copied, setCopied] = useState(false)
@@ -28,11 +29,10 @@ export default function UmrahReferralPage() {
       <div className="flex items-center justify-between px-[23px] pt-1 pb-2">
         <Link
           href="/impian/umrah/buat"
-          className="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-[#1A1A2E] hover:bg-gray-100"
+          className="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-[#1A1A2E] hover:bg-gray-100 cursor-pointer"
+          aria-label="Kembali"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#1A1A2E" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <ArrowLeft className="w-5 h-5 text-[#1A1A2E]" />
         </Link>
 
         <h1 className="text-[17px] font-bold text-[#1A1A2E]">

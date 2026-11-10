@@ -122,6 +122,10 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
     )
   }
 
+  if (pathname === '/mascot-export') {
+    return <>{children}</>
+  }
+
   return (
     <div className="phone-wrapper">
       <div className="phone-screen relative flex flex-col overflow-hidden">
@@ -186,7 +190,7 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
         )}
 
         {/* Scrollable Active Screen Content */}
-        <div className="flex-1 flex flex-col overflow-hidden relative">
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden relative">
           {children}
         </div>
 

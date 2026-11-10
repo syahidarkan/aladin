@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import StatusBar from '@/components/StatusBar'
 import { useBankState, buyHijrahItem } from '@/lib/bankState'
 import {
@@ -34,6 +35,7 @@ type CategoryId =
   | 'pendidikan'
 
 export default function AlaHijrahPage() {
+  const router = useRouter()
   const [activeCategory, setActiveCategory] = useState<CategoryId>('hub')
   const [selectedEvent, setSelectedEvent] = useState<{
     title: string
@@ -480,7 +482,7 @@ export default function AlaHijrahPage() {
 
   return (
     <div
-      className="flex flex-col h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
+      className="flex flex-col h-full min-h-0 bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
@@ -499,7 +501,7 @@ export default function AlaHijrahPage() {
               if (activeCategory !== 'hub') {
                 setActiveCategory('hub')
               } else {
-                window.location.href = '/beranda'
+                router.push('/beranda')
               }
             }}
             className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
@@ -526,7 +528,7 @@ export default function AlaHijrahPage() {
       </header>
 
       {/* 3. SCROLLABLE MAIN BODY */}
-      <div className="flex-1 overflow-y-auto no-scrollbar">
+      <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar">
         {/* ========================================================================= */}
         {/* VIEW 0: MAIN ALA HIJRAH HUB (LIVIN' SUKHA MODEL)                          */}
         {/* ========================================================================= */}

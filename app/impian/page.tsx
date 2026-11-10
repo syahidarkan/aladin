@@ -92,7 +92,7 @@ export default function AlaImpianLandingPage() {
 
   return (
     <div
-      className="flex flex-col h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
+      className="flex flex-col h-full min-h-0 bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
@@ -133,7 +133,7 @@ export default function AlaImpianLandingPage() {
 
       {/* 3. Main Scrollable Container (Generous 20px Margins, Block Flow) */}
       <div
-        className="flex-1 overflow-y-auto no-scrollbar"
+        className="flex-1 min-h-0 overflow-y-auto no-scrollbar"
         style={{
           padding: '16px 20px 40px 20px',
         }}
