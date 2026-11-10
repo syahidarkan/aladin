@@ -17,10 +17,10 @@ export default function KeuanganPage() {
   const totalSimpanan = alaDompet + alaImpianUmroh + alaDeposito + totalInPockets
 
   return (
-    <div className="flex flex-col h-full bg-[#FFFFFF] select-none text-[#1A1A2E] relative">
+    <div className="app-page-container flex flex-col h-full bg-[#FFFFFF] select-none text-[#1A1A2E] overflow-clip relative">
       {/* Header with authentic soft lavender-gray gradient background (Exact Traced y=0 to y=106.5) */}
       <div
-        className="relative shrink-0 overflow-hidden"
+        className="relative shrink-0 overflow-clip"
         style={{
           background: 'linear-gradient(180deg, #EBECFB 0%, #E8EBFB 100%)',
           paddingLeft: '23px',
@@ -44,10 +44,11 @@ export default function KeuanganPage() {
           <div className="flex items-center gap-2">
             <Link
               href="/beranda"
-              className="w-9 h-9 -ml-1 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
+              data-back="true"
+              className="w-9 h-9 -ml-1 rounded-full bg-white hover:bg-gray-100 border border-gray-300 flex items-center justify-center text-gray-900 active:scale-95 transition-all cursor-pointer shadow-xs shrink-0"
               aria-label="Kembali ke Beranda"
             >
-              <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
+              <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
             </Link>
             <h1 className="text-[20px] font-extrabold text-[#1A1D26] tracking-tight">
               Keuangan Saya

@@ -190,10 +190,11 @@ export default function QrisScanPage() {
         >
           <Link
             href="/beranda"
-            className="w-10 h-10 rounded-full bg-black/60 border border-white/20 backdrop-blur-md flex items-center justify-center text-white active:scale-95 transition-all shadow-md cursor-pointer"
+            data-back="true"
+            className="w-10 h-10 rounded-full bg-black/60 border border-white/40 backdrop-blur-md flex items-center justify-center text-white active:scale-95 transition-all shadow-md cursor-pointer shrink-0"
             aria-label="Kembali ke Beranda"
           >
-            <ArrowLeft className="w-5 h-5 text-white stroke-[2.4]" />
+            <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2.6} />
           </Link>
 
           <div className="text-center">

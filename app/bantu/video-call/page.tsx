@@ -225,10 +225,11 @@ export default function VideoCallDeskPage() {
         <div className="flex items-center gap-3">
           <Link
             href="/bantu"
-            className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center hover:bg-white/25 transition-colors cursor-pointer"
+            data-back="true"
+            className="w-9 h-9 rounded-full bg-white/25 border border-white/40 flex items-center justify-center text-white hover:bg-white/35 transition-colors cursor-pointer shadow-xs shrink-0"
             aria-label="Kembali ke Aladin Bantu"
           >
-            <ArrowLeft className="w-4 h-4 text-white" />
+            <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2.6} />
           </Link>
           <div>
             <span className="text-[10px] font-extrabold text-[#00F3AD] uppercase tracking-wider block">

@@ -20,10 +20,11 @@ export default function ImpianUmrahIntro1() {
         <div className="w-full h-14 bg-white flex items-center gap-3 px-4">
           <Link
             href="/impian"
-            className="w-9 h-9 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
+            data-back="true"
+            className="w-9 h-9 rounded-full bg-white hover:bg-gray-100 border border-gray-300 flex items-center justify-center text-gray-900 active:scale-95 transition-all cursor-pointer shadow-xs shrink-0"
             aria-label="Kembali ke Ala Impian"
           >
-            <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
+            <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
           </Link>
           <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
             Perkenalan Partner Umrah

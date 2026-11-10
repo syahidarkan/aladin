@@ -40,9 +40,11 @@ export default function MerchantOnboardingPage() {
       >
         <Link
           href="/bayar-saudi"
-          className="flex items-center justify-center p-1 -ml-1 active:opacity-60 transition-opacity cursor-pointer"
+          data-back="true"
+          className="w-9 h-9 -ml-1 rounded-full bg-white hover:bg-gray-100 border border-gray-300 flex items-center justify-center text-gray-900 active:scale-95 transition-all cursor-pointer shadow-xs shrink-0"
+          aria-label="Kembali"
         >
-          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+          <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
         </Link>
 
         <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">

@@ -269,7 +269,7 @@ export default function PocketsPage() {
 
   return (
     <div
-      className="flex flex-col h-full min-h-0 max-h-full bg-[#FBFBFA] select-none text-[#1A1D26] overflow-hidden relative"
+      className="app-page-container flex flex-col h-full min-h-0 max-h-full bg-[#FBFBFA] select-none text-[#1A1D26] overflow-clip relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
@@ -279,18 +279,19 @@ export default function PocketsPage() {
       {/* VIEW 1: MAIN POCKETS 2-COLUMN VIEW                                        */}
       {/* ========================================================================= */}
       {activeView === 'list' && (
-        <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+        <div className="flex flex-col flex-1 min-h-0 overflow-clip">
           {/* Unified Seamless White Header (No Notch Gap) */}
-          <header className="sticky top-0 z-30 w-full bg-white border-b border-gray-100 shrink-0">
+          <header className="shrink-0 w-full bg-white border-b border-gray-100 z-30">
             <StatusBar />
             <div className="h-14 px-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Link
                   href="/beranda"
-                  className="w-9 h-9 -ml-1 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
+                  data-back="true"
+                  className="w-9 h-9 -ml-1 rounded-full bg-white hover:bg-gray-100 border border-gray-300 flex items-center justify-center text-gray-900 active:scale-95 transition-all cursor-pointer shadow-xs shrink-0"
                   aria-label="Kembali ke Beranda"
                 >
-                  <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
+                  <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
                 </Link>
                 <h1 className="text-[17px] font-bold text-[#1037A6] tracking-tight">
                   Ala Pocket
@@ -427,21 +428,22 @@ export default function PocketsPage() {
       {/* VIEW 2: POCKET DETAIL VIEW - "RINCIAN KANTONG"                            */}
       {/* ========================================================================= */}
       {activeView === 'detail' && selectedPocket && (
-        <div className="flex flex-col flex-1 min-h-0 overflow-hidden animate-in fade-in duration-200">
+        <div className="flex flex-col flex-1 min-h-0 overflow-clip animate-in fade-in duration-200">
           {/* Unified Seamless White Header */}
-          <header className="sticky top-0 z-30 w-full bg-white border-b border-gray-100 shrink-0">
+          <header className="shrink-0 w-full bg-white border-b border-gray-100 z-30">
             <StatusBar />
             <div className="h-14 px-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setActiveView('list')}
-                  className="w-9 h-9 -ml-1 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
+                  data-back="true"
+                  className="w-9 h-9 -ml-1 rounded-full bg-white hover:bg-gray-100 border border-gray-300 flex items-center justify-center text-gray-900 active:scale-95 transition-all cursor-pointer shadow-xs shrink-0"
                   aria-label="Kembali ke Daftar Kantong"
                 >
-                  <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
+                  <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
                 </button>
-                <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+                <h1 className="text-[17px] font-bold text-[#1037A6] tracking-tight">
                   Rincian Kantong
                 </h1>
               </div>

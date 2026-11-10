@@ -107,10 +107,11 @@ export default function AladinWrappedPage() {
         <div className="flex items-center gap-2">
           <Link
             href="/beranda"
-            className="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white active:scale-95 transition-all cursor-pointer shadow-sm"
+            data-back="true"
+            className="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 border border-white/40 flex items-center justify-center text-white active:scale-95 transition-all cursor-pointer shadow-sm shrink-0"
             aria-label="Kembali ke Beranda"
           >
-            <ArrowLeft className="w-5 h-5 text-white" />
+            <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2.6} />
           </Link>
           <span className="font-extrabold text-[15px] tracking-tight">#PakaiAladin Wrapped</span>
         </div>

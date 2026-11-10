@@ -44,29 +44,30 @@ export default function SimulasiBagiHasilPage() {
   ]
 
   return (
-    <div className="flex flex-col h-full min-h-0 max-h-full bg-[#F7F8FC] select-none text-[#1A1D26] overflow-hidden relative">
-      {/* 1. iOS Status Bar (44px) */}
-      <StatusBar time="22.25" batteryLevel={33} dark={false} />
-
-      {/* 2. Top Header Bar */}
-      <div
-        className="w-full bg-white border-b border-[#F0F1F5] flex items-center justify-between shrink-0"
-        style={{ height: '52px', paddingLeft: '16px', paddingRight: '16px' }}
-      >
-        <Link
-          href="/beranda"
-          className="w-9 h-9 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
-          aria-label="Kembali ke Beranda"
+    <div className="app-page-container flex flex-col h-full min-h-0 max-h-full bg-[#F7F8FC] select-none text-[#1A1D26] overflow-clip relative">
+      {/* 1. Top Header Bar */}
+      <header className="shrink-0 w-full bg-white border-b border-[#F0F1F5] z-30">
+        <StatusBar />
+        <div
+          className="w-full bg-white flex items-center justify-between px-4"
+          style={{ height: '52px' }}
         >
-          <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
-        </Link>
+          <Link
+            href="/beranda"
+            data-back="true"
+            className="w-9 h-9 rounded-full bg-white hover:bg-gray-100 border border-gray-300 flex items-center justify-center text-gray-900 active:scale-95 transition-all cursor-pointer shadow-xs shrink-0"
+            aria-label="Kembali ke Beranda"
+          >
+            <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
+          </Link>
 
-        <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
-          Simulasi Bagi Hasil
-        </h1>
+          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+            Simulasi Bagi Hasil
+          </h1>
 
-        <div style={{ width: '36px' }} />
-      </div>
+          <div style={{ width: '36px' }} />
+        </div>
+      </header>
 
       {/* 3. Scrollable Content with Strict Padding (paddingLeft & paddingRight = 23px) */}
       <div

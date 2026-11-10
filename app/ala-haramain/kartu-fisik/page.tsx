@@ -44,10 +44,11 @@ export default function KartuFisikHaramainPage() {
       >
         <Link
           href="/ala-haramain"
-          className="w-8 h-8 -ml-1 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
+          data-back="true"
+          className="w-9 h-9 -ml-1 rounded-full bg-white hover:bg-gray-100 border border-gray-300 flex items-center justify-center text-gray-900 active:scale-95 transition-all cursor-pointer shadow-xs shrink-0"
           aria-label="Kembali ke Ala Haramain"
         >
-          <ArrowLeft className="w-4 h-4 text-[#1A1D26] stroke-[2.4]" />
+          <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
         </Link>
 
         <div className="text-center">

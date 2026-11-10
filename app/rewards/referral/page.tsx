@@ -49,9 +49,11 @@ export default function ReferralPage() {
         >
           <Link
             href="/beranda"
-            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-white/10 active:scale-95 transition-all"
+            data-back="true"
+            className="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 border border-white/40 flex items-center justify-center text-white active:scale-95 transition-all cursor-pointer shadow-xs shrink-0"
+            aria-label="Kembali ke Beranda"
           >
-            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+            <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2.6} />
           </Link>
 
           <h1 className="text-[17px] font-bold text-white tracking-tight">

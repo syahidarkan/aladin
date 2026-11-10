@@ -252,10 +252,11 @@ export default function PilgrimBundleTelecomPage() {
           <div className="flex items-center gap-2">
             <Link
               href="/beranda"
-              className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-white/90 hover:bg-white/10 active:scale-95 transition-all cursor-pointer"
+              data-back="true"
+              className="w-9 h-9 -ml-1 rounded-full bg-white/20 hover:bg-white/30 border border-white/40 flex items-center justify-center text-white active:scale-95 transition-all cursor-pointer shadow-sm shrink-0"
               aria-label="Kembali ke Beranda"
             >
-              <ArrowLeft className="w-5 h-5 text-white" />
+              <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2.6} />
             </Link>
             <div>
               <h1 className="text-[17px] font-black text-white tracking-tight leading-tight">

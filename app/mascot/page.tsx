@@ -63,10 +63,11 @@ export default function MascotDemoPage() {
       <div className="shrink-0 pt-4 pb-2 px-5 flex items-center justify-between border-b border-white/10 z-20">
         <Link
           href="/beranda"
-          className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 active:scale-95 transition-all text-white"
+          data-back="true"
+          className="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 border border-white/40 flex items-center justify-center text-white active:scale-95 transition-all cursor-pointer shadow-sm shrink-0"
           aria-label="Kembali ke Beranda"
         >
-          <ArrowLeft className="w-5 h-5 text-white" />
+          <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2.6} />
         </Link>
 
         <div className="text-center">
