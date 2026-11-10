@@ -189,7 +189,7 @@ export default function AlaHijrahPage() {
     },
   ]
 
-  // Event Kajian Data Lengkap & Beragam Ustadz
+  // Event Kajian Data Lengkap & Beragam Ustadz dengan Asset Foto
   const kajianEvents = [
     {
       id: 1,
@@ -203,6 +203,7 @@ export default function AlaHijrahPage() {
       discountPrice: 65000,
       badge: 'Presale Aladin -35%',
       partner: 'Quantum Akhyar Institute',
+      image: '/assets/hijrah/kajian_uah.jpg',
     },
     {
       id: 2,
@@ -216,6 +217,7 @@ export default function AlaHijrahPage() {
       discountPrice: 95000,
       badge: 'Presale Aladin -36%',
       partner: 'Tafaqquh Fiddin Foundation',
+      image: '/assets/hijrah/kajian_uas.jpg',
     },
     {
       id: 3,
@@ -229,6 +231,7 @@ export default function AlaHijrahPage() {
       discountPrice: 75000,
       badge: 'Gen Z Special -40%',
       partner: 'Pemuda Hijrah (Shift)',
+      image: '/assets/hijrah/kajian_hanan.jpg',
     },
     {
       id: 4,
@@ -242,6 +245,7 @@ export default function AlaHijrahPage() {
       discountPrice: 50000,
       badge: 'Bebas Admin',
       partner: 'Gazwah Islamic Center',
+      image: '/assets/hijrah/kajian_khalid.jpg',
     },
     {
       id: 5,
@@ -255,6 +259,7 @@ export default function AlaHijrahPage() {
       discountPrice: 110000,
       badge: 'Paket Suami Istri',
       partner: 'LPD Al-Bahjah Cirebon',
+      image: '/assets/hijrah/kajian_buya.jpg',
     },
     {
       id: 6,
@@ -268,6 +273,7 @@ export default function AlaHijrahPage() {
       discountPrice: 80000,
       badge: 'Khusus Muslimah',
       partner: 'Maskanul Huffadz Indonesia',
+      image: '/assets/hijrah/kajian_oki.jpg',
     },
     {
       id: 7,
@@ -281,10 +287,11 @@ export default function AlaHijrahPage() {
       discountPrice: 55000,
       badge: 'Bonus E-Book',
       partner: 'Pro-U Media & Jogokariyan',
+      image: '/assets/hijrah/kajian_salim.jpg',
     },
   ]
 
-  // Modest Wear Items
+  // Modest Wear Items dengan Asset Foto
   const fashionItems = [
     {
       id: 101,
@@ -295,6 +302,7 @@ export default function AlaHijrahPage() {
       discountPrice: 315000,
       badge: 'Diskon 20%',
       desc: 'Bahan voal premium dengan laser cut presisi dan motif islami elegan.',
+      image: '/assets/hijrah/fashion_buttonscarves.jpg',
     },
     {
       id: 102,
@@ -305,6 +313,7 @@ export default function AlaHijrahPage() {
       discountPrice: 85000,
       badge: 'Best Seller',
       desc: 'Bahan adem, nyaman dipakai harian, dan tegak sempurna di dahi.',
+      image: '/assets/hijrah/fashion_voal.jpg',
     },
     {
       id: 103,
@@ -315,6 +324,7 @@ export default function AlaHijrahPage() {
       discountPrice: 199000,
       badge: 'Hemat Rp86rb',
       desc: 'Tenun jacquard premium motif islami minimalis untuk ibadah & formal.',
+      image: '/assets/hijrah/fashion_koko.jpg',
     },
     {
       id: 104,
@@ -325,6 +335,7 @@ export default function AlaHijrahPage() {
       discountPrice: 490000,
       badge: 'Koleksi Spesial',
       desc: 'Tenun sutra perpaduan mesres kualitas mahakarya nusantara.',
+      image: '/assets/hijrah/fashion_sarung.jpg',
     },
     {
       id: 105,
@@ -335,10 +346,11 @@ export default function AlaHijrahPage() {
       discountPrice: 115000,
       badge: 'Diskon 30%',
       desc: 'Khimar syar’i menutup dada dengan bahan kaos spandek adem.',
+      image: '/assets/hijrah/fashion_khimar.jpg',
     },
   ]
 
-  // Kuliner Halal Items
+  // Kuliner Halal Items dengan Asset Foto
   const kulinerItems = [
     {
       id: 201,
@@ -349,6 +361,7 @@ export default function AlaHijrahPage() {
       discountPrice: 75000,
       badge: 'Hemat 25%',
       desc: 'Bersertifikat Halal MUI & BPJPH. Berlaku di seluruh outlet Solaria.',
+      image: '/assets/hijrah/kuliner_solaria.jpg',
     },
     {
       id: 202,
@@ -359,6 +372,7 @@ export default function AlaHijrahPage() {
       discountPrice: 59000,
       badge: 'Diskon 30%',
       desc: 'Bebek goreng kremes renyah + nasi uduk + sambal rica pedas mantap.',
+      image: '/assets/hijrah/kuliner_bebek.jpg',
     },
     {
       id: 203,
@@ -369,6 +383,7 @@ export default function AlaHijrahPage() {
       discountPrice: 29000,
       badge: 'Beli 1 Dapat 2',
       desc: 'Kopi Kenangan Mantan + Cokelat Klasik bersertifikat halal resmi.',
+      image: '/assets/hijrah/kuliner_kopi.jpg',
     },
     {
       id: 204,
@@ -379,6 +394,7 @@ export default function AlaHijrahPage() {
       discountPrice: 42000,
       badge: 'Cashback 32%',
       desc: 'Pelopor steak halal Indonesia dengan saus khas nusantara gurih.',
+      image: '/assets/hijrah/kuliner_steak.jpg',
     },
     {
       id: 205,
@@ -389,10 +405,11 @@ export default function AlaHijrahPage() {
       discountPrice: 135000,
       badge: 'Diskon 25%',
       desc: 'Cake cokelat lezat berlisensi halal resmi BPJPH untuk momen spesial.',
+      image: '/assets/hijrah/kuliner_cokelat.jpg',
     },
   ]
 
-  // Kesehatan Syariah Items
+  // Kesehatan Syariah Items dengan Asset Foto
   const kesehatanItems = [
     {
       id: 301,
@@ -403,6 +420,7 @@ export default function AlaHijrahPage() {
       discountPrice: 315000,
       badge: 'Diskon 30%',
       desc: 'Pemeriksaan hematologi lengkap, gula darah puasa, kolesterol, & tensi.',
+      image: '/assets/hijrah/health_checkup.jpg',
     },
     {
       id: 302,
@@ -413,6 +431,7 @@ export default function AlaHijrahPage() {
       discountPrice: 290000,
       badge: 'Wajib Umrah',
       desc: 'Sertifikat vaksin internasional (ICV) resmi Kemenkes untuk syarat Umrah.',
+      image: '/assets/hijrah/health_vaccine.jpg',
     },
     {
       id: 303,
@@ -423,6 +442,7 @@ export default function AlaHijrahPage() {
       discountPrice: 99000,
       badge: 'Steril & Higienis',
       desc: 'Terapis profesional bersertifikat ABI (Asosiasi Bekam Indonesia).',
+      image: '/assets/hijrah/health_checkup.jpg',
     },
     {
       id: 304,
@@ -433,10 +453,11 @@ export default function AlaHijrahPage() {
       discountPrice: 85000,
       badge: 'Imun Booster',
       desc: 'Madu murni trigona kaya antioksidan dan minyak jinten hitam murni.',
+      image: '/assets/hijrah/health_checkup.jpg',
     },
   ]
 
-  // Pendidikan Anak Items
+  // Pendidikan Anak Items dengan Asset Foto
   const pendidikanItems = [
     {
       id: 401,
@@ -447,6 +468,7 @@ export default function AlaHijrahPage() {
       discountPrice: 245000,
       badge: 'E-Certificate',
       desc: '4 sesi intensif bersama ustadz bersanad riwayat Hafsh ‘an ‘Ashim.',
+      image: '/assets/hijrah/edu_tahfidz.jpg',
     },
     {
       id: 402,
@@ -457,6 +479,7 @@ export default function AlaHijrahPage() {
       discountPrice: 95000,
       badge: 'Bimbingan Ahli',
       desc: 'Kiat mendidik anak mencintai Al-Qur’an di era gempuran gadget & AI.',
+      image: '/assets/hijrah/edu_tahfidz.jpg',
     },
     {
       id: 403,
@@ -467,6 +490,7 @@ export default function AlaHijrahPage() {
       discountPrice: 125000,
       badge: 'Potongan 50%',
       desc: 'Voucher diskon formulir pendaftaran SDIT/SMPIT/SMAIT se-Indonesia.',
+      image: '/assets/hijrah/edu_tahfidz.jpg',
     },
     {
       id: 404,
@@ -477,6 +501,7 @@ export default function AlaHijrahPage() {
       discountPrice: 140000,
       badge: 'Akses Selamanya',
       desc: 'Kuasai kosakata Al-Qur’an dan aturan jual beli syariah bebas riba.',
+      image: '/assets/hijrah/edu_tahfidz.jpg',
     },
   ]
 
@@ -535,11 +560,10 @@ export default function AlaHijrahPage() {
         {/* ========================================================================= */}
         {activeCategory === 'hub' && (
           <div>
-            {/* HERO BANNER: 3D "HIJRAH" STYLED BANNER (Exact Sukha Visual Match) */}
+            {/* HERO BANNER: Grand Photographic Mosque Architecture + 3D "HIJRAH" Text */}
             <div
               style={{
-                background: 'linear-gradient(135deg, #091E42 0%, #1C20C4 50%, #00B392 100%)',
-                height: '185px',
+                height: '195px',
                 position: 'relative',
                 overflow: 'hidden',
                 display: 'flex',
@@ -549,35 +573,24 @@ export default function AlaHijrahPage() {
                 padding: '0 20px',
               }}
             >
-              {/* Dynamic Fluid Art Silk Waves (Matches Livin' Sukha background art) */}
-              <svg
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
-                viewBox="0 0 390 185"
-                fill="none"
-              >
-                <path
-                  d="M-20 60 C80 120, 200 10, 410 80 L410 -20 L-20 -20 Z"
-                  fill="url(#wave1)"
-                  opacity="0.25"
-                />
-                <path
-                  d="M-20 140 C120 70, 260 160, 410 90 L410 200 L-20 200 Z"
-                  fill="url(#wave2)"
-                  opacity="0.35"
-                />
-                <defs>
-                  <linearGradient id="wave1" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#00F3AD" />
-                    <stop offset="100%" stopColor="#1C20C4" />
-                  </linearGradient>
-                  <linearGradient id="wave2" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#1C20C4" />
-                    <stop offset="100%" stopColor="#F59E0B" />
-                  </linearGradient>
-                </defs>
-              </svg>
+              {/* Grand Photographic Backdrop */}
+              <Image
+                src="/assets/hijrah/hero_hijrah.jpg"
+                alt="Ekosistem Syariah"
+                fill
+                className="object-cover object-center"
+                priority
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background:
+                    'linear-gradient(180deg, rgba(9, 30, 66, 0.82) 0%, rgba(28, 32, 196, 0.75) 55%, rgba(0, 179, 146, 0.88) 100%)',
+                }}
+              />
 
-              {/* Bold 3D Block Text "HIJRAH" mirroring "SUKHA" */}
+              {/* Bold 3D Block Text "HIJRAH" */}
               <div
                 className="relative text-center select-none z-10"
                 style={{
@@ -594,7 +607,7 @@ export default function AlaHijrahPage() {
                     lineHeight: '1',
                     color: '#FFFFFF',
                     textShadow:
-                      '0 2px 0 #00B48A, 0 4px 0 #00936F, 0 6px 0 #007355, 0 8px 0 #00563E, 0 10px 18px rgba(0,0,0,0.4)',
+                      '0 2px 0 #00B48A, 0 4px 0 #00936F, 0 6px 0 #007355, 0 8px 0 #00563E, 0 10px 18px rgba(0,0,0,0.5)',
                     display: 'block',
                   }}
                 >
@@ -609,7 +622,7 @@ export default function AlaHijrahPage() {
                     marginTop: '8px',
                     textTransform: 'uppercase',
                     display: 'block',
-                    textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+                    textShadow: '0 2px 8px rgba(0,0,0,0.6)',
                   }}
                 >
                   Lifestyle &amp; Ekosistem Syariah
@@ -698,187 +711,123 @@ export default function AlaHijrahPage() {
                 </button>
               </div>
 
-              {/* Promo Banner Card 1: Kajian Gen Z Presale (Livin' Sukha Promo Card Match) */}
-              {/* Redesigned Card 1: Presale Kajian Eksklusif */}
+              {/* Promo Banner Card 1: Kajian Akbar Presale with Real Photographic Background */}
               <div
                 onClick={() => setActiveCategory('kajian')}
-                style={{
-                  background: 'linear-gradient(135deg, #081D48 0%, #0F2A66 60%, #163E99 100%)',
-                  borderRadius: '24px',
-                  padding: '20px',
-                  color: 'white',
-                  boxShadow: '0 8px 24px rgba(8, 29, 72, 0.25)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  marginBottom: '16px',
-                  cursor: 'pointer',
-                }}
-                className="active:scale-[0.99] transition-all"
+                className="relative rounded-3xl overflow-hidden text-white shadow-lg mb-4 cursor-pointer active:scale-[0.99] transition-all border border-white/15 h-48 flex flex-col justify-between p-5"
               >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                  <span
-                    style={{
-                      fontSize: '9.5px',
-                      fontWeight: 800,
-                      color: '#00F3AD',
-                      letterSpacing: '1px',
-                      textTransform: 'uppercase',
-                      backgroundColor: 'rgba(0, 243, 173, 0.15)',
-                      padding: '3px 9px',
-                      borderRadius: '999px',
-                      border: '1px solid rgba(0, 243, 173, 0.3)',
-                    }}
-                  >
+                <Image
+                  src="/assets/hijrah/kajian_akbar.jpg"
+                  alt="Kajian Akbar Gen Z"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#081D48] via-[#081D48]/75 to-black/40 z-10" />
+
+                <div className="relative z-20 flex items-center justify-between">
+                  <span className="text-[10px] font-black text-[#00F0A0] uppercase tracking-wider bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-400/30">
                     PRESALE EKSKLUSIF ALADIN
                   </span>
-                  <span style={{ fontSize: '10.5px', color: 'rgba(255, 255, 255, 0.65)', fontWeight: 600 }}>
+                  <span className="text-[11px] font-bold text-white/80 bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded-full">
                     Sisa 42 Tiket
                   </span>
                 </div>
 
-                <h4
-                  style={{
-                    fontSize: '16px',
-                    fontWeight: 800,
-                    color: '#FFFFFF',
-                    lineHeight: 1.3,
-                    margin: '0 0 6px 0',
-                  }}
-                >
-                  Kajian Akbar &amp; Mental Health Gen Z
-                </h4>
+                <div className="relative z-20">
+                  <h4 className="text-[16px] font-black text-white leading-snug drop-shadow-sm">
+                    Kajian Akbar &amp; Mental Health Gen Z
+                  </h4>
+                  <p className="text-[11.5px] text-gray-200 mt-0.5">
+                    21 Nov 2026 • Grand Ballroom Jakarta
+                  </p>
+                </div>
 
-                <p
-                  style={{
-                    fontSize: '11.5px',
-                    color: 'rgba(255, 255, 255, 0.75)',
-                    margin: '0 0 16px 0',
-                  }}
-                >
-                  21 Nov 2026 • Grand Ballroom Jakarta
-                </p>
-
-                {/* Pricing & Proportional CTA Button */}
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    paddingTop: '12px',
-                    borderTop: '1px solid rgba(255, 255, 255, 0.15)',
-                  }}
-                >
+                <div className="relative z-20 flex items-center justify-between pt-2 border-t border-white/20">
                   <div>
-                    <span style={{ fontSize: '10.5px', color: 'rgba(255, 255, 255, 0.7)', display: 'block' }}>
-                      Harga Spesial Nasabah:
-                    </span>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                      <span style={{ fontSize: '17px', fontWeight: 900, color: '#00F3AD' }}>
+                    <span className="text-[10px] text-gray-300 block">Harga Spesial Nasabah:</span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-[18px] font-black text-[#00F0A0]">
                         Rp85.000
                       </span>
-                      <span style={{ fontSize: '11px', textDecoration: 'line-through', color: 'rgba(255, 255, 255, 0.5)' }}>
+                      <span className="text-[11px] line-through text-gray-400">
                         Rp125.000
                       </span>
                     </div>
                   </div>
-
-                  <button
-                    type="button"
-                    style={{
-                      height: '34px',
-                      padding: '0 16px',
-                      borderRadius: '999px',
-                      backgroundColor: '#00F3AD',
-                      color: '#081D48',
-                      fontSize: '12px',
-                      fontWeight: 800,
-                      border: 'none',
-                      cursor: 'pointer',
-                      boxShadow: '0 2px 8px rgba(0, 243, 173, 0.35)',
-                    }}
-                  >
+                  <span className="h-8 px-4 rounded-full bg-[#00F0A0] text-[#081D48] text-[12px] font-black flex items-center shadow-md">
                     Beli Tiket →
-                  </button>
+                  </span>
                 </div>
               </div>
 
-              {/* Redesigned Card 2: Voucher Kuliner Halal */}
+              {/* Promo Banner Card 2: Kuliner Halal Solaria with Photographic Card */}
               <div
-                onClick={() => {
-                  alert('Voucher Kuliner Halal: Diskon 25% di merchant terverifikasi Halal BPJPH & MUI.')
-                }}
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '24px',
-                  padding: '18px 20px',
-                  border: '1.5px solid #FED7AA',
-                  boxShadow: '0 4px 16px rgba(194, 65, 12, 0.06)',
-                  marginBottom: '16px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '14px',
-                }}
-                className="active:scale-[0.99] transition-all"
+                onClick={() => setActiveCategory('kuliner')}
+                className="bg-white rounded-3xl p-3.5 border border-orange-200/80 shadow-sm mb-4 cursor-pointer active:scale-[0.99] transition-all flex items-center gap-3.5"
               >
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                    <span
-                      style={{
-                        fontSize: '9px',
-                        fontWeight: 800,
-                        color: '#C2410C',
-                        backgroundColor: '#FFEDD5',
-                        padding: '2px 7px',
-                        borderRadius: '999px',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
-                      }}
-                    >
-                      VOUCHER HALAL 25%
-                    </span>
-                  </div>
-
-                  <h4
-                    style={{
-                      fontSize: '14.5px',
-                      fontWeight: 800,
-                      color: '#1A1D26',
-                      lineHeight: 1.3,
-                      margin: 0,
-                    }}
-                  >
-                    Kuliner Halal Express Hemat 25%
+                <div className="relative w-20 h-20 rounded-2xl overflow-hidden shrink-0 border border-orange-100 shadow-2xs">
+                  <Image
+                    src="/assets/hijrah/kuliner_solaria.jpg"
+                    alt="Voucher Solaria"
+                    fill
+                    className="object-cover"
+                  />
+                  <span className="absolute top-1 left-1 bg-orange-600 text-[8px] font-black text-white px-1.5 py-0.2 rounded">
+                    -25%
+                  </span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[9.5px] font-extrabold text-orange-700 bg-orange-50 px-2 py-0.5 rounded-full inline-block mb-1">
+                    KULINER HALAL TERVERIFIKASI
+                  </span>
+                  <h4 className="text-[14px] font-extrabold text-gray-900 leading-tight truncate">
+                    Voucher Solaria Halal Express
                   </h4>
-
-                  <p
-                    style={{
-                      fontSize: '11px',
-                      color: '#64748B',
-                      margin: '4px 0 0 0',
-                    }}
-                  >
-                    Sertifikat Resmi BPJPH &amp; MUI
+                  <p className="text-[11px] text-gray-500 mt-0.5">
+                    Sertifikat Resmi BPJPH • Cashback 25%
                   </p>
                 </div>
-
                 <button
                   type="button"
-                  style={{
-                    height: '34px',
-                    padding: '0 16px',
-                    borderRadius: '999px',
-                    backgroundColor: '#EA580C',
-                    color: '#FFFFFF',
-                    fontSize: '11.5px',
-                    fontWeight: 800,
-                    border: 'none',
-                    cursor: 'pointer',
-                    flexShrink: 0,
-                    boxShadow: '0 2px 8px rgba(234, 88, 12, 0.25)',
-                  }}
+                  className="h-8 px-3.5 rounded-full bg-[#EA580C] text-white text-[11.5px] font-black shadow-xs shrink-0 cursor-pointer"
                 >
                   Klaim →
+                </button>
+              </div>
+
+              {/* Promo Banner Card 3: Modest Fashion Buttonscarves */}
+              <div
+                onClick={() => setActiveCategory('fashion')}
+                className="bg-white rounded-3xl p-3.5 border border-purple-200/80 shadow-sm mb-4 cursor-pointer active:scale-[0.99] transition-all flex items-center gap-3.5"
+              >
+                <div className="relative w-20 h-20 rounded-2xl overflow-hidden shrink-0 border border-purple-100 shadow-2xs">
+                  <Image
+                    src="/assets/hijrah/fashion_buttonscarves.jpg"
+                    alt="Buttonscarves Exclusive"
+                    fill
+                    className="object-cover"
+                  />
+                  <span className="absolute top-1 left-1 bg-purple-700 text-[8px] font-black text-white px-1.5 py-0.2 rounded">
+                    -20%
+                  </span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[9.5px] font-extrabold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full inline-block mb-1">
+                    MODEST WEAR EKSLUSIF
+                  </span>
+                  <h4 className="text-[14px] font-extrabold text-gray-900 leading-tight truncate">
+                    Buttonscarves Silk Scarf Aladin
+                  </h4>
+                  <p className="text-[11px] text-gray-500 mt-0.5">
+                    Voal Premium Motif Islami Laser Cut
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="h-8 px-3.5 rounded-full bg-[#9333EA] text-white text-[11.5px] font-black shadow-xs shrink-0 cursor-pointer"
+                >
+                  Beli →
                 </button>
               </div>
 
@@ -963,63 +912,53 @@ export default function AlaHijrahPage() {
               </p>
             </div>
 
-            {/* List Events */}
+            {/* List Events with Real Photos */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {kajianEvents.map((ev) => (
                 <div
                   key={ev.id}
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: '20px',
-                    padding: '18px 20px',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                    border: '1px solid #ECEEF2',
-                  }}
+                  className="bg-white rounded-3xl p-4 border border-gray-100 shadow-xs hover:border-blue-200 transition-all flex flex-col gap-3"
                 >
-                  <div className="flex justify-between items-center mb-1">
-                    <span
-                      style={{
-                        backgroundColor: '#FEF3C7',
-                        color: '#B45309',
-                        fontSize: '9.5px',
-                        fontWeight: 800,
-                        padding: '2px 8px',
-                        borderRadius: '999px',
-                      }}
-                    >
-                      {ev.badge}
-                    </span>
-                    <span className="text-[10.5px] text-[#64748B]">{ev.category}</span>
+                  <div className="flex gap-3.5 items-start">
+                    <div className="relative w-24 h-24 rounded-2xl overflow-hidden shrink-0 border border-gray-100 shadow-2xs">
+                      <Image
+                        src={ev.image}
+                        alt={ev.speaker}
+                        fill
+                        className="object-cover"
+                      />
+                      <span className="absolute top-1 left-1 bg-amber-500 text-white text-[8px] font-black px-1.5 py-0.2 rounded-xs">
+                        {ev.badge}
+                      </span>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[10px] font-extrabold text-[#1037A6] bg-blue-50 px-2 py-0.5 rounded-md inline-block">
+                        {ev.category}
+                      </span>
+                      <h4 className="text-[13.5px] font-black text-gray-900 mt-1 leading-snug line-clamp-2">
+                        {ev.title}
+                      </h4>
+                      <p className="text-[11.5px] font-extrabold text-gray-700 mt-0.5 truncate">
+                        {ev.speaker}
+                      </p>
+                      <p className="text-[11px] font-semibold text-[#1037A6] mt-1">
+                        {ev.date}
+                      </p>
+                      <p className="text-[10.5px] text-gray-400 truncate">
+                        {ev.location}
+                      </p>
+                    </div>
                   </div>
 
-                  <h4 className="text-[14px] font-extrabold text-[#1A1D26] mt-1 leading-snug">
-                    {ev.title}
-                  </h4>
-                  <p className="text-[11.5px] text-[#64748B] mt-0.5">
-                    {ev.speaker}
-                  </p>
-                  <p className="text-[11.5px] font-semibold text-[#1C20C4] mt-1">
-                    {ev.date} • {ev.time}
-                  </p>
-                  <p className="text-[11px] text-[#64748B]">
-                    {ev.location}
-                  </p>
-
-                  <div
-                    style={{
-                      borderTop: '1px solid #F0F2F5',
-                      paddingTop: '14px',
-                      marginTop: '14px',
-                    }}
-                    className="flex items-center justify-between"
-                  >
+                  <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] text-[#64748B] block">Harga Presale Aladin:</span>
+                      <span className="text-[10px] text-gray-400 block">Harga Presale Aladin:</span>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-[16px] font-extrabold text-[#1C20C4]">
+                        <span className="text-[16px] font-black text-[#1037A6]">
                           Rp{ev.discountPrice.toLocaleString('id-ID')}
                         </span>
-                        <span className="text-[11px] line-through text-[#94A3B8]">
+                        <span className="text-[11px] line-through text-gray-400">
                           Rp{ev.normalPrice.toLocaleString('id-ID')}
                         </span>
                       </div>
@@ -1039,22 +978,7 @@ export default function AlaHijrahPage() {
                         })
                         setShowCheckout(true)
                       }}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '36px',
-                        padding: '0 18px',
-                        borderRadius: '999px',
-                        backgroundColor: '#1C20C4',
-                        color: '#FFFFFF',
-                        fontSize: '12px',
-                        fontWeight: 700,
-                        border: 'none',
-                        boxShadow: '0 2px 6px rgba(28, 32, 196, 0.25)',
-                        cursor: 'pointer',
-                      }}
-                      className="active:scale-95 transition-all"
+                      className="h-9 px-4 rounded-full bg-[#1037A6] hover:bg-[#0c2b82] text-white text-[12px] font-extrabold shadow-sm active:scale-95 transition-all cursor-pointer"
                     >
                       Beli Tiket →
                     </button>
@@ -1100,88 +1024,59 @@ export default function AlaHijrahPage() {
             </div>
 
             {/* Program 1: Qurban Terjadwal Lazismu */}
-            <div
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '20px',
-                padding: '20px',
-                border: '1px solid #ECEEF2',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <span
-                  style={{
-                    fontSize: '10.5px',
-                    fontWeight: 800,
-                    color: '#16A34A',
-                    backgroundColor: '#F0FDF4',
-                    border: '1px solid #DCFCE7',
-                    padding: '3px 10px',
-                    borderRadius: '999px',
-                  }}
-                >
+            <div className="bg-white rounded-2xl p-4.5 border border-[#ECEEF2] shadow-2xs space-y-3.5">
+              <div className="relative w-full h-36 rounded-xl overflow-hidden border border-gray-100 shadow-2xs">
+                <Image
+                  src="/assets/hijrah/ormas_muhammadiyah.jpg"
+                  alt="Lazismu Qurban Terjadwal"
+                  fill
+                  className="object-cover"
+                />
+                <span className="absolute top-2 left-2 bg-[#16A34A] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-xs">
                   Lazismu • Muhammadiyah
                 </span>
-                <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
+                <span className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-xs text-white text-[10.5px] font-bold px-2 py-0.5 rounded-md">
                   Tabungan Qurban
                 </span>
               </div>
 
-              <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#1E293B', margin: '6px 0 0 0' }}>
-                Program Qurban Terjadwal 1448 H
-              </h4>
+              <div>
+                <h4 className="text-[15px] font-black text-gray-900 leading-snug">
+                  Program Qurban Terjadwal 1448 H
+                </h4>
+                <p className="text-[11.5px] text-gray-500 mt-1">
+                  Pemberdayaan peternak lokal & distribusi daging olahan ke daerah 3T di seluruh Indonesia.
+                </p>
+              </div>
 
-              {/* Clean feature tags instead of long text */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '10px 0 16px 0' }}>
-                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#475569', backgroundColor: '#F1F5F9', padding: '3px 8px', borderRadius: '6px' }}>
+              {/* Clean feature tags */}
+              <div className="flex flex-wrap gap-1.5">
+                <span className="text-[10.5px] font-bold text-gray-700 bg-gray-100 px-2.5 py-1 rounded-md">
                   Daging Olahan Higienis
                 </span>
-                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#475569', backgroundColor: '#F1F5F9', padding: '3px 8px', borderRadius: '6px' }}>
+                <span className="text-[10.5px] font-bold text-gray-700 bg-gray-100 px-2.5 py-1 rounded-md">
                   Distribusi Daerah 3T
                 </span>
-                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#475569', backgroundColor: '#F1F5F9', padding: '3px 8px', borderRadius: '6px' }}>
+                <span className="text-[10.5px] font-bold text-gray-700 bg-gray-100 px-2.5 py-1 rounded-md">
                   Autodebet Bebas Riba
                 </span>
               </div>
 
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingTop: '14px',
-                  borderTop: '1px solid #F1F5F9',
-                }}
-              >
+              <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
                 <div>
-                  <span style={{ fontSize: '10px', color: '#64748B', display: 'block' }}>Mulai Tabungan:</span>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                    <span style={{ fontSize: '16px', fontWeight: 800, color: '#16A34A' }}>
+                  <span className="text-[10px] text-gray-400 block">Mulai Tabungan:</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-[16px] font-black text-[#16A34A]">
                       Rp237.500
                     </span>
-                    <span style={{ fontSize: '11px', color: '#64748B' }}>/bulan</span>
+                    <span className="text-[11px] text-gray-500">/bulan</span>
                   </div>
                 </div>
 
                 <button
+                  type="button"
                   onClick={() => alert('Pendaftaran Program Qurban Terjadwal Lazismu berhasil dibuka.')}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '38px',
-                    padding: '0 20px',
-                    backgroundColor: '#16A34A',
-                    color: '#FFFFFF',
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    borderRadius: '999px',
-                    cursor: 'pointer',
-                    boxShadow: '0 2px 6px rgba(22, 163, 74, 0.25)',
-                    border: 'none',
-                  }}
-                  className="active:scale-95 transition-all"
+                  className="h-9 px-4 rounded-full bg-[#16A34A] hover:bg-green-700 text-white text-[12px] font-extrabold shadow-sm active:scale-95 transition-all cursor-pointer"
                 >
                   Ikut Program →
                 </button>
@@ -1189,84 +1084,55 @@ export default function AlaHijrahPage() {
             </div>
 
             {/* Program 2: Wakaf Madrasah MUI */}
-            <div
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: '20px',
-                padding: '20px',
-                border: '1px solid #ECEEF2',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <span
-                  style={{
-                    fontSize: '10.5px',
-                    fontWeight: 800,
-                    color: '#1C20C4',
-                    backgroundColor: '#EEF2FF',
-                    border: '1px solid #E0E7FF',
-                    padding: '3px 10px',
-                    borderRadius: '999px',
-                  }}
-                >
+            <div className="bg-white rounded-2xl p-4.5 border border-[#ECEEF2] shadow-2xs space-y-3.5">
+              <div className="relative w-full h-36 rounded-xl overflow-hidden border border-gray-100 shadow-2xs">
+                <Image
+                  src="/assets/hijrah/ormas_nu_istiqlal.jpg"
+                  alt="Wakaf Digital Pesantren & Madrasah"
+                  fill
+                  className="object-cover"
+                />
+                <span className="absolute top-2 left-2 bg-[#1037A6] text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-xs">
                   MUI &amp; Wakaf Nasional
                 </span>
-                <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
-                  Wakaf Produktif
+                <span className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-xs text-white text-[10.5px] font-bold px-2 py-0.5 rounded-md">
+                  Wakaf Uang Produktif
                 </span>
               </div>
 
-              <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#1E293B', margin: '6px 0 0 0' }}>
-                Wakaf Digital Pesantren &amp; Madrasah
-              </h4>
+              <div>
+                <h4 className="text-[15px] font-black text-gray-900 leading-snug">
+                  Wakaf Digital Pesantren &amp; Madrasah
+                </h4>
+                <p className="text-[11.5px] text-gray-500 mt-1">
+                  Dukung pembangunan fasilitas belajar santri penghafal Al-Qur’an bersama BWI dan MUI.
+                </p>
+              </div>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '10px 0 16px 0' }}>
-                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#475569', backgroundColor: '#F1F5F9', padding: '3px 8px', borderRadius: '6px' }}>
+              <div className="flex flex-wrap gap-1.5">
+                <span className="text-[10.5px] font-bold text-gray-700 bg-gray-100 px-2.5 py-1 rounded-md">
                   Laboratorium Santri
                 </span>
-                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#475569', backgroundColor: '#F1F5F9', padding: '3px 8px', borderRadius: '6px' }}>
+                <span className="text-[10.5px] font-bold text-gray-700 bg-gray-100 px-2.5 py-1 rounded-md">
                   Pemberdayaan Umat
                 </span>
-                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#475569', backgroundColor: '#F1F5F9', padding: '3px 8px', borderRadius: '6px' }}>
+                <span className="text-[10.5px] font-bold text-gray-700 bg-gray-100 px-2.5 py-1 rounded-md">
                   Sertifikat Wakaf BWI
                 </span>
               </div>
 
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingTop: '14px',
-                  borderTop: '1px solid #F1F5F9',
-                }}
-              >
+              <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
                 <div>
-                  <span style={{ fontSize: '10px', color: '#64748B', display: 'block' }}>Nominal Donasi:</span>
-                  <span style={{ fontSize: '16px', fontWeight: 800, color: '#1C20C4' }}>
+                  <span className="text-[10px] text-gray-400 block">Nominal Donasi:</span>
+                  <span className="text-[16px] font-black text-[#1037A6]">
                     Mulai Rp50.000
                   </span>
                 </div>
 
                 <button
+                  type="button"
                   onClick={() => alert('Wakaf Tunai disalurkan ke rekening resmi Badan Wakaf Indonesia.')}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '38px',
-                    padding: '0 20px',
-                    backgroundColor: '#1C20C4',
-                    color: '#FFFFFF',
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    borderRadius: '999px',
-                    cursor: 'pointer',
-                    boxShadow: '0 2px 6px rgba(28, 32, 196, 0.25)',
-                    border: 'none',
-                  }}
-                  className="active:scale-95 transition-all"
+                  className="h-9 px-4 rounded-full bg-[#1037A6] hover:bg-blue-800 text-white text-[12px] font-extrabold shadow-sm active:scale-95 transition-all cursor-pointer"
                 >
                   Salurkan Wakaf →
                 </button>
@@ -1313,53 +1179,42 @@ export default function AlaHijrahPage() {
               {fashionItems.map((item) => (
                 <div
                   key={item.id}
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: '20px',
-                    padding: '18px 20px',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                    border: '1px solid #ECEEF2',
-                  }}
+                  className="bg-white rounded-2xl p-4.5 border border-[#ECEEF2] shadow-2xs space-y-3"
                 >
-                  <div className="flex justify-between items-center mb-1">
-                    <span
-                      style={{
-                        backgroundColor: '#FAF5FF',
-                        color: '#9333EA',
-                        border: '1px solid #F3E8FF',
-                        fontSize: '9.5px',
-                        fontWeight: 800,
-                        padding: '2px 8px',
-                        borderRadius: '999px',
-                      }}
-                    >
-                      {item.badge}
-                    </span>
-                    <span className="text-[10.5px] text-[#64748B] font-medium">{item.category}</span>
+                  <div className="flex gap-3.5 items-start">
+                    <div className="relative w-22 h-22 rounded-2xl overflow-hidden shrink-0 border border-gray-100 shadow-2xs">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <span className="absolute top-1 left-1 bg-[#9333EA] text-white text-[8px] font-black px-1.5 py-0.2 rounded-xs">
+                        {item.badge}
+                      </span>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[10px] font-extrabold text-[#9333EA] bg-purple-50 px-2 py-0.5 rounded-md inline-block">
+                        {item.category}
+                      </span>
+                      <h4 className="text-[13.5px] font-black text-gray-900 mt-1 leading-snug line-clamp-2">
+                        {item.title}
+                      </h4>
+                      <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2 leading-relaxed">
+                        {item.desc}
+                      </p>
+                      <span className="text-[10.5px] text-purple-700 font-bold block mt-1">
+                        Mitra: {item.partner}
+                      </span>
+                    </div>
                   </div>
 
-                  <h4 className="text-[14.5px] font-extrabold text-[#1A1D26] mt-1 leading-snug">
-                    {item.title}
-                  </h4>
-                  <p className="text-[11.5px] text-gray-500 mt-1 leading-relaxed">
-                    {item.desc}
-                  </p>
-                  <span className="text-[10.5px] text-purple-700 font-bold block mt-1">
-                    Official Partner: {item.partner}
-                  </span>
-
-                  <div
-                    style={{
-                      borderTop: '1px solid #F0F2F5',
-                      paddingTop: '12px',
-                      marginTop: '12px',
-                    }}
-                    className="flex items-center justify-between"
-                  >
+                  <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between">
                     <div>
                       <span className="text-[10px] text-gray-400 block">Harga Nasabah Aladin:</span>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-[16px] font-extrabold text-[#1037A6]">
+                        <span className="text-[16px] font-black text-[#1037A6]">
                           Rp{item.discountPrice.toLocaleString('id-ID')}
                         </span>
                         <span className="text-[11px] line-through text-gray-400">
@@ -1383,7 +1238,7 @@ export default function AlaHijrahPage() {
                         })
                         setShowCheckout(true)
                       }}
-                      className="px-4 py-2 bg-[#9333EA] hover:bg-purple-700 text-white font-extrabold text-[12px] rounded-full active:scale-95 transition-all cursor-pointer shadow-xs"
+                      className="h-9 px-4 rounded-full bg-[#9333EA] hover:bg-purple-700 text-white text-[12px] font-extrabold shadow-sm active:scale-95 transition-all cursor-pointer"
                     >
                       Beli Sekarang →
                     </button>
@@ -1432,53 +1287,42 @@ export default function AlaHijrahPage() {
               {kulinerItems.map((item) => (
                 <div
                   key={item.id}
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: '20px',
-                    padding: '18px 20px',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                    border: '1px solid #ECEEF2',
-                  }}
+                  className="bg-white rounded-2xl p-4.5 border border-[#ECEEF2] shadow-2xs space-y-3"
                 >
-                  <div className="flex justify-between items-center mb-1">
-                    <span
-                      style={{
-                        backgroundColor: '#FFEDD5',
-                        color: '#C2410C',
-                        border: '1px solid #FED7AA',
-                        fontSize: '9.5px',
-                        fontWeight: 800,
-                        padding: '2px 8px',
-                        borderRadius: '999px',
-                      }}
-                    >
-                      {item.badge}
-                    </span>
-                    <span className="text-[10.5px] text-[#64748B] font-medium">{item.category}</span>
+                  <div className="flex gap-3.5 items-start">
+                    <div className="relative w-22 h-22 rounded-2xl overflow-hidden shrink-0 border border-gray-100 shadow-2xs">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <span className="absolute top-1 left-1 bg-[#EA580C] text-white text-[8px] font-black px-1.5 py-0.2 rounded-xs">
+                        {item.badge}
+                      </span>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[10px] font-extrabold text-[#EA580C] bg-orange-50 px-2 py-0.5 rounded-md inline-block">
+                        {item.category}
+                      </span>
+                      <h4 className="text-[13.5px] font-black text-gray-900 mt-1 leading-snug line-clamp-2">
+                        {item.title}
+                      </h4>
+                      <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2 leading-relaxed">
+                        {item.desc}
+                      </p>
+                      <span className="text-[10.5px] text-orange-700 font-bold block mt-1">
+                        Sertifikasi: {item.partner}
+                      </span>
+                    </div>
                   </div>
 
-                  <h4 className="text-[14.5px] font-extrabold text-[#1A1D26] mt-1 leading-snug">
-                    {item.title}
-                  </h4>
-                  <p className="text-[11.5px] text-gray-500 mt-1 leading-relaxed">
-                    {item.desc}
-                  </p>
-                  <span className="text-[10.5px] text-orange-700 font-bold block mt-1">
-                    Sertifikat Halal: {item.partner}
-                  </span>
-
-                  <div
-                    style={{
-                      borderTop: '1px solid #F0F2F5',
-                      paddingTop: '12px',
-                      marginTop: '12px',
-                    }}
-                    className="flex items-center justify-between"
-                  >
+                  <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between">
                     <div>
                       <span className="text-[10px] text-gray-400 block">Harga Spesial Voucher:</span>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-[16px] font-extrabold text-[#EA580C]">
+                        <span className="text-[16px] font-black text-[#EA580C]">
                           Rp{item.discountPrice.toLocaleString('id-ID')}
                         </span>
                         <span className="text-[11px] line-through text-gray-400">
@@ -1502,7 +1346,7 @@ export default function AlaHijrahPage() {
                         })
                         setShowCheckout(true)
                       }}
-                      className="px-4 py-2 bg-[#EA580C] hover:bg-orange-700 text-white font-extrabold text-[12px] rounded-full active:scale-95 transition-all cursor-pointer shadow-xs"
+                      className="h-9 px-4 rounded-full bg-[#EA580C] hover:bg-orange-700 text-white text-[12px] font-extrabold shadow-sm active:scale-95 transition-all cursor-pointer"
                     >
                       Klaim Voucher →
                     </button>
@@ -1551,53 +1395,42 @@ export default function AlaHijrahPage() {
               {kesehatanItems.map((item) => (
                 <div
                   key={item.id}
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: '20px',
-                    padding: '18px 20px',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                    border: '1px solid #ECEEF2',
-                  }}
+                  className="bg-white rounded-2xl p-4.5 border border-[#ECEEF2] shadow-2xs space-y-3"
                 >
-                  <div className="flex justify-between items-center mb-1">
-                    <span
-                      style={{
-                        backgroundColor: '#F0FDF4',
-                        color: '#15803D',
-                        border: '1px solid #DCFCE7',
-                        fontSize: '9.5px',
-                        fontWeight: 800,
-                        padding: '2px 8px',
-                        borderRadius: '999px',
-                      }}
-                    >
-                      {item.badge}
-                    </span>
-                    <span className="text-[10.5px] text-[#64748B] font-medium">{item.category}</span>
+                  <div className="flex gap-3.5 items-start">
+                    <div className="relative w-22 h-22 rounded-2xl overflow-hidden shrink-0 border border-gray-100 shadow-2xs">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <span className="absolute top-1 left-1 bg-[#15803D] text-white text-[8px] font-black px-1.5 py-0.2 rounded-xs">
+                        {item.badge}
+                      </span>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[10px] font-extrabold text-[#15803D] bg-emerald-50 px-2 py-0.5 rounded-md inline-block">
+                        {item.category}
+                      </span>
+                      <h4 className="text-[13.5px] font-black text-gray-900 mt-1 leading-snug line-clamp-2">
+                        {item.title}
+                      </h4>
+                      <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2 leading-relaxed">
+                        {item.desc}
+                      </p>
+                      <span className="text-[10.5px] text-emerald-700 font-bold block mt-1">
+                        Mitra Medis: {item.partner}
+                      </span>
+                    </div>
                   </div>
 
-                  <h4 className="text-[14.5px] font-extrabold text-[#1A1D26] mt-1 leading-snug">
-                    {item.title}
-                  </h4>
-                  <p className="text-[11.5px] text-gray-500 mt-1 leading-relaxed">
-                    {item.desc}
-                  </p>
-                  <span className="text-[10.5px] text-emerald-700 font-bold block mt-1">
-                    Mitra Medis: {item.partner}
-                  </span>
-
-                  <div
-                    style={{
-                      borderTop: '1px solid #F0F2F5',
-                      paddingTop: '12px',
-                      marginTop: '12px',
-                    }}
-                    className="flex items-center justify-between"
-                  >
+                  <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between">
                     <div>
                       <span className="text-[10px] text-gray-400 block">Biaya Paket Nasabah:</span>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-[16px] font-extrabold text-[#15803D]">
+                        <span className="text-[16px] font-black text-[#15803D]">
                           Rp{item.discountPrice.toLocaleString('id-ID')}
                         </span>
                         <span className="text-[11px] line-through text-gray-400">
@@ -1621,7 +1454,7 @@ export default function AlaHijrahPage() {
                         })
                         setShowCheckout(true)
                       }}
-                      className="px-4 py-2 bg-[#15803D] hover:bg-emerald-800 text-white font-extrabold text-[12px] rounded-full active:scale-95 transition-all cursor-pointer shadow-xs"
+                      className="h-9 px-4 rounded-full bg-[#15803D] hover:bg-emerald-800 text-white text-[12px] font-extrabold shadow-sm active:scale-95 transition-all cursor-pointer"
                     >
                       Pesan Layanan →
                     </button>
@@ -1670,53 +1503,42 @@ export default function AlaHijrahPage() {
               {pendidikanItems.map((item) => (
                 <div
                   key={item.id}
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: '20px',
-                    padding: '18px 20px',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                    border: '1px solid #ECEEF2',
-                  }}
+                  className="bg-white rounded-2xl p-4.5 border border-[#ECEEF2] shadow-2xs space-y-3"
                 >
-                  <div className="flex justify-between items-center mb-1">
-                    <span
-                      style={{
-                        backgroundColor: '#F5F3FF',
-                        color: '#6D28D9',
-                        border: '1px solid #DDD6FE',
-                        fontSize: '9.5px',
-                        fontWeight: 800,
-                        padding: '2px 8px',
-                        borderRadius: '999px',
-                      }}
-                    >
-                      {item.badge}
-                    </span>
-                    <span className="text-[10.5px] text-[#64748B] font-medium">{item.category}</span>
+                  <div className="flex gap-3.5 items-start">
+                    <div className="relative w-22 h-22 rounded-2xl overflow-hidden shrink-0 border border-gray-100 shadow-2xs">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <span className="absolute top-1 left-1 bg-[#6D28D9] text-white text-[8px] font-black px-1.5 py-0.2 rounded-xs">
+                        {item.badge}
+                      </span>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[10px] font-extrabold text-[#6D28D9] bg-purple-50 px-2 py-0.5 rounded-md inline-block">
+                        {item.category}
+                      </span>
+                      <h4 className="text-[13.5px] font-black text-gray-900 mt-1 leading-snug line-clamp-2">
+                        {item.title}
+                      </h4>
+                      <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2 leading-relaxed">
+                        {item.desc}
+                      </p>
+                      <span className="text-[10.5px] text-purple-700 font-bold block mt-1">
+                        Lembaga: {item.partner}
+                      </span>
+                    </div>
                   </div>
 
-                  <h4 className="text-[14.5px] font-extrabold text-[#1A1D26] mt-1 leading-snug">
-                    {item.title}
-                  </h4>
-                  <p className="text-[11.5px] text-gray-500 mt-1 leading-relaxed">
-                    {item.desc}
-                  </p>
-                  <span className="text-[10.5px] text-purple-700 font-bold block mt-1">
-                    Lembaga Pendidikan: {item.partner}
-                  </span>
-
-                  <div
-                    style={{
-                      borderTop: '1px solid #F0F2F5',
-                      paddingTop: '12px',
-                      marginTop: '12px',
-                    }}
-                    className="flex items-center justify-between"
-                  >
+                  <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between">
                     <div>
                       <span className="text-[10px] text-gray-400 block">Biaya Formulir / Program:</span>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-[16px] font-extrabold text-[#6D28D9]">
+                        <span className="text-[16px] font-black text-[#6D28D9]">
                           Rp{item.discountPrice.toLocaleString('id-ID')}
                         </span>
                         <span className="text-[11px] line-through text-gray-400">
@@ -1740,7 +1562,7 @@ export default function AlaHijrahPage() {
                         })
                         setShowCheckout(true)
                       }}
-                      className="px-4 py-2 bg-[#6D28D9] hover:bg-purple-900 text-white font-extrabold text-[12px] rounded-full active:scale-95 transition-all cursor-pointer shadow-xs"
+                      className="h-9 px-4 rounded-full bg-[#6D28D9] hover:bg-purple-900 text-white text-[12px] font-extrabold shadow-sm active:scale-95 transition-all cursor-pointer"
                     >
                       Daftar Program →
                     </button>

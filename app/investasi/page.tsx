@@ -348,18 +348,12 @@ export default function AlaInvestasiSyariahPage() {
             </span>
           </div>
 
-          {/* 4 Product Selector Grid */}
+          {/* 4 Product Selector Grid - Navigates to Dedicated Catalog Pages */}
           <div className="grid grid-cols-4 gap-2 pt-4 text-center">
             {/* 1. Reksa Dana Syariah */}
-            <button
-              type="button"
-              onClick={() => {
-                setActiveTab('reksadana')
-                setSelectedProductModal('reksadana')
-              }}
-              className={`flex flex-col items-center group cursor-pointer active:scale-95 transition-all ${
-                activeTab === 'reksadana' ? 'opacity-100' : 'opacity-80'
-              }`}
+            <Link
+              href="/investasi/reksadana"
+              className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
             >
               <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-[#059669] shadow-xs group-hover:bg-emerald-100">
                 <Sprout className="w-6 h-6 stroke-[2.2]" />
@@ -367,18 +361,12 @@ export default function AlaInvestasiSyariahPage() {
               <span className="text-[11px] font-bold text-[#1A1D26] mt-2 leading-tight">
                 Reksa Dana Syariah
               </span>
-            </button>
+            </Link>
 
             {/* 2. Emas Digital Syariah */}
-            <button
-              type="button"
-              onClick={() => {
-                setActiveTab('emas')
-                setSelectedProductModal('emas')
-              }}
-              className={`flex flex-col items-center group cursor-pointer active:scale-95 transition-all ${
-                activeTab === 'emas' ? 'opacity-100' : 'opacity-80'
-              }`}
+            <Link
+              href="/investasi/emas"
+              className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
             >
               <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shadow-xs group-hover:bg-amber-100">
                 <Coins className="w-6 h-6 stroke-[2.2]" />
@@ -386,18 +374,12 @@ export default function AlaInvestasiSyariahPage() {
               <span className="text-[11px] font-bold text-[#1A1D26] mt-2 leading-tight">
                 Emas Digital Syariah
               </span>
-            </button>
+            </Link>
 
             {/* 3. Ala Deposito Syariah */}
-            <button
-              type="button"
-              onClick={() => {
-                setActiveTab('deposito')
-                setSelectedProductModal('deposito')
-              }}
-              className={`flex flex-col items-center group cursor-pointer active:scale-95 transition-all ${
-                activeTab === 'deposito' ? 'opacity-100' : 'opacity-80'
-              }`}
+            <Link
+              href="/investasi/deposito"
+              className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
             >
               <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-[#1037A6] shadow-xs group-hover:bg-blue-100">
                 <Landmark className="w-6 h-6 stroke-[2.2]" />
@@ -405,18 +387,12 @@ export default function AlaInvestasiSyariahPage() {
               <span className="text-[11px] font-bold text-[#1A1D26] mt-2 leading-tight">
                 Ala Deposito Syariah
               </span>
-            </button>
+            </Link>
 
             {/* 4. Saham Syariah */}
-            <button
-              type="button"
-              onClick={() => {
-                setActiveTab('saham')
-                setSelectedProductModal('saham')
-              }}
-              className={`flex flex-col items-center group cursor-pointer active:scale-95 transition-all ${
-                activeTab === 'saham' ? 'opacity-100' : 'opacity-80'
-              }`}
+            <Link
+              href="/investasi/saham"
+              className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
             >
               <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-[#4338CA] shadow-xs group-hover:bg-indigo-100">
                 <CandlestickChart className="w-6 h-6 stroke-[2.2]" />
@@ -424,7 +400,7 @@ export default function AlaInvestasiSyariahPage() {
               <span className="text-[11px] font-bold text-[#1A1D26] mt-2 leading-tight">
                 Saham Syariah
               </span>
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -442,9 +418,9 @@ export default function AlaInvestasiSyariahPage() {
               </div>
               <div className="space-y-2.5">
                 {reksadanaList.map((item, idx) => (
-                  <div
+                  <Link
                     key={idx}
-                    onClick={() => setSelectedProductModal('reksadana')}
+                    href="/investasi/reksadana"
                     className="p-3 rounded-xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/20 transition-all cursor-pointer flex items-center justify-between"
                   >
                     <div>
@@ -456,9 +432,15 @@ export default function AlaInvestasiSyariahPage() {
                       <span className="text-[13px] font-black text-[#059669] font-mono block">{item.yield1Y}</span>
                       <span className="text-[10px] text-gray-400">Return 1 Thn</span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
+              <Link
+                href="/investasi/reksadana"
+                className="w-full mt-3 py-2.5 bg-[#1037A6] hover:bg-[#0c2b82] text-white font-extrabold text-[12px] rounded-xl active:scale-95 transition-all shadow-xs flex items-center justify-center gap-1.5"
+              >
+                Lihat Katalog Lengkap Reksa Dana Syariah →
+              </Link>
             </div>
           )}
 
@@ -485,13 +467,12 @@ export default function AlaInvestasiSyariahPage() {
               <p className="text-[11.5px] text-gray-500 leading-snug">
                 Akad Murabahah resmi. Simpanan emas tercatat fisik 1:1 dan dapat dicetak menjadi kepingan logam mulia Antam 24 Karat.
               </p>
-              <button
-                type="button"
-                onClick={() => setSelectedProductModal('emas')}
-                className="w-full mt-3 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-black text-[12px] rounded-xl active:scale-95 transition-all shadow-xs"
+              <Link
+                href="/investasi/emas"
+                className="w-full mt-3 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-black text-[12px] rounded-xl active:scale-95 transition-all shadow-xs flex items-center justify-center gap-1.5"
               >
-                Beli Emas Mulai Rp10.000
-              </button>
+                Buka Menu Transaksi &amp; Cetak Emas Fisik →
+              </Link>
             </div>
           )}
 
@@ -507,12 +488,9 @@ export default function AlaInvestasiSyariahPage() {
               </div>
               <div className="space-y-2">
                 {depositoOptions.map((opt) => (
-                  <div
+                  <Link
                     key={opt.tenor}
-                    onClick={() => {
-                      setDepositoTenor(opt.tenor as any)
-                      setSelectedProductModal('deposito')
-                    }}
+                    href="/investasi/deposito"
                     className="p-3 rounded-xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/20 transition-all cursor-pointer flex items-center justify-between"
                   >
                     <div>
@@ -523,9 +501,15 @@ export default function AlaInvestasiSyariahPage() {
                       <span className="text-[13.5px] font-black text-[#1037A6] font-mono">{opt.eqRate}</span>
                       <span className="text-[10px] text-gray-400 block">Indikasi Bagi Hasil</span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
+              <Link
+                href="/investasi/deposito"
+                className="w-full mt-3 py-2.5 bg-[#1037A6] hover:bg-[#0c2b82] text-white font-extrabold text-[12px] rounded-xl active:scale-95 transition-all shadow-xs flex items-center justify-center gap-1.5"
+              >
+                Buka Simulasi &amp; Pilihan Tenor Deposito →
+              </Link>
             </div>
           )}
 
@@ -541,32 +525,31 @@ export default function AlaInvestasiSyariahPage() {
               </div>
               <div className="space-y-2.5">
                 {sahamSyariahList.map((stk) => (
-                  <div
+                  <Link
                     key={stk.ticker}
-                    onClick={() => {
-                      setSelectedStock(stk.ticker)
-                      setSelectedProductModal('saham')
-                    }}
-                    className="p-3 rounded-xl border border-gray-100 hover:border-indigo-200 hover:bg-indigo-50/20 transition-all cursor-pointer flex items-center justify-between"
+                    href="/investasi/saham"
+                    className="p-3 rounded-xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/20 transition-all cursor-pointer flex items-center justify-between"
                   >
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[13.5px] font-black text-[#1A1D26]">{stk.ticker}</span>
-                        <span className="text-[9.5px] font-bold bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded">
-                          {stk.index}
-                        </span>
+                        <span className="text-[13px] font-black text-[#1A1D26]">{stk.ticker}</span>
+                        <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-1.5 py-0.2 rounded-sm">{stk.index}</span>
                       </div>
-                      <span className="text-[11px] text-gray-500 block truncate max-w-[200px]">
-                        {stk.name}
-                      </span>
+                      <span className="text-[10.5px] text-gray-500 block mt-0.5">{stk.name}</span>
                     </div>
                     <div className="text-right">
                       <span className="text-[13px] font-black text-gray-900 font-mono block">{stk.price}</span>
-                      <span className="text-[11px] font-black text-[#059669] font-mono">{stk.change}</span>
+                      <span className="text-[10.5px] font-bold text-[#059669]">{stk.change}</span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
+              <Link
+                href="/investasi/saham"
+                className="w-full mt-3 py-2.5 bg-[#4338CA] hover:bg-[#3730A3] text-white font-extrabold text-[12px] rounded-xl active:scale-95 transition-all shadow-xs flex items-center justify-center gap-1.5"
+              >
+                Buka Katalog Lengkap Saham Syariah (ISSI) →
+              </Link>
             </div>
           )}
         </div>

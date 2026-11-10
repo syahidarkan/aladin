@@ -43,6 +43,46 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
     greeting: (name) =>
       `Haiii ${name}! Mau mulai investasi syariah? Kerenn banget, yuk kembangkan aset halalmu bebas riba bareng Alan!`,
   },
+  '/investasi/reksadana': {
+    key: 'investasi-reksadana',
+    pose: 'pointing',
+    face: 'cheerful',
+    hasProp: true,
+    propKind: 'investasi',
+    accentColor: '#10B981',
+    greeting: (name) =>
+      `Haiii ${name}! Mau pilih reksa dana syariah terbaik? Mulai dari Rp10.000 diawasi OJK & DSN-MUI!`,
+  },
+  '/investasi/saham': {
+    key: 'investasi-saham',
+    pose: 'pointing',
+    face: 'cheerful',
+    hasProp: true,
+    propKind: 'investasi',
+    accentColor: '#4338CA',
+    greeting: (name) =>
+      `Haiii ${name}! Siap trading saham syariah ISSI? Transaksi halal transparan tanpa riba bareng Bank Aladin!`,
+  },
+  '/investasi/emas': {
+    key: 'investasi-emas',
+    pose: 'host-proud',
+    face: 'proud',
+    hasProp: true,
+    propKind: 'deposito',
+    accentColor: '#F59E0B',
+    greeting: (name) =>
+      `Haiii ${name}! Mau nabung atau cetak emas fisik Antam 24K? Lindungi nilai asetmu dengan amanah!`,
+  },
+  '/investasi/deposito': {
+    key: 'investasi-deposito',
+    pose: 'celebrate-max',
+    face: 'cheerful',
+    hasProp: true,
+    propKind: 'deposito',
+    accentColor: '#00F0A0',
+    greeting: (name) =>
+      `Haiii ${name}! Mau simpanan berjangka bagi hasil optimal? Nisbah hingga 85:15 dan dijamin LPS!`,
+  },
   '/qris': {
     key: 'qris',
     pose: 'peeking',
@@ -708,8 +748,8 @@ export default function FeatureWelcomeOverlay() {
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* 1. CHAT BUBBLE (SPEECH BUBBLE): Positioned high at the top (top-7), NEVER obscuring Alan or props! */}
-      <div className="absolute top-7 left-1/2 -translate-x-1/2 z-30 max-w-[320px] w-[88%] pointer-events-none">
+      {/* 1. CHAT BUBBLE (SPEECH BUBBLE): Positioned lowered near Alan without obstructing his face or props */}
+      <div className="absolute top-[21%] left-1/2 -translate-x-1/2 z-30 max-w-[310px] w-[86%] pointer-events-none">
         <div className="relative bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-white/80 animate-in fade-in zoom-in-95 duration-300">
           <div className="flex items-start gap-2.5">
             <div className="w-6 h-6 rounded-full bg-[#1037A6] flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
@@ -723,11 +763,13 @@ export default function FeatureWelcomeOverlay() {
           </div>
           {/* Comic Chat Bubble Pointer Arrow pointing down toward Alan */}
           <div
-            className="absolute -bottom-2 left-10 w-4 h-4 bg-white/95 rotate-45 border-r border-b border-white/80"
+            className={`absolute -bottom-2 w-4 h-4 bg-white/95 rotate-45 border-r border-b border-white/80 ${
+              activeConfig.hasProp ? 'left-14' : 'left-1/2 -translate-x-1/2'
+            }`}
           />
         </div>
 
-        <span className="text-[11px] text-white/60 mt-2.5 font-medium tracking-wide block text-center">
+        <span className="text-[11px] text-white/70 mt-2 font-semibold tracking-wide block text-center drop-shadow-sm">
           Ketuk layar di mana saja untuk mulai
         </span>
       </div>
@@ -745,7 +787,7 @@ export default function FeatureWelcomeOverlay() {
       {/* 3D WebGL Canvas: Alan Mascot + Feature Thematic Props (Positioned lower, completely clear of bubble) */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
         <Canvas
-          camera={{ position: [0, -0.20, 6.2], fov: 27 }}
+          camera={{ position: [0, -0.28, 6.0], fov: 27 }}
           gl={{ antialias: true, alpha: true }}
           style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
         >
@@ -756,7 +798,7 @@ export default function FeatureWelcomeOverlay() {
           <pointLight position={[1.8, -0.2, 2.5]} intensity={2.2} color="#60A5FA" />
 
           {/* Alan Mascot: centered if no prop, or offset left if prop is present */}
-          <group position={[alanX, -0.38, 0]}>
+          <group position={[alanX, -0.52, 0]}>
             <CarpetModel
               pose={activeConfig.pose}
               face={activeConfig.face}
@@ -768,7 +810,7 @@ export default function FeatureWelcomeOverlay() {
 
           {/* Thematic Feature Prop: only rendered when hasProp is true */}
           {activeConfig.hasProp && (
-            <group position={[0.34, -0.38, 0]}>
+            <group position={[0.34, -0.52, 0]}>
               <ThematicFeatureProp propKind={activeConfig.propKind} />
             </group>
           )}
