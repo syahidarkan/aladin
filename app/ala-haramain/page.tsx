@@ -6,8 +6,6 @@ import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import { useBankState, convertIdrToSar, paySaudiMerchant, depositAlaDompet } from '@/lib/bankState'
 import { useMascot } from '@/context/MascotContext'
-import { Canvas } from '@react-three/fiber'
-import CarpetModel from '@/components/mascot/CarpetModel'
 import DigitalVerticalCard from '@/components/card/DigitalVerticalCard'
 import {
   ArrowLeft,
@@ -1431,7 +1429,7 @@ export default function AlaHaramainHubPage() {
           >
             <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4 shrink-0" />
 
-            <div className="flex justify-between items-center mb-2 pb-2 border-b border-gray-100">
+            <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-100">
               <div>
                 <h3 className="text-[17px] font-extrabold text-[#1A1D26]">Tukar Saldo ke SAR</h3>
                 <p className="text-[11.5px] text-gray-500">Kurs Transparan SAMA • 0% Markup Admin</p>
@@ -1442,21 +1440,6 @@ export default function AlaHaramainHubPage() {
               >
                 <X className="w-4 h-4" />
               </button>
-            </div>
-
-            {/* 3D Alan Barrel-Roll Real-Time FX per Animation Brief */}
-            <div className="w-[140px] h-[95px] mx-auto -mb-1 relative">
-              <Canvas
-                camera={{ position: [0, 0.05, 5.2], fov: 32 }}
-                gl={{ antialias: true, alpha: true }}
-                style={{ width: '100%', height: '100%' }}
-              >
-                <ambientLight intensity={2.2} />
-                <directionalLight position={[2, 4, 3]} intensity={2.6} />
-                <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
-                <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
-                <CarpetModel pose="barrel-roll" face="cheerful" interactive={false} scale={0.65} />
-              </Canvas>
             </div>
 
             <div className="space-y-3 mb-5">
@@ -1514,28 +1497,8 @@ export default function AlaHaramainHubPage() {
             className="w-full max-w-sm bg-white rounded-3xl text-center shadow-2xl animate-in zoom-in-95 duration-200"
             style={{ boxSizing: 'border-box', padding: '24px 24px 32px 24px' }}
           >
-            {/* 3D Alan NFC Tap Spring Bounce per Animation Brief */}
-            <div className="w-[150px] h-[100px] mx-auto -mb-2 relative">
-              <Canvas
-                camera={{ position: [0, 0.05, 5.2], fov: 32 }}
-                gl={{ antialias: true, alpha: true }}
-                style={{ width: '100%', height: '100%' }}
-              >
-                <ambientLight intensity={2.2} />
-                <directionalLight position={[2, 4, 3]} intensity={2.6} />
-                <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
-                <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
-                <CarpetModel
-                  pose={nfcSuccess ? 'celebrate-max' : nfcTapping ? 'nfc-tap' : 'stand'}
-                  face={nfcSuccess ? 'wink' : 'cheerful'}
-                  interactive={false}
-                  scale={0.68}
-                />
-              </Canvas>
-            </div>
-
-            <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-3 text-[#064E3B]">
-              <Radio className={`w-7 h-7 ${nfcTapping ? 'animate-bounce' : ''}`} />
+            <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4 text-[#064E3B]">
+              <Radio className={`w-10 h-10 ${nfcTapping ? 'animate-bounce' : ''}`} />
             </div>
 
             <h3 className="text-[18px] font-extrabold text-[#1A1D26]">

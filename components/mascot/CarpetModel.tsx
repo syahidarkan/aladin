@@ -154,15 +154,15 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
     Corner_RR: { x: 0.12, y: 0, z: 0 },
   },
   waving: {
-    Spine_0: { x: 0.18, y: 0.05, z: 0.02 },
-    Spine_1: { x: 0.12, y: 0, z: 0 },
-    Spine_2: { x: -0.08, y: 0, z: 0 },
-    Spine_3: { x: -0.16, y: 0, z: 0 },
-    Spine_4: { x: 0.22, y: 0, z: 0 },
-    Corner_FL: { x: -0.04, y: 0.06, z: 0.02 },
-    Corner_FR: { x: 0.35, y: -0.25, z: -0.45 }, // Right corner lifted high & waving
-    Corner_RL: { x: 0.1, y: 0, z: 0 },
-    Corner_RR: { x: 0.1, y: 0, z: 0 },
+    Spine_0: { x: 0.0, y: 0.0, z: 0.0 },
+    Spine_1: { x: 0.0, y: 0.0, z: 0.0 },
+    Spine_2: { x: 0.0, y: 0.0, z: 0.0 },
+    Spine_3: { x: 0.0, y: 0.0, z: 0.0 },
+    Spine_4: { x: 0.0, y: 0.0, z: 0.0 },
+    Corner_FL: { x: 0.0, y: 0.0, z: 0.0 },
+    Corner_FR: { x: 0.45, y: -0.25, z: -0.55 }, // Right corner lifted & waving halo
+    Corner_RL: { x: 0.0, y: 0.0, z: 0.0 },
+    Corner_RR: { x: 0.0, y: 0.0, z: 0.0 },
   },
   pointing: {
     Spine_0: { x: 0.14, y: 0.20, z: -0.08 },
@@ -275,13 +275,13 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
     Corner_RR: { x: 0.28, y: 0.15, z: 0.25 },
   },
   'roll-cylinder': {
-    Spine_0: { x: 0.85, y: 0, z: 0 }, // Rolling into cylinder scroll
-    Spine_1: { x: 0.85, y: 0, z: 0 },
-    Spine_2: { x: 0.75, y: 0, z: 0 },
-    Spine_3: { x: 0.70, y: 0, z: 0 },
-    Spine_4: { x: 0.65, y: 0, z: 0 },
-    Corner_FL: { x: 0.3, y: 0.1, z: 0.1 },
-    Corner_FR: { x: 0.3, y: -0.1, z: -0.1 },
+    Spine_0: { x: 0.18, y: 0, z: 0 }, // Head lip up smiling at user
+    Spine_1: { x: -0.15, y: 0, z: 0 },
+    Spine_2: { x: 0.45, y: 0, z: 0 }, // Body rolled into cylinder scroll
+    Spine_3: { x: 0.55, y: 0, z: 0 },
+    Spine_4: { x: 0.45, y: 0, z: 0 },
+    Corner_FL: { x: 0.25, y: -0.15, z: -0.2 },
+    Corner_FR: { x: 0.25, y: 0.15, z: 0.2 },
     Corner_RL: { x: 0.2, y: 0.1, z: 0.1 },
     Corner_RR: { x: 0.2, y: -0.1, z: -0.1 },
   },
@@ -1112,7 +1112,7 @@ export default function CarpetModel({
 
     // Group floating levitation & orientation
     if (groupRef.current) {
-      if (pose === 'idle') {
+      if (pose === 'idle' || pose === 'waving') {
         const levitateY = Math.sin(t * 1.8) * 0.05
         groupRef.current.position.set(0.0, 0.04 + levitateY, 0.0)
 
@@ -1143,7 +1143,7 @@ export default function CarpetModel({
           groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, 0, 4.0, delta)
           groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, 0, 4.0, delta)
         }
-      } else if (pose === 'stand' || pose === 'waving' || pose === 'clapping') {
+      } else if (pose === 'stand' || pose === 'clapping') {
         const levitateY = Math.sin(t * 1.5) * 0.02
         groupRef.current.position.set(0.0, -0.04 + levitateY, 0.0)
 
@@ -1156,12 +1156,14 @@ export default function CarpetModel({
           groupRef.current.rotation.set(0, 0, 0)
         }
       } else if (pose === 'celebrate-max') {
-        const levitateY = Math.sin(t * 3.5) * 0.12
-        groupRef.current.position.set(0.0, 0.15 + levitateY, 0.0)
-        groupRef.current.rotation.y += delta * 1.5
+        const levitateY = Math.sin(t * 4.0) * 0.08
+        groupRef.current.position.set(0.0, 0.05 + levitateY, 0.0)
+        groupRef.current.rotation.y = Math.sin(t * 2.5) * 0.12
+        groupRef.current.rotation.z = Math.sin(t * 3.5) * 0.08
       } else if (pose === 'barrel-roll') {
-        groupRef.current.rotation.z += delta * 8.0
-        groupRef.current.position.y = Math.sin(t * 4.0) * 0.08
+        groupRef.current.rotation.z = Math.sin(t * 3.0) * 0.25
+        groupRef.current.rotation.y = Math.cos(t * 2.5) * 0.15
+        groupRef.current.position.y = Math.sin(t * 3.0) * 0.06
       } else if (pose === 'loading') {
         const tFlight = t * 1.5
         groupRef.current.position.x = Math.sin(tFlight) * 0.35

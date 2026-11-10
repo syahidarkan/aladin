@@ -8,6 +8,7 @@ import CarpetFloatingBuddy from '@/components/mascot/CarpetFloatingBuddy'
 import CarpetPageTransition from '@/components/mascot/CarpetPageTransition'
 import CarpetLoader from '@/components/mascot/CarpetLoader'
 import CarpetReactionToast from '@/components/mascot/CarpetReactionToast'
+import FeatureWelcomeOverlay from '@/components/mascot/FeatureWelcomeOverlay'
 import { useMascot } from '@/context/MascotContext'
 
 export default function PhoneFrame({ children }: { children: React.ReactNode }) {
@@ -196,6 +197,7 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
         {!showSplash && <BottomNav />}
 
         {/* Global 3D Mascot Transition & Overlays - Covers ENTIRE phone screen including BottomNav */}
+        <FeatureWelcomeOverlay />
         <CarpetPageTransition />
         <CarpetLoader />
         <CarpetReactionToast />

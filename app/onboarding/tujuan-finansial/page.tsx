@@ -5,8 +5,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import StatusBar from '@/components/StatusBar'
-import { Canvas } from '@react-three/fiber'
-import CarpetModel, { CarpetPose } from '@/components/mascot/CarpetModel'
 import { useBankState } from '@/lib/bankState'
 import { useMascot } from '@/context/MascotContext'
 import {
@@ -38,7 +36,6 @@ export default function TujuanFinansialPage() {
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4>(1)
   const [selectedGoal, setSelectedGoal] = useState<string>('ibadah')
   const [abVariant, setAbVariant] = useState<'goal-based' | 'standard'>('goal-based')
-  const [alanPose, setAlanPose] = useState<CarpetPose>('curious-think')
 
   // Step 2 Customization States
   const [targetAmount, setTargetAmount] = useState('35.000.000')
@@ -117,11 +114,6 @@ export default function TujuanFinansialPage() {
       setTargetAmount(selected.defaultTarget)
       setMonthlyAutoDebit(selected.defaultMonthly)
     }
-    // Alan points to recommendation then claps happily per animation brief
-    setAlanPose('pointing')
-    setTimeout(() => {
-      setAlanPose('clapping')
-    }, 1100)
     triggerReaction('success', `Fokus ${selected?.title} dipilih.`)
   }
 
@@ -230,33 +222,6 @@ export default function TujuanFinansialPage() {
         {/* ================= STEP 1: PILIH FOKUS FINANSIAL ================= */}
         {currentStep === 1 && (
           <>
-            {/* 3D Companion Alan listening curiously & cheering per animation brief */}
-            <div className="bg-gradient-to-r from-blue-50/80 via-white to-emerald-50/50 rounded-2xl p-3 border border-[#E0E7FF] flex items-center justify-between mb-2 shadow-2xs">
-              <div className="flex-1 pr-2">
-                <span className="text-[10px] font-black text-[#1037A6] bg-blue-100/80 px-2 py-0.5 rounded-full uppercase tracking-wider inline-block mb-1">
-                  Pendamping Finansial
-                </span>
-                <p className="text-[12px] font-bold text-[#1A1D26] leading-snug">
-                  {alanPose === 'curious-think' && 'Alan menyimak... pilih fokus keuangan utamamu!'}
-                  {alanPose === 'pointing' && 'Pilihan tepat! Simak rekomendasi aksi berikut.'}
-                  {alanPose === 'clapping' && 'Mabruk! Selamat atas langkah awal berkahmu!'}
-                </p>
-              </div>
-              <div className="w-[88px] h-[74px] shrink-0 relative">
-                <Canvas
-                  camera={{ position: [0, 0.05, 5.2], fov: 32 }}
-                  gl={{ antialias: true, alpha: true }}
-                  style={{ width: '100%', height: '100%' }}
-                >
-                  <ambientLight intensity={2.2} />
-                  <directionalLight position={[2, 4, 3]} intensity={2.6} />
-                  <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
-                  <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
-                  <CarpetModel pose={alanPose} interactive={false} followCursor={true} scale={0.7} />
-                </Canvas>
-              </div>
-            </div>
-
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-[10px] font-extrabold uppercase tracking-wider bg-[#1037A6] text-white px-2.5 py-0.5 rounded-full">

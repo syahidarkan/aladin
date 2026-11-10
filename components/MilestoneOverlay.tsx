@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import confetti from 'canvas-confetti'
-import { Canvas } from '@react-three/fiber'
-import CarpetModel, { CarpetPose } from '@/components/mascot/CarpetModel'
 
 export type MilestoneType = 'ihram' | 'soetta' | 'pesawat' | 'jeddah' | 'kabah'
 
@@ -862,43 +860,17 @@ export default function MilestoneOverlay({ milestone, onClose }: MilestoneOverla
         </div>
       </div>
 
-      {/* Center 3D Mascot & Landmark Viewport */}
+      {/* Center 3D Canvas Viewport */}
       <div className="relative flex flex-col items-center justify-center my-auto animate-in zoom-in-90 duration-700">
         {/* Glowing Radial Aura */}
         <div className="absolute w-64 h-64 rounded-full bg-gradient-to-tr from-[#1C20C4]/30 via-[#00F3AD]/25 to-transparent blur-2xl pointer-events-none" />
 
-        {/* 3D Alan Flying Mascot Milestone Performance per Animation Brief */}
-        <div className="w-[200px] h-[130px] relative z-20 -mb-4">
-          <Canvas
-            camera={{ position: [0, 0.05, 5.2], fov: 32 }}
-            gl={{ antialias: true, alpha: true }}
-            style={{ width: '100%', height: '100%' }}
-          >
-            <ambientLight intensity={2.2} />
-            <directionalLight position={[2, 4, 3]} intensity={2.6} />
-            <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
-            <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
-            <CarpetModel
-              pose={
-                milestone.threshold <= 1000000
-                  ? 'ihrom-bow'
-                  : milestone.threshold <= 15000000
-                  ? 'jet-glide'
-                  : 'tawaf-spiral'
-              }
-              face="cheerful"
-              interactive={false}
-              scale={0.78}
-            />
-          </Canvas>
-        </div>
-
-        {/* Landmark 3D Canvas */}
+        {/* 3D Canvas */}
         <canvas
           ref={canvasRef}
-          width={240}
-          height={200}
-          className="relative z-10 w-[220px] h-[180px] drop-shadow-[0_15px_30px_rgba(0,0,0,0.6)]"
+          width={280}
+          height={280}
+          className="relative z-10 w-[240px] h-[240px] drop-shadow-[0_15px_30px_rgba(0,0,0,0.6)]"
         />
 
         {/* Chanted Soundwave Pill */}

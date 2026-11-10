@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Canvas } from '@react-three/fiber'
 import { useMascot } from '@/context/MascotContext'
 import CarpetModel, { CarpetPose } from './CarpetModel'
-import { HelpCircle, Headphones, MessageCircle, Send, X } from 'lucide-react'
+import { HelpCircle, Headphones, Video, MessageCircle, Send, X } from 'lucide-react'
 
 interface ChatMessage {
   id: string
@@ -17,17 +18,20 @@ interface ChatMessage {
 /**
  * Floating CS Companion Mascot ("Alan" - Floating Buddy)
  * Replaces the static CS button above the bottom bar with an animated 3D companion.
- * Follows Animation Director Brief:
- * - Idle: Alan stands upright on his tassels, occasionally waving his front-right corner "Halo!".
- * - Tap: Performs an acrobatic flip salto jump, lands with a polite bow, and opens WhatsApp Concierge.
+ * Follows User Specification:
+ * - Position & Pose: Restored to previous horizontal floating idle S-curve, with followCursor.
+ * - Periodic Waving: Occasionally lifts front-right corner and waves greeting "Halo!".
+ * - Tap: 360° spin animation, opens Relationship Desk & Chat Concierge.
  */
 export default function CarpetFloatingBuddy() {
   const pathname = usePathname()
-  const { isBuddyVisible } = useMascot()
+  const { isBuddyVisible, triggerReaction } = useMascot()
 
   const [isOpen, setIsOpen] = useState(false)
-  const [buddyPose, setBuddyPose] = useState<CarpetPose>('stand')
-  const [isSalto, setIsSalto] = useState(false)
+  const [activeTab, setActiveTab] = useState<'chat' | 'video'>('chat')
+  const [buddyPose, setBuddyPose] = useState<CarpetPose>('idle')
+  const [isSpinning, setIsSpinning] = useState(false)
+  const [isBouncing, setIsBouncing] = useState(false)
 
   // Chat State
   const [inputMsg, setInputMsg] = useState('')
@@ -41,6 +45,13 @@ export default function CarpetFloatingBuddy() {
     },
   ])
 
+  const quickQuestions = [
+    'Kendala Transfer & Sumber Dana',
+    'Tanya Tabungan Umrah & Haji',
+    'Kartu Debit Visa Virtual',
+    'Bebas Biaya Admin Alfamart',
+  ]
+
   // Periodic waving greeting animation in idle state
   useEffect(() => {
     if (isOpen) return
@@ -52,7 +63,7 @@ export default function CarpetFloatingBuddy() {
       waveTimer = setTimeout(() => {
         setBuddyPose('waving')
         resetTimer = setTimeout(() => {
-          setBuddyPose('stand')
+          setBuddyPose('idle')
           scheduleWave()
         }, 2400)
       }, 7000 + Math.random() * 4000)
@@ -72,14 +83,14 @@ export default function CarpetFloatingBuddy() {
   }
 
   const handleBuddyClick = () => {
-    // 1. Acrobatic Flip Salto Jump
-    setIsSalto(true)
-    setBuddyPose('polite-bow')
+    setIsSpinning(true)
+    setTimeout(() => setIsSpinning(false), 500)
+    setIsOpen(!isOpen)
+  }
 
-    setTimeout(() => {
-      setIsSalto(false)
-      setIsOpen(true)
-    }, 480)
+  const handleHover = () => {
+    setIsBouncing(true)
+    setTimeout(() => setIsBouncing(false), 450)
   }
 
   const handleSend = (textToSend?: string) => {
@@ -149,39 +160,57 @@ export default function CarpetFloatingBuddy() {
         <button
           type="button"
           onClick={handleBuddyClick}
+          onMouseEnter={handleHover}
           aria-label="Staff Aladin & Concierge"
           className={`relative group cursor-pointer transition-all duration-300 ${
-            isSalto ? 'animate-mascot-spin -translate-y-4 scale-110' : ''
+            isSpinning ? 'animate-mascot-spin' : isBouncing ? '-translate-y-2' : ''
           }`}
           style={{
             width: '84px',
-            height: '72px',
+            height: '76px',
             background: 'transparent',
             border: 'none',
-            padding: 0,
             outline: 'none',
+            padding: 0,
           }}
         >
-          {/* 3D WebGL Rigged Mascot Floating */}
+          {/* Subtle Ambient Glow behind Mascot */}
+          <div
+            className="absolute inset-0 rounded-full blur-xl pointer-events-none opacity-60 group-hover:opacity-100 transition-opacity"
+            style={{
+              background: 'radial-gradient(circle, rgba(0, 240, 160, 0.45) 0%, rgba(16, 55, 166, 0.1) 70%, transparent 100%)',
+            }}
+          />
+
+          {/* Sparkles / Magic Aura */}
+          <span className="absolute -top-1 left-2 text-[#00F0A0] text-xs animate-pulse pointer-events-none">✦</span>
+          <span className="absolute top-1 right-1 text-[#00F0A0] text-[10px] animate-ping pointer-events-none">●</span>
+
+          {/* 3D WebGL Rigged Mascot Floating with Overflow Unconstrained */}
           <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 group-hover:scale-105"
             style={{
-              width: '220px',
-              height: '180px',
-              filter: 'drop-shadow(0 6px 16px rgba(0, 240, 160, 0.45)) drop-shadow(0 2px 6px rgba(16, 55, 166, 0.35))',
+              width: '180px',
+              height: '150px',
+              filter: 'drop-shadow(0 6px 14px rgba(0, 240, 160, 0.35)) drop-shadow(0 2px 4px rgba(16, 55, 166, 0.25))',
             }}
           >
             <Canvas
-              camera={{ position: [0, 0.05, 5.6], fov: 32 }}
+              camera={{ position: [0, 0.05, 5.2], fov: 32 }}
               gl={{ antialias: true, alpha: true }}
               style={{ width: '100%', height: '100%' }}
             >
               <ambientLight intensity={2.2} />
               <directionalLight position={[2, 4, 3]} intensity={2.6} />
-              <pointLight position={[0, 0.3, 2.8]} intensity={3.2} color="#FFFFFF" />
+              <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
               <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
-              <pointLight position={[1.2, -0.2, 2.2]} intensity={1.6} color="#60A5FA" />
-              <CarpetModel pose={buddyPose} interactive={true} followCursor={true} scale={0.68} />
+              <pointLight position={[1.2, -0.2, 2.2]} intensity={1.5} color="#60A5FA" />
+              <CarpetModel
+                pose={buddyPose}
+                interactive={true}
+                followCursor={true}
+                scale={0.62}
+              />
             </Canvas>
           </div>
 
@@ -199,7 +228,7 @@ export default function CarpetFloatingBuddy() {
           className="absolute inset-0 z-[120] bg-black/60 backdrop-blur-xs flex flex-col justify-end"
           onClick={() => {
             setIsOpen(false)
-            setBuddyPose('stand')
+            setBuddyPose('idle')
           }}
         >
           <div
@@ -235,83 +264,158 @@ export default function CarpetFloatingBuddy() {
                 type="button"
                 onClick={() => {
                   setIsOpen(false)
-                  setBuddyPose('stand')
+                  setBuddyPose('idle')
                 }}
-                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors"
-                aria-label="Tutup"
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* WhatsApp Direct Concierge Pill */}
-            <div className="px-5 py-2.5 bg-emerald-50/70 border-b border-emerald-100 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[11.5px] font-bold text-emerald-900">
-                  Respon Instan via WhatsApp Resmi Aladin
-                </span>
-              </div>
-              <a
-                href="https://wa.me/628118888888"
-                target="_blank"
-                rel="noreferrer"
-                className="text-[11px] font-extrabold text-emerald-700 bg-white px-2.5 py-1 rounded-full border border-emerald-300 hover:bg-emerald-100 flex items-center gap-1 shadow-xs"
-              >
-                <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Buka WA</span>
-              </a>
-            </div>
-
-            {/* Messages Chat Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[220px] max-h-[360px] bg-gray-50/50">
-              {messages.map((m) => (
-                <div
-                  key={m.id}
-                  className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
-                >
-                  <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-[12.5px] leading-relaxed shadow-xs ${
-                      m.sender === 'user'
-                        ? 'bg-[#1037A6] text-white rounded-br-xs'
-                        : 'bg-white text-gray-800 border border-gray-100 rounded-bl-xs'
-                    }`}
-                  >
-                    {m.text}
-                  </div>
-                  <span className="text-[9.5px] text-gray-400 mt-1 px-1">{m.time}</span>
-                </div>
-              ))}
-              {isTyping && (
-                <div className="flex items-center gap-1.5 bg-white border border-gray-100 rounded-full px-3 py-1.5 w-fit">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#1037A6] animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#1037A6] animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#00F0A0] animate-bounce" style={{ animationDelay: '300ms' }} />
-                </div>
-              )}
-            </div>
-
-            {/* Bottom Message Input */}
-            <div className="p-3 bg-white border-t border-gray-100 flex items-center gap-2">
-              <input
-                type="text"
-                value={inputMsg}
-                onChange={(e) => setInputMsg(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleSend()
-                }}
-                placeholder="Ketik pertanyaan untuk Aladin Care..."
-                className="flex-1 text-[13px] bg-gray-100 rounded-full px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#1037A6]/30 text-gray-800"
-              />
+            {/* Navigation Tabs between Chat and Video Support */}
+            <div className="flex border-b border-gray-100 px-5 bg-white">
               <button
                 type="button"
-                onClick={() => handleSend()}
-                disabled={!inputMsg.trim()}
-                className="w-10 h-10 rounded-full bg-[#1037A6] text-white flex items-center justify-center hover:bg-[#0c2e91] active:scale-95 transition-transform disabled:opacity-40 cursor-pointer shadow-sm"
+                onClick={() => setActiveTab('chat')}
+                className={`py-2.5 px-3 text-[13px] font-extrabold border-b-2 flex items-center gap-2 transition-all cursor-pointer ${
+                  activeTab === 'chat'
+                    ? 'border-[#1037A6] text-[#1037A6]'
+                    : 'border-transparent text-gray-400 hover:text-gray-600'
+                }`}
               >
-                <Send className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4" />
+                Chat Online
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('video')}
+                className={`py-2.5 px-3 text-[13px] font-extrabold border-b-2 flex items-center gap-2 transition-all cursor-pointer ${
+                  activeTab === 'video'
+                    ? 'border-[#1037A6] text-[#1037A6]'
+                    : 'border-transparent text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                <Video className="w-4 h-4" />
+                Video Call
+                <span className="text-[9.5px] bg-[#00F0A0]/20 text-[#059669] px-1.5 py-0.5 rounded-full font-bold">
+                  Buku Tabungan
+                </span>
               </button>
             </div>
+
+            {/* Content Tab 1: Live Chat Concierge */}
+            {activeTab === 'chat' && (
+              <div className="flex flex-col flex-1 min-h-[300px]">
+                {/* Chat Scroll Area */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#F8FAFC]">
+                  {messages.map((m) => (
+                    <div
+                      key={m.id}
+                      className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
+                    >
+                      <div
+                        className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-[13px] leading-relaxed shadow-xs ${
+                          m.sender === 'user'
+                            ? 'bg-[#1037A6] text-white rounded-br-xs'
+                            : 'bg-white text-gray-800 border border-gray-100 rounded-bl-xs'
+                        }`}
+                      >
+                        {m.text}
+                      </div>
+                      <span className="text-[9.5px] text-gray-400 mt-1 px-1">{m.time}</span>
+                    </div>
+                  ))}
+                  {isTyping && (
+                    <div className="flex items-center gap-1.5 bg-white border border-gray-100 rounded-full px-3 py-1.5 w-fit">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#1037A6] animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#1037A6] animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#00F0A0] animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </div>
+                  )}
+                </div>
+
+                {/* Quick Questions Pills */}
+                <div className="px-4 py-2 flex gap-1.5 overflow-x-auto no-scrollbar border-t border-gray-100 bg-gray-50/50">
+                  {quickQuestions.map((q, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handleSend(q)}
+                      className="shrink-0 text-[11px] font-semibold text-[#1037A6] bg-blue-50/80 hover:bg-blue-100 px-3 py-1.5 rounded-full border border-blue-200/60 active:scale-95 transition-all cursor-pointer"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Bottom Message Input */}
+                <div className="p-3 bg-white border-t border-gray-100 flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={inputMsg}
+                    onChange={(e) => setInputMsg(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleSend()
+                    }}
+                    placeholder="Ketik pertanyaan untuk Aladin Care..."
+                    className="flex-1 text-[13px] bg-gray-100 rounded-full px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#1037A6]/30 text-gray-800"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleSend()}
+                    disabled={!inputMsg.trim()}
+                    className="w-10 h-10 rounded-full bg-[#1037A6] text-white flex items-center justify-center hover:bg-[#0c2e91] active:scale-95 transition-transform disabled:opacity-40 cursor-pointer shadow-sm"
+                  >
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Content Tab 2: Video Call & Direct Escalations */}
+            {activeTab === 'video' && (
+              <div className="p-5 space-y-4">
+                <div className="rounded-2xl p-4 bg-gradient-to-br from-[#EEF2FF] to-[#E0E7FF] border border-[#C7D2FE] flex items-start gap-3.5">
+                  <div className="w-10 h-10 rounded-xl bg-[#1037A6] text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <Video className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-[13.5px] font-extrabold text-[#1037A6]">
+                      Tatap Muka Digital Relationship Desk
+                    </h4>
+                    <p className="text-[11.5px] text-[#475569] mt-0.5 leading-relaxed">
+                      Hubungkan kamera dan mikrofon smartphone untuk verifikasi identitas, aktivasi buku tabungan impian, atau konsultasi finansial syariah.
+                    </p>
+                  </div>
+                </div>
+
+                <Link
+                  href="/bantu/video-call"
+                  onClick={() => {
+                    setIsOpen(false)
+                    triggerReaction('success', 'Menghubungkan ke Video Call Relationship Desk...')
+                  }}
+                  className="w-full py-3.5 px-4 rounded-xl bg-[#1037A6] hover:bg-[#0D2D8A] text-white font-extrabold text-[13.5px] flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all"
+                >
+                  <Video className="w-4 h-4 text-white" />
+                  Mulai Video Call Sekarang
+                </Link>
+
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      alert('Membuka WhatsApp resmi Bank Aladin Syariah (+62 811 1500 123)...')
+                      setIsOpen(false)
+                    }}
+                    className="w-full py-3.5 px-4 rounded-xl border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-100/70 text-[13px] font-extrabold text-[#065F46] flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                  >
+                    <MessageCircle className="w-4 h-4 text-[#10B981]" />
+                    <span>Chat WhatsApp Resmi Aladin (+62 811 1500 123)</span>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

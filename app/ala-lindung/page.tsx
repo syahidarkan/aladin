@@ -4,8 +4,6 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
-import { Canvas } from '@react-three/fiber'
-import CarpetModel, { CarpetPose } from '@/components/mascot/CarpetModel'
 import { useBankState } from '@/lib/bankState'
 import { useMascot } from '@/context/MascotContext'
 import {
@@ -33,8 +31,6 @@ export default function AlaLindungPage() {
   const [beneficiaryName, setBeneficiaryName] = useState('Fatimah Az-Zahra')
   const [beneficiaryRelation, setBeneficiaryRelation] = useState('Istri')
   const [claimAmount, setClaimAmount] = useState('25.000.000')
-
-  const alanPose: CarpetPose = activeTab === 'polis' ? 'shielding' : 'stand'
 
   const handleClaimSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -138,19 +134,9 @@ export default function AlaLindungPage() {
                   </p>
                 </div>
 
-                {/* 3D Alan Live Mascot in Shielding Pose */}
-                <div className="w-[100px] h-[90px] shrink-0 relative -mr-2">
-                  <Canvas
-                    camera={{ position: [0, 0.05, 5.2], fov: 32 }}
-                    gl={{ antialias: true, alpha: true }}
-                    style={{ width: '100%', height: '100%' }}
-                  >
-                    <ambientLight intensity={2.2} />
-                    <directionalLight position={[2, 4, 3]} intensity={2.6} />
-                    <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
-                    <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
-                    <CarpetModel pose="shielding" interactive={false} scale={0.72} />
-                  </Canvas>
+                {/* Shield Icon Badge */}
+                <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0 shadow-md">
+                  <ShieldCheck className="w-8 h-8 text-[#00F0A0]" />
                 </div>
               </div>
 
@@ -260,19 +246,9 @@ export default function AlaLindungPage() {
                 </p>
               </div>
 
-              {/* 3D Alan in Polite / Empathetic Pose */}
-              <div className="w-[84px] h-[78px] shrink-0 relative">
-                <Canvas
-                  camera={{ position: [0, 0.05, 5.2], fov: 32 }}
-                  gl={{ antialias: true, alpha: true }}
-                  style={{ width: '100%', height: '100%' }}
-                >
-                  <ambientLight intensity={2.2} />
-                  <directionalLight position={[2, 4, 3]} intensity={2.6} />
-                  <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
-                  <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
-                  <CarpetModel pose="polite-bow" face="chill" interactive={false} scale={0.7} />
-                </Canvas>
+              {/* Empathetic Support Icon Badge */}
+              <div className="w-12 h-12 rounded-2xl bg-[#1037A6]/10 text-[#1037A6] flex items-center justify-center shrink-0">
+                <HeartHandshake className="w-6 h-6 text-[#1037A6]" />
               </div>
             </div>
 
@@ -405,3 +381,4 @@ export default function AlaLindungPage() {
     </div>
   )
 }
+

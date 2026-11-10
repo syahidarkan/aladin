@@ -7,8 +7,6 @@ import DigitalVerticalCard from '@/components/card/DigitalVerticalCard'
 import StatusBar from '@/components/StatusBar'
 import { useBankState } from '@/lib/bankState'
 import { useMascot } from '@/context/MascotContext'
-import { Canvas } from '@react-three/fiber'
-import CarpetModel, { CarpetPose, MascotFace } from '@/components/mascot/CarpetModel'
 import {
   ArrowLeft,
   HelpCircle,
@@ -45,8 +43,6 @@ export default function VirtualCardPage() {
   const [showBiometricModal, setShowBiometricModal] = useState(false)
   const [cvvTimer, setCvvTimer] = useState(30)
   const [copied, setCopied] = useState(false)
-  const [cardMascotPose, setCardMascotPose] = useState<CarpetPose>('idle')
-  const [cardMascotFace, setCardMascotFace] = useState<MascotFace>('cheerful')
 
   // Modals & Bottom Sheets
   const [showHistoryModal, setShowHistoryModal] = useState(false)
@@ -81,13 +77,6 @@ export default function VirtualCardPage() {
   const handleCopyCard = () => {
     navigator.clipboard?.writeText?.('4111223344557890')
     setCopied(true)
-    // Alan gives thumbs-up and winks per animation brief
-    setCardMascotPose('thumbs-up')
-    setCardMascotFace('wink')
-    setTimeout(() => {
-      setCardMascotPose(isFrozen ? 'shiver-freeze' : 'stand')
-      setCardMascotFace('cheerful')
-    }, 2200)
     triggerReaction('copy-success', 'Nomor kartu Visa Aladin berhasil disalin!')
     setTimeout(() => setCopied(false), 2000)
   }
@@ -97,11 +86,8 @@ export default function VirtualCardPage() {
     if (isRevealed) {
       setIsRevealed(false)
       setCvvTimer(30)
-      setCardMascotPose(isFrozen ? 'shiver-freeze' : 'stand')
     } else {
       setShowBiometricModal(true)
-      // Alan covers his eyes (peek-a-boo-hide) per animation brief
-      setCardMascotPose('peek-a-boo-hide')
     }
   }
 
@@ -109,11 +95,6 @@ export default function VirtualCardPage() {
     setShowBiometricModal(false)
     setIsRevealed(true)
     setCvvTimer(30)
-    // Alan opens his corners wide with joyful peek-a-boo reveal
-    setCardMascotPose('peek-a-boo-reveal')
-    setTimeout(() => {
-      setCardMascotPose(isFrozen ? 'shiver-freeze' : 'stand')
-    }, 2000)
     triggerReaction('success', 'Informasi kartu berhasil dibuka!')
   }
 
@@ -122,13 +103,8 @@ export default function VirtualCardPage() {
     const nextState = !isFrozen
     setIsFrozen(nextState)
     if (nextState) {
-      // Alan shivers and hugs his body tight (shiver-freeze)
-      setCardMascotPose('shiver-freeze')
-      setCardMascotFace('chill')
       triggerReaction('lock-action', 'Kartu Visa Aladin berhasil dikunci demi keamanan.')
     } else {
-      setCardMascotPose('stand')
-      setCardMascotFace('cheerful')
       triggerReaction('success', 'Kunci kartu Visa Aladin berhasil dibuka!')
     }
   }
@@ -254,42 +230,6 @@ export default function VirtualCardPage() {
                 title={th.label}
               />
             ))}
-          </div>
-        </div>
-
-        {/* 3D Alan Guardian Status Card per Animation Brief */}
-        <div className="flex items-center justify-between bg-gradient-to-r from-blue-50/70 via-white to-indigo-50/60 rounded-2xl p-2.5 border border-indigo-100 max-w-[340px] mx-auto my-3 shadow-2xs">
-          <div className="flex-1 pr-2 pl-1">
-            <span className="text-[9.5px] font-black text-[#1037A6] uppercase tracking-wider block">
-              Pelindung Kartu
-            </span>
-            <p className="text-[11.5px] font-bold text-[#1A1D26] leading-tight">
-              {isFrozen
-                ? 'Alan menggigil kedinginan... Kartu dibekukan aman!'
-                : isRevealed
-                ? 'Nomor kartu terbuka, Alan mengawasi kerahasiaan!'
-                : cardMascotPose === 'thumbs-up'
-                ? 'Nomor kartu tersalin! Siap transaksi.'
-                : 'Alan siap menjaga keamanan kartu Visa kamu.'}
-            </p>
-          </div>
-          <div className="w-[74px] h-[64px] shrink-0 relative">
-            <Canvas
-              camera={{ position: [0, 0.05, 5.2], fov: 32 }}
-              gl={{ antialias: true, alpha: true }}
-              style={{ width: '100%', height: '100%' }}
-            >
-              <ambientLight intensity={2.2} />
-              <directionalLight position={[2, 4, 3]} intensity={2.6} />
-              <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
-              <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
-              <CarpetModel
-                pose={cardMascotPose}
-                face={cardMascotFace}
-                interactive={false}
-                scale={0.62}
-              />
-            </Canvas>
           </div>
         </div>
 
@@ -567,23 +507,8 @@ export default function VirtualCardPage() {
       {showBiometricModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-6 animate-in fade-in duration-200">
           <div className="w-full max-w-[320px] bg-white rounded-3xl p-6 text-center shadow-2xl">
-            {/* 3D Alan Peek-a-boo Hiding Corners per Animation Brief */}
-            <div className="w-[140px] h-[95px] mx-auto -mb-1 relative">
-              <Canvas
-                camera={{ position: [0, 0.05, 5.2], fov: 32 }}
-                gl={{ antialias: true, alpha: true }}
-                style={{ width: '100%', height: '100%' }}
-              >
-                <ambientLight intensity={2.2} />
-                <directionalLight position={[2, 4, 3]} intensity={2.6} />
-                <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
-                <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
-                <CarpetModel pose="peek-a-boo-hide" interactive={false} scale={0.65} />
-              </Canvas>
-            </div>
-
-            <div className="w-12 h-12 rounded-full bg-[#1C20C4]/10 text-[#1C20C4] flex items-center justify-center mx-auto mb-3">
-              <Fingerprint className="w-6 h-6 stroke-[2.2]" />
+            <div className="w-16 h-16 rounded-full bg-[#1C20C4]/10 text-[#1C20C4] flex items-center justify-center mx-auto mb-4">
+              <Fingerprint className="w-8 h-8 stroke-[2.2]" />
             </div>
 
             <h3 className="text-[17px] font-extrabold text-[#1A1D26] tracking-tight">

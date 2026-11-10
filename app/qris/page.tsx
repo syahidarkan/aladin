@@ -4,8 +4,6 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
-import { Canvas } from '@react-three/fiber'
-import CarpetModel from '@/components/mascot/CarpetModel'
 import { executeQrisPayment } from '@/lib/bankState'
 
 export default function QrisScanPage() {
@@ -270,24 +268,6 @@ export default function QrisScanPage() {
           onClick={handleTapToScan}
           className="absolute left-1/2 top-[44%] -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] z-20 cursor-pointer pointer-events-auto"
         >
-          {/* Alan Bertengger di Bibir Atas Bingkai Kamera (Peeking Mode per Brief) */}
-          <div
-            className="absolute -top-16 left-1/2 -translate-x-1/2 pointer-events-none z-30"
-            style={{ width: '140px', height: '95px' }}
-          >
-            <Canvas
-              camera={{ position: [0, 0.05, 5.2], fov: 32 }}
-              gl={{ antialias: true, alpha: true }}
-              style={{ width: '100%', height: '100%' }}
-            >
-              <ambientLight intensity={2.2} />
-              <directionalLight position={[2, 4, 3]} intensity={2.6} />
-              <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
-              <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
-              <CarpetModel pose="peeking" interactive={false} followCursor={true} scale={0.62} />
-            </Canvas>
-          </div>
-
           {/* Top-Left Bracket */}
           <div className="absolute top-0 left-0 w-8 h-8 border-t-[3.5px] border-l-[3.5px] border-[#00F3AD] rounded-tl-xl" />
           {/* Top-Right Bracket */}
@@ -471,32 +451,17 @@ export default function QrisScanPage() {
 
       {/* PAYMENT SUCCESS RECEIPT */}
       {isSuccess && (
-        <div className="absolute inset-0 z-[120] bg-white text-[#1A1D26] flex flex-col justify-between p-6 overflow-y-auto no-scrollbar">
-          <div className="pt-4 text-center">
-            {/* 3D Alan Celebratory Thumbs-Up & Sparkles per Animation Brief */}
-            <div className="w-[180px] h-[130px] mx-auto -mb-2 relative">
-              <Canvas
-                camera={{ position: [0, 0.05, 5.2], fov: 32 }}
-                gl={{ antialias: true, alpha: true }}
-                style={{ width: '100%', height: '100%' }}
-              >
-                <ambientLight intensity={2.2} />
-                <directionalLight position={[2, 4, 3]} intensity={2.6} />
-                <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
-                <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
-                <CarpetModel pose="thumbs-up" face="wink" interactive={false} scale={0.72} />
-              </Canvas>
-            </div>
-
-            <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-2 border border-emerald-200">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <div className="absolute inset-0 z-[120] bg-white text-[#1A1D26] flex flex-col justify-between p-6">
+          <div className="pt-8 text-center">
+            <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
             <h2 className="text-[20px] font-extrabold text-[#1A1D26]">
               Pembayaran QRIS Berhasil!
             </h2>
-            <p className="text-[12px] text-[#64748B] mt-1 mb-5">
+            <p className="text-[12px] text-[#64748B] mt-1 mb-6">
               Transaksi telah diteruskan ke {scannedMerchant?.name}.
             </p>
 
