@@ -160,7 +160,7 @@ export default function VirtualCardPage() {
 
   return (
     <div
-      className="flex flex-col min-h-screen bg-white select-none text-[#1A1D26] overflow-x-hidden relative"
+      className="flex flex-col h-full min-h-0 max-h-full bg-white select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
@@ -173,10 +173,10 @@ export default function VirtualCardPage() {
           {/* Back Button */}
           <Link
             href="/beranda"
-            className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+            className="w-9 h-9 -ml-1 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
             aria-label="Kembali ke Beranda"
           >
-            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
           </Link>
 
           {/* Title */}
@@ -197,7 +197,7 @@ export default function VirtualCardPage() {
       </header>
 
       {/* 2. SCROLLABLE BODY CONTENT */}
-      <main className="flex-1 overflow-y-auto px-5 pt-4 pb-32">
+      <main className="flex-1 min-h-0 overflow-y-auto no-scrollbar px-5 pt-4 pb-32">
         {/* HERO SECTION: DIGITAL VERTICAL CARD */}
         <div className="flex flex-col items-center justify-center pt-2 pb-4">
           <DigitalVerticalCard

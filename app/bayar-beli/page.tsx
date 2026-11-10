@@ -167,7 +167,7 @@ export default function BayarBeliPage() {
   if (selectedService) {
     return (
       <div
-        className="flex flex-col h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
+        className="flex flex-col h-full min-h-0 max-h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
         style={{
           fontFamily:
             '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
@@ -185,9 +185,10 @@ export default function BayarBeliPage() {
               setSelectedService(null)
               setIsSuccess(false)
             }}
-            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
+            className="w-9 h-9 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
+            aria-label="Kembali"
           >
-            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
           </button>
 
           <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
@@ -199,7 +200,7 @@ export default function BayarBeliPage() {
 
         {/* Transaction Content */}
         {isSuccess ? (
-          <div className="flex-1 overflow-y-auto no-scrollbar p-5 flex flex-col justify-between">
+          <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar p-5 flex flex-col justify-between">
             <div className="text-center pt-8">
               <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
@@ -476,7 +477,7 @@ export default function BayarBeliPage() {
   // MAIN BAYAR & BELI HUB VIEW (Livin' Sukha / Ala Hijrah Standard)
   return (
     <div
-      className="flex flex-col h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
+      className="flex flex-col h-full min-h-0 max-h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
@@ -491,9 +492,10 @@ export default function BayarBeliPage() {
       >
         <Link
           href="/beranda"
-          className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
+          className="w-9 h-9 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
+          aria-label="Kembali ke Beranda"
         >
-          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+          <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
         </Link>
 
         <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
@@ -519,7 +521,7 @@ export default function BayarBeliPage() {
 
       {/* Scrollable Body */}
       <div
-        className="flex-1 overflow-y-auto no-scrollbar"
+        className="flex-1 min-h-0 overflow-y-auto no-scrollbar"
         style={{
           paddingLeft: '20px',
           paddingRight: '20px',

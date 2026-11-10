@@ -190,7 +190,10 @@ body {
     max-height: 100%;
     border-radius: 42px;
     background: #FFFFFF;
-    overflow: hidden;
+    overflow: clip !important;
+    overflow-x: clip !important;
+    overflow-y: clip !important;
+    overscroll-behavior: none !important;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -225,7 +228,10 @@ body {
     height: 100dvh;
     border-radius: 0;
     background: #FFFFFF;
-    overflow: hidden;
+    overflow: clip !important;
+    overflow-x: clip !important;
+    overflow-y: clip !important;
+    overscroll-behavior: none !important;
     position: relative;
     display: flex;
     flex-direction: column;

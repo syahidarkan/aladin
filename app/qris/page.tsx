@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import { executeQrisPayment } from '@/lib/bankState'
+import { ArrowLeft } from 'lucide-react'
 
 export default function QrisScanPage() {
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -189,12 +190,10 @@ export default function QrisScanPage() {
         >
           <Link
             href="/beranda"
-            className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white active:scale-95 transition-transform"
+            className="w-10 h-10 rounded-full bg-black/60 border border-white/20 backdrop-blur-md flex items-center justify-center text-white active:scale-95 transition-all shadow-md cursor-pointer"
             aria-label="Kembali ke Beranda"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
+            <ArrowLeft className="w-5 h-5 text-white stroke-[2.4]" />
           </Link>
 
           <div className="text-center">

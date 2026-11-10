@@ -20,10 +20,10 @@ export default function ImpianHajiIntro3() {
         <div className="w-full h-14 bg-white flex items-center gap-3 px-4">
           <Link
             href="/impian/haji/intro/2"
-            className="w-9 h-9 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+            className="w-9 h-9 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
             aria-label="Kembali ke Langkah 2"
           >
-            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
           </Link>
           <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
             Keunggulan Impian Haji

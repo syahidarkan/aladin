@@ -180,7 +180,7 @@ export default function AlaInvestasiSyariahPage() {
 
   return (
     <div
-      className="flex flex-col min-h-screen bg-[#F8FAFC] select-none text-[#1A1D26] overflow-x-hidden relative"
+      className="flex flex-col h-full min-h-0 max-h-full bg-[#F8FAFC] select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
@@ -193,10 +193,10 @@ export default function AlaInvestasiSyariahPage() {
           <div className="flex items-center gap-2">
             <Link
               href="/beranda"
-              className="w-9 h-9 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+              className="w-9 h-9 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
               aria-label="Kembali ke Beranda"
             >
-              <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+              <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
             </Link>
             <div>
               <h1 className="text-[16px] font-black text-[#1037A6] tracking-tight leading-tight">
@@ -220,7 +220,7 @@ export default function AlaInvestasiSyariahPage() {
       </header>
 
       {/* 2. BODY CONTENT */}
-      <main className="flex-1 px-4 pt-3.5 pb-32 space-y-4">
+      <main className="flex-1 min-h-0 overflow-y-auto no-scrollbar px-4 pt-3.5 pb-32 space-y-4">
         {/* SECTION 1: NILAI PORTOFOLIO CARD */}
         <div className="bg-white rounded-2xl p-4.5 border border-gray-100 shadow-xs">
           <div className="flex items-center justify-between">
@@ -271,50 +271,62 @@ export default function AlaInvestasiSyariahPage() {
             </button>
           </div>
 
-          {/* 4 Quick Actions (Interactive Portofolio, Nabung Rutin, Referral, Fatwa MUI) */}
-          <div className="grid grid-cols-4 gap-2 mt-4 pt-3 border-t border-gray-100 text-center">
+          {/* Sleek Aladin Quick Action Chips (Replaces bibit-style icon row) */}
+          <div className="grid grid-cols-2 gap-2 mt-3.5 pt-3 border-t border-gray-100">
             <button
               type="button"
               onClick={() => setShowPortofolioModal(true)}
-              className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+              className="flex items-center gap-2.5 p-2.5 rounded-xl bg-gray-50/80 hover:bg-blue-50/60 border border-gray-200/60 transition-all text-left cursor-pointer active:scale-98 shadow-2xs"
             >
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center shadow-xs group-hover:bg-blue-100">
-                <PieChart className="w-5 h-5 stroke-[2.2]" />
+              <div className="w-7 h-7 rounded-lg bg-[#1037A6]/10 text-[#1037A6] flex items-center justify-center shrink-0">
+                <PieChart className="w-4 h-4 stroke-[2.2]" />
               </div>
-              <span className="text-[11px] font-bold text-gray-700 mt-1.5">Portofolio</span>
+              <div className="min-w-0">
+                <span className="text-[12px] font-bold text-gray-900 block truncate">Portofolio</span>
+                <span className="text-[10px] text-gray-500 block -mt-0.5">3 Produk Aktif</span>
+              </div>
             </button>
 
             <button
               type="button"
               onClick={() => setShowNabungRutinModal(true)}
-              className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+              className="flex items-center gap-2.5 p-2.5 rounded-xl bg-gray-50/80 hover:bg-emerald-50/60 border border-gray-200/60 transition-all text-left cursor-pointer active:scale-98 shadow-2xs"
             >
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center shadow-xs group-hover:bg-blue-100">
-                <Calendar className="w-5 h-5 stroke-[2.2]" />
+              <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-[#059669] flex items-center justify-center shrink-0">
+                <Calendar className="w-4 h-4 stroke-[2.2]" />
               </div>
-              <span className="text-[11px] font-bold text-gray-700 mt-1.5">Nabung Rutin</span>
+              <div className="min-w-0">
+                <span className="text-[12px] font-bold text-gray-900 block truncate">Nabung Rutin</span>
+                <span className="text-[10px] text-emerald-600 font-medium block -mt-0.5">Auto-Debit Aktif</span>
+              </div>
             </button>
 
             <button
               type="button"
               onClick={() => setShowReferralModal(true)}
-              className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+              className="flex items-center gap-2.5 p-2.5 rounded-xl bg-gray-50/80 hover:bg-purple-50/60 border border-gray-200/60 transition-all text-left cursor-pointer active:scale-98 shadow-2xs"
             >
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center shadow-xs group-hover:bg-blue-100">
-                <Gift className="w-5 h-5 stroke-[2.2]" />
+              <div className="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-700 flex items-center justify-center shrink-0">
+                <Gift className="w-4 h-4 stroke-[2.2]" />
               </div>
-              <span className="text-[11px] font-bold text-gray-700 mt-1.5">Referral</span>
+              <div className="min-w-0">
+                <span className="text-[12px] font-bold text-gray-900 block truncate">Ajak Sahabat</span>
+                <span className="text-[10px] text-purple-600 font-medium block -mt-0.5">Bonus Rp50.000</span>
+              </div>
             </button>
 
             <button
               type="button"
               onClick={() => setShowFatwaModal(true)}
-              className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+              className="flex items-center gap-2.5 p-2.5 rounded-xl bg-gray-50/80 hover:bg-emerald-50/60 border border-gray-200/60 transition-all text-left cursor-pointer active:scale-98 shadow-2xs"
             >
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center shadow-xs group-hover:bg-blue-100">
-                <Scale className="w-5 h-5 stroke-[2.2]" />
+              <div className="w-7 h-7 rounded-lg bg-emerald-600/10 text-[#059669] flex items-center justify-center shrink-0">
+                <Scale className="w-4 h-4 stroke-[2.2]" />
               </div>
-              <span className="text-[11px] font-bold text-gray-700 mt-1.5">Fatwa MUI</span>
+              <div className="min-w-0">
+                <span className="text-[12px] font-bold text-gray-900 block truncate">Fatwa DSN-MUI</span>
+                <span className="text-[10px] text-gray-500 block -mt-0.5">Kepatuhan Syariah</span>
+              </div>
             </button>
           </div>
         </div>

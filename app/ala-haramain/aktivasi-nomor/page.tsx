@@ -49,10 +49,11 @@ export default function AktivasiNomorSaudiPage() {
         style={{ height: '48px', paddingLeft: '20px', paddingRight: '20px' }}
       >
         <Link
-          href="/beranda"
-          className="flex items-center justify-center p-1 -ml-1 active:opacity-60 transition-opacity"
+          href="/ala-haramain"
+          className="w-8 h-8 -ml-1 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
+          aria-label="Kembali ke Ala Haramain"
         >
-          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+          <ArrowLeft className="w-4 h-4 text-[#1A1D26] stroke-[2.4]" />
         </Link>
 
         <div className="text-center">

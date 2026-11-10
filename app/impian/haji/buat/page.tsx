@@ -60,10 +60,10 @@ export default function BuatImpianHajiPage() {
       >
         <Link
           href="/impian"
-          className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all cursor-pointer"
-          aria-label="Kembali"
+          className="w-9 h-9 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
+          aria-label="Kembali ke Ala Impian"
         >
-          <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+          <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
         </Link>
 
         <h1 className="text-[17px] font-extrabold text-[#1A1D26]">Buat Impian Haji</h1>

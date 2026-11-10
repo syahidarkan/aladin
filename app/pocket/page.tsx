@@ -40,7 +40,7 @@ import {
 } from 'lucide-react'
 
 // Extended UI Pocket interface
-interface JagoPocketItem {
+interface AladinPocketItem {
   id: string
   name: string
   balance: number
@@ -57,9 +57,9 @@ export default function PocketsPage() {
   const { alaDompet, pockets = [] } = useBankState()
   const { triggerReaction, startTransition } = useMascot()
 
-  // Active View: 'list' (File 3) vs 'detail' (File 4: Rincian Kantong)
+  // Active View: 'list' vs 'detail' (Rincian Kantong)
   const [activeView, setActiveView] = useState<'list' | 'detail'>('list')
-  const [selectedPocket, setSelectedPocket] = useState<JagoPocketItem | null>(null)
+  const [selectedPocket, setSelectedPocket] = useState<AladinPocketItem | null>(null)
 
   // Filter Pills: 'all' | 'my' | 'shared'
   const [activeFilter, setActiveFilter] = useState<'all' | 'my' | 'shared'>('all')
@@ -82,22 +82,22 @@ export default function PocketsPage() {
   const [newPocketType, setNewPocketType] = useState<'spending' | 'savings' | 'emergency'>('spending')
   const [newInitialDeposit, setNewInitialDeposit] = useState('100.000')
 
-  // Default initial pockets synchronized with bank state
-  const [pocketList, setPocketList] = useState<JagoPocketItem[]>([
+  // Default initial pockets synchronized with bank state (Indonesian Aladin Names)
+  const [pocketList, setPocketList] = useState<AladinPocketItem[]>([
     {
       id: 'main-pocket',
-      name: 'Main Pocket',
+      name: 'Kantong Utama',
       balance: alaDompet > 0 ? alaDompet : 7400000,
       type: 'main',
-      badge: 'Main Pocket',
+      badge: 'Kantong Utama',
       iconName: 'main',
     },
     {
       id: 'food-pocket',
-      name: 'Makan & Kopi',
+      name: 'Makan & Belanja',
       balance: 1250000,
       type: 'spending',
-      badge: 'Spending Pocket',
+      badge: 'Kantong Bayar',
       iconName: 'food',
     },
     {
@@ -106,7 +106,7 @@ export default function PocketsPage() {
       balance: 3500000,
       targetAmount: 10000000,
       type: 'savings',
-      badge: 'Savings Pocket',
+      badge: 'Kantong Nabung',
       iconName: 'renovation',
     },
     {
@@ -115,7 +115,7 @@ export default function PocketsPage() {
       balance: 2500000,
       sharedCount: 3,
       type: 'savings',
-      badge: 'Savings Pocket',
+      badge: 'Kantong Bersama',
       iconName: 'vacation',
     },
     {
@@ -123,7 +123,7 @@ export default function PocketsPage() {
       name: 'Dana Darurat',
       balance: 5000000,
       type: 'emergency',
-      badge: 'Saving Pocket',
+      badge: 'Kantong Darurat',
       iconName: 'emergency',
     },
   ])
@@ -139,7 +139,7 @@ export default function PocketsPage() {
   })
 
   // Handlers
-  const handleOpenDetail = (pocket: JagoPocketItem) => {
+  const handleOpenDetail = (pocket: AladinPocketItem) => {
     setSelectedPocket(pocket)
     setActiveView('detail')
   }
@@ -154,7 +154,7 @@ export default function PocketsPage() {
       return
     }
 
-    const newPocket: JagoPocketItem = {
+    const newPocket: AladinPocketItem = {
       id: `pocket-${Date.now()}`,
       name: newPocketName.trim(),
       balance: raw,
@@ -218,19 +218,19 @@ export default function PocketsPage() {
   }
 
   // Render Category Icon Helper
-  const renderPocketIcon = (iconName: JagoPocketItem['iconName'], isLarge = false) => {
-    const sizeCls = isLarge ? 'w-8 h-8' : 'w-6 h-6'
+  const renderPocketIcon = (iconName: AladinPocketItem['iconName'], isLarge = false) => {
+    const sizeCls = isLarge ? 'w-8 h-8' : 'w-5 h-5'
     switch (iconName) {
       case 'main':
         return <Wallet className={`${sizeCls} text-[#1037A6] stroke-[2.2]`} />
       case 'food':
         return <UtensilsCrossed className={`${sizeCls} text-[#059669] stroke-[2.2]`} />
       case 'renovation':
-        return <Home className={`${sizeCls} text-[#1037A6] stroke-[2.2]`} />
+        return <Home className={`${sizeCls} text-[#0D9488] stroke-[2.2]`} />
       case 'vacation':
-        return <Palmtree className={`${sizeCls} text-teal-600 stroke-[2.2]`} />
+        return <Palmtree className={`${sizeCls} text-[#0284C7] stroke-[2.2]`} />
       case 'emergency':
-        return <ShieldAlert className={`${sizeCls} text-rose-600 stroke-[2.2]`} />
+        return <ShieldAlert className={`${sizeCls} text-[#D97706] stroke-[2.2]`} />
       default:
         return <Coins className={`${sizeCls} text-[#1037A6] stroke-[2.2]`} />
     }
@@ -269,7 +269,7 @@ export default function PocketsPage() {
 
   return (
     <div
-      className="flex flex-col min-h-screen bg-[#FBFBFA] select-none text-[#1A1D26] overflow-x-hidden relative"
+      className="flex flex-col h-full min-h-0 max-h-full bg-[#FBFBFA] select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
@@ -279,7 +279,7 @@ export default function PocketsPage() {
       {/* VIEW 1: MAIN POCKETS 2-COLUMN VIEW                                        */}
       {/* ========================================================================= */}
       {activeView === 'list' && (
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
           {/* Unified Seamless White Header (No Notch Gap) */}
           <header className="sticky top-0 z-30 w-full bg-white border-b border-gray-100 shrink-0">
             <StatusBar />
@@ -287,10 +287,10 @@ export default function PocketsPage() {
               <div className="flex items-center gap-2">
                 <Link
                   href="/beranda"
-                  className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+                  className="w-9 h-9 -ml-1 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
                   aria-label="Kembali ke Beranda"
                 >
-                  <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+                  <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
                 </Link>
                 <h1 className="text-[17px] font-bold text-[#1037A6] tracking-tight">
                   Ala Pocket
@@ -316,13 +316,13 @@ export default function PocketsPage() {
             </div>
           </header>
 
-          <main className="flex-1 px-5 pt-2 pb-32">
-            {/* 2. FILTER PILLS: All, My Pockets, Shared with me (File 3) */}
+          <main className="flex-1 min-h-0 overflow-y-auto no-scrollbar px-5 pt-3 pb-32">
+            {/* 2. FILTER PILLS: Semua, Kantong Saya, Kantong Bersama */}
             <div className="flex items-center gap-2 mb-4">
               {[
-                { id: 'all', label: 'All' },
-                { id: 'my', label: 'My Pockets' },
-                { id: 'shared', label: 'Shared with me' },
+                { id: 'all', label: 'Semua' },
+                { id: 'my', label: 'Kantong Saya' },
+                { id: 'shared', label: 'Kantong Bersama' },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -330,8 +330,8 @@ export default function PocketsPage() {
                   onClick={() => setActiveFilter(tab.id as any)}
                   className={`py-1.5 px-4 rounded-full text-[12.5px] font-bold transition-all cursor-pointer ${
                     activeFilter === tab.id
-                      ? 'bg-gray-200/80 text-gray-900 shadow-xs'
-                      : 'bg-transparent text-gray-500 hover:text-gray-900'
+                      ? 'bg-[#1037A6] text-white shadow-xs'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
                   {tab.label}
@@ -339,10 +339,10 @@ export default function PocketsPage() {
               ))}
             </div>
 
-            {/* 3. TOTAL BALANCE ROW: My balance Rp88.080.000 with Eye Icon (File 3) */}
+            {/* 3. TOTAL BALANCE ROW */}
             <div className="flex items-center justify-between mb-5">
-              <span className="text-[13.5px] font-bold text-gray-900">
-                My balance
+              <span className="text-[13.5px] font-bold text-gray-800">
+                Total Saldo Kantong
               </span>
 
               <div className="flex items-center gap-2">
@@ -359,7 +359,7 @@ export default function PocketsPage() {
               </div>
             </div>
 
-            {/* 4. 2-COLUMN GRID OF POCKET CARDS (Bank Jago File 3 Exact Match) */}
+            {/* 4. 2-COLUMN GRID OF POCKET CARDS */}
             <div className="grid grid-cols-2 gap-3.5">
               {filteredPockets.map((pocket) => (
                 <div
@@ -370,7 +370,6 @@ export default function PocketsPage() {
                   {/* Top: Icon + Optional Circular Progress or Shared Badge */}
                   <div className="flex items-start justify-between">
                     <div className="relative">
-                      {/* Renovation Circular Progress Ring */}
                       {pocket.targetAmount && (
                         <div className="absolute -inset-1 rounded-full border-2 border-[#00F0A0] border-t-transparent animate-spin-slow pointer-events-none" />
                       )}
@@ -379,10 +378,10 @@ export default function PocketsPage() {
                       </div>
                     </div>
 
-                    {/* Shared Badge (Vacation Shared 5 - File 3) */}
+                    {/* Shared Badge */}
                     {pocket.sharedCount && (
-                      <div className="flex items-center gap-1 text-[11px] font-bold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-100">
-                        <Users className="w-3 h-3 text-gray-500" />
+                      <div className="flex items-center gap-1 text-[11px] font-bold text-[#1037A6] bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                        <Users className="w-3 h-3 text-[#1037A6]" />
                         <span>{pocket.sharedCount}</span>
                       </div>
                     )}
@@ -393,27 +392,30 @@ export default function PocketsPage() {
                     <h3 className="text-[13.5px] font-bold text-[#1A1D26] leading-tight">
                       {pocket.name}
                     </h3>
-                    <span className="text-[13px] font-black text-gray-900 block mt-1 font-mono">
+                    <span className="text-[13px] font-black text-[#1037A6] block mt-1 font-mono">
                       {isMasked ? '••••••••' : `Rp${pocket.balance.toLocaleString('id-ID')}`}
                     </span>
-                    <span className="text-[10px] text-gray-400 font-medium block mt-0.5">
+                    <span className="text-[10px] text-gray-500 font-medium block mt-0.5">
                       {pocket.badge}
                     </span>
                   </div>
                 </div>
               ))}
 
-              {/* CARD 6: ADD POCKET BUTTON CARD (Bank Aladin Blue & Cyan) */}
+              {/* CARD 6: ADD POCKET BUTTON CARD (Aladin Signature Emerald & Mint) */}
               <button
                 type="button"
                 onClick={() => setShowAddModal(true)}
-                className="rounded-[22px] p-4 bg-[#EFF6FF] hover:bg-[#DBEAFE] border border-[#BFDBFE] transition-all cursor-pointer active:scale-[0.98] flex flex-col items-center justify-center min-h-[148px] text-center"
+                className="rounded-[22px] p-4 bg-gradient-to-br from-[#F0FDF4] to-[#EFF6FF] hover:from-[#DCFCE7] hover:to-[#DBEAFE] border-2 border-dashed border-[#A7F3D0] transition-all cursor-pointer active:scale-[0.98] flex flex-col items-center justify-center min-h-[148px] text-center shadow-xs"
               >
-                <div className="w-11 h-11 rounded-full bg-[#1037A6] text-[#00F0A0] flex items-center justify-center shadow-md mb-2.5">
+                <div className="w-11 h-11 rounded-full bg-[#059669] text-white flex items-center justify-center shadow-sm mb-2.5">
                   <Plus className="w-6 h-6 stroke-[2.5]" />
                 </div>
-                <span className="text-[13.5px] font-bold text-[#1037A6]">
+                <span className="text-[13.5px] font-bold text-[#065F46]">
                   Tambah Kantong
+                </span>
+                <span className="text-[10px] text-emerald-600 font-medium mt-0.5">
+                  Bebas Biaya Admin
                 </span>
               </button>
             </div>
@@ -425,7 +427,7 @@ export default function PocketsPage() {
       {/* VIEW 2: POCKET DETAIL VIEW - "RINCIAN KANTONG"                            */}
       {/* ========================================================================= */}
       {activeView === 'detail' && selectedPocket && (
-        <div className="flex flex-col flex-1 animate-in fade-in duration-200">
+        <div className="flex flex-col flex-1 min-h-0 overflow-hidden animate-in fade-in duration-200">
           {/* Unified Seamless White Header */}
           <header className="sticky top-0 z-30 w-full bg-white border-b border-gray-100 shrink-0">
             <StatusBar />
@@ -434,9 +436,10 @@ export default function PocketsPage() {
                 <button
                   type="button"
                   onClick={() => setActiveView('list')}
-                  className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+                  className="w-9 h-9 -ml-1 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
+                  aria-label="Kembali ke Daftar Kantong"
                 >
-                  <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+                  <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
                 </button>
                 <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
                   Rincian Kantong
@@ -447,7 +450,7 @@ export default function PocketsPage() {
                 <button
                   type="button"
                   onClick={() => triggerReaction('success', `Tautan undangan Pocket "${selectedPocket.name}" disalin!`)}
-                  className="py-1.5 px-4 rounded-full bg-[#1037A6] hover:bg-[#0D2D88] text-white text-[12px] font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
+                  className="py-1.5 px-4 rounded-full bg-[#059669] hover:bg-[#047857] text-white text-[12px] font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
                 >
                   Undang
                 </button>
@@ -468,7 +471,7 @@ export default function PocketsPage() {
             </div>
           </header>
 
-          <main className="flex-1 px-5 pt-5 pb-32">
+          <main className="flex-1 min-h-0 overflow-y-auto no-scrollbar px-5 pt-5 pb-32">
             {/* HERO CENTER: Large Icon, Subtitle, Pocket Name, Big Balance */}
             <div className="flex flex-col items-center justify-center text-center py-3">
               <div className="w-16 h-16 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center mb-3">
@@ -486,7 +489,7 @@ export default function PocketsPage() {
               </span>
             </div>
 
-            {/* 3 CIRCULAR ACTION BUTTONS: Tambah Uang, Pindahkan Uang, Kirim & Bayar (Bank Aladin Blue) */}
+            {/* 3 CIRCULAR ACTION BUTTONS: Tambah Uang, Pindahkan Uang, Kirim & Bayar (Aladin Theme) */}
             <div className="grid grid-cols-3 gap-3 my-6 max-w-[320px] mx-auto text-center">
               {/* Button 1: Tambah Uang */}
               <button
@@ -508,7 +511,7 @@ export default function PocketsPage() {
                 onClick={() => setShowPindahkanModal(true)}
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
               >
-                <div className="w-[52px] h-[52px] rounded-full bg-[#1037A6] text-white flex items-center justify-center shadow-sm group-hover:bg-[#0D2D88] transition-colors">
+                <div className="w-[52px] h-[52px] rounded-full bg-[#059669] text-white flex items-center justify-center shadow-sm group-hover:bg-[#047857] transition-colors">
                   <ArrowUp className="w-6 h-6 stroke-[2.5]" />
                 </div>
                 <span className="text-[12px] font-bold text-[#1A1D26] mt-2">
@@ -525,11 +528,11 @@ export default function PocketsPage() {
                 }}
                 className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
               >
-                <div className="w-[52px] h-[52px] rounded-full bg-[#1037A6] text-white flex items-center justify-center shadow-sm group-hover:bg-[#0D2D88] transition-colors">
+                <div className="w-[52px] h-[52px] rounded-full bg-[#0284C7] text-white flex items-center justify-center shadow-sm group-hover:bg-[#0369A1] transition-colors">
                   <Lock className="w-5 h-5 stroke-[2.2]" />
                 </div>
                 <span className="text-[12px] font-bold text-[#1A1D26] mt-2">
-                  Kirim & Bayar
+                  Kirim &amp; Bayar
                 </span>
               </button>
             </div>

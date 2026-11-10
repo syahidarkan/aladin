@@ -48,7 +48,7 @@ export default function SetorTunaiPage() {
 
   return (
     <div
-      className="flex flex-col min-h-screen bg-[#F8FAFC] select-none text-[#1A1D26] overflow-x-hidden relative"
+      className="flex flex-col h-full min-h-0 max-h-full bg-[#F8FAFC] select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
@@ -60,10 +60,10 @@ export default function SetorTunaiPage() {
         <div className="w-full h-14 bg-white flex items-center justify-between px-4">
           <Link
             href="/beranda"
-            className="w-9 h-9 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+            className="w-9 h-9 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
             aria-label="Kembali ke Beranda"
           >
-            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
           </Link>
 
           <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
@@ -82,7 +82,7 @@ export default function SetorTunaiPage() {
       </header>
 
       {/* 2. BODY CONTENT */}
-      <main className="flex-1 px-4 pt-4 pb-32 space-y-4">
+      <main className="flex-1 min-h-0 overflow-y-auto no-scrollbar px-4 pt-4 pb-32 space-y-4">
         {/* Balance Card */}
         <div className="bg-gradient-to-r from-[#1037A6] to-[#0A236E] rounded-2xl p-4.5 text-white shadow-xs">
           <span className="text-[11px] font-bold text-blue-200 uppercase tracking-wider block">

@@ -146,7 +146,7 @@ export default function TujuanFinansialPage() {
 
   return (
     <div
-      className="flex flex-col h-full bg-[#F7F8FC] select-none text-[#1A1D26] overflow-hidden relative"
+      className="flex flex-col h-full min-h-0 max-h-full bg-[#F7F8FC] select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
@@ -162,10 +162,10 @@ export default function TujuanFinansialPage() {
           <button
             type="button"
             onClick={handlePrevStep}
-            className="flex items-center justify-center p-1 -ml-1 text-gray-700 active:opacity-60 transition-opacity cursor-pointer"
+            className="w-8 h-8 -ml-1 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
             aria-label="Kembali"
           >
-            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+            <ArrowLeft className="w-4 h-4 text-[#1A1D26] stroke-[2.4]" />
           </button>
 
           <div className="flex items-center gap-1.5">

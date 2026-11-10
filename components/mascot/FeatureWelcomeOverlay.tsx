@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { ArrowLeft, Sparkles, X } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import CarpetModel, { CarpetPose, MascotFace } from './CarpetModel'
 import { useBankState } from '@/lib/bankState'
 
@@ -20,12 +20,13 @@ type PropKind =
   | 'wrapped'
   | 'pocket'
   | 'alfa'
+  | 'hijrah'
 
 interface FeatureWelcomeConfig {
   key: string
-  badge: string
   pose: CarpetPose
   face: MascotFace
+  hasProp: boolean
   propKind: PropKind
   accentColor: string
   greeting: (name: string) => string
@@ -34,9 +35,9 @@ interface FeatureWelcomeConfig {
 const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   '/investasi': {
     key: 'investasi',
-    badge: 'Ala Investasi Syariah',
     pose: 'pointing',
     face: 'cheerful',
+    hasProp: true,
     propKind: 'investasi',
     accentColor: '#00F0A0',
     greeting: (name) =>
@@ -44,9 +45,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/qris': {
     key: 'qris',
-    badge: 'QRIS Aladin Syariah',
     pose: 'peeking',
     face: 'curious',
+    hasProp: true,
     propKind: 'qris',
     accentColor: '#00F0A0',
     greeting: (name) =>
@@ -54,9 +55,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/kartu': {
     key: 'kartu',
-    badge: 'Kartu Aladin Visa',
     pose: 'peek-a-boo-hide',
     face: 'curious',
+    hasProp: true,
     propKind: 'kartu',
     accentColor: '#38BDF8',
     greeting: (name) =>
@@ -64,9 +65,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/simulasi-bagi-hasil': {
     key: 'simulasi-bagi-hasil',
-    badge: 'Simulasi Nisbah Deposito',
     pose: 'celebrate-max',
     face: 'cheerful',
+    hasProp: true,
     propKind: 'deposito',
     accentColor: '#00F0A0',
     greeting: (name) =>
@@ -74,9 +75,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/bayar-beli': {
     key: 'bayar-beli',
-    badge: 'Bayar & Beli Bebas Biaya',
     pose: 'roll-cylinder',
     face: 'cheerful',
+    hasProp: true,
     propKind: 'bayar-beli',
     accentColor: '#FBBF24',
     greeting: (name) =>
@@ -84,9 +85,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/impian': {
     key: 'impian',
-    badge: 'Ala Impian Berkah',
     pose: 'ihrom-bow',
     face: 'chill',
+    hasProp: true,
     propKind: 'impian',
     accentColor: '#10B981',
     greeting: (name) =>
@@ -94,9 +95,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/impian/umrah/buat': {
     key: 'impian-umrah',
-    badge: 'Tabungan Umrah Berkah',
     pose: 'ihrom-bow',
     face: 'chill',
+    hasProp: true,
     propKind: 'impian',
     accentColor: '#10B981',
     greeting: (name) =>
@@ -104,9 +105,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/impian/haji/buat': {
     key: 'impian-haji',
-    badge: 'Tabungan Porsi Haji',
     pose: 'ihrom-bow',
     face: 'chill',
+    hasProp: true,
     propKind: 'impian',
     accentColor: '#10B981',
     greeting: (name) =>
@@ -114,9 +115,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/ala-haramain': {
     key: 'ala-haramain',
-    badge: 'Ala Haramain Saudi Hub',
     pose: 'barrel-roll',
     face: 'cheerful',
+    hasProp: true,
     propKind: 'haramain',
     accentColor: '#00F0A0',
     greeting: (name) =>
@@ -124,9 +125,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/onboarding/tujuan-finansial': {
     key: 'onboarding-tujuan-finansial',
-    badge: 'Sobat Aladin',
     pose: 'curious-think',
     face: 'curious',
+    hasProp: true,
     propKind: 'onboarding',
     accentColor: '#F59E0B',
     greeting: (name) =>
@@ -134,9 +135,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/wrapped': {
     key: 'wrapped',
-    badge: 'Kilas Balik Berkah 2026',
     pose: 'host-proud',
     face: 'proud',
+    hasProp: true,
     propKind: 'wrapped',
     accentColor: '#C084FC',
     greeting: (name) =>
@@ -144,9 +145,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/pocket': {
     key: 'pocket',
-    badge: 'Ala Pocket Pintar',
     pose: 'stand',
     face: 'cheerful',
+    hasProp: true,
     propKind: 'pocket',
     accentColor: '#38BDF8',
     greeting: (name) =>
@@ -154,9 +155,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/alfa-daily': {
     key: 'alfa-daily',
-    badge: 'Aladin x Alfa Daily Loop',
     pose: 'pointing',
     face: 'wink',
+    hasProp: true,
     propKind: 'alfa',
     accentColor: '#EF4444',
     greeting: (name) =>
@@ -164,9 +165,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/setor': {
     key: 'setor',
-    badge: 'Setor Tunai Alfamart',
     pose: 'pointing',
     face: 'cheerful',
+    hasProp: true,
     propKind: 'alfa',
     accentColor: '#00F0A0',
     greeting: (name) =>
@@ -174,9 +175,9 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/tarik': {
     key: 'tarik',
-    badge: 'Tarik Tunai Alfamart',
     pose: 'pointing',
     face: 'cheerful',
+    hasProp: true,
     propKind: 'alfa',
     accentColor: '#38BDF8',
     greeting: (name) =>
@@ -184,10 +185,10 @@ const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
   },
   '/hijrah': {
     key: 'hijrah',
-    badge: 'Ala Hijrah Ecosystem',
     pose: 'stand',
     face: 'cheerful',
-    propKind: 'onboarding',
+    hasProp: true,
+    propKind: 'hijrah',
     accentColor: '#1C20C4',
     greeting: (name) =>
       `Haiii ${name}! Selamat datang di ekosistem syariah! Eksplor kajian terpercaya, fashion halal, hingga ZISWAF di sini!`,
@@ -204,6 +205,7 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
   const barRefs = useRef<THREE.Mesh[]>([])
   const beamRef = useRef<THREE.Mesh>(null)
   const coinRef = useRef<THREE.Mesh>(null)
+  const needleRef = useRef<THREE.Mesh>(null)
 
   useFrame((state, delta) => {
     const t = state.clock.getElapsedTime()
@@ -214,7 +216,6 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
     }
 
     if (propKind === 'investasi') {
-      // Animate candlestick bars pulsating with bullish growth
       barRefs.current.forEach((bar, idx) => {
         if (bar) {
           const scaleY = 1 + Math.sin(t * 3.5 + idx * 0.7) * 0.18
@@ -225,13 +226,19 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
         coinRef.current.rotation.y += delta * 2.5
       }
     } else if (propKind === 'qris') {
-      // Animate laser scanner beam moving up and down across QR grid
       if (beamRef.current) {
         beamRef.current.position.y = Math.sin(t * 4.0) * 0.28
       }
     } else if (propKind === 'deposito' || propKind === 'haramain') {
       if (coinRef.current) {
         coinRef.current.rotation.y += delta * 1.8
+      }
+    } else if (propKind === 'onboarding') {
+      if (needleRef.current) {
+        needleRef.current.rotation.z = Math.sin(t * 2.0) * 0.45
+      }
+      if (coinRef.current) {
+        coinRef.current.rotation.y += delta * 1.5
       }
     }
   })
@@ -250,13 +257,12 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
           <boxGeometry args={[0.07, 0.26, 0.06]} />
           <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.8} roughness={0.2} />
         </mesh>
-        {/* Wick 1 */}
         <mesh position={[-0.22, 0.09, 0]}>
           <cylinderGeometry args={[0.008, 0.008, 0.12, 8]} />
           <meshBasicMaterial color="#00F0A0" />
         </mesh>
 
-        {/* Candlestick Bar 2 (Higher) */}
+        {/* Candlestick Bar 2 */}
         <mesh
           ref={(el) => {
             if (el) barRefs.current[1] = el
@@ -266,13 +272,12 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
           <boxGeometry args={[0.07, 0.38, 0.06]} />
           <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.9} roughness={0.2} />
         </mesh>
-        {/* Wick 2 */}
         <mesh position={[-0.07, 0.27, 0.02]}>
           <cylinderGeometry args={[0.008, 0.008, 0.14, 8]} />
           <meshBasicMaterial color="#00F0A0" />
         </mesh>
 
-        {/* Candlestick Bar 3 (Peak Bullish) */}
+        {/* Candlestick Bar 3 */}
         <mesh
           ref={(el) => {
             if (el) barRefs.current[2] = el
@@ -282,7 +287,6 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
           <boxGeometry args={[0.07, 0.52, 0.06]} />
           <meshStandardMaterial color="#34D399" emissive="#10B981" emissiveIntensity={1.0} roughness={0.2} />
         </mesh>
-        {/* Wick 3 */}
         <mesh position={[0.08, 0.48, 0.04]}>
           <cylinderGeometry args={[0.008, 0.008, 0.15, 8]} />
           <meshBasicMaterial color="#34D399" />
@@ -301,17 +305,14 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
   if (propKind === 'qris') {
     return (
       <group ref={groupRef} position={[0, -0.02, 0]}>
-        {/* Holographic QR Scanner Frame */}
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[0.54, 0.54, 0.04]} />
           <meshStandardMaterial color="#0A2268" roughness={0.3} metalness={0.8} />
         </mesh>
-        {/* White Inner Scanner Surface */}
         <mesh position={[0, 0, 0.025]}>
           <planeGeometry args={[0.46, 0.46]} />
           <meshBasicMaterial color="#FFFFFF" />
         </mesh>
-        {/* 3 Dark QR Corner Alignment Markers */}
         <mesh position={[-0.14, 0.14, 0.03]}>
           <boxGeometry args={[0.11, 0.11, 0.01]} />
           <meshBasicMaterial color="#0A1128" />
@@ -324,12 +325,10 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
           <boxGeometry args={[0.11, 0.11, 0.01]} />
           <meshBasicMaterial color="#0A1128" />
         </mesh>
-        {/* Moving Laser Beam Line */}
         <mesh ref={beamRef} position={[0, 0, 0.04]}>
           <boxGeometry args={[0.48, 0.02, 0.01]} />
           <meshBasicMaterial color="#00F0A0" />
         </mesh>
-        {/* Outer Glowing Scanner Brackets */}
         <mesh position={[0, 0, 0.02]}>
           <ringGeometry args={[0.29, 0.31, 32]} />
           <meshBasicMaterial color="#00F0A0" />
@@ -342,22 +341,18 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
   if (propKind === 'kartu') {
     return (
       <group ref={groupRef} position={[0, 0, 0]} rotation={[0.15, -0.35, 0.1]}>
-        {/* Card Body with Aladin Deep Blue Gradient vibe */}
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[0.76, 0.48, 0.025]} />
           <meshStandardMaterial color="#0C2577" metalness={0.7} roughness={0.25} emissive="#081850" emissiveIntensity={0.5} />
         </mesh>
-        {/* Golden EMV Smart Chip */}
         <mesh position={[-0.22, 0.06, 0.016]}>
           <boxGeometry args={[0.12, 0.09, 0.005]} />
           <meshStandardMaterial color="#FBBF24" metalness={0.95} roughness={0.1} emissive="#B45309" emissiveIntensity={0.4} />
         </mesh>
-        {/* Contactless Waves Emblem */}
         <mesh position={[-0.04, 0.06, 0.016]}>
           <ringGeometry args={[0.04, 0.055, 16, 1, 0, Math.PI / 1.5]} />
           <meshBasicMaterial color="#38BDF8" />
         </mesh>
-        {/* Visa White Holographic Logo */}
         <mesh position={[0.22, -0.14, 0.016]}>
           <planeGeometry args={[0.16, 0.06]} />
           <meshBasicMaterial color="#FFFFFF" />
@@ -370,17 +365,14 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
   if (propKind === 'deposito') {
     return (
       <group ref={groupRef} position={[0, -0.05, 0]}>
-        {/* Safe Vault Body */}
         <mesh position={[0, -0.04, 0]}>
           <boxGeometry args={[0.42, 0.42, 0.36]} />
           <meshStandardMaterial color="#1E293B" metalness={0.8} roughness={0.2} emissive="#0F172A" emissiveIntensity={0.6} />
         </mesh>
-        {/* Vault Wheel */}
         <mesh position={[0, -0.04, 0.19]}>
           <torusGeometry args={[0.09, 0.02, 12, 24]} />
           <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.9} roughness={0.2} />
         </mesh>
-        {/* Golden Nisbah Token */}
         <mesh ref={coinRef} position={[0.18, 0.22, 0.12]} rotation={[0.5, 0.2, 0]}>
           <cylinderGeometry args={[0.12, 0.12, 0.03, 24]} />
           <meshStandardMaterial color="#FBBF24" metalness={0.95} roughness={0.1} emissive="#D97706" emissiveIntensity={0.7} />
@@ -389,16 +381,14 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
     )
   }
 
-  // 5. BAYAR-BELI: Miniature Shopping Basket & Sparkles
+  // 5. BAYAR-BELI: Miniature Shopping Gift Box & Ribbon
   if (propKind === 'bayar-beli') {
     return (
       <group ref={groupRef} position={[0, -0.02, 0]}>
-        {/* Gift / Basket Cube */}
         <mesh position={[0, -0.06, 0]}>
           <boxGeometry args={[0.36, 0.36, 0.36]} />
           <meshStandardMaterial color="#1037A6" emissive="#0A2268" emissiveIntensity={0.5} roughness={0.3} />
         </mesh>
-        {/* Yellow Golden Ribbon */}
         <mesh position={[0, -0.06, 0]}>
           <boxGeometry args={[0.37, 0.08, 0.37]} />
           <meshStandardMaterial color="#FBBF24" emissive="#F59E0B" emissiveIntensity={0.8} />
@@ -407,7 +397,6 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
           <boxGeometry args={[0.08, 0.37, 0.37]} />
           <meshStandardMaterial color="#FBBF24" emissive="#F59E0B" emissiveIntensity={0.8} />
         </mesh>
-        {/* Ribbon Bow on Top */}
         <mesh position={[0, 0.16, 0]} rotation={[0.4, 0.4, 0]}>
           <torusGeometry args={[0.08, 0.03, 8, 16]} />
           <meshStandardMaterial color="#FBBF24" emissive="#D97706" emissiveIntensity={0.9} />
@@ -420,22 +409,18 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
   if (propKind === 'impian') {
     return (
       <group ref={groupRef} position={[0, -0.04, 0]} rotation={[0.1, -0.4, 0]}>
-        {/* Ka'bah Black Cube */}
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[0.38, 0.42, 0.38]} />
           <meshStandardMaterial color="#0A0B10" roughness={0.5} />
         </mesh>
-        {/* Kiswah Gold Band (Kisah Emas) */}
         <mesh position={[0, 0.11, 0]}>
           <boxGeometry args={[0.385, 0.05, 0.385]} />
           <meshStandardMaterial color="#FBBF24" emissive="#D97706" emissiveIntensity={1.2} metalness={0.9} />
         </mesh>
-        {/* Golden Door (Bab al-Ka'bah) */}
         <mesh position={[0.08, -0.04, 0.193]}>
           <planeGeometry args={[0.08, 0.18]} />
           <meshStandardMaterial color="#FBBF24" emissive="#B45309" emissiveIntensity={0.8} metalness={0.8} />
         </mesh>
-        {/* Golden Crescent Moon Floating on Top */}
         <mesh position={[0, 0.32, 0]} rotation={[0, 0, 0.3]}>
           <torusGeometry args={[0.08, 0.02, 12, 24, Math.PI * 1.3]} />
           <meshStandardMaterial color="#FBBF24" emissive="#F59E0B" emissiveIntensity={1.4} metalness={0.9} />
@@ -444,21 +429,18 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
     )
   }
 
-  // 7. HARAMAIN: Dome of the Prophet / Ka'bah + Glowing SAR Coin
+  // 7. HARAMAIN: Ka'bah & Spinning SAR Coin
   if (propKind === 'haramain') {
     return (
       <group ref={groupRef} position={[0, -0.02, 0]}>
-        {/* Ka'bah Centerpiece */}
         <mesh position={[-0.1, -0.05, 0]} rotation={[0.05, -0.3, 0]}>
           <boxGeometry args={[0.34, 0.38, 0.34]} />
           <meshStandardMaterial color="#0F1117" roughness={0.4} />
         </mesh>
-        {/* Gold Band */}
         <mesh position={[-0.1, 0.05, 0]} rotation={[0.05, -0.3, 0]}>
           <boxGeometry args={[0.345, 0.04, 0.345]} />
           <meshStandardMaterial color="#FBBF24" emissive="#D97706" emissiveIntensity={1.2} metalness={0.9} />
         </mesh>
-        {/* Spinning SAR Coin */}
         <mesh ref={coinRef} position={[0.18, 0.15, 0.12]} rotation={[0.3, 0, 0]}>
           <cylinderGeometry args={[0.12, 0.12, 0.025, 24]} />
           <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.8} metalness={0.8} />
@@ -471,17 +453,14 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
   if (propKind === 'wrapped') {
     return (
       <group ref={groupRef} position={[0, -0.05, 0]}>
-        {/* Trophy Cup */}
         <mesh position={[0, 0.08, 0]}>
           <cylinderGeometry args={[0.18, 0.09, 0.24, 24]} />
           <meshStandardMaterial color="#FBBF24" metalness={0.95} emissive="#D97706" emissiveIntensity={0.8} roughness={0.15} />
         </mesh>
-        {/* Trophy Base */}
         <mesh position={[0, -0.14, 0]}>
           <cylinderGeometry args={[0.14, 0.16, 0.1, 24]} />
           <meshStandardMaterial color="#1E293B" metalness={0.6} roughness={0.3} />
         </mesh>
-        {/* Floating Star */}
         <mesh position={[0, 0.28, 0]}>
           <octahedronGeometry args={[0.08, 0]} />
           <meshStandardMaterial color="#C084FC" emissive="#A855F7" emissiveIntensity={1.5} />
@@ -494,17 +473,14 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
   if (propKind === 'pocket') {
     return (
       <group ref={groupRef} position={[0, -0.05, 0]}>
-        {/* Pocket 1: Mint Blue */}
         <mesh position={[-0.12, -0.1, 0]}>
           <boxGeometry args={[0.24, 0.2, 0.12]} />
           <meshStandardMaterial color="#1037A6" emissive="#0A2268" emissiveIntensity={0.5} roughness={0.3} />
         </mesh>
-        {/* Pocket 2: Turquoise */}
         <mesh position={[0.12, 0.02, 0.05]}>
           <boxGeometry args={[0.22, 0.22, 0.12]} />
           <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.6} roughness={0.3} />
         </mesh>
-        {/* Coin popping out */}
         <mesh position={[0.12, 0.20, 0.08]} rotation={[0.4, 0, 0]}>
           <cylinderGeometry args={[0.08, 0.08, 0.02, 16]} />
           <meshStandardMaterial color="#FBBF24" metalness={0.95} emissive="#D97706" emissiveIntensity={0.5} />
@@ -517,22 +493,18 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
   if (propKind === 'alfa') {
     return (
       <group ref={groupRef} position={[0, -0.04, 0]} rotation={[0.1, -0.3, 0.1]}>
-        {/* Shopping Bag Red & White */}
         <mesh position={[0, -0.08, 0]}>
           <boxGeometry args={[0.32, 0.36, 0.2]} />
           <meshStandardMaterial color="#DC2626" emissive="#991B1B" emissiveIntensity={0.4} roughness={0.4} />
         </mesh>
-        {/* White Accent Stripe */}
         <mesh position={[0, -0.08, 0.105]}>
           <planeGeometry args={[0.32, 0.1]} />
           <meshBasicMaterial color="#FFFFFF" />
         </mesh>
-        {/* Bag Handles */}
         <mesh position={[0, 0.14, 0]} rotation={[0, 0, 0]}>
           <torusGeometry args={[0.08, 0.015, 8, 16, Math.PI]} />
           <meshStandardMaterial color="#FFFFFF" />
         </mesh>
-        {/* Banknote Stack */}
         <mesh position={[-0.15, 0.12, 0.08]} rotation={[0.2, 0.3, 0.4]}>
           <boxGeometry args={[0.22, 0.11, 0.03]} />
           <meshStandardMaterial color="#059669" emissive="#059669" emissiveIntensity={0.5} />
@@ -541,34 +513,103 @@ function ThematicFeatureProp({ propKind }: { propKind: PropKind }) {
     )
   }
 
-  // Fallback: Onboarding / Default Glowing Compass & Star
-  return (
-    <group ref={groupRef} position={[0.58, 0.05, 0.35]}>
-      {/* Glowing Star Target */}
-      <mesh position={[0, 0, 0]}>
-        <octahedronGeometry args={[0.18, 0]} />
-        <meshStandardMaterial color="#FBBF24" emissive="#F59E0B" emissiveIntensity={1.4} roughness={0.1} />
-      </mesh>
-      <mesh position={[0, 0, 0]}>
-        <torusGeometry args={[0.24, 0.018, 12, 24]} />
-        <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={1.2} />
-      </mesh>
-    </group>
-  )
+  // 11. ONBOARDING (SOBAT ALADIN): 3D Golden Compass & Glowing Target Star (Centered at 0, 0, 0)
+  if (propKind === 'onboarding') {
+    return (
+      <group ref={groupRef} position={[0, 0, 0]}>
+        {/* Outer Compass Golden Ring */}
+        <mesh position={[0, 0, 0]}>
+          <torusGeometry args={[0.26, 0.025, 16, 32]} />
+          <meshStandardMaterial color="#FBBF24" metalness={0.95} roughness={0.15} emissive="#D97706" emissiveIntensity={0.8} />
+        </mesh>
+        {/* Inner Compass Glass Face */}
+        <mesh position={[0, 0, -0.01]}>
+          <cylinderGeometry args={[0.24, 0.24, 0.02, 32]} />
+          <meshStandardMaterial color="#0A2268" roughness={0.3} emissive="#061642" emissiveIntensity={0.6} />
+        </mesh>
+        {/* 4 Cardinal Direction Markers */}
+        <mesh position={[0, 0.20, 0.02]}>
+          <octahedronGeometry args={[0.03, 0]} />
+          <meshBasicMaterial color="#00F0A0" />
+        </mesh>
+        <mesh position={[0, -0.20, 0.02]}>
+          <octahedronGeometry args={[0.03, 0]} />
+          <meshBasicMaterial color="#FFFFFF" />
+        </mesh>
+        <mesh position={[0.20, 0, 0.02]}>
+          <octahedronGeometry args={[0.03, 0]} />
+          <meshBasicMaterial color="#FFFFFF" />
+        </mesh>
+        <mesh position={[-0.20, 0, 0.02]}>
+          <octahedronGeometry args={[0.03, 0]} />
+          <meshBasicMaterial color="#FFFFFF" />
+        </mesh>
+        {/* Animated Compass Needle (Rotates gently toward goal) */}
+        <group ref={needleRef} position={[0, 0, 0.03]}>
+          <mesh position={[0, 0.09, 0]}>
+            <coneGeometry args={[0.035, 0.18, 4]} />
+            <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={1.2} />
+          </mesh>
+          <mesh position={[0, -0.09, 0]} rotation={[0, 0, Math.PI]}>
+            <coneGeometry args={[0.035, 0.18, 4]} />
+            <meshStandardMaterial color="#F43F5E" emissive="#E11D48" emissiveIntensity={0.8} />
+          </mesh>
+          <mesh position={[0, 0, 0.01]}>
+            <sphereGeometry args={[0.03, 16, 16]} />
+            <meshStandardMaterial color="#FBBF24" metalness={0.9} />
+          </mesh>
+        </group>
+        {/* Glowing Target Star above Compass */}
+        <mesh ref={coinRef} position={[0.18, 0.25, 0.12]} rotation={[0.4, 0, 0]}>
+          <octahedronGeometry args={[0.09, 0]} />
+          <meshStandardMaterial color="#FBBF24" emissive="#F59E0B" emissiveIntensity={1.5} roughness={0.1} />
+        </mesh>
+      </group>
+    )
+  }
+
+  // 12. HIJRAH: 3D Mosque Minaret & Crescent Moon
+  if (propKind === 'hijrah') {
+    return (
+      <group ref={groupRef} position={[0, -0.04, 0]}>
+        {/* Minaret Base Column */}
+        <mesh position={[0, -0.1, 0]}>
+          <cylinderGeometry args={[0.14, 0.16, 0.34, 16]} />
+          <meshStandardMaterial color="#1037A6" emissive="#0A2268" emissiveIntensity={0.6} roughness={0.3} />
+        </mesh>
+        {/* Balcony Ring */}
+        <mesh position={[0, 0.08, 0]}>
+          <cylinderGeometry args={[0.18, 0.18, 0.04, 16]} />
+          <meshStandardMaterial color="#FBBF24" emissive="#D97706" emissiveIntensity={0.8} metalness={0.9} />
+        </mesh>
+        {/* Dome */}
+        <mesh position={[0, 0.18, 0]}>
+          <sphereGeometry args={[0.14, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+          <meshStandardMaterial color="#00F0A0" emissive="#00F0A0" emissiveIntensity={0.9} />
+        </mesh>
+        {/* Crescent on Top */}
+        <mesh position={[0, 0.32, 0]} rotation={[0, 0, 0.3]}>
+          <torusGeometry args={[0.06, 0.015, 12, 24, Math.PI * 1.3]} />
+          <meshStandardMaterial color="#FBBF24" emissive="#F59E0B" emissiveIntensity={1.4} metalness={0.9} />
+        </mesh>
+      </group>
+    )
+  }
+
+  return null
 }
 
 /**
  * Welcoming Mascot Animation Overlay
  * - Dark blurred screen backdrop.
+ * - ZERO BUTTONS: no back, no badge, no close button (user requested "gausah ada button back, simulasi, dan x pokoknya jangan ada button").
+ * - Comic speech bubble placed HIGH at the top, clear of the mascot & prop.
  * - Alan performs feature-specific animated gestures alongside authentic 3D props.
- * - Cute, warm comic speech bubble greeting the user ("Dewan Juri").
- * - Obvious Back button to return to Beranda immediately.
- * - Appears after periods of inactivity (>4h or new day) so it never spams or stays forgotten.
- * - Dismisses on tap anywhere or after 4.5 seconds.
+ * - Automatically centers Alan when a feature has no side prop.
+ * - Dismisses on tap anywhere or automatically after 4.5 seconds.
  */
 export default function FeatureWelcomeOverlay() {
   const pathname = usePathname()
-  const router = useRouter()
   const bankState = useBankState()
   const userNickname = bankState?.shortName || 'Dewan Juri'
 
@@ -578,7 +619,6 @@ export default function FeatureWelcomeOverlay() {
   const currentKeyRef = useRef<string | null>(null)
 
   useEffect(() => {
-    // Determine matching feature config
     const cleanPath = pathname.split('?')[0].replace(/\/$/, '') || '/'
     const config = FEATURE_CONFIGS[cleanPath]
 
@@ -589,7 +629,6 @@ export default function FeatureWelcomeOverlay() {
       return
     }
 
-    // If currently displaying this feature, do not dismiss on double-invocation
     if (currentKeyRef.current === config.key) {
       return
     }
@@ -649,16 +688,11 @@ export default function FeatureWelcomeOverlay() {
     }, 350)
   }
 
-  const handleBackToBeranda = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setIsVisible(false)
-    setIsFading(false)
-    setActiveConfig(null)
-    currentKeyRef.current = null
-    router.push('/beranda')
-  }
-
   if (!isVisible || !activeConfig) return null
+
+  // If feature has prop: Alan on left [-0.20], Prop on right [0.34].
+  // If feature has NO prop: Alan in the exact center [0, -0.38, 0]!
+  const alanX = activeConfig.hasProp ? -0.20 : 0.0
 
   return (
     <div
@@ -672,38 +706,9 @@ export default function FeatureWelcomeOverlay() {
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* 1. TOP BAR: Prominent Back Button & Feature Badge & Close */}
-      <div className="w-full flex items-center justify-between z-30 pt-4 pointer-events-auto">
-        <button
-          type="button"
-          onClick={handleBackToBeranda}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 hover:bg-white/30 text-white text-[12.5px] font-bold backdrop-blur-md border border-white/25 active:scale-95 transition-all cursor-pointer shadow-sm"
-          aria-label="Kembali ke Beranda"
-        >
-          <ArrowLeft className="w-4 h-4 text-white" />
-          <span>Kembali</span>
-        </button>
-
-        <span className="px-3 py-1 rounded-full text-[11px] font-extrabold text-[#00F0A0] bg-[#00F0A0]/15 border border-[#00F0A0]/30 backdrop-blur-md">
-          {activeConfig.badge}
-        </span>
-
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation()
-            handleDismiss()
-          }}
-          className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center active:scale-95 transition-all cursor-pointer"
-          aria-label="Tutup"
-        >
-          <X className="w-4 h-4 text-white" />
-        </button>
-      </div>
-
-      {/* 2. CHAT BUBBLE (SPEECH BUBBLE): Friendly, warm greeting floating gracefully above Alan */}
-      <div className="relative z-30 flex flex-col items-center justify-center mt-3 pointer-events-auto">
-        <div className="relative max-w-[310px] w-full bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-white/80 animate-in fade-in zoom-in-95 duration-300">
+      {/* 1. CHAT BUBBLE (SPEECH BUBBLE): Positioned high at the top (top-7), NEVER obscuring Alan or props! */}
+      <div className="absolute top-7 left-1/2 -translate-x-1/2 z-30 max-w-[320px] w-[88%] pointer-events-none">
+        <div className="relative bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-white/80 animate-in fade-in zoom-in-95 duration-300">
           <div className="flex items-start gap-2.5">
             <div className="w-6 h-6 rounded-full bg-[#1037A6] flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
               <Sparkles className="w-3.5 h-3.5 text-[#00F0A0]" />
@@ -716,19 +721,17 @@ export default function FeatureWelcomeOverlay() {
           </div>
           {/* Comic Chat Bubble Pointer Arrow pointing down toward Alan */}
           <div
-            className="absolute -bottom-2 left-12 w-4 h-4 bg-white/95 rotate-45 border-r border-b border-white/80"
+            className="absolute -bottom-2 left-10 w-4 h-4 bg-white/95 rotate-45 border-r border-b border-white/80"
           />
         </div>
 
-        <span className="text-[11px] text-white/60 mt-2 font-medium tracking-wide">
+        <span className="text-[11px] text-white/60 mt-2.5 font-medium tracking-wide block text-center">
           Ketuk layar di mana saja untuk mulai
         </span>
       </div>
 
       {/* Glowing Ambient Radial Aura behind Alan */}
-      <div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none"
-      >
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div
           className="w-[360px] h-[360px] rounded-full blur-3xl pointer-events-none animate-pulse"
           style={{
@@ -737,10 +740,10 @@ export default function FeatureWelcomeOverlay() {
         />
       </div>
 
-      {/* 3D WebGL Canvas: Full-Screen Alan Mascot + Feature Thematic Props */}
+      {/* 3D WebGL Canvas: Alan Mascot + Feature Thematic Props (Positioned lower, completely clear of bubble) */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
         <Canvas
-          camera={{ position: [0, -0.15, 6.2], fov: 27 }}
+          camera={{ position: [0, -0.20, 6.2], fov: 27 }}
           gl={{ antialias: true, alpha: true }}
           style={{ width: '100%', height: '100%' }}
         >
@@ -750,8 +753,8 @@ export default function FeatureWelcomeOverlay() {
           <pointLight position={[-1.8, -0.2, 2.5]} intensity={2.6} color={activeConfig.accentColor} />
           <pointLight position={[1.8, -0.2, 2.5]} intensity={2.2} color="#60A5FA" />
 
-          {/* Alan Mascot performing specific feature pose */}
-          <group position={[-0.20, -0.32, 0]}>
+          {/* Alan Mascot: centered if no prop, or offset left if prop is present */}
+          <group position={[alanX, -0.38, 0]}>
             <CarpetModel
               pose={activeConfig.pose}
               face={activeConfig.face}
@@ -761,10 +764,12 @@ export default function FeatureWelcomeOverlay() {
             />
           </group>
 
-          {/* Thematic Feature Prop floating in 3D right next to Alan */}
-          <group position={[0.34, -0.32, 0]}>
-            <ThematicFeatureProp propKind={activeConfig.propKind} />
-          </group>
+          {/* Thematic Feature Prop: only rendered when hasProp is true */}
+          {activeConfig.hasProp && (
+            <group position={[0.34, -0.38, 0]}>
+              <ThematicFeatureProp propKind={activeConfig.propKind} />
+            </group>
+          )}
         </Canvas>
       </div>
 

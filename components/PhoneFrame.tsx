@@ -114,6 +114,18 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
     }, 200)
   }
 
+  // Auto-reset all scroll on navigation to guarantee sticky headers stay visible
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0)
+      const ps = document.querySelector('.phone-screen')
+      if (ps) {
+        ps.scrollTop = 0
+        ps.scrollLeft = 0
+      }
+    }
+  }, [pathname])
+
   if (pathname === '/mascot-studio') {
     return (
       <div className="w-screen h-screen overflow-hidden bg-slate-950 text-white">
@@ -126,9 +138,19 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
     return <>{children}</>
   }
 
+  const isDarkTop = pathname === '/beranda' || pathname === '/'
+
   return (
     <div className="phone-wrapper">
-      <div className="phone-screen relative flex flex-col overflow-hidden">
+      <div
+        className={`phone-screen relative flex flex-col overflow-hidden ${
+          isDarkTop ? 'bg-[#051937]' : 'bg-white'
+        }`}
+        onScroll={(e) => {
+          if (e.currentTarget.scrollTop !== 0) e.currentTarget.scrollTop = 0
+          if (e.currentTarget.scrollLeft !== 0) e.currentTarget.scrollLeft = 0
+        }}
+      >
         {/* Universal Splash Screen on Every Reload / Entry */}
         {showSplash && (
           <div

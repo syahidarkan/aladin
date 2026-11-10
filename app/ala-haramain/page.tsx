@@ -254,7 +254,7 @@ export default function AlaHaramainHubPage() {
 
   return (
     <div
-      className="flex flex-col h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
+      className="flex flex-col h-full min-h-0 max-h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
@@ -266,10 +266,10 @@ export default function AlaHaramainHubPage() {
         <div className="h-14 px-4 flex items-center justify-between">
           <Link
             href="/beranda"
-            className="w-9 h-9 -ml-1 rounded-full flex items-center justify-center text-gray-800 hover:bg-gray-100 active:scale-95 transition-all cursor-pointer"
+            className="w-9 h-9 -ml-1 rounded-full bg-gray-100/90 hover:bg-gray-200 border border-gray-200/80 flex items-center justify-center text-[#1A1D26] active:scale-95 transition-all cursor-pointer shadow-2xs"
             aria-label="Kembali ke Beranda"
           >
-            <ArrowLeft className="w-5 h-5 text-[#1A1D26]" />
+            <ArrowLeft className="w-5 h-5 text-[#1A1D26] stroke-[2.4]" />
           </Link>
 
           <div className="text-center">
@@ -291,7 +291,7 @@ export default function AlaHaramainHubPage() {
       </header>
 
       {/* Scrollable Container */}
-      <div className="flex-1 overflow-y-auto no-scrollbar p-5 pb-24 space-y-4">
+      <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar p-5 pb-24 space-y-4">
         {/* Toast Notification */}
         {successToast && (
           <div className="p-3.5 bg-[#064E3B] text-white rounded-2xl text-[12px] font-bold shadow-lg animate-in fade-in duration-200 flex items-center gap-2">
