@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import StatusBar from '@/components/StatusBar'
+import { Canvas } from '@react-three/fiber'
+import CarpetModel from '@/components/mascot/CarpetModel'
 
 export default function AladinWrappedPage() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -117,8 +119,29 @@ export default function AladinWrappedPage() {
       <div className="absolute inset-y-24 left-0 w-1/3 z-10" onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))} />
       <div className="absolute inset-y-24 right-0 w-1/3 z-10" onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))} />
 
-      {/* 5. Center Story Content */}
-      <div className="px-6 py-8 z-20 space-y-4">
+      {/* 5. Center Story Content with 3D Alan Host */}
+      <div className="px-6 py-4 z-20 space-y-3 my-auto">
+        {/* 3D Alan Master of Ceremonies per Animation Brief */}
+        <div className="w-[190px] h-[130px] mx-auto -mb-2 relative">
+          <Canvas
+            camera={{ position: [0, 0.05, 5.2], fov: 32 }}
+            gl={{ antialias: true, alpha: true }}
+            style={{ width: '100%', height: '100%' }}
+          >
+            <ambientLight intensity={2.2} />
+            <directionalLight position={[2, 4, 3]} intensity={2.6} />
+            <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
+            <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
+            <CarpetModel
+              key={currentSlide}
+              pose="host-proud"
+              face="proud"
+              interactive={false}
+              scale={0.78}
+            />
+          </Canvas>
+        </div>
+
         <span
           className="inline-block px-3 py-1 rounded-full text-[10.5px] font-extrabold tracking-wider uppercase border border-white/20 backdrop-blur-xs"
           style={{ color: slide.accent }}

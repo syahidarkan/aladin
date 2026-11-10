@@ -4,6 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
+import { Canvas } from '@react-three/fiber'
+import CarpetModel, { CarpetPose } from '@/components/mascot/CarpetModel'
 
 export default function SimulasiBagiHasilPage() {
   const [nominalStr, setNominalStr] = useState('50.000.000')
@@ -34,6 +36,10 @@ export default function SimulasiBagiHasilPage() {
 
   const difference = Math.max(0, aladinNet - konvenNet)
   const percentageBetter = konvenNet > 0 ? Math.round(((aladinNet - konvenNet) / konvenNet) * 100) : 0
+
+  // Mascot acting posture reacts dynamically to deposit volume per Animation Brief
+  const alanPose: CarpetPose =
+    nominal >= 100000000 ? 'celebrate-max' : nominal >= 30000000 ? 'stand' : 'idle'
 
   const quickAmounts = [
     { label: 'Rp10 Jt', value: 10000000 },
@@ -94,29 +100,48 @@ export default function SimulasiBagiHasilPage() {
             boxShadow: '0 4px 16px rgba(28, 32, 196, 0.15)',
           }}
         >
-          <div className="relative z-10">
-            <div className="flex items-center gap-2" style={{ marginBottom: '6px' }}>
-              <span
-                className="font-extrabold uppercase tracking-wider text-white"
-                style={{
-                  fontSize: '9.5px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  padding: '2px 8px',
-                  borderRadius: '12px',
-                }}
-              >
-                #PAKAIALADIN SYARIAH
-              </span>
-              <span className="font-bold text-[#00F3AD]" style={{ fontSize: '10.5px' }}>
-                Nisbah hingga 85:15
-              </span>
+          <div className="flex items-center justify-between relative z-10">
+            <div className="flex-1 pr-2">
+              <div className="flex items-center gap-2" style={{ marginBottom: '6px' }}>
+                <span
+                  className="font-extrabold uppercase tracking-wider text-white"
+                  style={{
+                    fontSize: '9.5px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    padding: '2px 8px',
+                    borderRadius: '12px',
+                  }}
+                >
+                  #PAKAIALADIN SYARIAH
+                </span>
+                <span className="font-bold text-[#00F3AD]" style={{ fontSize: '10.5px' }}>
+                  Nisbah hingga 85:15
+                </span>
+              </div>
+
+              <h2 className="text-[18px] font-extrabold tracking-tight">Ala Deposito</h2>
+
+              <p className="text-white/80" style={{ fontSize: '11.5px', marginTop: '4px', lineHeight: '1.4' }}>
+                {nominal >= 100000000
+                  ? 'Bagi hasil maksimal! Alan merayakan berkah simpanan optimalmu.'
+                  : 'Bagi hasil kompetitif hingga 8,5% p.a. tanpa riba.'}
+              </p>
             </div>
 
-            <h2 className="text-[18px] font-extrabold tracking-tight">Ala Deposito</h2>
-
-            <p className="text-white/80" style={{ fontSize: '12px', marginTop: '4px', lineHeight: '1.4' }}>
-              Bagi hasil kompetitif hingga 8,5% p.a. Dikelola adil sesuai prinsip syariah tanpa riba.
-            </p>
+            {/* 3D Alan Live Mascot Reacting to Nominal Slider */}
+            <div className="w-[88px] h-[78px] shrink-0 relative">
+              <Canvas
+                camera={{ position: [0, 0.05, 5.2], fov: 32 }}
+                gl={{ antialias: true, alpha: true }}
+                style={{ width: '100%', height: '100%' }}
+              >
+                <ambientLight intensity={2.2} />
+                <directionalLight position={[2, 4, 3]} intensity={2.6} />
+                <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
+                <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
+                <CarpetModel pose={alanPose} interactive={false} scale={0.7} />
+              </Canvas>
+            </div>
           </div>
 
           {/* Decorative subtle accent circle */}

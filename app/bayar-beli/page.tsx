@@ -5,6 +5,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 import { useBankState, executeBillPayment } from '@/lib/bankState'
+import { Canvas } from '@react-three/fiber'
+import CarpetModel, { CarpetPose } from '@/components/mascot/CarpetModel'
 
 interface ServiceItem {
   id: string
@@ -26,6 +28,7 @@ export default function BayarBeliPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [showPin, setShowPin] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [billAlanPose, setBillAlanPose] = useState<CarpetPose>('idle')
 
   // Auto detect provider
   const getProviderName = (num: string) => {
@@ -206,9 +209,24 @@ export default function BayarBeliPage() {
         {/* Transaction Content */}
         {isSuccess ? (
           <div className="flex-1 overflow-y-auto no-scrollbar p-5 flex flex-col justify-between">
-            <div className="text-center pt-8">
-              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <div className="text-center pt-3">
+              {/* 3D Alan Unrolls with Joyous Smile per Animation Brief */}
+              <div className="w-[170px] h-[120px] mx-auto -mb-2 relative">
+                <Canvas
+                  camera={{ position: [0, 0.05, 5.2], fov: 32 }}
+                  gl={{ antialias: true, alpha: true }}
+                  style={{ width: '100%', height: '100%' }}
+                >
+                  <ambientLight intensity={2.2} />
+                  <directionalLight position={[2, 4, 3]} intensity={2.6} />
+                  <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
+                  <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
+                  <CarpetModel pose="celebrate-max" face="cheerful" interactive={false} scale={0.7} />
+                </Canvas>
+              </div>
+
+              <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path d="M5 13L9 17L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
@@ -417,9 +435,24 @@ export default function BayarBeliPage() {
                   ×
                 </button>
               </div>
-              <p className="text-[12px] text-[#64748B] mb-4">
+              <p className="text-[12px] text-[#64748B] mb-2">
                 Konfirmasi transaksi pembelian {selectedService.label} sebesar <strong>Rp{selectedNominal}</strong>.
               </p>
+
+              {/* 3D Alan Rolling into Cylinder Scroll per Animation Brief */}
+              <div className="w-[120px] h-[75px] mx-auto -mb-2 relative">
+                <Canvas
+                  camera={{ position: [0, 0.05, 5.2], fov: 32 }}
+                  gl={{ antialias: true, alpha: true }}
+                  style={{ width: '100%', height: '100%' }}
+                >
+                  <ambientLight intensity={2.2} />
+                  <directionalLight position={[2, 4, 3]} intensity={2.6} />
+                  <pointLight position={[0, 0.3, 2.8]} intensity={3.0} color="#FFFFFF" />
+                  <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
+                  <CarpetModel pose="roll-cylinder" interactive={false} scale={0.62} />
+                </Canvas>
+              </div>
 
               {/* 6 Dots PIN with ample 32px spacing so nothing overlaps or touches */}
               <div

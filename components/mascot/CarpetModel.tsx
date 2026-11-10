@@ -7,11 +7,32 @@ import { useFrame, useThree } from '@react-three/fiber'
 export type CarpetPose =
   | 'idle'
   | 'stand'
-  | 'lay-flat'
+  | 'waving'
+  | 'pointing'
+  | 'clapping'
+  | 'polite-bow'
+  | 'shielding'
+  | 'curious-think'
+  | 'peek-a-boo-hide'
+  | 'peek-a-boo-reveal'
+  | 'thumbs-up'
+  | 'shiver-freeze'
+  | 'celebrate-max'
+  | 'roll-cylinder'
+  | 'ihrom-bow'
+  | 'jet-glide'
+  | 'tawaf-spiral'
+  | 'barrel-roll'
+  | 'nfc-tap'
+  | 'peeking'
+  | 'host-proud'
   | 'curious-bow'
+  | 'lay-flat'
   | 'fold-arms'
   | 'loading'
   | 'transition-sweep'
+
+export type MascotFace = 'cheerful' | 'wink' | 'blink' | 'curious' | 'proud' | 'chill'
 
 interface BoneRotations {
   [boneName: string]: { x: number; y: number; z: number }
@@ -20,10 +41,6 @@ interface BoneRotations {
 /**
  * Exact 3D spine curve stations measured directly from official Aladin Model Sheet
  * (Maskot All View / all 1 copy 4.jpeg - Left Side Profile View & all 1.jpeg - Front View).
- *
- * s: Arc progress along cloth from 0.0 (Hook Tip) to 1.0 (Rear Tail)
- * Z: Depth axis (positive towards camera, negative towards rear)
- * Y: Vertical height axis (+Y is up)
  */
 export const SPINE_KEYPOINTS = [
   { s: 0.00, z:  0.70, y:  0.22 }, // 0: Hook tip (curled slightly inward)
@@ -37,7 +54,7 @@ export const SPINE_KEYPOINTS = [
   { s: 0.72, z: -0.55, y: -0.12 }, // 8: Mid-body slope
   { s: 0.82, z: -0.85, y:  0.10 }, // 9: Shoulder rise
   { s: 0.91, z: -1.08, y:  0.24 }, // 10: Rear crest plateau
-  { s: 1.00, z: -1.24, y:  0.28 }, // 11: Tail edge with 2 corner tassels
+  { s: 1.00, z: -1.24, y:  0.28 }, // 11: Tail edge with 4 rear tassels
 ]
 
 /**
@@ -99,19 +116,19 @@ export function getSpineOutwardNormal(s: number): { ny: number; nz: number } {
 }
 
 /**
- * Skeletal joint progress stations along the spine cloth
+ * Skeletal joint stations along spine cloth
  */
 export const BONE_STATIONS = [
   { name: 'Spine_0', s: 0.12 }, // Head / Front Lip (Face)
   { name: 'Spine_1', s: 0.28 }, // Throat / Chin Turn
   { name: 'Spine_2', s: 0.45 }, // Belly Trough
   { name: 'Spine_3', s: 0.72 }, // Mid-Body Rise
-  { name: 'Spine_4', s: 0.96 }, // Tail with 2 Tassels
+  { name: 'Spine_4', s: 0.96 }, // Tail with 4 Tassels
 ]
 
 /**
- * Default bone rotations on top of the sculpted default geometry.
- * When all rotations are 0, it is 100% IDENTICAL to the official Model Sheet!
+ * Comprehensive Bone Rotations for all Alan's Acting Poses.
+ * Masterfully blends spine posture and 4 corner articulations.
  */
 export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
   idle: {
@@ -120,20 +137,230 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
     Spine_2: { x: 0.0, y: 0.0, z: 0.0 },
     Spine_3: { x: 0.0, y: 0.0, z: 0.0 },
     Spine_4: { x: 0.0, y: 0.0, z: 0.0 },
+    Corner_FL: { x: 0.0, y: 0.0, z: 0.0 },
+    Corner_FR: { x: 0.0, y: 0.0, z: 0.0 },
+    Corner_RL: { x: 0.0, y: 0.0, z: 0.0 },
+    Corner_RR: { x: 0.0, y: 0.0, z: 0.0 },
   },
   stand: {
-    Spine_0: { x: 0.2, y: 0, z: 0 },
-    Spine_1: { x: 0.15, y: 0, z: 0 },
-    Spine_2: { x: -0.1, y: 0, z: 0 },
-    Spine_3: { x: -0.15, y: 0, z: 0 },
-    Spine_4: { x: 0.2, y: 0, z: 0 },
+    Spine_0: { x: 0.22, y: 0, z: 0 },
+    Spine_1: { x: 0.18, y: 0, z: 0 },
+    Spine_2: { x: -0.12, y: 0, z: 0 },
+    Spine_3: { x: -0.22, y: 0, z: 0 },
+    Spine_4: { x: 0.26, y: 0, z: 0 },
+    Corner_FL: { x: -0.05, y: 0.08, z: 0.04 },
+    Corner_FR: { x: -0.05, y: -0.08, z: -0.04 },
+    Corner_RL: { x: 0.12, y: 0, z: 0 },
+    Corner_RR: { x: 0.12, y: 0, z: 0 },
   },
-  'lay-flat': {
-    Spine_0: { x: -0.2, y: 0, z: 0 },
-    Spine_1: { x: -0.1, y: 0, z: 0 },
-    Spine_2: { x: 0.05, y: 0, z: 0 },
-    Spine_3: { x: 0.1, y: 0, z: 0 },
-    Spine_4: { x: 0.15, y: 0, z: 0 },
+  waving: {
+    Spine_0: { x: 0.18, y: 0.05, z: 0.02 },
+    Spine_1: { x: 0.12, y: 0, z: 0 },
+    Spine_2: { x: -0.08, y: 0, z: 0 },
+    Spine_3: { x: -0.16, y: 0, z: 0 },
+    Spine_4: { x: 0.22, y: 0, z: 0 },
+    Corner_FL: { x: -0.04, y: 0.06, z: 0.02 },
+    Corner_FR: { x: 0.35, y: -0.25, z: -0.45 }, // Right corner lifted high & waving
+    Corner_RL: { x: 0.1, y: 0, z: 0 },
+    Corner_RR: { x: 0.1, y: 0, z: 0 },
+  },
+  pointing: {
+    Spine_0: { x: 0.14, y: 0.20, z: -0.08 },
+    Spine_1: { x: 0.08, y: 0.12, z: -0.04 },
+    Spine_2: { x: -0.06, y: 0.06, z: 0.0 },
+    Spine_3: { x: 0.08, y: 0.0, z: 0.0 },
+    Spine_4: { x: 0.15, y: -0.05, z: 0.0 },
+    Corner_FL: { x: -0.1, y: 0.05, z: 0.05 },
+    Corner_FR: { x: 0.55, y: -0.38, z: -0.65 }, // Pointing index corner straight ahead
+    Corner_RL: { x: 0.05, y: 0, z: 0 },
+    Corner_RR: { x: 0.05, y: 0, z: 0 },
+  },
+  clapping: {
+    Spine_0: { x: 0.20, y: 0, z: 0 },
+    Spine_1: { x: 0.10, y: 0, z: 0 },
+    Spine_2: { x: -0.08, y: 0, z: 0 },
+    Spine_3: { x: -0.14, y: 0, z: 0 },
+    Spine_4: { x: 0.20, y: 0, z: 0 },
+    Corner_FL: { x: 0.42, y: 0.38, z: 0.55 }, // Left corner bent inward
+    Corner_FR: { x: 0.42, y: -0.38, z: -0.55 }, // Right corner bent inward to meet
+    Corner_RL: { x: 0.08, y: 0, z: 0 },
+    Corner_RR: { x: 0.08, y: 0, z: 0 },
+  },
+  'polite-bow': {
+    Spine_0: { x: 0.38, y: 0, z: 0 }, // Head gracefully bowed
+    Spine_1: { x: 0.28, y: 0, z: 0 },
+    Spine_2: { x: -0.22, y: 0, z: 0 },
+    Spine_3: { x: 0.28, y: 0, z: 0 },
+    Spine_4: { x: 0.42, y: 0, z: 0 },
+    Corner_FL: { x: 0.18, y: 0.15, z: 0.1 },
+    Corner_FR: { x: 0.18, y: -0.15, z: -0.1 },
+    Corner_RL: { x: 0.25, y: 0, z: 0 },
+    Corner_RR: { x: 0.25, y: 0, z: 0 },
+  },
+  shielding: {
+    Spine_0: { x: -0.24, y: 0, z: 0 }, // Arching upward like a protective dome
+    Spine_1: { x: -0.32, y: 0, z: 0 },
+    Spine_2: { x: 0.25, y: 0, z: 0 },
+    Spine_3: { x: 0.35, y: 0, z: 0 },
+    Spine_4: { x: -0.18, y: 0, z: 0 },
+    Corner_FL: { x: -0.45, y: 0.25, z: 0.35 }, // Corners anchored down firmly
+    Corner_FR: { x: -0.45, y: -0.25, z: -0.35 },
+    Corner_RL: { x: -0.45, y: 0.25, z: 0.25 },
+    Corner_RR: { x: -0.45, y: -0.25, z: -0.25 },
+  },
+  'curious-think': {
+    Spine_0: { x: 0.18, y: 0.22, z: 0.18 }, // Curious tilted head
+    Spine_1: { x: 0.08, y: 0.12, z: 0.10 },
+    Spine_2: { x: -0.04, y: 0.0, z: -0.05 },
+    Spine_3: { x: 0.06, y: -0.08, z: -0.08 },
+    Spine_4: { x: 0.14, y: 0.0, z: 0.0 },
+    Corner_FL: { x: 0.15, y: 0.12, z: 0.15 },
+    Corner_FR: { x: 0.32, y: -0.18, z: -0.25 }, // Chin rest corner gesture
+    Corner_RL: { x: 0.0, y: 0, z: 0 },
+    Corner_RR: { x: 0.0, y: 0, z: 0 },
+  },
+  'peek-a-boo-hide': {
+    Spine_0: { x: 0.12, y: 0, z: 0 },
+    Spine_1: { x: 0.04, y: 0, z: 0 },
+    Spine_2: { x: 0.0, y: 0, z: 0 },
+    Spine_3: { x: 0.06, y: 0, z: 0 },
+    Spine_4: { x: 0.12, y: 0, z: 0 },
+    Corner_FL: { x: 0.65, y: 0.45, z: 0.75 }, // Folded completely over face eyes
+    Corner_FR: { x: 0.65, y: -0.45, z: -0.75 },
+    Corner_RL: { x: 0.05, y: 0, z: 0 },
+    Corner_RR: { x: 0.05, y: 0, z: 0 },
+  },
+  'peek-a-boo-reveal': {
+    Spine_0: { x: 0.22, y: 0, z: 0 },
+    Spine_1: { x: 0.14, y: 0, z: 0 },
+    Spine_2: { x: -0.08, y: 0, z: 0 },
+    Spine_3: { x: -0.15, y: 0, z: 0 },
+    Spine_4: { x: 0.25, y: 0, z: 0 },
+    Corner_FL: { x: -0.25, y: -0.35, z: -0.45 }, // Open wide like a joyous tada!
+    Corner_FR: { x: -0.25, y: 0.35, z: 0.45 },
+    Corner_RL: { x: 0.15, y: 0, z: 0 },
+    Corner_RR: { x: 0.15, y: 0, z: 0 },
+  },
+  'thumbs-up': {
+    Spine_0: { x: 0.15, y: -0.08, z: 0.04 },
+    Spine_1: { x: 0.08, y: 0, z: 0 },
+    Spine_2: { x: -0.04, y: 0, z: 0 },
+    Spine_3: { x: 0.06, y: 0, z: 0 },
+    Spine_4: { x: 0.16, y: 0, z: 0 },
+    Corner_FL: { x: -0.05, y: 0.05, z: 0.05 },
+    Corner_FR: { x: 0.72, y: -0.42, z: -0.58 }, // Folded upward like a firm thumbs-up!
+    Corner_RL: { x: 0.04, y: 0, z: 0 },
+    Corner_RR: { x: 0.04, y: 0, z: 0 },
+  },
+  'shiver-freeze': {
+    Spine_0: { x: 0.08, y: 0, z: 0 },
+    Spine_1: { x: -0.05, y: 0, z: 0 },
+    Spine_2: { x: -0.04, y: 0, z: 0 },
+    Spine_3: { x: 0.10, y: 0, z: 0 },
+    Spine_4: { x: 0.18, y: 0, z: 0 },
+    Corner_FL: { x: 0.55, y: 0.40, z: 0.65 }, // Corners hugging body tight
+    Corner_FR: { x: 0.55, y: -0.40, z: -0.65 },
+    Corner_RL: { x: 0.35, y: 0.25, z: 0.35 },
+    Corner_RR: { x: 0.35, y: -0.25, z: -0.35 },
+  },
+  'celebrate-max': {
+    Spine_0: { x: 0.28, y: 0, z: 0 }, // Puffed chest & raised head
+    Spine_1: { x: 0.20, y: 0, z: 0 },
+    Spine_2: { x: -0.18, y: 0, z: 0 },
+    Spine_3: { x: -0.22, y: 0, z: 0 },
+    Spine_4: { x: 0.32, y: 0, z: 0 },
+    Corner_FL: { x: 0.35, y: -0.25, z: -0.45 },
+    Corner_FR: { x: 0.35, y: 0.25, z: 0.45 },
+    Corner_RL: { x: 0.28, y: -0.15, z: -0.25 },
+    Corner_RR: { x: 0.28, y: 0.15, z: 0.25 },
+  },
+  'roll-cylinder': {
+    Spine_0: { x: 0.85, y: 0, z: 0 }, // Rolling into cylinder scroll
+    Spine_1: { x: 0.85, y: 0, z: 0 },
+    Spine_2: { x: 0.75, y: 0, z: 0 },
+    Spine_3: { x: 0.70, y: 0, z: 0 },
+    Spine_4: { x: 0.65, y: 0, z: 0 },
+    Corner_FL: { x: 0.3, y: 0.1, z: 0.1 },
+    Corner_FR: { x: 0.3, y: -0.1, z: -0.1 },
+    Corner_RL: { x: 0.2, y: 0.1, z: 0.1 },
+    Corner_RR: { x: 0.2, y: -0.1, z: -0.1 },
+  },
+  'ihrom-bow': {
+    Spine_0: { x: 0.35, y: 0, z: 0 }, // Sacred tranquil ihram wrap
+    Spine_1: { x: 0.22, y: 0, z: 0 },
+    Spine_2: { x: -0.15, y: 0, z: 0 },
+    Spine_3: { x: 0.20, y: 0, z: 0 },
+    Spine_4: { x: 0.30, y: 0, z: 0 },
+    Corner_FL: { x: 0.55, y: 0.45, z: 0.55 }, // 4 corners wrapped across chest
+    Corner_FR: { x: 0.55, y: -0.45, z: -0.55 },
+    Corner_RL: { x: 0.35, y: 0.30, z: 0.35 },
+    Corner_RR: { x: 0.35, y: -0.30, z: -0.35 },
+  },
+  'jet-glide': {
+    Spine_0: { x: -0.15, y: 0, z: 0 },
+    Spine_1: { x: -0.08, y: 0, z: 0 },
+    Spine_2: { x: 0.04, y: 0, z: 0 },
+    Spine_3: { x: 0.08, y: 0, z: 0 },
+    Spine_4: { x: 0.12, y: 0, z: 0 },
+    Corner_FL: { x: -0.12, y: 0.15, z: -0.25 }, // Stiff jet wingtips
+    Corner_FR: { x: -0.12, y: -0.15, z: 0.25 },
+    Corner_RL: { x: 0.10, y: 0.15, z: -0.15 },
+    Corner_RR: { x: 0.10, y: -0.15, z: 0.15 },
+  },
+  'tawaf-spiral': {
+    Spine_0: { x: 0.12, y: 0.15, z: -0.15 },
+    Spine_1: { x: 0.06, y: 0.10, z: -0.10 },
+    Spine_2: { x: -0.02, y: 0.05, z: -0.05 },
+    Spine_3: { x: 0.08, y: -0.05, z: 0.05 },
+    Spine_4: { x: 0.16, y: -0.10, z: 0.10 },
+    Corner_FL: { x: 0.15, y: 0.12, z: 0.20 },
+    Corner_FR: { x: -0.15, y: -0.12, z: -0.20 },
+    Corner_RL: { x: 0.12, y: 0.10, z: 0.15 },
+    Corner_RR: { x: -0.12, y: -0.10, z: -0.15 },
+  },
+  'barrel-roll': {
+    Spine_0: { x: 0.05, y: 0.1, z: 0 },
+    Spine_1: { x: 0.0, y: 0, z: 0 },
+    Spine_2: { x: 0.0, y: 0, z: 0 },
+    Spine_3: { x: 0.0, y: 0, z: 0 },
+    Spine_4: { x: 0.1, y: -0.1, z: 0 },
+    Corner_FL: { x: 0.1, y: 0.1, z: 0 },
+    Corner_FR: { x: -0.1, y: -0.1, z: 0 },
+    Corner_RL: { x: 0.1, y: 0.1, z: 0 },
+    Corner_RR: { x: -0.1, y: -0.1, z: 0 },
+  },
+  'nfc-tap': {
+    Spine_0: { x: 0.45, y: 0, z: 0 }, // Forehead dip tapping the sensor
+    Spine_1: { x: 0.25, y: 0, z: 0 },
+    Spine_2: { x: -0.10, y: 0, z: 0 },
+    Spine_3: { x: 0.12, y: 0, z: 0 },
+    Spine_4: { x: 0.20, y: 0, z: 0 },
+    Corner_FL: { x: 0.25, y: 0.15, z: 0.1 },
+    Corner_FR: { x: 0.25, y: -0.15, z: -0.1 },
+    Corner_RL: { x: 0.1, y: 0, z: 0 },
+    Corner_RR: { x: 0.1, y: 0, z: 0 },
+  },
+  peeking: {
+    Spine_0: { x: 0.42, y: 0, z: 0 }, // Looking down curiously over top frame
+    Spine_1: { x: 0.22, y: 0, z: 0 },
+    Spine_2: { x: -0.08, y: 0, z: 0 },
+    Spine_3: { x: -0.15, y: 0, z: 0 },
+    Spine_4: { x: 0.20, y: 0, z: 0 },
+    Corner_FL: { x: 0.45, y: 0.15, z: 0.2 }, // Corners holding edge of frame
+    Corner_FR: { x: 0.45, y: -0.15, z: -0.2 },
+    Corner_RL: { x: 0.1, y: 0, z: 0 },
+    Corner_RR: { x: 0.1, y: 0, z: 0 },
+  },
+  'host-proud': {
+    Spine_0: { x: 0.24, y: 0, z: 0 },
+    Spine_1: { x: 0.16, y: 0, z: 0 },
+    Spine_2: { x: -0.14, y: 0, z: 0 },
+    Spine_3: { x: -0.20, y: 0, z: 0 },
+    Spine_4: { x: 0.26, y: 0, z: 0 },
+    Corner_FL: { x: 0.42, y: 0.25, z: 0.35 }, // Crossed corners proudly
+    Corner_FR: { x: 0.42, y: -0.25, z: -0.35 },
+    Corner_RL: { x: 0.15, y: 0, z: 0 },
+    Corner_RR: { x: 0.15, y: 0, z: 0 },
   },
   'curious-bow': {
     Spine_0: { x: 0.25, y: 0, z: 0 },
@@ -141,6 +368,21 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
     Spine_2: { x: -0.15, y: 0, z: 0 },
     Spine_3: { x: 0.2, y: 0, z: 0 },
     Spine_4: { x: 0.35, y: 0, z: 0 },
+    Corner_FL: { x: 0.15, y: 0.1, z: 0.1 },
+    Corner_FR: { x: 0.15, y: -0.1, z: -0.1 },
+    Corner_RL: { x: 0.2, y: 0, z: 0 },
+    Corner_RR: { x: 0.2, y: 0, z: 0 },
+  },
+  'lay-flat': {
+    Spine_0: { x: -0.2, y: 0, z: 0 },
+    Spine_1: { x: -0.1, y: 0, z: 0 },
+    Spine_2: { x: 0.05, y: 0, z: 0 },
+    Spine_3: { x: 0.1, y: 0, z: 0 },
+    Spine_4: { x: 0.15, y: 0, z: 0 },
+    Corner_FL: { x: 0, y: 0, z: 0 },
+    Corner_FR: { x: 0, y: 0, z: 0 },
+    Corner_RL: { x: 0, y: 0, z: 0 },
+    Corner_RR: { x: 0, y: 0, z: 0 },
   },
   'fold-arms': {
     Spine_0: { x: 0.15, y: 0, z: 0 },
@@ -148,6 +390,10 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
     Spine_2: { x: -0.05, y: 0, z: 0 },
     Spine_3: { x: 0.2, y: 0, z: 0 },
     Spine_4: { x: 0.3, y: 0, z: 0 },
+    Corner_FL: { x: 0.35, y: 0.2, z: 0.3 },
+    Corner_FR: { x: 0.35, y: -0.2, z: -0.3 },
+    Corner_RL: { x: 0.1, y: 0, z: 0 },
+    Corner_RR: { x: 0.1, y: 0, z: 0 },
   },
   loading: {
     Spine_0: { x: 0.05, y: -0.04, z: 0.03 },
@@ -155,6 +401,10 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
     Spine_2: { x: 0.02, y: 0.0, z: 0.0 },
     Spine_3: { x: 0.08, y: 0.0, z: 0.0 },
     Spine_4: { x: 0.15, y: 0.04, z: -0.04 },
+    Corner_FL: { x: 0.12, y: 0.08, z: 0.1 },
+    Corner_FR: { x: -0.12, y: -0.08, z: -0.1 },
+    Corner_RL: { x: 0.15, y: 0.08, z: 0.1 },
+    Corner_RR: { x: -0.15, y: -0.08, z: -0.1 },
   },
   'transition-sweep': {
     Spine_0: { x: 0.0, y: 0.0, z: 0.0 },
@@ -162,11 +412,16 @@ export const POSE_DEFINITIONS: Record<CarpetPose, BoneRotations> = {
     Spine_2: { x: 0.0, y: 0.0, z: 0.0 },
     Spine_3: { x: 0.0, y: 0.0, z: 0.0 },
     Spine_4: { x: 0.0, y: 0.0, z: 0.0 },
+    Corner_FL: { x: 0.0, y: 0.0, z: 0.0 },
+    Corner_FR: { x: 0.0, y: 0.0, z: 0.0 },
+    Corner_RL: { x: 0.0, y: 0.0, z: 0.0 },
+    Corner_RR: { x: 0.0, y: 0.0, z: 0.0 },
   },
 }
 
 interface CarpetModelProps {
   pose?: CarpetPose
+  face?: MascotFace
   interactive?: boolean
   followCursor?: boolean
   onClick?: () => void
@@ -177,7 +432,10 @@ interface CarpetModelProps {
  * Creates procedural 1024x1536 texture matching Maskot All View turnaround sheet:
  * Top of canvas (Y=0) is Front Lip; Bottom of canvas (Y=1536) is Rear Tail.
  */
-export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElement {
+export function createFullCarpetCanvas(
+  blink: boolean = false,
+  expression: MascotFace = 'cheerful'
+): HTMLCanvasElement {
   const canvas = document.createElement('canvas')
   canvas.width = 1024
   canvas.height = 1536
@@ -218,27 +476,27 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
   ctx.lineWidth = 26
   ctx.strokeStyle = '#00F0A0'
 
-  // Front-Left Arc (Top-Left)
+  // Front-Left Arc
   ctx.beginPath()
   ctx.arc(margin + 36, margin + 36, arcRadius, 0, Math.PI / 2, false)
   ctx.stroke()
 
-  // Front-Right Arc (Top-Right)
+  // Front-Right Arc
   ctx.beginPath()
   ctx.arc(1024 - margin - 36, margin + 36, arcRadius, Math.PI / 2, Math.PI, false)
   ctx.stroke()
 
-  // Rear-Left Arc (Bottom-Left)
+  // Rear-Left Arc
   ctx.beginPath()
   ctx.arc(margin + 36, 1536 - margin - 36, arcRadius, -Math.PI / 2, 0, false)
   ctx.stroke()
 
-  // Rear-Right Arc (Bottom-Right)
+  // Rear-Right Arc
   ctx.beginPath()
   ctx.arc(1024 - margin - 36, 1536 - margin - 36, arcRadius, Math.PI, -Math.PI / 2, false)
   ctx.stroke()
 
-  // 4. Cute Chibi Face Directly on the Front Lip (at Y = 280, facing camera upright!)
+  // 4. Cute Chibi Face Directly on the Front Lip (at Y = 275, facing camera upright!)
   const faceCenterX = 512
   const faceCenterY = 275
 
@@ -250,7 +508,10 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
   ctx.fill()
 
   const eyesY = faceCenterY - 32
-  if (blink) {
+  const isWinking = expression === 'wink'
+
+  if (blink || expression === 'blink') {
+    // Both eyes closed in gentle happy sleeping arcs
     ctx.strokeStyle = '#0A0A14'
     ctx.lineWidth = 16
     ctx.lineCap = 'round'
@@ -261,28 +522,41 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
     ctx.arc(faceCenterX + 110, eyesY, 40, 0.15 * Math.PI, 0.85 * Math.PI, false)
     ctx.stroke()
   } else {
-    // 4b. Chibi Glossy Black Eyes (#0A0A14)
+    // Left Eye
     ctx.fillStyle = '#0A0A14'
     ctx.beginPath()
     ctx.arc(faceCenterX - 110, eyesY, 54, 0, Math.PI * 2)
-    ctx.arc(faceCenterX + 110, eyesY, 54, 0, Math.PI * 2)
     ctx.fill()
 
-    // 4c. Dual White Specular Highlights in Each Eye
     ctx.fillStyle = '#FFFFFF'
-    // Left eye
     ctx.beginPath()
     ctx.arc(faceCenterX - 124, eyesY - 15, 21, 0, Math.PI * 2)
     ctx.arc(faceCenterX - 94, eyesY + 15, 10, 0, Math.PI * 2)
     ctx.fill()
-    // Right eye
-    ctx.beginPath()
-    ctx.arc(faceCenterX + 96, eyesY - 15, 21, 0, Math.PI * 2)
-    ctx.arc(faceCenterX + 126, eyesY + 15, 10, 0, Math.PI * 2)
-    ctx.fill()
+
+    // Right Eye: check if winking
+    if (isWinking) {
+      ctx.strokeStyle = '#0A0A14'
+      ctx.lineWidth = 18
+      ctx.lineCap = 'round'
+      ctx.beginPath()
+      ctx.arc(faceCenterX + 110, eyesY - 4, 44, 0.15 * Math.PI, 0.85 * Math.PI, false)
+      ctx.stroke()
+    } else {
+      ctx.fillStyle = '#0A0A14'
+      ctx.beginPath()
+      ctx.arc(faceCenterX + 110, eyesY, 54, 0, Math.PI * 2)
+      ctx.fill()
+
+      ctx.fillStyle = '#FFFFFF'
+      ctx.beginPath()
+      ctx.arc(faceCenterX + 96, eyesY - 15, 21, 0, Math.PI * 2)
+      ctx.arc(faceCenterX + 126, eyesY + 15, 10, 0, Math.PI * 2)
+      ctx.fill()
+    }
   }
 
-  // 4d. Cheerful Open D-Shape Smile with Pink Tongue
+  // 4d. Mouth: Cheerful Open D-Shape Smile with Pink Tongue
   const mouthY = faceCenterY + 45
   ctx.fillStyle = '#0A0A14'
   ctx.beginPath()
@@ -290,7 +564,7 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
   ctx.closePath()
   ctx.fill()
 
-  // Vibrant Pink Tongue (#FF4D82) - sits inside lower half of smile
+  // Vibrant Pink Tongue (#FF4D82)
   ctx.save()
   ctx.clip()
   ctx.fillStyle = '#FF4D82'
@@ -300,7 +574,6 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
   ctx.restore()
 
   // 5. Center Motif: Rub el Hizb (8-pointed Islamic Star Symbol of Bank Aladin Syariah)
-  // Drawn at center of carpet body (Y = 980, visible in 3/4 and top-down views!)
   const starCenterX = 512
   const starCenterY = 980
   const outerW = 280
@@ -320,15 +593,12 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
     ctx.restore()
   }
 
-  // Outer 8-pointed star: Two overlapping rounded rectangles (0° and 45°)
   drawStarRect(starCenterX, starCenterY, outerW, outerH, 0, 26)
   drawStarRect(starCenterX, starCenterY, outerW, outerH, Math.PI / 4, 26)
 
-  // Inner concentric 8-pointed star
   drawStarRect(starCenterX, starCenterY, innerW, innerH, 0, 14)
   drawStarRect(starCenterX, starCenterY, innerW, innerH, Math.PI / 4, 14)
 
-  // Central star diamond accent
   ctx.fillStyle = '#00F0A0'
   ctx.beginPath()
   ctx.arc(starCenterX, starCenterY, 18, 0, Math.PI * 2)
@@ -339,9 +609,6 @@ export function createFullCarpetCanvas(blink: boolean = false): HTMLCanvasElemen
 
 /**
  * Procedural Curved Carpet Geometry Generator
- * Builds an extruded 3D carpet sheet with thickness:
- * - isFront = true: Top surface (offset +0.008 outward, normal pointing outward)
- * - isFront = false: Bottom surface (offset -0.008 inward, normal pointing inward)
  */
 export function createCurvedCarpetGeometry(
   width = 1.6,
@@ -368,26 +635,22 @@ export function createCurvedCarpetGeometry(
       // Subtle organic side-edge curl
       const edgeCurl = Math.sin(u * Math.PI) * 0.015
 
-      // Offset vertex along outward normal by thickness
       const vx = x
       const vy = spine.y - edgeCurl + norm.ny * thickness
       const vz = spine.z + norm.nz * thickness
 
       positions.push(vx, vy, vz)
 
-      // Set explicit vertex normals
       if (isFront) {
         normals.push(0, norm.ny, norm.nz)
       } else {
         normals.push(0, -norm.ny, -norm.nz)
       }
 
-      // UV mapping: u across width, (1 - v) so that v=0 (hook tip) maps to top of canvas (Y=0, upright face)
       uvs.push(u, 1 - v)
     }
   }
 
-  // Generate triangles with winding order matching normal direction
   for (let j = 0; j < segmentH; j++) {
     for (let i = 0; i < segmentW; i++) {
       const a = j * (segmentW + 1) + i
@@ -396,11 +659,9 @@ export function createCurvedCarpetGeometry(
       const d = (j + 1) * (segmentW + 1) + (i + 1)
 
       if (isFront) {
-        // Front surface: (a, c, b) & (b, c, d)
         indices.push(a, c, b)
         indices.push(b, c, d)
       } else {
-        // Back surface: opposite winding (a, b, c) & (b, d, c)
         indices.push(a, b, c)
         indices.push(b, d, c)
       }
@@ -417,11 +678,11 @@ export function createCurvedCarpetGeometry(
 }
 
 /**
- * Generator function for Rigged SkinnedMesh Curved Carpet
- * Sets up 5 progressive spine bones and computes smooth vertex skin weights.
- * Dual-Mesh Architecture: Top surface uses face CanvasTexture with FrontSide;
- * Underside surface uses solid Deep Royal Blue velvet (#1037A6) with FrontSide on inward geometry.
- * Eliminates 100% of backface texture bleed!
+ * Generator function for Rigged SkinnedMesh Curved Carpet with 4-Corner Bones
+ * Sets up 5 progressive spine bones AND 4 expressive corner bones.
+ * Dual-Mesh Architecture: Top surface uses face CanvasTexture with DoubleSide;
+ * Underside surface uses solid Deep Royal Blue velvet (#1037A6) with FrontSide.
+ * Zero backface texture bleed!
  */
 export function createRiggedCarpet(
   frontMaterial: THREE.Material,
@@ -434,15 +695,15 @@ export function createRiggedCarpet(
   const frontGeometry = createCurvedCarpetGeometry(1.6, segmentW, segmentH, true)
   const backGeometry = createCurvedCarpetGeometry(1.6, segmentW, segmentH, false)
 
-  // 2. Setup 5 Progressive Spine Bones along the curve
-  const bones: THREE.Bone[] = []
-  const boneWorldPositions: THREE.Vector3[] = []
+  // 2. Setup 5 Progressive Spine Bones along curve
+  const spineBones: THREE.Bone[] = []
+  const spineWorldPositions: THREE.Vector3[] = []
 
   for (let i = 0; i < BONE_STATIONS.length; i++) {
     const station = BONE_STATIONS[i]
     const spine = getSpinePoint(station.s)
     const worldPos = new THREE.Vector3(0, spine.y, spine.z)
-    boneWorldPositions.push(worldPos)
+    spineWorldPositions.push(worldPos)
 
     const bone = new THREE.Bone()
     bone.name = station.name
@@ -450,50 +711,130 @@ export function createRiggedCarpet(
     if (i === 0) {
       bone.position.copy(worldPos)
     } else {
-      const parentPos = boneWorldPositions[i - 1]
+      const parentPos = spineWorldPositions[i - 1]
       bone.position.subVectors(worldPos, parentPos)
-      bones[i - 1].add(bone)
+      spineBones[i - 1].add(bone)
     }
-    bones.push(bone)
+    spineBones.push(bone)
   }
 
-  // 3. Compute Smooth Vertex Skinning Weights
+  // 3. Setup 4 Expressive Corner Bones (Children of Spine_0 and Spine_4)
+  const cornerFL = new THREE.Bone()
+  cornerFL.name = 'Corner_FL'
+  cornerFL.position.set(-0.65, 0, 0.08)
+  spineBones[0].add(cornerFL)
+
+  const cornerFR = new THREE.Bone()
+  cornerFR.name = 'Corner_FR'
+  cornerFR.position.set(0.65, 0, 0.08)
+  spineBones[0].add(cornerFR)
+
+  const cornerRL = new THREE.Bone()
+  cornerRL.name = 'Corner_RL'
+  cornerRL.position.set(-0.65, 0, 0)
+  spineBones[4].add(cornerRL)
+
+  const cornerRR = new THREE.Bone()
+  cornerRR.name = 'Corner_RR'
+  cornerRR.position.set(0.65, 0, 0)
+  spineBones[4].add(cornerRR)
+
+  // Complete bone hierarchy array for Skeleton:
+  // Indices:
+  // 0: Spine_0, 1: Spine_1, 2: Spine_2, 3: Spine_3, 4: Spine_4
+  // 5: Corner_FL, 6: Corner_FR, 7: Corner_RL, 8: Corner_RR
+  const allBones: THREE.Bone[] = [
+    spineBones[0],
+    spineBones[1],
+    spineBones[2],
+    spineBones[3],
+    spineBones[4],
+    cornerFL,
+    cornerFR,
+    cornerRL,
+    cornerRR,
+  ]
+
+  // 4. Compute Smooth Vertex Skinning Weights across Spine & Corners
   const posAttr = frontGeometry.attributes.position
   const skinIndices: number[] = []
   const skinWeights: number[] = []
 
-  for (let i = 0; i < posAttr.count; i++) {
-    const j = Math.floor(i / (segmentW + 1))
+  for (let idx = 0; idx < posAttr.count; idx++) {
+    const j = Math.floor(idx / (segmentW + 1))
+    const i = idx % (segmentW + 1)
     const v = j / segmentH
+    const u = i / segmentW
 
-    let bestBone = 0
+    // Primary spine bones selection
+    let bestSpine = 0
     let minDiff = 999
     for (let b = 0; b < BONE_STATIONS.length; b++) {
       const diff = Math.abs(v - BONE_STATIONS[b].s)
       if (diff < minDiff) {
         minDiff = diff
-        bestBone = b
+        bestSpine = b
       }
     }
 
-    let secondBone = bestBone
-    if (v < BONE_STATIONS[bestBone].s && bestBone > 0) {
-      secondBone = bestBone - 1
-    } else if (v > BONE_STATIONS[bestBone].s && bestBone < BONE_STATIONS.length - 1) {
-      secondBone = bestBone + 1
+    let secondSpine = bestSpine
+    if (v < BONE_STATIONS[bestSpine].s && bestSpine > 0) {
+      secondSpine = bestSpine - 1
+    } else if (v > BONE_STATIONS[bestSpine].s && bestSpine < BONE_STATIONS.length - 1) {
+      secondSpine = bestSpine + 1
     }
 
-    const s1 = BONE_STATIONS[bestBone].s
-    const s2 = BONE_STATIONS[secondBone].s
-    let weight = 1.0
+    const s1 = BONE_STATIONS[bestSpine].s
+    const s2 = BONE_STATIONS[secondSpine].s
+    let spineWeight = 1.0
     if (s1 !== s2) {
       const dist = Math.abs(v - s1)
       const totalSpan = Math.abs(s2 - s1)
-      weight = Math.max(0, Math.min(1, 1 - dist / totalSpan))
+      spineWeight = Math.max(0, Math.min(1, 1 - dist / totalSpan))
     }
 
-    skinIndices.push(bestBone, secondBone, 0, 0)
-    skinWeights.push(weight, 1 - weight, 0, 0)
+    // Check corner influence
+    let cornerBoneIdx = -1
+    let cornerStrength = 0
+
+    if (v < 0.32 && u < 0.35) {
+      // Front-Left Corner
+      const lat = (0.35 - u) / 0.35
+      const lon = (0.32 - v) / 0.32
+      cornerStrength = lat * lon * 0.85
+      cornerBoneIdx = 5 // Corner_FL
+    } else if (v < 0.32 && u > 0.65) {
+      // Front-Right Corner
+      const lat = (u - 0.65) / 0.35
+      const lon = (0.32 - v) / 0.32
+      cornerStrength = lat * lon * 0.85
+      cornerBoneIdx = 6 // Corner_FR
+    } else if (v > 0.70 && u < 0.35) {
+      // Rear-Left Corner
+      const lat = (0.35 - u) / 0.35
+      const lon = (v - 0.70) / 0.30
+      cornerStrength = lat * lon * 0.85
+      cornerBoneIdx = 7 // Corner_RL
+    } else if (v > 0.70 && u > 0.65) {
+      // Rear-Right Corner
+      const lat = (u - 0.65) / 0.35
+      const lon = (v - 0.70) / 0.30
+      cornerStrength = lat * lon * 0.85
+      cornerBoneIdx = 8 // Corner_RR
+    }
+
+    if (cornerBoneIdx >= 0 && cornerStrength > 0.02) {
+      // Blend primary spine bone with corner bone
+      const finalCornerW = cornerStrength
+      const finalSpineW = (1 - finalCornerW) * spineWeight
+      const finalSecondSpineW = (1 - finalCornerW) * (1 - spineWeight)
+
+      skinIndices.push(bestSpine, cornerBoneIdx, secondSpine, 0)
+      skinWeights.push(finalSpineW, finalCornerW, finalSecondSpineW, 0)
+    } else {
+      skinIndices.push(bestSpine, secondSpine, 0, 0)
+      skinWeights.push(spineWeight, 1 - spineWeight, 0, 0)
+    }
   }
 
   frontGeometry.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(skinIndices, 4))
@@ -502,13 +843,13 @@ export function createRiggedCarpet(
   backGeometry.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(skinIndices, 4))
   backGeometry.setAttribute('skinWeight', new THREE.Float32BufferAttribute(skinWeights, 4))
 
-  // 4. Materials
-  frontMaterial.side = THREE.DoubleSide // Both front face and body are fully visible
+  // 5. Materials
+  frontMaterial.side = THREE.DoubleSide
 
   const defaultBackMaterial =
     backMaterial ||
     new THREE.MeshPhysicalMaterial({
-      color: 0x1037a6, // Pure Royal Blue Velvet underside, NO face bleed!
+      color: 0x1037a6,
       roughness: 0.45,
       metalness: 0.05,
       sheen: 1.0,
@@ -517,8 +858,8 @@ export function createRiggedCarpet(
       side: THREE.FrontSide,
     })
 
-  // 5. Build Skeleton & Dual SkinnedMeshes
-  const skeleton = new THREE.Skeleton(bones)
+  // 6. Build Skeleton & Dual SkinnedMeshes
+  const skeleton = new THREE.Skeleton(allBones)
 
   const frontMesh = new THREE.SkinnedMesh(frontGeometry, frontMaterial)
   frontMesh.name = 'CarpetFront'
@@ -530,13 +871,13 @@ export function createRiggedCarpet(
 
   const carpetRig = new THREE.Group()
   carpetRig.name = 'RiggedCarpetActor'
-  carpetRig.add(bones[0])
+  carpetRig.add(spineBones[0])
   carpetRig.add(backMesh)
   carpetRig.add(frontMesh)
 
-  // 6. Attach 2 Rear Tail Tassels directly to Tail Bone (bones[4] - Spine_4)
+  // 7. Attach 4 Rear Tassels directly to Tail Bone (Spine_4)
   const tailSpine = getSpinePoint(1.0)
-  const bone4Pos = boneWorldPositions[4]
+  const bone4Pos = spineWorldPositions[4]
   const tasselOffsetY = tailSpine.y - bone4Pos.y
   const tasselOffsetZ = tailSpine.z - bone4Pos.z
 
@@ -550,33 +891,27 @@ export function createRiggedCarpet(
     roughness: 0.35,
   })
 
-  // Left Rear Tassel (attached at rear left corner x = -0.74)
-  const tasselLeft = new THREE.Group()
-  tasselLeft.position.set(-0.74, tasselOffsetY, tasselOffsetZ)
-  tasselLeft.rotation.set(-Math.PI / 2, 0, 0.25)
-  const torusL = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.016, 8, 16), tasselMatMint)
-  const coneL = new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.16, 12), tasselMatBlue)
-  coneL.position.set(0, 0.11, 0)
-  tasselLeft.add(torusL)
-  tasselLeft.add(coneL)
-  bones[4].add(tasselLeft)
+  // Create 4 rear tassels along tail edge (User brief: 4 rumbai di bagian belakang)
+  const tasselXCoords = [-0.74, -0.25, 0.25, 0.74]
+  tasselXCoords.forEach((tx) => {
+    const tasselGroup = new THREE.Group()
+    tasselGroup.position.set(tx, tasselOffsetY, tasselOffsetZ)
+    tasselGroup.rotation.set(-Math.PI / 2, 0, (tx / 0.74) * 0.25)
 
-  // Right Rear Tassel (attached at rear right corner x = +0.74)
-  const tasselRight = new THREE.Group()
-  tasselRight.position.set(0.74, tasselOffsetY, tasselOffsetZ)
-  tasselRight.rotation.set(-Math.PI / 2, 0, -0.25)
-  const torusR = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.016, 8, 16), tasselMatMint)
-  const coneR = new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.16, 12), tasselMatBlue)
-  coneR.position.set(0, 0.11, 0)
-  tasselRight.add(torusR)
-  tasselRight.add(coneR)
-  bones[4].add(tasselRight)
+    const torus = new THREE.Mesh(new THREE.TorusGeometry(0.042, 0.015, 8, 16), tasselMatMint)
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(0.042, 0.15, 12), tasselMatBlue)
+    cone.position.set(0, 0.10, 0)
+    tasselGroup.add(torus)
+    tasselGroup.add(cone)
+    spineBones[4].add(tasselGroup)
+  })
 
-  return { carpetRig, skinnedMesh: carpetRig, frontMesh, backMesh, bones, skeleton }
+  return { carpetRig, skinnedMesh: carpetRig, frontMesh, backMesh, bones: allBones, skeleton }
 }
 
 export default function CarpetModel({
   pose = 'idle',
+  face = 'cheerful',
   interactive = true,
   followCursor = true,
   onClick,
@@ -590,7 +925,7 @@ export default function CarpetModel({
 
   const { pointer, gl } = useThree()
 
-  // Global Pointer & Touch Tracking across entire screen
+  // Pointer & Touch Tracking across screen
   useEffect(() => {
     if (!followCursor && !interactive) return
 
@@ -613,7 +948,6 @@ export default function CarpetModel({
         const centerX = rect.left + rect.width / 2
         const centerY = rect.top + rect.height / 2
 
-        // Normalized offset from canvas center to cursor ([-1, 1])
         const dx = Math.max(-1, Math.min(1, (clientX - centerX) / 360))
         const dy = Math.max(-1, Math.min(1, (clientY - centerY) / 360))
 
@@ -636,12 +970,13 @@ export default function CarpetModel({
     }
   }, [followCursor, interactive, gl])
 
-  // Generate Canvases & CanvasTextures
-  const { normalTexture, blinkTexture } = useMemo(() => {
-    if (typeof window === 'undefined') return { normalTexture: null, blinkTexture: null }
+  // Generate Canvases & CanvasTextures based on current expression
+  const { normalTexture, blinkTexture, winkTexture } = useMemo(() => {
+    if (typeof window === 'undefined') return { normalTexture: null, blinkTexture: null, winkTexture: null }
 
-    const normal = createFullCarpetCanvas(false)
-    const blink = createFullCarpetCanvas(true)
+    const normal = createFullCarpetCanvas(false, face)
+    const blink = createFullCarpetCanvas(true, 'blink')
+    const wink = createFullCarpetCanvas(false, 'wink')
 
     const tNormal = new THREE.CanvasTexture(normal)
     tNormal.colorSpace = THREE.SRGBColorSpace
@@ -653,8 +988,13 @@ export default function CarpetModel({
     tBlink.wrapS = THREE.ClampToEdgeWrapping
     tBlink.wrapT = THREE.ClampToEdgeWrapping
 
-    return { normalTexture: tNormal, blinkTexture: tBlink }
-  }, [])
+    const tWink = new THREE.CanvasTexture(wink)
+    tWink.colorSpace = THREE.SRGBColorSpace
+    tWink.wrapS = THREE.ClampToEdgeWrapping
+    tWink.wrapT = THREE.ClampToEdgeWrapping
+
+    return { normalTexture: tNormal, blinkTexture: tBlink, winkTexture: tWink }
+  }, [face])
 
   // MeshPhysicalMaterial with Sheen & Rich Velvet Sheen
   const carpetMaterial = useMemo(() => {
@@ -672,7 +1012,7 @@ export default function CarpetModel({
     })
   }, [normalTexture])
 
-  // Rigged SkinnedMesh Setup
+  // Rigged SkinnedMesh Setup with 4-Corner Skeleton
   const { skinnedMesh, bones } = useMemo(() => {
     return createRiggedCarpet(carpetMaterial)
   }, [carpetMaterial])
@@ -681,10 +1021,17 @@ export default function CarpetModel({
     bonesRef.current = bones
   }, [bones])
 
-  // Periodic Chibi Blinking
+  // Dynamic Chibi Blinking & Winking
   useEffect(() => {
-    let blinkTimeout: NodeJS.Timeout
+    if (face === 'wink') {
+      if (carpetMaterial && winkTexture) {
+        carpetMaterial.map = winkTexture
+        carpetMaterial.needsUpdate = true
+      }
+      return
+    }
 
+    let blinkTimeout: NodeJS.Timeout
     const triggerBlink = () => {
       isBlinkingRef.current = true
       if (carpetMaterial && blinkTexture) {
@@ -705,7 +1052,7 @@ export default function CarpetModel({
 
     blinkTimeout = setTimeout(triggerBlink, 2800)
     return () => clearTimeout(blinkTimeout)
-  }, [carpetMaterial, normalTexture, blinkTexture])
+  }, [carpetMaterial, normalTexture, blinkTexture, winkTexture, face])
 
   const handleClick = (e: any) => {
     e.stopPropagation()
@@ -716,7 +1063,7 @@ export default function CarpetModel({
     if (onClick) onClick()
   }
 
-  // Skeletal Pose Interpolation & Micro-flutter in useFrame
+  // Smooth Skeletal Pose Interpolation & Micro-flutter in useFrame
   useFrame((state, delta) => {
     const t = state.clock.getElapsedTime()
     const targetRotations = POSE_DEFINITIONS[pose] || POSE_DEFINITIONS.idle
@@ -727,10 +1074,32 @@ export default function CarpetModel({
         let flutterX = 0
         let flutterZ = 0
 
-        if (pose === 'loading') {
+        if (pose === 'clapping') {
+          // Rapid energetic clapping motion
+          if (bone.name === 'Corner_FL') {
+            flutterZ = Math.sin(t * 14.0) * 0.28
+          } else if (bone.name === 'Corner_FR') {
+            flutterZ = -Math.sin(t * 14.0) * 0.28
+          }
+        } else if (pose === 'waving') {
+          // Friendly waving flap on front-right corner
+          if (bone.name === 'Corner_FR') {
+            flutterZ = Math.sin(t * 9.0) * 0.22
+            flutterX = Math.cos(t * 9.0) * 0.15
+          }
+        } else if (pose === 'shiver-freeze') {
+          // Rapid freezing tremble
+          flutterX = (Math.random() - 0.5) * 0.12
+          flutterZ = (Math.random() - 0.5) * 0.12
+        } else if (pose === 'celebrate-max') {
+          // Joyous fluttering
+          flutterX = Math.sin(t * 8.0 + idx * 0.8) * 0.08
+          flutterZ = Math.cos(t * 8.0 + idx * 0.8) * 0.06
+        } else if (pose === 'loading') {
           flutterX = Math.sin(t * 6.0 + idx * 1.2) * 0.08
           flutterZ = Math.cos(t * 6.0 + idx * 1.2) * 0.05
         } else {
+          // Gentle organic breathing wave
           flutterX = Math.sin(t * 2.2 + idx * 0.8) * 0.02
           flutterZ = Math.cos(t * 1.8 + idx * 0.8) * 0.015
         }
@@ -750,13 +1119,8 @@ export default function CarpetModel({
         if (isSpinningRef.current) {
           groupRef.current.rotation.y += delta * 12
         } else if (followCursor && mouseCoordsRef.current.active) {
-          // Dynamic Cursor Tracking: mascot actively looks toward pointer anywhere on screen!
           const { x, y } = mouseCoordsRef.current
-          // x > 0 (cursor right) -> positive yaw rotation (look right)
-          // x < 0 (cursor left) -> negative yaw rotation (look left)
           const targetRotY = x * 0.36
-          // y < 0 (cursor above) -> negative pitch rotation (look up)
-          // y > 0 (cursor below) -> positive pitch rotation (look down)
           const targetRotX = y * 0.22
           const targetRotZ = -x * 0.08
 
@@ -764,7 +1128,6 @@ export default function CarpetModel({
           groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, targetRotX, 5.0, delta)
           groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, targetRotZ, 5.0, delta)
 
-          // Extra cuteness: head bone (Spine_0) tilts slightly towards the cursor
           if (bonesRef.current[0]) {
             bonesRef.current[0].rotation.y = THREE.MathUtils.damp(bonesRef.current[0].rotation.y, targetRotY * 0.28, 6.0, delta)
             bonesRef.current[0].rotation.x = THREE.MathUtils.damp(bonesRef.current[0].rotation.x, targetRotX * 0.25, 6.0, delta)
@@ -780,6 +1143,25 @@ export default function CarpetModel({
           groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, 0, 4.0, delta)
           groupRef.current.rotation.z = THREE.MathUtils.damp(groupRef.current.rotation.z, 0, 4.0, delta)
         }
+      } else if (pose === 'stand' || pose === 'waving' || pose === 'clapping') {
+        const levitateY = Math.sin(t * 1.5) * 0.02
+        groupRef.current.position.set(0.0, -0.04 + levitateY, 0.0)
+
+        if (isSpinningRef.current) {
+          groupRef.current.rotation.y += delta * 12
+        } else if (followCursor && mouseCoordsRef.current.active) {
+          const { x } = mouseCoordsRef.current
+          groupRef.current.rotation.y = THREE.MathUtils.damp(groupRef.current.rotation.y, x * 0.3, 5.0, delta)
+        } else {
+          groupRef.current.rotation.set(0, 0, 0)
+        }
+      } else if (pose === 'celebrate-max') {
+        const levitateY = Math.sin(t * 3.5) * 0.12
+        groupRef.current.position.set(0.0, 0.15 + levitateY, 0.0)
+        groupRef.current.rotation.y += delta * 1.5
+      } else if (pose === 'barrel-roll') {
+        groupRef.current.rotation.z += delta * 8.0
+        groupRef.current.position.y = Math.sin(t * 4.0) * 0.08
       } else if (pose === 'loading') {
         const tFlight = t * 1.5
         groupRef.current.position.x = Math.sin(tFlight) * 0.35
@@ -790,7 +1172,7 @@ export default function CarpetModel({
         groupRef.current.rotation.y = Math.sin(tFlight) * 0.2
         groupRef.current.rotation.z = -Math.cos(tFlight) * 0.15
       } else {
-        const levitateY = Math.sin(t * 1.8) * 0.05
+        const levitateY = Math.sin(t * 1.8) * 0.04
         groupRef.current.position.y = levitateY
 
         if (isSpinningRef.current) {
@@ -809,7 +1191,7 @@ export default function CarpetModel({
     <group ref={groupRef} onClick={handleClick} scale={[scale, scale, scale]}>
       <primitive object={skinnedMesh} />
 
-      {/* Magical Floating 3D Sparkle Star Particles (exact match to Maskot All View) */}
+      {/* Floating 3D Sparkle Star Particles */}
       <group>
         {[
           { pos: [-0.95, 0.45, 0.35], s: 0.06 },
@@ -817,7 +1199,7 @@ export default function CarpetModel({
           { pos: [-0.65, -0.45, 0.4], s: 0.05 },
           { pos: [0.95, -0.45, 0.2], s: 0.065 },
           { pos: [-0.3, 0.7, -0.2], s: 0.055 },
-          { pos: [0.65, 0.15, 0.45], s: 0.06 }, // Offset away from center face
+          { pos: [0.65, 0.15, 0.45], s: 0.06 },
         ].map((star, idx) => (
           <mesh key={idx} position={star.pos as [number, number, number]} scale={[star.s, star.s, star.s]}>
             <octahedronGeometry args={[1, 0]} />

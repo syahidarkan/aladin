@@ -1,13 +1,11 @@
 'use client'
 
-import React, { useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
+import React, { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import { Canvas } from '@react-three/fiber'
 import { useMascot } from '@/context/MascotContext'
-import CarpetModel from './CarpetModel'
-import { HelpCircle, Headphones, Video, MessageCircle, Send, X } from 'lucide-react'
+import CarpetModel, { CarpetPose } from './CarpetModel'
+import { HelpCircle, Headphones, MessageCircle, Send, X } from 'lucide-react'
 
 interface ChatMessage {
   id: string
@@ -17,19 +15,19 @@ interface ChatMessage {
 }
 
 /**
- * Floating CS Companion Mascot ("Carpet Floating Buddy")
- * Replaces the static CS/Help button in the bottom-right corner.
- * Features 3D chibi flying carpet mascot, gentle levitation, hover bounce,
- * 360° spin on click, and integrated Relationship Desk & Chat Concierge.
+ * Floating CS Companion Mascot ("Alan" - Floating Buddy)
+ * Replaces the static CS button above the bottom bar with an animated 3D companion.
+ * Follows Animation Director Brief:
+ * - Idle: Alan stands upright on his tassels, occasionally waving his front-right corner "Halo!".
+ * - Tap: Performs an acrobatic flip salto jump, lands with a polite bow, and opens WhatsApp Concierge.
  */
 export default function CarpetFloatingBuddy() {
   const pathname = usePathname()
-  const { isBuddyVisible, triggerReaction } = useMascot()
+  const { isBuddyVisible } = useMascot()
 
   const [isOpen, setIsOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState<'chat' | 'video'>('chat')
-  const [isBouncing, setIsBouncing] = useState(false)
-  const [isSpinning, setIsSpinning] = useState(false)
+  const [buddyPose, setBuddyPose] = useState<CarpetPose>('stand')
+  const [isSalto, setIsSalto] = useState(false)
 
   // Chat State
   const [inputMsg, setInputMsg] = useState('')
@@ -38,17 +36,35 @@ export default function CarpetFloatingBuddy() {
     {
       id: '1',
       sender: 'cs',
-      text: 'Assalamu’alaikum! Saya Nadia dari Aladin Concierge. Ada yang bisa kami bantu seputar transaksi, tabungan Ala Impian, atau layanan syariah hari ini?',
+      text: 'Assalamu’alaikum! Saya Nadia dari Aladin Care & Relationship Desk. Ada yang bisa kami bantu seputar transaksi, tabungan Ala Impian, atau layanan syariah hari ini?',
       time: 'Baru saja',
     },
   ])
 
-  const quickQuestions = [
-    'Kendala Transfer & Sumber Dana',
-    'Tanya Tabungan Umrah & Haji',
-    'Kartu Debit Visa Virtual',
-    'Bebas Biaya Admin Alfamart',
-  ]
+  // Periodic waving greeting animation in idle state
+  useEffect(() => {
+    if (isOpen) return
+
+    let waveTimer: NodeJS.Timeout
+    let resetTimer: NodeJS.Timeout
+
+    const scheduleWave = () => {
+      waveTimer = setTimeout(() => {
+        setBuddyPose('waving')
+        resetTimer = setTimeout(() => {
+          setBuddyPose('stand')
+          scheduleWave()
+        }, 2400)
+      }, 7000 + Math.random() * 4000)
+    }
+
+    scheduleWave()
+
+    return () => {
+      clearTimeout(waveTimer)
+      clearTimeout(resetTimer)
+    }
+  }, [isOpen])
 
   // Hide on splash or video call screen
   if (!isBuddyVisible || pathname === '/' || pathname === '/bantu/video-call') {
@@ -56,14 +72,14 @@ export default function CarpetFloatingBuddy() {
   }
 
   const handleBuddyClick = () => {
-    setIsSpinning(true)
-    setTimeout(() => setIsSpinning(false), 500)
-    setIsOpen(!isOpen)
-  }
+    // 1. Acrobatic Flip Salto Jump
+    setIsSalto(true)
+    setBuddyPose('polite-bow')
 
-  const handleHover = () => {
-    setIsBouncing(true)
-    setTimeout(() => setIsBouncing(false), 450)
+    setTimeout(() => {
+      setIsSalto(false)
+      setIsOpen(true)
+    }, 480)
   }
 
   const handleSend = (textToSend?: string) => {
@@ -133,10 +149,9 @@ export default function CarpetFloatingBuddy() {
         <button
           type="button"
           onClick={handleBuddyClick}
-          onMouseEnter={handleHover}
           aria-label="Staff Aladin & Concierge"
           className={`relative group cursor-pointer transition-all duration-300 ${
-            isSpinning ? 'animate-mascot-spin' : isBouncing ? '-translate-y-2' : ''
+            isSalto ? 'animate-mascot-spin -translate-y-4 scale-110' : ''
           }`}
           style={{
             width: '84px',
@@ -147,7 +162,7 @@ export default function CarpetFloatingBuddy() {
             outline: 'none',
           }}
         >
-          {/* 3D WebGL Rigged Mascot Floating - Wide 220x180 canvas gives massive padding margin so corners never hit canvas edge */}
+          {/* 3D WebGL Rigged Mascot Floating */}
           <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 group-hover:scale-105"
             style={{
@@ -163,11 +178,10 @@ export default function CarpetFloatingBuddy() {
             >
               <ambientLight intensity={2.2} />
               <directionalLight position={[2, 4, 3]} intensity={2.6} />
-              {/* Direct Spotlight & Keylight on Face for Maximum Clarity */}
               <pointLight position={[0, 0.3, 2.8]} intensity={3.2} color="#FFFFFF" />
               <pointLight position={[-1.2, -0.2, 2.2]} intensity={2.0} color="#00F0A0" />
               <pointLight position={[1.2, -0.2, 2.2]} intensity={1.6} color="#60A5FA" />
-              <CarpetModel pose="idle" interactive={true} followCursor={true} scale={0.68} />
+              <CarpetModel pose={buddyPose} interactive={true} followCursor={true} scale={0.68} />
             </Canvas>
           </div>
 
@@ -183,14 +197,16 @@ export default function CarpetFloatingBuddy() {
       {isOpen && (
         <div
           className="absolute inset-0 z-[120] bg-black/60 backdrop-blur-xs flex flex-col justify-end"
-          onClick={() => setIsOpen(false)}
+          onClick={() => {
+            setIsOpen(false)
+            setBuddyPose('stand')
+          }}
         >
           <div
             className="w-full bg-white rounded-t-[32px] shadow-2xl animate-in slide-in-from-bottom duration-300 flex flex-col overflow-hidden max-h-[84vh]"
             style={{ paddingBottom: '24px', boxSizing: 'border-box' }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Top Drag Handle */}
             <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mt-3 mb-2 shrink-0" />
 
             {/* Officer Header Info */}
@@ -215,168 +231,87 @@ export default function CarpetFloatingBuddy() {
                 </div>
               </div>
 
+              <button
+                type="button"
+                onClick={() => {
+                  setIsOpen(false)
+                  setBuddyPose('stand')
+                }}
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors"
+                aria-label="Tutup"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* WhatsApp Direct Concierge Pill */}
+            <div className="px-5 py-2.5 bg-emerald-50/70 border-b border-emerald-100 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setIsOpen(false)}
-                  className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold text-sm cursor-pointer transition-colors"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[11.5px] font-bold text-emerald-900">
+                  Respon Instan via WhatsApp Resmi Aladin
+                </span>
               </div>
+              <a
+                href="https://wa.me/628118888888"
+                target="_blank"
+                rel="noreferrer"
+                className="text-[11px] font-extrabold text-emerald-700 bg-white px-2.5 py-1 rounded-full border border-emerald-300 hover:bg-emerald-100 flex items-center gap-1 shadow-xs"
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Buka WA</span>
+              </a>
             </div>
 
-            {/* Mode Selector Tabs */}
-            <div className="px-5 pt-3 pb-2 flex gap-2 border-b border-gray-100">
-              <button
-                type="button"
-                onClick={() => setActiveTab('chat')}
-                className={`flex-1 py-2 px-3 rounded-xl text-[12px] font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                  activeTab === 'chat'
-                    ? 'bg-[#1037A6] text-white shadow-xs'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
-                Chat Concierge
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveTab('video')}
-                className={`flex-1 py-2 px-3 rounded-xl text-[12px] font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                  activeTab === 'video'
-                    ? 'bg-[#1037A6] text-white shadow-xs'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <path d="M23 7l-7 5 7 5V7z" />
-                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
-                </svg>
-                Video Call Desk
-              </button>
+            {/* Messages Chat Area */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[220px] max-h-[360px] bg-gray-50/50">
+              {messages.map((m) => (
+                <div
+                  key={m.id}
+                  className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
+                >
+                  <div
+                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-[12.5px] leading-relaxed shadow-xs ${
+                      m.sender === 'user'
+                        ? 'bg-[#1037A6] text-white rounded-br-xs'
+                        : 'bg-white text-gray-800 border border-gray-100 rounded-bl-xs'
+                    }`}
+                  >
+                    {m.text}
+                  </div>
+                  <span className="text-[9.5px] text-gray-400 mt-1 px-1">{m.time}</span>
+                </div>
+              ))}
+              {isTyping && (
+                <div className="flex items-center gap-1.5 bg-white border border-gray-100 rounded-full px-3 py-1.5 w-fit">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#1037A6] animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#1037A6] animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#00F0A0] animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              )}
             </div>
 
-            {/* Content Tab 1: Live Chat Concierge */}
-            {activeTab === 'chat' && (
-              <div className="flex-1 flex flex-col overflow-hidden">
-                {/* Chat Scroll Area */}
-                <div className="flex-1 p-4 overflow-y-auto space-y-3 min-h-[200px] max-h-[320px]">
-                  {messages.map((msg) => (
-                    <div
-                      key={msg.id}
-                      className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
-                    >
-                      <div
-                        className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-[13px] leading-relaxed shadow-2xs ${
-                          msg.sender === 'user'
-                            ? 'bg-[#1037A6] text-white rounded-tr-xs'
-                            : 'bg-gray-100 text-[#1A1D26] rounded-tl-xs'
-                        }`}
-                      >
-                        {msg.text}
-                      </div>
-                      <span className="text-[10px] text-gray-400 mt-1 px-1">
-                        {msg.time}
-                      </span>
-                    </div>
-                  ))}
-
-                  {isTyping && (
-                    <div className="flex items-center gap-1.5 p-2 bg-gray-100 rounded-full w-14 justify-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce [animation-delay:150ms]" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce [animation-delay:300ms]" />
-                    </div>
-                  )}
-                </div>
-
-                {/* Quick Questions Pills */}
-                <div className="px-4 py-2 flex gap-1.5 overflow-x-auto no-scrollbar border-t border-gray-100 bg-gray-50/50">
-                  {quickQuestions.map((q, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleSend(q)}
-                      className="shrink-0 text-[11px] font-semibold text-[#1037A6] bg-blue-50/80 hover:bg-blue-100 px-3 py-1.5 rounded-full border border-blue-200/60 active:scale-95 transition-all cursor-pointer"
-                    >
-                      {q}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Chat Input Bar */}
-                <div className="p-3 border-t border-gray-200 flex items-center gap-2 bg-white">
-                  <input
-                    type="text"
-                    value={inputMsg}
-                    onChange={(e) => setInputMsg(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                    placeholder="Ketik pertanyaan untuk relationship desk..."
-                    className="flex-1 bg-gray-100 text-[#1A1D26] text-[13px] px-4 py-2.5 rounded-full outline-hidden focus:ring-2 focus:ring-[#1037A6]/30 font-medium"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleSend()}
-                    disabled={!inputMsg.trim()}
-                    className="w-10 h-10 rounded-full bg-[#1037A6] text-white flex items-center justify-center shrink-0 disabled:opacity-40 disabled:cursor-not-allowed active:scale-90 transition-transform cursor-pointer shadow-xs"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <line x1="22" y1="2" x2="11" y2="13" />
-                      <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Content Tab 2: Video Call & Direct Escalations */}
-            {activeTab === 'video' && (
-              <div className="p-5 space-y-4">
-                <div className="rounded-2xl p-4 bg-gradient-to-br from-[#EEF2FF] to-[#E0E7FF] border border-[#C7D2FE] flex items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-[#1037A6] text-white flex items-center justify-center shrink-0 shadow-sm">
-                    <Video className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h4 className="text-[13.5px] font-extrabold text-[#1037A6]">
-                      Tatap Muka Digital Relationship Desk
-                    </h4>
-                    <p className="text-[11.5px] text-[#475569] mt-0.5 leading-relaxed">
-                      Hubungkan kamera dan mikrofon smartphone untuk verifikasi identitas, aktivasi buku tabungan impian, atau konsultasi finansial syariah.
-                    </p>
-                  </div>
-                </div>
-
-                <Link
-                  href="/bantu/video-call"
-                  onClick={() => {
-                    setIsOpen(false)
-                    triggerReaction('success', 'Menghubungkan ke Video Call Relationship Desk...')
-                  }}
-                  className="w-full py-3.5 px-4 rounded-xl bg-[#1037A6] hover:bg-[#0D2D8A] text-white font-extrabold text-[13.5px] flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all"
-                >
-                  <Video className="w-4 h-4 text-white" />
-                  Mulai Video Call Sekarang
-                </Link>
-
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      alert('Membuka WhatsApp resmi Bank Aladin Syariah (+62 811 1500 123)...')
-                      setIsOpen(false)
-                    }}
-                    className="w-full py-3.5 px-4 rounded-xl border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-100/70 text-[13px] font-extrabold text-[#065F46] flex items-center justify-center gap-2 cursor-pointer transition-colors"
-                  >
-                    <MessageCircle className="w-4 h-4 text-[#10B981]" />
-                    <span>Chat WhatsApp Resmi Aladin (+62 811 1500 123)</span>
-                  </button>
-                </div>
-              </div>
-            )}
+            {/* Bottom Message Input */}
+            <div className="p-3 bg-white border-t border-gray-100 flex items-center gap-2">
+              <input
+                type="text"
+                value={inputMsg}
+                onChange={(e) => setInputMsg(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSend()
+                }}
+                placeholder="Ketik pertanyaan untuk Aladin Care..."
+                className="flex-1 text-[13px] bg-gray-100 rounded-full px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#1037A6]/30 text-gray-800"
+              />
+              <button
+                type="button"
+                onClick={() => handleSend()}
+                disabled={!inputMsg.trim()}
+                className="w-10 h-10 rounded-full bg-[#1037A6] text-white flex items-center justify-center hover:bg-[#0c2e91] active:scale-95 transition-transform disabled:opacity-40 cursor-pointer shadow-sm"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       )}
