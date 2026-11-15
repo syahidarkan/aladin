@@ -36,6 +36,10 @@ import {
   Wallet,
   Coins,
   Calendar,
+  Share2,
+  Users,
+  Phone,
+  Mail,
 } from 'lucide-react'
 
 export default function AlaHaramainHubPage() {
@@ -44,6 +48,11 @@ export default function AlaHaramainHubPage() {
 
   // Sub-Feature Hub State: 'wallet' (Haramain Wallet) vs 'pilgrims' (Ala Pilgrims Store & Services)
   const [activeSubFeature, setActiveSubFeature] = useState<'wallet' | 'pilgrims'>('wallet')
+  const [pilgrimSubTab, setPilgrimSubTab] = useState<'packages' | 'merchants'>('packages')
+  const [pilgrimBalanceSar, setPilgrimBalanceSar] = useState(120.0)
+  const [pilgrimGb, setPilgrimGb] = useState(18.5)
+  const [pilgrimMins, setPilgrimMins] = useState(80)
+  const [pilgrimDays, setPilgrimDays] = useState(25)
 
   // First-time Onboarding State
   const [showOnboarding, setShowOnboarding] = useState(false)
@@ -260,36 +269,82 @@ export default function AlaHaramainHubPage() {
           '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
       }}
     >
-      {/* Unified Seamless White Header (No Notch Gap) */}
-      <header className="shrink-0 w-full bg-white border-b border-gray-100 z-30">
-        <StatusBar />
-        <div className="h-14 px-4 flex items-center justify-between">
-          <Link
-            href="/beranda"
-            data-back="true"
-            className="w-9 h-9 -ml-1 rounded-full bg-white hover:bg-gray-100 border border-gray-300 flex items-center justify-center text-gray-900 active:scale-95 transition-all cursor-pointer shadow-xs shrink-0"
-            aria-label="Kembali ke Beranda"
-          >
-            <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
-          </Link>
+      {/* Unified Seamless Header (Adapts to Active Sub-Feature) */}
+      {activeSubFeature === 'wallet' ? (
+        <header className="shrink-0 w-full bg-white border-b border-gray-100 z-30">
+          <StatusBar />
+          <div className="h-14 px-4 flex items-center justify-between">
+            <Link
+              href="/beranda"
+              data-back="true"
+              className="w-9 h-9 -ml-1 rounded-full bg-white hover:bg-gray-100 border border-gray-300 flex items-center justify-center text-gray-900 active:scale-95 transition-all cursor-pointer shadow-xs shrink-0"
+              aria-label="Kembali ke Beranda"
+            >
+              <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
+            </Link>
 
-          <div className="text-center">
-            <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
-              Ala Haramain
-            </h1>
-            <span className="text-[10px] font-extrabold text-[#059669] block leading-none mt-0.5">
-              Saudi Financial &amp; Pilgrim Hub
-            </span>
-          </div>
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1.5">
+                <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+                  Ala Haramain
+                </h1>
+                <span className="text-[8.5px] font-black px-1.5 py-0.5 rounded-full bg-slate-700 text-white border border-slate-500">
+                  ✨ Nice To Have
+                </span>
+              </div>
+              <span className="text-[10px] font-extrabold text-[#059669] block leading-none mt-0.5">
+                Saudi Financial &amp; Pilgrim Hub
+              </span>
+            </div>
 
-          <div className="flex items-center gap-1 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#064E3B]" />
-            <span className="text-[10px] font-black uppercase text-[#064E3B]">
-              D360 / SAMA
-            </span>
+            <div className="flex items-center gap-1 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#064E3B]" />
+              <span className="text-[10px] font-black uppercase text-[#064E3B]">
+                D360 / SAMA
+              </span>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
+      ) : (
+        <header className="shrink-0 w-full bg-[#1037A6] z-30 text-white shadow-md">
+          <StatusBar time="22.25" batteryLevel={33} dark={true} className="bg-[#1037A6]" />
+          <div className="h-14 px-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Link
+                href="/beranda"
+                data-back="true"
+                className="w-9 h-9 -ml-1 rounded-full bg-white/20 hover:bg-white/30 border border-white/40 flex items-center justify-center text-white active:scale-95 transition-all cursor-pointer shadow-sm shrink-0"
+                aria-label="Kembali ke Beranda"
+              >
+                <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2.6} />
+              </Link>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <h1 className="text-[16px] font-black text-white tracking-tight leading-tight">
+                    myPilgrim Roaming
+                  </h1>
+                  <span className="text-[8px] font-black px-1.5 py-0.5 rounded-full bg-[#00F0A0] text-[#064E3B]">
+                    Nice To Have
+                  </span>
+                </div>
+                <span className="text-[10px] text-emerald-300 font-semibold flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-[#00F0A0] inline-block animate-pulse" />
+                  STC / Mobily 5G Live in Makkah
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setActiveSubFeature('wallet')}
+              className="flex items-center gap-1 bg-[#00F0A0] hover:bg-emerald-400 text-[#064E3B] px-3 py-1.5 rounded-full text-[11px] font-black shadow-xs cursor-pointer active:scale-95 transition-all shrink-0"
+            >
+              <span>Haramain Wallet</span>
+              <span>→</span>
+            </button>
+          </div>
+        </header>
+      )}
 
       {/* Scrollable Container */}
       <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar p-5 pb-24 space-y-4">
@@ -858,125 +913,458 @@ export default function AlaHaramainHubPage() {
         )}
 
         {/* ========================================================================= */}
-        {/* SUB-FEATURE VIEW 2: ALA PILGRIMS (STORE, ESIM, RENTAL & PRAYER GUIDE)     */}
+        {/* SUB-FEATURE VIEW 2: ALA PILGRIMS (myPilgrim Roaming Carrier Interface)    */}
         {/* ========================================================================= */}
         {activeSubFeature === 'pilgrims' && (
-          <div className="space-y-4 animate-in fade-in duration-200">
-            {/* Promo Header Banner */}
-            <div className="bg-gradient-to-br from-[#064E3B] to-[#0D6852] rounded-2xl p-4 text-white shadow-md">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full bg-white/20 text-[#00F0A0] border border-white/20">
-                  Layanan Khusus Jamaah
+          <div className="space-y-3.5 animate-in fade-in duration-200 pb-20">
+            {/* Quick Menu Card (myXL / Carrier Exact Match per user screenshot) */}
+            <div className="bg-gradient-to-br from-[#1037A6] via-[#1C20C4] to-[#0A2268] rounded-2xl p-4 text-white shadow-md">
+              <div className="flex items-center justify-between mb-3 px-1">
+                <span className="text-[12px] font-black tracking-wide text-white uppercase">
+                  QUICK MENU
                 </span>
-                <span className="text-[11px] text-emerald-200 font-bold">100% Resmi</span>
+                <button
+                  type="button"
+                  onClick={() => setPilgrimSubTab('packages')}
+                  className="text-[11px] font-extrabold text-[#00F0A0] hover:underline cursor-pointer"
+                >
+                  All Menu
+                </button>
               </div>
-              <h3 className="text-[16px] font-black">Kebutuhan Ibadah di Tanah Suci</h3>
-              <p className="text-[11.5px] text-white/85 mt-1 leading-relaxed">
-                Pesan paket data roaming eSIM Saudi 5G tanpa ganti kartu fisik, sewa skuter tawaf lantai 3, dan akses panduan manasik audio offline.
-              </p>
+
+              {/* 4 Circular Action Icons */}
+              <div className="grid grid-cols-4 gap-2 text-center">
+                {/* 1. Buy Package */}
+                <button
+                  type="button"
+                  onClick={() => setPilgrimSubTab('packages')}
+                  className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+                >
+                  <div className="w-[46px] h-[46px] rounded-full bg-white text-[#1037A6] flex items-center justify-center shadow-md group-hover:bg-blue-50 transition-colors">
+                    <ShoppingBag className="w-5 h-5 stroke-[2.2]" />
+                  </div>
+                  <span className="text-[10.5px] font-bold text-white mt-1.5 leading-tight">
+                    Buy Package
+                  </span>
+                </button>
+
+                {/* 2. Sharing */}
+                <button
+                  type="button"
+                  onClick={() => triggerReaction('success', 'Bagi kuota roaming dengan keluarga atau rombongan kloter!')}
+                  className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+                >
+                  <div className="w-[46px] h-[46px] rounded-full bg-white text-[#1037A6] flex items-center justify-center shadow-md group-hover:bg-blue-50 transition-colors">
+                    <Share2 className="w-5 h-5 stroke-[2.2]" />
+                  </div>
+                  <span className="text-[10.5px] font-bold text-white mt-1.5 leading-tight">
+                    Sharing
+                  </span>
+                </button>
+
+                {/* 3. Scan Voucher */}
+                <button
+                  type="button"
+                  onClick={() => triggerReaction('success', 'Kamera scanner siap membaca voucher fisik STC / Mobily!')}
+                  className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+                >
+                  <div className="w-[46px] h-[46px] rounded-full bg-white text-[#1037A6] flex items-center justify-center shadow-md group-hover:bg-blue-50 transition-colors">
+                    <QrCode className="w-5 h-5 stroke-[2.2]" />
+                  </div>
+                  <span className="text-[10.5px] font-bold text-white mt-1.5 leading-tight">
+                    Scan Voucher
+                  </span>
+                </button>
+
+                {/* 4. Akrab */}
+                <button
+                  type="button"
+                  onClick={() => triggerReaction('success', 'Paket Akrab Jamaah: Kuota gabungan 4 anggota keluarga aktif.')}
+                  className="flex flex-col items-center group cursor-pointer active:scale-95 transition-all"
+                >
+                  <div className="w-[46px] h-[46px] rounded-full bg-white text-[#1037A6] flex items-center justify-center shadow-md group-hover:bg-blue-50 transition-colors">
+                    <Users className="w-5 h-5 stroke-[2.2]" />
+                  </div>
+                  <span className="text-[10.5px] font-bold text-white mt-1.5 leading-tight">
+                    Akrab
+                  </span>
+                </button>
+              </div>
             </div>
 
-            {/* Section 1: eSIM Saudi 5G (Roaming Langsung Aktif) */}
-            <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider block">
-                    PAKET DATA SAUDI 5G (ROAMING)
+            {/* CARD 1: REMAINING BALANCE (myXL Style) */}
+            <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-extrabold text-gray-500 uppercase tracking-wide block">
+                  REMAINING BALANCE
+                </span>
+                <div className="flex items-baseline gap-1 mt-0.5">
+                  <span className="text-[12px] font-bold text-[#1037A6]">SAR</span>
+                  <span className="text-[20px] font-black text-[#1A1D26] font-mono tracking-tight">
+                    {pilgrimBalanceSar.toFixed(2)}
                   </span>
-                  <h3 className="text-[14.5px] font-black text-[#1A1D26]">eSIM Jamaah Haji &amp; Umrah</h3>
+                  <span className="text-[10.5px] font-semibold text-gray-400 ml-1">
+                    (≈ Rp{Math.round(pilgrimBalanceSar * sarExchangeRate).toLocaleString('id-ID')})
+                  </span>
                 </div>
-                <div className="flex items-center gap-1 text-[#059669] font-bold text-[11px]">
-                  <Wifi className="w-3.5 h-3.5" />
-                  <span>Langsung Aktif</span>
+                <span className="text-[9.5px] text-gray-400 font-semibold block mt-0.5">
+                  Active Until: 28 Des 2026 • Bebas Masa Hangus
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setPilgrimBalanceSar((prev) => prev + 50)
+                  triggerReaction('success', 'Top up kuota SAR 50.00 berhasil diproses!')
+                }}
+                className="px-4 py-2 rounded-xl bg-[#1037A6] hover:bg-[#0c2b82] text-white text-[12px] font-black shadow-xs cursor-pointer active:scale-95 transition-all shrink-0"
+              >
+                Top Up
+              </button>
+            </div>
+
+            {/* CARD 2: VIEW MY PACKAGE (myXL Style) */}
+            <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[13px] font-black text-[#1A1D26]">View My Package</span>
+                <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-50 text-[#059669] border border-emerald-200">
+                  Roaming Aktif
+                </span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 py-2 border-y border-gray-100 text-center">
+                {/* 1. Data */}
+                <div className="flex flex-col items-center">
+                  <Wifi className="w-4 h-4 text-[#1037A6] mb-1" />
+                  <span className="text-[14px] font-black text-[#1A1D26] font-mono">
+                    {pilgrimGb} GB
+                  </span>
+                  <span className="text-[9px] font-bold text-emerald-600 uppercase">
+                    + Unlimited
+                  </span>
+                </div>
+
+                {/* 2. Voice */}
+                <div className="flex flex-col items-center border-x border-gray-100">
+                  <Phone className="w-4 h-4 text-[#1037A6] mb-1" />
+                  <span className="text-[14px] font-black text-[#1A1D26] font-mono">
+                    {pilgrimMins} Minutes
+                  </span>
+                  <span className="text-[9px] font-medium text-gray-500">Saudi &amp; Indo</span>
+                </div>
+
+                {/* 3. Validity */}
+                <div className="flex flex-col items-center">
+                  <Calendar className="w-4 h-4 text-[#1037A6] mb-1" />
+                  <span className="text-[14px] font-black text-[#1A1D26] font-mono">
+                    {pilgrimDays} Hari
+                  </span>
+                  <span className="text-[9px] font-medium text-gray-500">Tersisa</span>
                 </div>
               </div>
 
-              <div className="space-y-3">
-                {[
-                  {
-                    provider: 'STC Sawa Ziyarah 5G',
-                    name: 'Paket Hemat Ziyarah',
-                    quota: '10 GB Data 5G + 100 Menit Nelpon',
-                    validity: 'Masa Aktif 15 Hari',
-                    sar: 55,
-                    popular: false,
-                  },
-                  {
-                    provider: 'Mobily Umrah & Hajj Pass',
-                    name: 'Paket Populer Jamaah',
-                    quota: '20 GB Data + Bebas Kuota WhatsApp & Maps',
-                    validity: 'Masa Aktif 30 Hari',
-                    sar: 85,
-                    popular: true,
-                  },
-                  {
-                    provider: 'Zain Saudi Pilgrim Ultimate',
-                    name: 'Paket Unlimited Sebulan',
-                    quota: 'Unlimited Data 5G + 150 Menit Domestik',
-                    validity: 'Masa Aktif 30 Hari',
-                    sar: 120,
-                    popular: false,
-                  },
-                ].map((pkg) => (
-                  <div
-                    key={pkg.provider}
-                    className={`p-3.5 rounded-2xl border transition-all ${
-                      pkg.popular
-                        ? 'border-emerald-500 bg-emerald-50/40 shadow-xs'
-                        : 'border-[#ECEEF2] bg-[#F8FAFC]'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-[13px] font-black text-[#1A1D26]">
-                            {pkg.provider}
-                          </span>
-                          {pkg.popular && (
-                            <span className="text-[8.5px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-700 text-white">
-                              Pilihan Utama
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-[11.5px] font-bold text-gray-700 mt-0.5">
-                          {pkg.quota}
-                        </p>
-                        <span className="text-[10px] text-gray-500 block mt-0.5">
-                          {pkg.validity}
-                        </span>
-                      </div>
+              <div className="mt-2.5 flex items-center justify-between text-[11px] font-bold text-[#1037A6]">
+                <span>View My Package</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </div>
+            </div>
 
-                      <div className="text-right">
-                        <span className="text-[15px] font-black text-[#064E3B] block">
-                          SAR {pkg.sar}
-                        </span>
-                        <span className="text-[9.5px] text-gray-500 font-medium block">
-                          ≈ Rp{Math.round(pkg.sar * sarExchangeRate).toLocaleString('id-ID')}
-                        </span>
-                      </div>
-                    </div>
+            {/* CARD 3: TRANSACTION MYREWARDS */}
+            <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs">
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <span className="text-[10px] font-bold text-gray-400">Transaction</span>{' '}
+                  <span className="text-[11px] font-extrabold text-[#1037A6]">myRewards</span>
+                </div>
+                <span className="text-[9.5px] font-black px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                  🎖️ Platinum Pilgrim
+                </span>
+              </div>
+              <h4 className="text-[13px] font-black text-[#1A1D26] mb-1.5">
+                Platinum Member Aladin
+              </h4>
+              <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden mb-2">
+                <div className="h-full bg-gradient-to-r from-[#1037A6] to-[#00F0A0] w-[75%] rounded-full" />
+              </div>
+              <p className="text-[10.5px] text-gray-500 leading-relaxed">
+                Alhamdulillah! Kamu menikmati prioritas jaringan 5G STC Saudi, voucher diskon Al Baik, serta akses lounge bandara.
+              </p>
+              <div className="mt-2 text-right">
+                <span className="text-[10.5px] font-bold text-[#1037A6] hover:underline cursor-pointer">
+                  View Membership →
+                </span>
+              </div>
+            </div>
 
-                    <div className="mt-3 pt-2 border-t border-gray-200/60 flex items-center justify-between">
-                      <span className="text-[10.5px] text-gray-500 flex items-center gap-1">
-                        <QrCode className="w-3.5 h-3.5 text-gray-500" />
-                        Instal via Scan QR
+            {/* TAB SELECTOR: Paket Roaming & eSIM vs POS & Merchant Saudi */}
+            <div className="flex gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => setPilgrimSubTab('packages')}
+                className={`flex-1 py-2 rounded-full text-[11.5px] font-bold text-center transition-all cursor-pointer ${
+                  pilgrimSubTab === 'packages'
+                    ? 'bg-[#1037A6] text-white shadow-xs'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+                }`}
+              >
+                Paket Roaming &amp; eSIM
+              </button>
+              <button
+                type="button"
+                onClick={() => setPilgrimSubTab('merchants')}
+                className={`flex-1 py-2 rounded-full text-[11.5px] font-bold text-center transition-all cursor-pointer ${
+                  pilgrimSubTab === 'merchants'
+                    ? 'bg-[#1037A6] text-white shadow-xs'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+                }`}
+              >
+                POS &amp; Merchant Saudi
+              </button>
+            </div>
+
+            {/* TAB 1 CONTENT: PAKET ROAMING & ESIM */}
+            {pilgrimSubTab === 'packages' && (
+              <div className="space-y-3 pt-1">
+                {/* Section 1: eSIM Saudi 5G */}
+                <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <span className="text-[9.5px] font-extrabold text-gray-500 uppercase tracking-wider block">
+                        PAKET DATA SAUDI 5G (ROAMING)
                       </span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setSelectedEsim(pkg)
-                          setShowEsimModal(true)
-                          setEsimPurchased(false)
-                        }}
-                        className="py-1.5 px-3.5 rounded-full bg-[#064E3B] text-white text-[11.5px] font-black hover:bg-emerald-800 active:scale-95 transition-all shadow-xs"
-                      >
-                        Beli &amp; Pasang eSIM
-                      </button>
+                      <h3 className="text-[14px] font-black text-[#1A1D26]">eSIM Jamaah Haji &amp; Umrah</h3>
+                    </div>
+                    <div className="flex items-center gap-1 text-[#059669] font-bold text-[11px]">
+                      <Wifi className="w-3.5 h-3.5" />
+                      <span>Langsung Aktif</span>
                     </div>
                   </div>
-                ))}
+
+                  <div className="space-y-2.5">
+                    {[
+                      {
+                        provider: 'STC Sawa Ziyarah 5G',
+                        name: 'Paket Hemat Ziyarah',
+                        quota: '10 GB Data 5G + 100 Menit Nelpon',
+                        validity: 'Masa Aktif 15 Hari',
+                        sar: 55,
+                        popular: false,
+                      },
+                      {
+                        provider: 'Mobily Umrah & Hajj Pass',
+                        name: 'Paket Populer Jamaah',
+                        quota: '20 GB Data + Bebas Kuota WhatsApp & Maps',
+                        validity: 'Masa Aktif 30 Hari',
+                        sar: 85,
+                        popular: true,
+                      },
+                      {
+                        provider: 'Zain Saudi Pilgrim Ultimate',
+                        name: 'Paket Unlimited Sebulan',
+                        quota: 'Unlimited Data 5G + 150 Menit Domestik',
+                        validity: 'Masa Aktif 30 Hari',
+                        sar: 120,
+                        popular: false,
+                      },
+                    ].map((pkg) => (
+                      <div
+                        key={pkg.provider}
+                        className={`p-3 rounded-2xl border transition-all ${
+                          pkg.popular
+                            ? 'border-emerald-500 bg-emerald-50/40 shadow-xs'
+                            : 'border-[#ECEEF2] bg-[#F8FAFC]'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[13px] font-black text-[#1A1D26]">
+                                {pkg.provider}
+                              </span>
+                              {pkg.popular && (
+                                <span className="text-[8px] font-black uppercase px-1.5 py-0.5 rounded-full bg-emerald-700 text-white">
+                                  Pilihan Utama
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[11px] font-bold text-gray-700 mt-0.5">
+                              {pkg.quota}
+                            </p>
+                            <span className="text-[9.5px] text-gray-500 block mt-0.5">
+                              {pkg.validity}
+                            </span>
+                          </div>
+
+                          <div className="text-right">
+                            <span className="text-[14px] font-black text-[#064E3B] block">
+                              SAR {pkg.sar}
+                            </span>
+                            <span className="text-[9px] text-gray-500 font-medium block">
+                              ≈ Rp{Math.round(pkg.sar * sarExchangeRate).toLocaleString('id-ID')}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="mt-2.5 pt-2 border-t border-gray-200/60 flex items-center justify-between">
+                          <span className="text-[10px] text-gray-500 flex items-center gap-1">
+                            <QrCode className="w-3.5 h-3.5 text-gray-500" />
+                            Instal via Scan QR
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedEsim(pkg)
+                              setShowEsimModal(true)
+                              setEsimPurchased(false)
+                            }}
+                            className="py-1 px-3 rounded-full bg-[#064E3B] text-white text-[11px] font-black hover:bg-emerald-800 active:scale-95 transition-all shadow-xs cursor-pointer"
+                          >
+                            Beli &amp; Pasang eSIM
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Section 2: Sewa Skuter Tawaf */}
+                <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <span className="text-[9.5px] font-extrabold text-gray-500 uppercase tracking-wider block">
+                        FASILITAS MASJIDIL HARAM
+                      </span>
+                      <h3 className="text-[14px] font-black text-[#1A1D26]">
+                        Sewa Skuter Tawaf &amp; Kursi Roda
+                      </h3>
+                    </div>
+                    <span className="text-[10.5px] font-bold text-[#1037A6]">Lantai 3 Mezzanine</span>
+                  </div>
+
+                  <div className="space-y-2.5">
+                    {[
+                      {
+                        name: 'Skuter Listrik Tunggal (1 Orang)',
+                        type: 'Self-Drive',
+                        sar: 57.5,
+                        desc: 'Jalur khusus skuter ber-AC lantai 3 untuk Tawaf & Sa’i mandiri dengan kontrol pedal mudah.',
+                      },
+                      {
+                        name: 'Skuter Listrik Ganda (2 Orang)',
+                        type: 'Keluarga / Berdua',
+                        sar: 115.0,
+                        desc: 'Kapasitas 2 orang dewasa untuk melaksanakan Tawaf & Sa’i bersama pasangan atau orang tua.',
+                      },
+                    ].map((item) => (
+                      <div
+                        key={item.name}
+                        className="p-3 rounded-2xl bg-[#F8FAFC] border border-[#ECEEF2] flex flex-col justify-between"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="pr-3">
+                            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-blue-100 text-[#1037A6] uppercase tracking-wider inline-block mb-1">
+                              {item.type}
+                            </span>
+                            <h4 className="text-[13px] font-black text-[#1A1D26]">{item.name}</h4>
+                            <p className="text-[10.5px] text-gray-600 mt-0.5 leading-relaxed">{item.desc}</p>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <span className="text-[14px] font-black text-[#064E3B] block">
+                              SAR {item.sar.toFixed(2)}
+                            </span>
+                            <span className="text-[8.5px] text-gray-500 block">
+                              ≈ Rp{Math.round(item.sar * sarExchangeRate).toLocaleString('id-ID')}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="mt-2.5 pt-2 border-t border-gray-200/60 flex items-center justify-between">
+                          <span className="text-[9.5px] text-gray-500 flex items-center gap-1">
+                            <MapPin className="w-3.5 h-3.5 text-gray-400" />
+                            Gate King Abdulaziz
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedRental(item)
+                              setShowRentalModal(true)
+                            }}
+                            className="py-1 px-3 rounded-full bg-[#1037A6] text-white text-[11px] font-extrabold hover:bg-blue-800 active:scale-95 transition-all shadow-xs cursor-pointer"
+                          >
+                            Reservasi Skuter
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
+
+            {/* TAB 2 CONTENT: POS & MERCHANT SAUDI */}
+            {pilgrimSubTab === 'merchants' && (
+              <div className="space-y-3 pt-1">
+                <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <span className="text-[9.5px] font-extrabold text-gray-500 uppercase tracking-wider block">
+                        TERMINAL GEIDEA / MADA
+                      </span>
+                      <h3 className="text-[14px] font-black text-[#1A1D26]">
+                        Merchant Resmi Terverifikasi
+                      </h3>
+                    </div>
+                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                      Diskon Aladin
+                    </span>
+                  </div>
+
+                  <div className="space-y-2.5">
+                    {[
+                      { name: 'Al Baik Restaurant Ajyad', type: 'Kuliner Halal', location: '150m dari Masjidil Haram', promo: 'Cashback 15% SAR' },
+                      { name: 'Nahdi Pharmacy Clock Tower', type: 'Farmasi & Kesehatan', location: 'Abraj Al Bait Zamzam Lt. 2', promo: 'Diskon 10%' },
+                      { name: 'Bin Dawood Supermarket', type: 'Supermarket & Oleh-Oleh', location: 'Lantai Dasar Abraj Al Bait', promo: 'Poin Berkah 2x' },
+                      { name: 'Al Tazaj Nabawi South', type: 'Kuliner Halal Cepat Saji', location: 'Southern Courtyard Gate 5 Madinah', promo: 'Cashback SAR 5' },
+                    ].map((m) => (
+                      <div key={m.name} className="p-3 rounded-2xl bg-[#F8FAFC] border border-[#ECEEF2] flex items-center justify-between">
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <h4 className="text-[13px] font-black text-[#1A1D26]">{m.name}</h4>
+                            <span className="text-[8.5px] font-bold px-1.5 py-0.5 rounded-full bg-blue-50 text-[#1037A6]">
+                              {m.promo}
+                            </span>
+                          </div>
+                          <p className="text-[10.5px] text-gray-500 mt-0.5">
+                            {m.type} • {m.location}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => triggerReaction('success', `Tunjukkan kartu Aladin atau bayar SAR di ${m.name}!`)}
+                          className="px-2.5 py-1 rounded-xl bg-[#1037A6] text-white text-[10.5px] font-black hover:bg-blue-800 active:scale-95 cursor-pointer shrink-0"
+                        >
+                          Bayar
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Emergency Contacts */}
+                <div className="bg-red-50/60 rounded-2xl p-4 border border-red-200">
+                  <span className="text-[10px] font-extrabold text-red-700 uppercase tracking-wider block mb-1">
+                    BANTUAN DARURAT TANAH SUCI (24 JAM)
+                  </span>
+                  <div className="space-y-1.5 text-[11px] text-gray-700">
+                    <p><strong>Posko Haji Kemenag RI:</strong> +966 54 892 0111</p>
+                    <p><strong>KJRI Jeddah:</strong> +966 12 671 1271</p>
+                    <p><strong>Red Crescent (Ambulans):</strong> 997</p>
+                    <p><strong>Polisi Wilayah Haramain:</strong> 999</p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Section 2: Sewa Skuter Listrik & Kursi Roda Tawaf */}
             <div className="bg-white rounded-2xl p-4 border border-[#ECEEF2]">

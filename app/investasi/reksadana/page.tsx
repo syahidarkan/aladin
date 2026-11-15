@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
+import PhoneModal from '@/components/PhoneModal'
 import { useBankState } from '@/lib/bankState'
 import {
   ArrowLeft,
@@ -383,10 +384,13 @@ export default function ReksadanaCatalogPage() {
         </div>
       </main>
 
-      {/* 3. PRODUCT DETAIL & BUY DRAWER */}
-      {selectedProduct && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-xs p-0 animate-in fade-in duration-200">
-          <div className="bg-white rounded-t-3xl w-full max-w-[430px] p-5 shadow-2xl max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom duration-300">
+      {/* 3. PRODUCT DETAIL & BUY DRAWER - Rendered via PhoneModal above BottomNav & Alan */}
+      <PhoneModal isOpen={!!selectedProduct} onClose={() => setSelectedProduct(null)}>
+        {selectedProduct && (
+          <div
+            className="bg-white rounded-t-3xl w-full max-h-[85vh] overflow-y-auto p-5 pb-8 shadow-2xl animate-in slide-in-from-bottom duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between pb-3 border-b border-gray-100">
               <div className="flex items-center gap-2.5">
                 <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0">
@@ -408,7 +412,7 @@ export default function ReksadanaCatalogPage() {
               </div>
               <button
                 onClick={() => setSelectedProduct(null)}
-                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 cursor-pointer"
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -476,7 +480,7 @@ export default function ReksadanaCatalogPage() {
                         type="button"
                         key={preset}
                         onClick={() => setBuyAmount(preset)}
-                        className="flex-1 py-1 bg-gray-100 hover:bg-blue-50 text-[11px] font-bold text-gray-700 rounded-lg transition-colors"
+                        className="flex-1 py-1 bg-gray-100 hover:bg-blue-50 text-[11px] font-bold text-gray-700 rounded-lg transition-colors cursor-pointer"
                       >
                         {preset}
                       </button>
@@ -494,15 +498,16 @@ export default function ReksadanaCatalogPage() {
 
                 <button
                   type="submit"
-                  className="w-full h-12 bg-[#1037A6] text-white font-extrabold text-[14px] rounded-xl hover:bg-[#0c2b82] transition-colors shadow-sm cursor-pointer"
+                  className="w-full h-12 bg-[#1037A6] hover:bg-[#0c2b82] text-white font-extrabold text-[14px] rounded-xl transition-colors shadow-sm cursor-pointer active:scale-98"
                 >
                   Beli Reksa Dana Sekarang
                 </button>
               </form>
             )}
           </div>
-        </div>
-      )}
+        )}
+      </PhoneModal>
     </div>
   )
 }
+

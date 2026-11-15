@@ -200,9 +200,14 @@ export default function AlaInvestasiSyariahPage() {
               <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
             </Link>
             <div>
-              <h1 className="text-[16px] font-black text-[#1037A6] tracking-tight leading-tight">
-                Ala Investasi Syariah
-              </h1>
+              <div className="flex items-center gap-1.5">
+                <h1 className="text-[16px] font-black text-[#1037A6] tracking-tight leading-tight">
+                  Ala Investasi Syariah
+                </h1>
+                <span className="text-[8.5px] font-black px-1.5 py-0.5 rounded-full bg-indigo-600 text-white border border-indigo-400">
+                  📋 Pendukung
+                </span>
+              </div>
               <span className="text-[10px] font-bold text-[#059669] flex items-center gap-1">
                 <ShieldCheck className="w-3 h-3 text-[#059669]" />
                 OJK &amp; Dewan Pengawas Syariah MUI
@@ -595,7 +600,7 @@ export default function AlaInvestasiSyariahPage() {
       {/* MODAL 1: TOP UP RDN WALLET                                               */}
       {/* ========================================================================= */}
       {showRdnDepositModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-6 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[125] bg-black/60 backdrop-blur-xs flex items-center justify-center p-6 animate-in fade-in duration-200">
           <div className="w-full max-w-[340px] bg-white rounded-3xl p-6 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-gray-100">
               <h3 className="text-[16px] font-black text-[#1A1D26]">
@@ -657,8 +662,8 @@ export default function AlaInvestasiSyariahPage() {
       {/* MODAL 2: BUY PRODUCT INTERACTIVE TRANSACTION SHEET                        */}
       {/* ========================================================================= */}
       {selectedProductModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end justify-center p-0 animate-in fade-in duration-200">
-          <div className="w-full max-w-[420px] bg-white rounded-t-[30px] p-6 shadow-2xl animate-in slide-in-from-bottom duration-300">
+        <div className="fixed inset-0 z-[125] bg-black/60 backdrop-blur-xs flex items-end justify-center p-0 animate-in fade-in duration-200">
+          <div className="w-full max-w-[420px] bg-white rounded-t-[30px] p-6 pb-10 shadow-2xl animate-in slide-in-from-bottom duration-300">
             <div className="flex items-center justify-between pb-3 border-b border-gray-100">
               <h3 className="text-[16px] font-black text-[#1A1D26]">
                 {selectedProductModal === 'reksadana' && 'Beli Reksa Dana Syariah'}
@@ -744,8 +749,8 @@ export default function AlaInvestasiSyariahPage() {
 
       {/* MODAL 1: PORTOFOLIO BREAKDOWN MODAL */}
       {showPortofolioModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
+        <div className="fixed inset-0 z-[125] bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 pb-10 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-gray-100">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center">
@@ -840,8 +845,8 @@ export default function AlaInvestasiSyariahPage() {
 
       {/* MODAL 2: NABUNG RUTIN AUTODEBIT MODAL */}
       {showNabungRutinModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
+        <div className="fixed inset-0 z-[125] bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 pb-10 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-gray-100">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center">
@@ -996,8 +1001,8 @@ export default function AlaInvestasiSyariahPage() {
 
       {/* MODAL 3: REFERRAL PROGRAM BERKAH */}
       {showReferralModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
+        <div className="fixed inset-0 z-[125] bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 pb-10 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-gray-100">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center">
@@ -1085,8 +1090,8 @@ export default function AlaInvestasiSyariahPage() {
 
       {/* MODAL 4: FATWA MUI & KEPATUHAN SYARIAH MODAL */}
       {showFatwaModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
+        <div className="fixed inset-0 z-[125] bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 pb-10 max-h-[88vh] overflow-y-auto no-scrollbar space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-gray-100">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#1037A6] flex items-center justify-center">

@@ -114,9 +114,14 @@ export default function AlaImpianLandingPage() {
             <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
           </Link>
 
-          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
-            Ala Impian
-          </h1>
+          <div className="flex items-center gap-1.5">
+            <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+              Ala Impian
+            </h1>
+            <span className="text-[8.5px] font-black px-1.5 py-0.5 rounded-full bg-[#00F0A0] text-[#064E3B] border border-emerald-400">
+              ⭐ Fitur Utama
+            </span>
+          </div>
 
           <button
             onClick={() =>

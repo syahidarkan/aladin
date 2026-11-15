@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
+import PhoneModal from '@/components/PhoneModal'
 import { useBankState } from '@/lib/bankState'
 import {
   ArrowLeft,
@@ -419,10 +420,13 @@ export default function SahamSyariahPage() {
         </div>
       </main>
 
-      {/* 3. STOCK ORDER DRAWER */}
-      {selectedStock && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-xs p-0 animate-in fade-in duration-200">
-          <div className="bg-white rounded-t-3xl w-full max-w-[430px] p-5 shadow-2xl max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom duration-300">
+      {/* 3. STOCK ORDER DRAWER - Rendered via PhoneModal above BottomNav and Mascot */}
+      <PhoneModal isOpen={!!selectedStock} onClose={() => setSelectedStock(null)}>
+        {selectedStock && (
+          <div
+            className="bg-white rounded-t-3xl w-full max-h-[85vh] overflow-y-auto p-5 pb-8 shadow-2xl animate-in slide-in-from-bottom duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between pb-3 border-b border-gray-100">
               <div className="flex items-center gap-2.5">
                 <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0">
@@ -444,7 +448,7 @@ export default function SahamSyariahPage() {
               </div>
               <button
                 onClick={() => setSelectedStock(null)}
-                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 cursor-pointer"
+                className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -554,15 +558,16 @@ export default function SahamSyariahPage() {
 
                 <button
                   type="submit"
-                  className="w-full h-12 bg-[#1037A6] text-white font-extrabold text-[14px] rounded-xl hover:bg-[#0c2b82] transition-colors shadow-sm cursor-pointer"
+                  className="w-full h-12 bg-[#1037A6] hover:bg-[#0c2b82] text-white font-extrabold text-[14px] rounded-xl transition-colors shadow-sm cursor-pointer active:scale-98"
                 >
                   Beli Saham {selectedStock.ticker} Sekarang
                 </button>
               </form>
             )}
           </div>
-        </div>
-      )}
+        )}
+      </PhoneModal>
     </div>
   )
 }
+

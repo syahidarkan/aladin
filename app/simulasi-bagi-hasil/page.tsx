@@ -61,9 +61,14 @@ export default function SimulasiBagiHasilPage() {
             <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
           </Link>
 
-          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
-            Simulasi Bagi Hasil
-          </h1>
+          <div className="flex items-center gap-1.5">
+            <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
+              Simulasi Bagi Hasil
+            </h1>
+            <span className="text-[8.5px] font-black px-1.5 py-0.5 rounded-full bg-indigo-600 text-white border border-indigo-400">
+              📋 Pendukung
+            </span>
+          </div>
 
           <div style={{ width: '36px' }} />
         </div>

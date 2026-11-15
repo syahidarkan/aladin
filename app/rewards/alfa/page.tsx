@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Sparkles, Flame, CheckCircle2, ChevronRight, Gift, Trophy, QrCode, Tag, ArrowUpRight } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -10,6 +10,17 @@ export default function RewardsAlfaPage() {
   const [timer, setTimer] = useState(60)
   const [claimedReward, setClaimedReward] = useState<number | null>(null)
   const [activeBarcode, setActiveBarcode] = useState<'barcode' | 'qr'>('barcode')
+  const [streakDays, setStreakDays] = useState([
+    { day: 'Sen', completed: true },
+    { day: 'Sel', completed: true },
+    { day: 'Rab', completed: true },
+    { day: 'Kam', completed: true },
+    { day: 'Jum', completed: true },
+    { day: 'Sab', completed: false, today: true },
+    { day: 'Min', completed: false },
+  ])
+  const [claimedMissions, setClaimedMissions] = useState<number[]>([1])
+  const [totalPoints, setTotalPoints] = useState(1450)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -18,12 +29,54 @@ export default function RewardsAlfaPage() {
     return () => clearInterval(interval)
   }, [])
 
+  const handleClaimMission = (id: number, pts: number) => {
+    if (!claimedMissions.includes(id)) {
+      setClaimedMissions((prev) => [...prev, id])
+      setTotalPoints((prev) => prev + pts)
+    }
+  }
+
   const milestones = [
     { id: 1, step: '1', title: 'Buka Rekening Aladin', status: 'done', reward: 'Gratis Tarik/Setor 5x' },
     { id: 2, step: '2', title: 'Verifikasi KYC Selesai', status: 'done', reward: 'Voucher Alfa Rp15.000' },
     { id: 3, step: '3', title: 'Transaksi Perdana', status: 'done', reward: 'Minyak Goreng 1L Gratis' },
     { id: 4, step: '4', title: 'Aktif 30 Hari', status: 'current', reward: 'Voucher Belanja Rp25.000' },
     { id: 5, step: '5', title: 'Aktif 90 Hari Setia', status: 'locked', reward: 'Saldo Ala Dompet Rp50.000' },
+  ]
+
+  const activeMissions = [
+    {
+      id: 1,
+      title: 'First Ride: Tap QRIS KRL / MRT Jakarta',
+      points: 300,
+      rewardText: '+300 Poin & Cashback Rp5.000',
+      done: true,
+      tag: 'Transportasi',
+    },
+    {
+      id: 2,
+      title: 'Belanja Harian Alfa Group min. Rp50.000',
+      points: 250,
+      rewardText: '+250 Poin Berkah',
+      done: false,
+      tag: 'Alfa Daily Loop',
+    },
+    {
+      id: 3,
+      title: 'Setor Tunai Tanpa Kartu di Kasir Alfamart',
+      points: 150,
+      rewardText: '+150 Poin Berkah',
+      done: false,
+      tag: 'Kasir Alfa',
+    },
+    {
+      id: 4,
+      title: 'Nabung Rutin di Kantong Ala Impian',
+      points: 400,
+      rewardText: '+400 Poin & Tiket Undian Berkah',
+      done: false,
+      tag: 'Ala Impian',
+    },
   ]
 
   const outletHistory = [
@@ -74,21 +127,152 @@ export default function RewardsAlfaPage() {
             <ArrowLeft className="w-5 h-5 text-gray-900" strokeWidth={2.6} />
           </Link>
 
-          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
-            Aladin × Alfa Daily Loop
-          </h1>
+          <div className="flex items-center gap-1.5">
+            <h1 className="text-[16px] font-black text-[#1A1D26] tracking-tight">
+              Journey Rewards
+            </h1>
+            <span className="text-[8.5px] font-black px-2 py-0.5 rounded-full bg-[#00F0A0] text-[#064E3B] border border-emerald-400">
+              ⭐ Fitur Utama • Slide 17
+            </span>
+          </div>
 
           <div style={{ width: '36px' }} />
         </div>
       </header>
 
-      {/* 3. Scrollable Main Content (Generous 20px Margins, Space Between Cards) */}
+      {/* 2. Scrollable Main Content */}
       <div
         className="flex-1 min-h-0 overflow-y-auto no-scrollbar space-y-4"
         style={{
           padding: '16px 20px 48px 20px',
         }}
       >
+        {/* HERO: Streak & Loyalty Points Card */}
+        <div className="bg-gradient-to-br from-[#1037A6] via-[#1C20C4] to-[#0A2268] rounded-3xl p-5 text-white shadow-md relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-36 h-36 bg-[#00F0A0]/15 rounded-full blur-2xl pointer-events-none" />
+          
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-1.5 bg-white/15 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20">
+              <Flame className="w-4 h-4 text-amber-300 animate-pulse" />
+              <span className="text-[11px] font-black tracking-wide">5 Hari Berturut-Turut 🔥</span>
+            </div>
+            <span className="text-[10px] font-bold text-white/80">
+              Aladin Journey Rewards
+            </span>
+          </div>
+
+          <div className="flex items-baseline justify-between mb-4">
+            <div>
+              <span className="text-[10.5px] text-white/80 font-medium block">Total Poin Berkah</span>
+              <div className="flex items-baseline gap-1.5 mt-0.5">
+                <span className="text-[28px] font-black tracking-tight font-mono text-[#00F0A0]">
+                  {totalPoints.toLocaleString('id-ID')}
+                </span>
+                <span className="text-[12px] font-bold text-white/90">Poin</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => alert('Poin Berkah dapat ditukarkan voucher Alfamart, potongan biaya umrah, atau donasi ZISWAF!')}
+              className="px-3.5 py-1.5 rounded-xl bg-white text-[#1037A6] text-[11px] font-black shadow-sm hover:bg-gray-100 transition-all cursor-pointer active:scale-95"
+            >
+              Tukar Hadiah
+            </button>
+          </div>
+
+          {/* Daily Streak Circles */}
+          <div className="bg-black/20 rounded-2xl p-3 border border-white/10">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10.5px] font-bold text-white/90">Streak Transaksi Harian</span>
+              <span className="text-[10px] text-emerald-300 font-bold">+50 Poin Besok</span>
+            </div>
+            <div className="grid grid-cols-7 gap-1.5 text-center">
+              {streakDays.map((s, idx) => (
+                <div
+                  key={idx}
+                  className={`py-1.5 rounded-xl flex flex-col items-center justify-center transition-all ${
+                    s.completed
+                      ? 'bg-[#00F0A0] text-[#064E3B] font-black shadow-xs'
+                      : s.today
+                      ? 'bg-white/20 text-white font-bold border border-[#00F0A0]'
+                      : 'bg-white/5 text-white/50'
+                  }`}
+                >
+                  <span className="text-[9.5px] uppercase">{s.day}</span>
+                  <span className="text-[11px] mt-0.5">
+                    {s.completed ? '✓' : s.today ? '🎁' : '•'}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* SECTION: Misi Transaksi Berkah (Slide 17 Gamification Loop) */}
+        <div className="bg-white rounded-3xl p-5 border border-[#ECEEF2] shadow-xs">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <div className="flex items-center gap-1.5">
+                <Trophy className="w-4 h-4 text-amber-500" />
+                <h3 className="text-[15px] font-black text-[#1A1D26]">
+                  Misi Transaksi Berkah
+                </h3>
+              </div>
+              <span className="text-[11px] text-gray-500 font-medium">
+                Selesaikan misi transaksi untuk bonus poin berkah
+              </span>
+            </div>
+            <span className="text-[11px] font-bold text-[#1037A6] bg-blue-50 px-2.5 py-0.5 rounded-full">
+              Pekan Ini
+            </span>
+          </div>
+
+          <div className="space-y-2.5">
+            {activeMissions.map((mission) => {
+              const isClaimed = claimedMissions.includes(mission.id)
+              return (
+                <div
+                  key={mission.id}
+                  className={`p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+                    isClaimed
+                      ? 'bg-emerald-50/50 border-emerald-200'
+                      : 'bg-[#F9FAFB] border-gray-100 hover:border-blue-200'
+                  }`}
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-white text-gray-700 border border-gray-200">
+                        {mission.tag}
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-700">
+                        {mission.rewardText}
+                      </span>
+                    </div>
+                    <h4 className="text-[12.5px] font-bold text-[#1A1D26] leading-snug">
+                      {mission.title}
+                    </h4>
+                  </div>
+
+                  {isClaimed ? (
+                    <span className="text-[10.5px] font-black text-emerald-700 bg-white px-2.5 py-1 rounded-full border border-emerald-300 shrink-0 flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Selesai
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleClaimMission(mission.id, mission.points)}
+                      className="px-3 py-1.5 rounded-xl bg-[#1037A6] hover:bg-[#0c2b82] text-white text-[11px] font-black shadow-xs active:scale-95 transition-all cursor-pointer shrink-0"
+                    >
+                      Klaim Misi
+                    </button>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
         {/* Cashier Barcode & QR Card */}
         <div className="bg-white rounded-[24px] p-5 border border-[#ECEEF2] shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-center">
           <div className="flex items-center justify-between mb-3">

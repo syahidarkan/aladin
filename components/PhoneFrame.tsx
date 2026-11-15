@@ -218,6 +218,9 @@ export default function PhoneFrame({ children }: { children: React.ReactNode }) 
         {/* Global Bottom Navigation Bar (Always Present Across All Pages) */}
         {!showSplash && <BottomNav />}
 
+        {/* Dedicated Phone Modal Root - Portals render above BottomNav (z-60) and Alan (z-120) */}
+        <div id="phone-modal-root" className="contents" />
+
         {/* Global 3D Mascot Transition & Overlays - Covers ENTIRE phone screen including BottomNav */}
         <FeatureWelcomeOverlay />
         <CarpetPageTransition />

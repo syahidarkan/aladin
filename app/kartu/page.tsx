@@ -181,9 +181,14 @@ export default function VirtualCardPage() {
           </Link>
 
           {/* Title */}
-          <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight text-center">
-            Rincian Kartu
-          </h1>
+          <div className="flex items-center gap-1.5">
+            <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight text-center">
+              Rincian Kartu
+            </h1>
+            <span className="text-[8.5px] font-black px-1.5 py-0.5 rounded-full bg-slate-700 text-white border border-slate-500">
+              ✨ Nice To Have
+            </span>
+          </div>
 
           {/* Help Circle Button */}
           <button

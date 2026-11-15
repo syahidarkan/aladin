@@ -18,6 +18,7 @@ import {
   ArrowUpRight,
   Lock,
   Compass,
+  Sparkles,
 } from 'lucide-react'
 
 export default function BerandaPage() {
@@ -98,61 +99,170 @@ export default function BerandaPage() {
     return () => clearInterval(timer)
   }, [banners.length])
 
-  // Exact 7 Shortcuts (Ala Pilgrims is integrated into Ala Haramain Hub)
-  const shortcuts = [
+  const [featureTierFilter, setFeatureTierFilter] = useState<'all' | 'utama' | 'pendukung' | 'nice-to-have'>('utama')
+
+  // Comprehensive 3-Tier Feature Architecture per IMOTION 2026 Pitch Solution
+  const featuresList = [
+    // --- TIER 1: FITUR UTAMA (Slide 12-18 Prototype Solusi Utama) ---
     {
-      id: 'deposito',
-      label: 'Ala Deposito',
-      href: '/simulasi-bagi-hasil',
-      iconSrc: '/assets/icons/shortcut_deposito_clean.png',
+      id: 'hijrah',
+      label: 'Ala Hijrah',
+      category: 'utama',
+      tier: 'Utama',
+      tierBadgeClass: 'bg-[#00F0A0] text-[#064E3B] border-emerald-400',
+      tagColor: 'text-[#064E3B] bg-emerald-50 border-emerald-200',
+      href: '/hijrah',
+      iconSrc: '/assets/icons/shortcut_hijrah_v2.png',
+      desc: 'Hub halal lifestyle: Kajian Akbar, Modest Fashion, & Kuliner Halal resmi BPJPH.',
+      slideNote: 'Slide 16 • Fitur Utama Retain',
+      badge: 'Utama',
+    },
+    {
+      id: 'rewards',
+      label: 'Journey Rewards',
+      category: 'utama',
+      tier: 'Utama',
+      tierBadgeClass: 'bg-[#00F0A0] text-[#064E3B] border-emerald-400',
+      tagColor: 'text-[#064E3B] bg-emerald-50 border-emerald-200',
+      href: '/rewards/alfa',
+      iconSrc: '/assets/icons/shortcut_alfa_daily.png',
+      desc: 'Program poin loyalitas, milestone misi transaksi berulang, & Alfa Daily Loop.',
+      slideNote: 'Slide 17 • Daily Transaction Rewards',
+      badge: 'Utama',
     },
     {
       id: 'impian',
       label: 'Ala Impian',
+      category: 'utama',
+      tier: 'Utama',
+      tierBadgeClass: 'bg-[#00F0A0] text-[#064E3B] border-emerald-400',
+      tagColor: 'text-[#064E3B] bg-emerald-50 border-emerald-200',
       href: '/impian',
       iconSrc: '/assets/icons/shortcut_impian_clean.png',
+      desc: '20 kantong tabungan berjangka syariah terencana (Umrah, Haji, Rumah, Gadget).',
+      slideNote: 'Slide 15 & 16 • Tabungan Bertujuan',
+      badge: 'Utama',
     },
     {
-      id: 'pocket',
-      label: 'Ala Pocket',
-      href: '/pocket',
+      id: 'sobat-aladin',
+      label: 'Sobat Aladin',
+      category: 'utama',
+      tier: 'Utama',
+      tierBadgeClass: 'bg-[#00F0A0] text-[#064E3B] border-emerald-400',
+      tagColor: 'text-[#064E3B] bg-emerald-50 border-emerald-200',
+      href: '/onboarding/tujuan-finansial',
       iconSrc: '/assets/icons/shortcut_pocket_v2.png',
-      badge: 'Baru',
+      desc: 'Aktivasi fokus finansial pasca-KYC (Ibadah, Harian, Investasi, Anak) & A/B testing.',
+      slideNote: 'Slide 15 • Onboarding Goal-Based',
+      badge: 'Utama',
     },
     {
-      id: 'haramain',
-      label: 'Ala Haramain',
-      href: '/ala-haramain',
+      id: 'wrapped',
+      label: 'Aladin Wrap',
+      category: 'utama',
+      tier: 'Utama',
+      tierBadgeClass: 'bg-[#00F0A0] text-[#064E3B] border-emerald-400',
+      tagColor: 'text-[#064E3B] bg-emerald-50 border-emerald-200',
+      href: '/wrapped',
+      iconSrc: '/assets/icons/shortcut_kartu_v2.png',
+      desc: 'Kilas balik finansial & kebiasaan berkah setahun bergaya Spotify Wrapped.',
+      slideNote: 'Slide 16/17 • Organic Viral Engine',
+      badge: 'Utama',
+    },
+
+    // --- TIER 2: FITUR PENDUKUNG (Appendix A - Solusi Tambahan & 4P) ---
+    {
+      id: 'haji-umrah',
+      label: 'Haji & Umrah',
+      category: 'pendukung',
+      tier: 'Pendukung',
+      tierBadgeClass: 'bg-indigo-600 text-white border-indigo-400',
+      tagColor: 'text-indigo-700 bg-indigo-50 border-indigo-200',
+      href: '/impian/umrah/intro/1',
       iconSrc: '/assets/icons/shortcut_haramain_v2.png',
-      badge: 'Baru',
-    },
-    {
-      id: 'alfa-loop',
-      label: 'Alfa Daily',
-      href: '/rewards/alfa',
-      iconSrc: '/assets/icons/shortcut_alfa_daily.png',
-      badge: 'Baru',
-    },
-    {
-      id: 'hijrah',
-      label: 'Ala Hijrah',
-      href: '/hijrah',
-      iconSrc: '/assets/icons/shortcut_hijrah_v2.png',
-      badge: 'Baru',
+      desc: 'Perencanaan porsi haji Kemenag & travel umrah resmi HIMPUH/AMPHURI.',
+      slideNote: 'Appendix A • Spiritual Niche Solution',
+      badge: 'Pendukung',
     },
     {
       id: 'investasi',
       label: 'Ala Investasi',
+      category: 'pendukung',
+      tier: 'Pendukung',
+      tierBadgeClass: 'bg-indigo-600 text-white border-indigo-400',
+      tagColor: 'text-indigo-700 bg-indigo-50 border-indigo-200',
       href: '/investasi',
       iconSrc: '/assets/icons/shortcut_investasi_v2.png',
-      badge: 'Baru',
+      desc: 'Syariah Wealth Engine: Reksa Dana, Emas Fisik 24K Antam, & Saham ISSI.',
+      slideNote: 'Appendix A • Wealth Expansion',
+      badge: 'Pendukung',
+    },
+    {
+      id: 'donasi',
+      label: 'Ala Berbagi',
+      category: 'pendukung',
+      tier: 'Pendukung',
+      tierBadgeClass: 'bg-indigo-600 text-white border-indigo-400',
+      tagColor: 'text-indigo-700 bg-indigo-50 border-indigo-200',
+      href: '/donasi',
+      iconSrc: '/assets/icons/shortcut_hijrah_v2.png',
+      desc: 'Zakat maal, infaq produktif, & sedekah digital resmi BAZNAS & Lazismu.',
+      slideNote: 'Appendix A • Social ZISWAF Hub',
+      badge: 'Pendukung',
+    },
+    {
+      id: 'deposito',
+      label: 'Ala Deposito',
+      category: 'pendukung',
+      tier: 'Pendukung',
+      tierBadgeClass: 'bg-indigo-600 text-white border-indigo-400',
+      tagColor: 'text-indigo-700 bg-indigo-50 border-indigo-200',
+      href: '/simulasi-bagi-hasil',
+      iconSrc: '/assets/icons/shortcut_deposito_clean.png',
+      desc: 'Simulasi deposito mudharabah dengan nisbah kompetitif hingga 85:15.',
+      slideNote: 'Appendix A • 4P Product Strategy',
+      badge: 'Pendukung',
+    },
+
+    // --- TIER 3: FITUR NICE TO HAVE ---
+    {
+      id: 'haramain',
+      label: 'Ala Haramain',
+      category: 'nice-to-have',
+      tier: 'Nice To Have',
+      tierBadgeClass: 'bg-slate-700 text-white border-slate-500',
+      tagColor: 'text-slate-700 bg-slate-100 border-slate-200',
+      href: '/ala-haramain',
+      iconSrc: '/assets/icons/shortcut_haramain_clean.png',
+      desc: 'Haramain Wallet (SAR) & myPilgrim Roaming 5G STC/Mobily di Tanah Suci.',
+      slideNote: 'Feature Enhancement • Global Pilgrim Hub',
+      badge: 'Nice To Have',
+    },
+    {
+      id: 'pocket',
+      label: 'Ala Pocket',
+      category: 'nice-to-have',
+      tier: 'Nice To Have',
+      tierBadgeClass: 'bg-slate-700 text-white border-slate-500',
+      tagColor: 'text-slate-700 bg-slate-100 border-slate-200',
+      href: '/pocket',
+      iconSrc: '/assets/icons/shortcut_pocket_v2.png',
+      desc: 'Sub-wallet fleksibel bebas tarik untuk alokasi jajan & pengeluaran harian.',
+      slideNote: 'Feature Enhancement • Budgeting Sub-Wallet',
+      badge: 'Nice To Have',
     },
     {
       id: 'kartu',
       label: 'Kartu Visa',
+      category: 'nice-to-have',
+      tier: 'Nice To Have',
+      tierBadgeClass: 'bg-slate-700 text-white border-slate-500',
+      tagColor: 'text-slate-700 bg-slate-100 border-slate-200',
       href: '/kartu',
       iconSrc: '/assets/icons/shortcut_kartu_v2.png',
-      badge: 'Baru',
+      desc: 'Kartu debit virtual & fisik Visa contactless untuk transaksi domestik & global.',
+      slideNote: 'Feature Enhancement • Contactless Visa',
+      badge: 'Nice To Have',
     },
   ]
 
@@ -357,37 +467,147 @@ export default function BerandaPage() {
         </div>
 
         {/* ========================================================================= */}
-        {/* SHORTCUTS ROW: EXACT 1:1 APK item_explore_menu.xml (7 SHORTCUTS)          */}
+        {/* SHORTCUTS ROW: 3-TIER ARCHITECTURE WITH FITUR UTAMA FIRST                */}
         {/* ========================================================================= */}
         <div className="mt-5 px-5">
-          <div className="flex items-start gap-3 overflow-x-auto no-scrollbar py-1 px-1">
-            {shortcuts.map((sc) => (
+          <div className="flex items-center justify-between mb-2.5 px-0.5">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[12.5px] font-black text-[#1A1D26] tracking-tight">
+                Solusi Unggulan
+              </span>
+              <span className="text-[9.5px] font-extrabold px-2 py-0.5 rounded-full bg-[#00F0A0] text-[#064E3B] border border-emerald-400">
+                ⭐ 5 Fitur Utama
+              </span>
+            </div>
+            <span className="text-[11px] font-bold text-[#1037A6]">
+              Geser →
+            </span>
+          </div>
+
+          <div className="flex items-start gap-3 overflow-x-auto no-scrollbar py-1 px-0.5">
+            {featuresList.map((sc) => (
               <Link
                 key={sc.id}
                 href={sc.href}
-                className="flex flex-col items-center shrink-0 active:scale-95 transition-transform cursor-pointer"
-                style={{ width: '68px' }}
+                className="flex flex-col items-center shrink-0 active:scale-95 transition-transform cursor-pointer relative group"
+                style={{ width: '70px' }}
               >
-                <div className="relative w-[50px] h-[50px] rounded-2xl overflow-visible mb-1 flex items-center justify-center">
+                <div className="relative w-[50px] h-[50px] rounded-2xl overflow-visible mb-1.5 flex items-center justify-center bg-gray-50/60 p-1 group-hover:bg-blue-50/50 transition-colors">
                   <Image
                     src={sc.iconSrc}
                     alt={sc.label}
-                    width={48}
-                    height={48}
+                    width={46}
+                    height={46}
                     className="object-contain"
                     priority
                   />
                   {sc.badge && (
-                    <span className="absolute -top-1.5 -right-1.5 bg-[#00F0A0] text-[#064E3B] text-[8.5px] font-black px-1.5 py-0.5 rounded-full border border-emerald-300 leading-none shadow-xs">
+                    <span
+                      className={`absolute -top-1.5 -right-2 text-[8px] font-black px-1.5 py-0.5 rounded-full leading-none shadow-xs border ${
+                        sc.tier === 'Utama'
+                          ? 'bg-[#00F0A0] text-[#064E3B] border-emerald-400'
+                          : sc.tier === 'Pendukung'
+                          ? 'bg-indigo-600 text-white border-indigo-400'
+                          : 'bg-slate-700 text-white border-slate-500'
+                      }`}
+                    >
                       {sc.badge}
                     </span>
                   )}
                 </div>
-                <span className="text-[11px] font-medium text-[#1A1D26] text-center leading-tight">
+                <span className="text-[11px] font-semibold text-[#1A1D26] text-center leading-tight">
                   {sc.label}
                 </span>
               </Link>
             ))}
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* SECTION: DIREKTORI SOLUSI PROTOTYPE IMOTION 2026 (3-TIER CLASSIFICATION)  */}
+        {/* ========================================================================= */}
+        <div className="mt-5 px-5">
+          <div className="bg-white rounded-3xl p-4 border border-[#ECEEF2] shadow-xs">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700">
+                  <Sparkles className="w-3.5 h-3.5" />
+                </div>
+                <h2 className="text-[14px] font-black text-[#1A1D26] tracking-tight">
+                  Katalog Solusi Pitch IMOTION
+                </h2>
+              </div>
+              <span className="text-[10px] font-bold text-gray-400">
+                Slide 12–18 &amp; Appendix A
+              </span>
+            </div>
+
+            {/* Filter Tabs */}
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 mb-3">
+              {[
+                { id: 'utama', label: '⭐ Fitur Utama (5)' },
+                { id: 'pendukung', label: '📋 Pendukung (4)' },
+                { id: 'nice-to-have', label: '✨ Nice To Have (3)' },
+                { id: 'all', label: 'Semua (12)' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setFeatureTierFilter(tab.id as any)}
+                  className={`px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap transition-all cursor-pointer ${
+                    featureTierFilter === tab.id
+                      ? 'bg-[#1037A6] text-white shadow-xs'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Feature Cards List */}
+            <div className="space-y-2">
+              {featuresList
+                .filter((item) => featureTierFilter === 'all' || item.category === featureTierFilter)
+                .map((item) => (
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    className="flex items-center justify-between p-2.5 rounded-2xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/40 transition-all cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="relative w-9 h-9 rounded-xl overflow-hidden shrink-0 bg-gray-50 flex items-center justify-center p-1">
+                        <Image
+                          src={item.iconSrc}
+                          alt={item.label}
+                          width={32}
+                          height={32}
+                          className="object-contain"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <h4 className="text-[13px] font-black text-[#1A1D26] group-hover:text-[#1037A6] transition-colors leading-tight">
+                            {item.label}
+                          </h4>
+                          <span
+                            className={`text-[8px] font-black px-1.5 py-0.5 rounded-full border leading-none ${item.tierBadgeClass}`}
+                          >
+                            {item.tier}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-gray-500 line-clamp-1 leading-tight mt-0.5">
+                          {item.desc}
+                        </p>
+                        <span className="text-[9px] font-bold text-emerald-700 block mt-0.5">
+                          {item.slideNote}
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#1037A6] group-hover:translate-x-0.5 transition-all shrink-0 ml-1" />
+                  </Link>
+                ))}
+            </div>
           </div>
         </div>
 

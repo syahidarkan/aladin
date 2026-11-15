@@ -174,6 +174,9 @@ export default function TujuanFinansialPage() {
             <span className="text-[12px] font-black text-[#1037A6] tracking-wider uppercase">
               SOBAT ALADIN
             </span>
+            <span className="text-[8.5px] font-black px-1.5 py-0.5 rounded-full bg-[#00F0A0] text-[#064E3B] border border-emerald-400">
+              ⭐ Fitur Utama • Slide 15
+            </span>
           </div>
 
           {currentStep < 4 ? (
