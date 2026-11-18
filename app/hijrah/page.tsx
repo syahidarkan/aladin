@@ -20,6 +20,9 @@ import {
   Clock,
   ShieldCheck,
   Ticket,
+  Wallet,
+  Landmark,
+  TrendingUp,
 } from 'lucide-react'
 
 type CategoryId =
@@ -693,6 +696,107 @@ export default function AlaHijrahPage() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+
+            {/* ALADIN FINANCIAL CALCULATOR - 3 PILLARS ENTRY POINT */}
+            <div style={{ padding: '0 20px', marginTop: '16px' }}>
+              <div className="bg-gradient-to-br from-[#001F5D] via-[#1037A6] to-[#1C20C4] rounded-3xl p-4.5 text-white shadow-md relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#00F0A0]/15 rounded-full blur-2xl pointer-events-none" />
+
+                <div className="flex items-center justify-between mb-2 relative z-10">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-black uppercase tracking-wider bg-white/20 text-[#00F0A0] px-2.5 py-0.5 rounded-full border border-white/20">
+                      FITUR UTAMA • CALCULATOR
+                    </span>
+                  </div>
+                  <Link
+                    href="/kalkulator"
+                    className="text-[11px] font-bold text-emerald-300 hover:underline flex items-center gap-0.5"
+                  >
+                    <span>Buka Hub</span>
+                    <span>→</span>
+                  </Link>
+                </div>
+
+                <h3 className="text-[15px] font-black text-white leading-tight mb-1 relative z-10">
+                  Aladin Financial Calculator
+                </h3>
+                <p className="text-[11.5px] text-white/85 leading-relaxed mb-3 relative z-10">
+                  Hitung dulu, baru melangkah — simulasi syariah pada 3 pilar finansial:
+                </p>
+
+                {/* 3 Pillars Action Pills */}
+                <div className="grid grid-cols-1 gap-2 relative z-10">
+                  {/* Pillar 1: Everyday Financial Needs */}
+                  <Link
+                    href="/kalkulator/budget"
+                    className="p-2.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-between transition-colors active:scale-99 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-[#00F0A0] shrink-0">
+                        <Wallet className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[9.5px] font-black uppercase text-emerald-300 block leading-tight">
+                          Everyday Financial Needs
+                        </span>
+                        <span className="text-[12px] font-bold text-white truncate block">
+                          Kalkulator Budget 50/20/10/20 &amp; Jajan Harian
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-extrabold text-[#00F0A0] shrink-0 ml-1">
+                      Hitung →
+                    </span>
+                  </Link>
+
+                  {/* Pillar 2: Haji / Umroh Planning */}
+                  <Link
+                    href="/kalkulator/haji"
+                    className="p-2.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-between transition-colors active:scale-99 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-[#00F0A0] shrink-0">
+                        <Landmark className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[9.5px] font-black uppercase text-emerald-300 block leading-tight">
+                          Haji &amp; Umroh Planning
+                        </span>
+                        <span className="text-[12px] font-bold text-white truncate block">
+                          Kalkulator Porsi Haji &amp; Antrean Kemenag
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-extrabold text-[#00F0A0] shrink-0 ml-1">
+                      Hitung →
+                    </span>
+                  </Link>
+
+                  {/* Pillar 3: Financial Growth */}
+                  <Link
+                    href="/kalkulator/investasi"
+                    className="p-2.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-between transition-colors active:scale-99 cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-[#00F0A0] shrink-0">
+                        <TrendingUp className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[9.5px] font-black uppercase text-emerald-300 block leading-tight">
+                          Financial Growth
+                        </span>
+                        <span className="text-[12px] font-bold text-white truncate block">
+                          Kalkulator Investasi &amp; Nisbah Bagi Hasil
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-extrabold text-[#00F0A0] shrink-0 ml-1">
+                      Hitung →
+                    </span>
+                  </Link>
                 </div>
               </div>
             </div>

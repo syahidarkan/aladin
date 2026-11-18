@@ -45,8 +45,8 @@ const inter = localFont({
 })
 
 export const metadata: Metadata = {
-  title: 'Bank Aladin Syariah — #PakaiAladin',
-  description: 'Prototipe fungsional Bank Aladin Syariah untuk kompetisi #PakaiAladin',
+  title: 'Bank Aladin Syariah — #FlywithAladin',
+  description: 'Prototipe fungsional Bank Aladin Syariah untuk kompetisi #FlywithAladin',
   icons: {
     icon: [
       { url: '/favicon.ico' },

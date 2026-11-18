@@ -65,8 +65,8 @@ export default function SimulasiBagiHasilPage() {
             <h1 className="text-[17px] font-bold text-[#1A1D26] tracking-tight">
               Simulasi Bagi Hasil
             </h1>
-            <span className="text-[8.5px] font-black px-1.5 py-0.5 rounded-full bg-indigo-600 text-white border border-indigo-400">
-              📋 Pendukung
+            <span className="text-[8.5px] font-black px-1.5 py-0.5 rounded-full bg-[#00F0A0] text-[#064E3B] border border-emerald-400">
+              ⭐ Fitur Utama • Kalkulator
             </span>
           </div>
 
@@ -106,7 +106,7 @@ export default function SimulasiBagiHasilPage() {
                   borderRadius: '12px',
                 }}
               >
-                #PAKAIALADIN SYARIAH
+                #FLYWITHALADIN SYARIAH
               </span>
               <span className="font-bold text-[#00F3AD]" style={{ fontSize: '10.5px' }}>
                 Nisbah hingga 85:15

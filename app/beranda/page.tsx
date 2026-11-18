@@ -169,6 +169,19 @@ export default function BerandaPage() {
       slideNote: 'Slide 16/17 • Organic Viral Engine',
       badge: 'Utama',
     },
+    {
+      id: 'kalkulator',
+      label: 'Kalkulator',
+      category: 'utama',
+      tier: 'Utama',
+      tierBadgeClass: 'bg-[#00F0A0] text-[#064E3B] border-emerald-400',
+      tagColor: 'text-[#064E3B] bg-emerald-50 border-emerald-200',
+      href: '/kalkulator',
+      iconSrc: '/assets/icons/shortcut_deposito_clean.png',
+      desc: 'Aladin Financial Calculator: Budgeting 50/20/10/20, Target Porsi Haji, & Investasi.',
+      slideNote: 'Slide Solusi • Financial Calculator',
+      badge: 'Utama',
+    },
 
     // --- TIER 2: FITUR PENDUKUNG (Appendix A - Solusi Tambahan & 4P) ---
     {
@@ -476,7 +489,7 @@ export default function BerandaPage() {
                 Solusi Unggulan
               </span>
               <span className="text-[9.5px] font-extrabold px-2 py-0.5 rounded-full bg-[#00F0A0] text-[#064E3B] border border-emerald-400">
-                ⭐ 5 Fitur Utama
+                ⭐ 6 Fitur Utama
               </span>
             </div>
             <span className="text-[11px] font-bold text-[#1037A6]">
@@ -545,10 +558,10 @@ export default function BerandaPage() {
             {/* Filter Tabs */}
             <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 mb-3">
               {[
-                { id: 'utama', label: '⭐ Fitur Utama (5)' },
+                { id: 'utama', label: '⭐ Fitur Utama (6)' },
                 { id: 'pendukung', label: '📋 Pendukung (4)' },
                 { id: 'nice-to-have', label: '✨ Nice To Have (3)' },
-                { id: 'all', label: 'Semua (12)' },
+                { id: 'all', label: 'Semua (13)' },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -880,7 +893,7 @@ export default function BerandaPage() {
                       {b.cta} →
                     </span>
                     <span className="text-[9.5px] text-white/60 font-semibold tracking-wider uppercase">
-                      #PakaiAladin
+                      #FlywithAladin
                     </span>
                   </div>
                 </Link>

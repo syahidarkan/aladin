@@ -472,7 +472,7 @@ export default function ProfilPage() {
           </span>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            {/* 0. Panduan Fitur Baru (#PakaiAladin Interactive Guide di Beranda) */}
+            {/* 0. Panduan Fitur Baru (#FlywithAladin Interactive Guide di Beranda) */}
             <div
               onClick={() => {
                 if (typeof window !== 'undefined') {

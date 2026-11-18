@@ -23,7 +23,8 @@ export default function BottomNav() {
     pathname.startsWith('/impian') ||
     pathname.startsWith('/simulasi') ||
     pathname.startsWith('/kartu') ||
-    pathname.startsWith('/donasi')
+    pathname.startsWith('/donasi') ||
+    pathname.startsWith('/kalkulator')
 
   return (
     <div

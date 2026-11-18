@@ -33,6 +33,46 @@ interface FeatureWelcomeConfig {
 }
 
 const FEATURE_CONFIGS: Record<string, FeatureWelcomeConfig> = {
+  '/kalkulator': {
+    key: 'kalkulator',
+    pose: 'pointing',
+    face: 'cheerful',
+    hasProp: true,
+    propKind: 'investasi',
+    accentColor: '#00F0A0',
+    greeting: (name) =>
+      `Haiii ${name}! Selamat datang di Aladin Financial Calculator! Hitung dulu dengan tenang, semua sesuai prinsip syariah!`,
+  },
+  '/kalkulator/budget': {
+    key: 'kalkulator-budget',
+    pose: 'pointing',
+    face: 'cheerful',
+    hasProp: true,
+    propKind: 'pocket',
+    accentColor: '#1037A6',
+    greeting: (name) =>
+      `Haiii ${name}! Yuk atur porsi syariah 50/20/10/20 dan intip batas jajan harianmu bareng Alan!`,
+  },
+  '/kalkulator/haji': {
+    key: 'kalkulator-haji',
+    pose: 'ihrom-bow',
+    face: 'chill',
+    hasProp: true,
+    propKind: 'impian',
+    accentColor: '#059669',
+    greeting: (name) =>
+      `Haiii ${name}! Niat suci ke Baitullah! Yuk hitung waktu capai setoran awal porsi haji Kemenag!`,
+  },
+  '/kalkulator/investasi': {
+    key: 'kalkulator-investasi',
+    pose: 'pointing',
+    face: 'cheerful',
+    hasProp: true,
+    propKind: 'investasi',
+    accentColor: '#00F0A0',
+    greeting: (name) =>
+      `Haiii ${name}! Mau simulasikan bagi hasil Ala Deposito, reksa dana, atau emas? Transparan tanpa riba!`,
+  },
   '/investasi': {
     key: 'investasi',
     pose: 'pointing',

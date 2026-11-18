@@ -510,7 +510,7 @@ export default function WealthEnginePage() {
 
                 {/* 6. RDN Saham Syariah (via Ajaib) - Segera Hadir */}
                 <button
-                  onClick={() => alert('RDN Saham Syariah (via Ajaib Sekuritas) sedang dalam tahap finalisasi integrasi API di Roadmap #PakaiAladin. Segera Hadir!')}
+                  onClick={() => alert('RDN Saham Syariah (via Ajaib Sekuritas) sedang dalam tahap finalisasi integrasi API di Roadmap #FlywithAladin. Segera Hadir!')}
                   style={{
                     display: 'flex',
                     flexDirection: 'column',

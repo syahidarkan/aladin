@@ -1,16 +1,31 @@
 'use client'
 
-import { ArrowLeft } from 'lucide-react'
+import {
+  ArrowLeft,
+  GraduationCap,
+  Sparkles,
+  Award,
+  Briefcase,
+  Gift,
+  CheckCircle2,
+  Copy,
+  Check,
+  TrendingUp,
+  Store,
+  Users,
+} from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import StatusBar from '@/components/StatusBar'
 
 export default function ReferralPage() {
-  const [copied, setCopied] = useState(false)
+  const [copiedGeneral, setCopiedGeneral] = useState(false)
+  const [copiedCampus, setCopiedCampus] = useState(false)
   const freeTransaksi = 18
   const maxFree = 50
   const referralCode = 'ALADIN2026'
+  const campusAmbassadorCode = 'ALADIN-KAMPUS-UI26'
 
   const referrals = [
     { name: 'Budi Santoso', date: '05 Nov 2026', status: 'Aktif', reward: '+Rp25.000' },
@@ -18,34 +33,32 @@ export default function ReferralPage() {
     { name: 'Dani Prasetyo', date: '28 Okt 2026', status: 'Daftar', reward: 'Menunggu' },
   ]
 
-  const handleCopy = () => {
+  const handleCopyGeneral = () => {
     navigator.clipboard?.writeText?.(referralCode)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    setCopiedGeneral(true)
+    setTimeout(() => setCopiedGeneral(false), 2000)
+  }
+
+  const handleCopyCampus = () => {
+    navigator.clipboard?.writeText?.(campusAmbassadorCode)
+    setCopiedCampus(true)
+    setTimeout(() => setCopiedCampus(false), 2000)
   }
 
   return (
     <div
-      className="flex flex-col h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
+      className="app-page-container flex flex-col h-full min-h-0 max-h-full bg-[#F4F6F9] select-none text-[#1A1D26] overflow-hidden relative"
       style={{
         fontFamily:
-          '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+          '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* 1. Top Header with Navy Starry Gradient */}
-      <div
-        className="shrink-0 text-white"
-        style={{
-          background: 'linear-gradient(180deg, #081D48 0%, #0A2558 100%)',
-          paddingBottom: '24px',
-        }}
-      >
+      {/* 1. Top Header Bar */}
+      <header className="shrink-0 w-full bg-[#081D48] text-white z-30 shadow-xs">
         <StatusBar dark={true} />
-
-        {/* Header App Bar */}
         <div
-          className="flex items-center justify-between"
-          style={{ height: '52px', paddingLeft: '16px', paddingRight: '16px' }}
+          className="w-full flex items-center justify-between px-4"
+          style={{ height: '52px' }}
         >
           <Link
             href="/beranda"
@@ -56,190 +69,257 @@ export default function ReferralPage() {
             <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2.6} />
           </Link>
 
-          <h1 className="text-[17px] font-bold text-white tracking-tight">
-            Ajak Teman &amp; Bebas Biaya
-          </h1>
+          <div className="flex items-center gap-1.5">
+            <h1 className="text-[16px] font-black text-white tracking-tight">
+              Ajak Teman &amp; Komunitas
+            </h1>
+            <span className="text-[8.5px] font-black px-2 py-0.5 rounded-full bg-[#00F0A0] text-[#064E3B] border border-emerald-400">
+              Pilar ACQUIRE
+            </span>
+          </div>
 
           <div style={{ width: '36px' }} />
         </div>
+      </header>
 
-        {/* Free Transaction Counter Hero Card */}
-        <div style={{ paddingLeft: '20px', paddingRight: '20px', marginTop: '6px' }}>
-          <div
-            style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(8px)',
-              borderRadius: '24px',
-              padding: '20px',
-              border: '1px solid rgba(255, 255, 255, 0.18)',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
-            }}
-          >
-            <span style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255, 255, 255, 0.75)', display: 'block', marginBottom: '4px' }}>
-              Program 50 Transaksi Gratis Bulanan
-            </span>
+      {/* 2. Scrollable Main Content */}
+      <div
+        className="flex-1 min-h-0 overflow-y-auto no-scrollbar space-y-4"
+        style={{
+          padding: '16px 20px 48px 20px',
+        }}
+      >
+        {/* FREE TRANSACTION COUNTER HERO CARD */}
+        <div className="bg-gradient-to-br from-[#081D48] via-[#0A2558] to-[#1037A6] rounded-3xl p-5 text-white shadow-md relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-36 h-36 bg-[#00F0A0]/15 rounded-full blur-2xl pointer-events-none" />
 
-            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                <span style={{ fontSize: '32px', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.5px' }}>
-                  {freeTransaksi}
-                </span>
-                <span style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(255, 255, 255, 0.6)' }}>
-                  /{maxFree}
-                </span>
-              </div>
+          <span className="text-[11px] font-semibold text-white/75 block mb-1">
+            Program 50 Transaksi Gratis Bulanan
+          </span>
 
-              <span
-                style={{
-                  fontSize: '11px',
-                  fontWeight: 800,
-                  color: '#081D48',
-                  backgroundColor: '#00F3AD',
-                  padding: '4px 10px',
-                  borderRadius: '999px',
-                }}
-              >
-                {maxFree - freeTransaksi} Tersisa
+          <div className="flex items-baseline justify-between mb-2">
+            <div className="flex items-baseline gap-1">
+              <span className="text-[32px] font-black text-white tracking-tight font-mono">
+                {freeTransaksi}
+              </span>
+              <span className="text-[15px] font-semibold text-white/60">
+                /{maxFree} Kuota
               </span>
             </div>
 
-            {/* Progress bar */}
-            <div style={{ height: '8px', backgroundColor: 'rgba(255, 255, 255, 0.2)', borderRadius: '999px', overflow: 'hidden', padding: '1px' }}>
-              <div
-                style={{
-                  height: '100%',
-                  backgroundColor: '#00F3AD',
-                  borderRadius: '999px',
-                  width: `${(freeTransaksi / maxFree) * 100}%`,
-                  transition: 'width 0.5s ease',
-                }}
-              />
-            </div>
-
-            <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.8)', marginTop: '8px', lineHeight: 1.4, margin: '8px 0 0 0' }}>
-              Bebas transfer BI-FAST, top-up e-wallet, dan tarik tunai di ribuan gerai Alfamart.
-            </p>
+            <span className="text-[11px] font-extrabold text-[#081D48] bg-[#00F0A0] px-2.5 py-1 rounded-full shadow-xs">
+              {maxFree - freeTransaksi} Tersisa
+            </span>
           </div>
-        </div>
-      </div>
 
-      {/* 2. Scrollable Main Content (20px Padding, Block Flow) */}
-      <div
-        className="flex-1 overflow-y-auto no-scrollbar"
-        style={{
-          padding: '16px 20px 40px 20px',
-        }}
-      >
-        {/* Referral Code Box (Generous Margins, No Overlap) */}
-        <div
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '24px',
-            padding: '20px',
-            border: '1px solid #ECEEF2',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
-            marginBottom: '16px',
-            textAlign: 'center',
-          }}
-        >
-          <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#1C20C4', letterSpacing: '1px', textTransform: 'uppercase', display: 'block', marginBottom: '12px' }}>
-            KODE REFERRAL KAMU
+          {/* Progress bar */}
+          <div className="h-2 bg-white/20 rounded-full overflow-hidden p-0.5">
+            <div
+              className="h-full bg-[#00F0A0] rounded-full transition-all duration-500"
+              style={{ width: `${(freeTransaksi / maxFree) * 100}%` }}
+            />
+          </div>
+
+          <p className="text-[11px] text-white/80 mt-2.5 leading-snug">
+            Bebas transfer BI-FAST, top-up e-wallet, dan tarik tunai gratis di 18.000+ gerai Alfamart.
+          </p>
+        </div>
+
+        {/* REGULAR REFERRAL BOX */}
+        <div className="bg-white rounded-3xl p-5 border border-[#ECEEF2] shadow-xs text-center">
+          <span className="text-[10px] font-black text-[#1C20C4] tracking-widest uppercase block mb-2.5">
+            KODE REFERRAL REGULER
           </span>
 
-          {/* Referral Code Container with explicit flex and zero button overlap */}
-          <div
-            style={{
-              backgroundColor: '#F8FAFC',
-              borderRadius: '16px',
-              border: '1.5px dashed #C7D2FE',
-              padding: '10px 16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '12px',
-              marginBottom: '14px',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: 'monospace',
-                fontSize: '18px',
-                fontWeight: 900,
-                letterSpacing: '2.5px',
-                color: '#1C20C4',
-                whiteSpace: 'nowrap',
-              }}
-            >
+          <div className="bg-[#F8FAFC] rounded-2xl border-1.5 border-dashed border-[#C7D2FE] p-3 flex items-center justify-between gap-3 mb-3">
+            <span className="font-mono text-[18px] font-black tracking-widest text-[#1C20C4]">
               {referralCode}
             </span>
 
             <button
-              onClick={handleCopy}
-              style={{
-                height: '36px',
-                padding: '0 18px',
-                borderRadius: '999px',
-                backgroundColor: '#1C20C4',
-                color: '#FFFFFF',
-                fontSize: '12px',
-                fontWeight: 800,
-                border: 'none',
-                cursor: 'pointer',
-                flexShrink: 0,
-                boxShadow: '0 2px 8px rgba(28, 32, 196, 0.25)',
-              }}
-              className="active:scale-95 transition-all"
+              type="button"
+              onClick={handleCopyGeneral}
+              className="h-9 px-4 rounded-full bg-[#1C20C4] text-white text-[12px] font-bold border-none cursor-pointer shrink-0 shadow-xs active:scale-95 transition-all flex items-center gap-1.5"
             >
-              {copied ? 'Tersalin! ' : 'Salin'}
+              {copiedGeneral ? (
+                <>
+                  <Check className="w-3.5 h-3.5" /> Tersalin!
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5" /> Salin
+                </>
+              )}
             </button>
           </div>
 
-          <p style={{ fontSize: '12px', color: '#64748B', lineHeight: 1.45, margin: 0 }}>
-            Dapatkan saldo Ala Dompet Rp25.000 untuk setiap teman yang mendaftar dan verifikasi KYC menggunakan kodemu.
+          <p className="text-[11.5px] text-gray-600 leading-relaxed">
+            Dapatkan saldo Ala Dompet Rp25.000 untuk setiap teman yang mendaftar dan menyelesaikan verifikasi KYC menggunakan kodemu.
           </p>
         </div>
 
-        {/* History of Invites Card */}
-        <div
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '24px',
-            padding: '20px',
-            border: '1px solid #ECEEF2',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
-            marginBottom: '16px',
-          }}
-        >
-          <span style={{ fontSize: '14px', fontWeight: 800, color: '#1A1D26', display: 'block', marginBottom: '12px' }}>
+        {/* KARTU SPESIAL: KODE AMBASSADOR KAMPUS (PROGRAM ACQUIRE) */}
+        <div className="bg-white rounded-3xl p-5 border border-indigo-100 shadow-xs relative overflow-hidden">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-[#1C20C4]">
+                <GraduationCap className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <h3 className="text-[14.5px] font-black text-[#1A1D26]">
+                    Student Ambassador
+                  </h3>
+                  <span className="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-blue-50 text-[#1C20C4] border border-blue-200">
+                    Program Kampus
+                  </span>
+                </div>
+                <span className="text-[10.5px] text-gray-500 font-medium">
+                  Benefit eksklusif mahasiswa penggerak literasi syariah
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Ambassador Code Box */}
+          <div className="bg-gradient-to-r from-indigo-50/70 to-blue-50/70 rounded-2xl border border-indigo-200 p-3 flex items-center justify-between gap-3 mb-3.5">
+            <div>
+              <span className="text-[9.5px] font-bold text-gray-500 block uppercase">
+                Kode Ambassador Kampus Kamu
+              </span>
+              <span className="font-mono text-[15px] font-black tracking-wide text-[#1037A6]">
+                {campusAmbassadorCode}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleCopyCampus}
+              className="h-8 px-3.5 rounded-full bg-[#1037A6] hover:bg-[#0c2b82] text-white text-[11px] font-bold cursor-pointer shrink-0 shadow-xs active:scale-95 transition-all flex items-center gap-1"
+            >
+              {copiedCampus ? (
+                <>
+                  <Check className="w-3.5 h-3.5" /> Tersalin!
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5" /> Salin Kode
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* 4 Pilar Benefit Ambassador (Berbasis Benefit) */}
+          <div className="space-y-2.5">
+            <span className="text-[11px] font-bold text-gray-700 block">
+              Paket Benefit Aladin Student Ambassador:
+            </span>
+
+            <div className="grid grid-cols-2 gap-2 text-left">
+              <div className="p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="flex items-center gap-1.5 text-indigo-700 mb-0.5">
+                  <Gift className="w-3.5 h-3.5" />
+                  <span className="text-[11px] font-black">Reward In-Kind</span>
+                </div>
+                <p className="text-[10px] text-gray-600 leading-tight">
+                  Merchandise eksklusif Aladin (hoodie, tumbler) &amp; voucher belanja.
+                </p>
+              </div>
+
+              <div className="p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="flex items-center gap-1.5 text-emerald-700 mb-0.5">
+                  <Briefcase className="w-3.5 h-3.5" />
+                  <span className="text-[11px] font-black">Talent Pool Magang</span>
+                </div>
+                <p className="text-[10px] text-gray-600 leading-tight">
+                  Akses prioritas magang &amp; rekrutmen di Bank Aladin Syariah.
+                </p>
+              </div>
+
+              <div className="p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="flex items-center gap-1.5 text-amber-700 mb-0.5">
+                  <Award className="w-3.5 h-3.5" />
+                  <span className="text-[11px] font-black">Sertifikat Resmi</span>
+                </div>
+                <p className="text-[10px] text-gray-600 leading-tight">
+                  Pelatihan literasi finansial syariah dengan sertifikasi perbankan.
+                </p>
+              </div>
+
+              <div className="p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="flex items-center gap-1.5 text-blue-700 mb-0.5">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span className="text-[11px] font-black">Reward Berjenjang</span>
+                </div>
+                <p className="text-[10px] text-gray-600 leading-tight">
+                  Bonus insentif bertingkat sesuai akumulasi performa referral.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* KARTU CAMPUS ACTIVATION (BOOTH & ROADSHOW) */}
+        <div className="bg-white rounded-3xl p-5 border border-[#ECEEF2] shadow-xs">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <Store className="w-5 h-5 text-emerald-600" />
+              <div>
+                <h3 className="text-[14.5px] font-black text-[#1A1D26]">
+                  Campus Activation Booth
+                </h3>
+                <span className="text-[10.5px] text-gray-500 font-medium">
+                  Roadshow offline kampus &amp; onboarding on-the-spot
+                </span>
+              </div>
+            </div>
+            <span className="text-[9.5px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+              Live Booth
+            </span>
+          </div>
+
+          <div className="bg-gradient-to-r from-emerald-50/70 to-teal-50/70 rounded-2xl p-3.5 border border-emerald-200 space-y-2">
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+              <p className="text-[11.5px] text-gray-800 leading-snug font-medium">
+                <strong>Buka rekening di booth kampus:</strong> Dapatkan voucher Rp25.000 &amp; saldo bonus langsung setelah transaksi QRIS pertama!
+              </p>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+              <p className="text-[11.5px] text-gray-800 leading-snug font-medium">
+                Verifikasi kilat 5 menit hanya dengan KTM (Kartu Tanda Mahasiswa) dan e-KTP.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-3 flex items-center justify-between text-[11px] text-gray-500 font-medium px-1">
+            <span>📍 Booth Aktif: UI Depok, ITB Ganesha, UGM</span>
+            <span className="text-emerald-700 font-bold">Jadwal Roadshow →</span>
+          </div>
+        </div>
+
+        {/* RIWAYAT TEMAN YANG BERGABUNG */}
+        <div className="bg-white rounded-3xl p-5 border border-[#ECEEF2] shadow-xs">
+          <span className="text-[14px] font-black text-[#1A1D26] block mb-3">
             Teman yang Bergabung
           </span>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div className="divide-y divide-gray-100">
             {referrals.map((r, i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  paddingBottom: '10px',
-                  borderBottom: i === referrals.length - 1 ? 'none' : '1px solid #F1F5F9',
-                }}
-              >
+              <div key={i} className="py-2.5 first:pt-0 last:pb-0 flex items-center justify-between">
                 <div>
-                  <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#1A1D26', margin: 0 }}>
+                  <h4 className="text-[13px] font-bold text-[#1A1D26]">
                     {r.name}
                   </h4>
-                  <p style={{ fontSize: '11px', color: '#64748B', margin: '2px 0 0 0' }}>
+                  <p className="text-[11px] text-gray-500 mt-0.5">
                     {r.date} • Status: {r.status}
                   </p>
                 </div>
                 <span
-                  style={{
-                    fontSize: '12.5px',
-                    fontWeight: 800,
-                    color: r.status === 'Aktif' ? '#059669' : '#D97706',
-                  }}
+                  className={`text-[12.5px] font-black ${
+                    r.status === 'Aktif' ? 'text-emerald-600' : 'text-amber-600'
+                  }`}
                 >
                   {r.reward}
                 </span>
